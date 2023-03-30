@@ -86,7 +86,9 @@ npm run test # run unit / integration tests
 
 ## Contributions
 
-All contributions welcome!
+ - All contributions welcome!
+ * bing
+
 
 
 hi there
