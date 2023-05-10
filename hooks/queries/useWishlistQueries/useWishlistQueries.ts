@@ -29,6 +29,21 @@ const getWishlists = async (): Promise<CrWishlist> => {
   return response?.wishlists?.items[0]
 }
 
+const getAllWishlists = async (props: any): Promise<CrWishlist> => {
+  const client = makeGraphQLClient()
+  const response = await client.request({
+    document: getWishlistQuery,
+    variables: {
+      sortBy: props.sortBy || '',
+      startIndex: props.startIndex || 0,
+      pageSize: props.pageSize || 5,
+      filter: props.filter || '',
+    },
+  })
+
+  return response?.wishlists
+}
+
 /**
  * [Query hook] useWishlistQueries uses the graphQL query
  *
@@ -47,6 +62,19 @@ export const useWishlistQueries = (): UseWishlistResponse => {
   const { data, isLoading, isSuccess, isFetching } = useQuery(wishlistKeys.all, getWishlists, {
     refetchOnWindowFocus: false,
   })
+
+  return { data, isLoading, isSuccess, isFetching }
+}
+
+export const useAllWishlistsQueries = (props: any): any => {
+  const { data, isLoading, isSuccess, isFetching } = useQuery(
+    wishlistKeys.all.concat(props.startIndex),
+    () => getAllWishlists(props),
+    {
+      refetchOnWindowFocus: false,
+      // enabled: props.pageSize && props.sortBy && props.startIndex ? true : false
+    }
+  )
 
   return { data, isLoading, isSuccess, isFetching }
 }

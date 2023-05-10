@@ -1,0 +1,226 @@
+/* ..................................wishlist table section............................... */
+.tableRow {
+  height: 51px;
+  border-bottom: 1px solid #cdcdcd;
+}
+/* .tableRow:hover {
+    background-color: #2ea19549 !important;
+    box-shadow:0px 4px 15px 0px #2ea19549;
+} */
+.editlistButton {
+  cursor: pointer;
+}
+.tableContainer {
+  border: none !important;
+  box-shadow: none !important;
+}
+.tableHead {
+  background: #f7f7f7;
+  border-bottom: 1px solid #cdcdcd;
+  border-radius: 4px 4px 0px 0px;
+}
+.tableHeadCell {
+  font-family: 'Roboto';
+  font-style: normal !important;
+  font-weight: 500 !important;
+  line-height: 19px !important;
+  font-size: 16px !important;
+  color: #000000 !important;
+  height: 51px !important;
+}
+.tableBodyCell {
+  font-family: 'Roboto';
+  font-style: normal !important;
+  font-weight: 400 !important;
+  line-height: 19px !important;
+  font-size: 16px !important;
+  color: #000000 !important;
+  height: 51px !important;
+  padding: 0 16px !important;
+  border: none !important;
+}
+.wishlistTableAction {
+  display: flex !important;
+  justify-content: flex-end;
+  padding: 0 16px !important;
+  border: none !important;
+  height: 51px !important;
+  align-items: center;
+}
+.iconTextButton {
+  font-family: 'Roboto';
+  font-style: normal !important;
+  font-weight: 400 !important;
+  line-height: 19px !important;
+  font-size: 16px !important;
+  color: #000000 !important;
+  text-decoration: underline !important;
+}
+.showOnlyListCheckbox {
+  font-size: 16px;
+}
+/* ........................................create new list section..................................... */
+
+.addNewListButton {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 8px 16px !important;
+  gap: 8px;
+  height: 37px;
+  background-color: #2b2b2b !important;
+  border-radius: 4px !important;
+  -webkit-border-radius: 4px !important;
+  -moz-border-radius: 4px !important;
+  -ms-border-radius: 4px !important;
+  -o-border-radius: 4px !important;
+
+  color: #ffffff !important;
+  font-weight: 400 !important;
+  font-size: 18px !important;
+  margin-bottom: 24px !important;
+  margin-top: 32px !important;
+}
+
+.createListHeaderSection {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 15px !important;
+}
+.createListNameSection {
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+}
+.createListNameInput {
+  max-width: 360px;
+  height: 32px;
+  font-size: 14px;
+  padding: 8px 12px;
+
+  background: #ffffff;
+  border: 1px solid #cdcdcd;
+  border-radius: 4px;
+}
+.createListSearchProductSection {
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  margin-top: 24px;
+  margin-bottom: 46px;
+  position: relative;
+}
+.createListSearchProductInput {
+  max-width: 495px;
+  height: 32px;
+  font-size: 14px;
+  padding: 8px 12px;
+  background: #ffffff;
+  border: 1px solid #cdcdcd;
+  border-radius: 4px;
+}
+.saveListButton {
+  margin-left: 10px !important;
+  padding: 8px 16px !important;
+  gap: 8px;
+  width: 136px;
+  height: 37px;
+  background: #2ea195;
+  border-radius: 4px !important;
+  -webkit-border-radius: 4px !important;
+  -moz-border-radius: 4px !important;
+  -ms-border-radius: 4px !important;
+  -o-border-radius: 4px !important;
+  font-weight: 400 !important;
+  font-size: 18px !important;
+  line-height: 21px !important;
+}
+.cancelListButton {
+  padding: 8px 16px !important;
+  gap: 8px;
+  width: 87px;
+  height: 37px;
+  background: #fafafa !important;
+  border: 1px solid #cdcdcd !important;
+  border-radius: 4px !important;
+  -webkit-border-radius: 4px !important;
+  -moz-border-radius: 4px !important;
+  -ms-border-radius: 4px !important;
+  -o-border-radius: 4px !important;
+  color: #2b2b2b !important;
+  font-weight: 400 !important;
+  font-size: 18px !important;
+  line-height: 21px !important;
+}
+.createListHeading {
+  margin-top: 0 !important;
+  width: 199px;
+  height: 33px;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 33px;
+  color: #2b2b2b;
+}
+.listItemHeadingSection {
+  display: flex;
+  justify-content: space-between;
+}
+.listItemHeading {
+  width: 498.4px;
+  height: 23px;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 23px;
+  color: #2b2b2b;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+.addAllItemToCart {
+  font-weight: 400 !important;
+  font-size: 16px !important;
+  line-height: 19px !important;
+  text-align: center;
+  text-decoration-line: underline !important;
+  color: #cdcdcd !important;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  -moz-text-decoration-line: underline !important;
+}
+.addAllItemToCart:hover {
+  background-color: transparent !important;
+}
+.noListItem {
+  font-family: 'Roboto';
+  font-style: italic;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  color: #7c7c7c;
+}
+
+/* .................................edit list section................................. */
+.editItemButton {
+  font-weight: 400 !important;
+  font-size: 16px !important;
+  line-height: 19px !important;
+  text-align: center;
+  text-decoration-line: underline !important;
+  color: #2b2b2b !important;
+  -moz-text-decoration-line: underline !important;
+}
+.deleteItemButton {
+  font-weight: 400 !important;
+  font-size: 16px !important;
+  line-height: 19px !important;
+  text-align: center;
+  text-decoration-line: underline !important;
+  color: #2b2b2b !important;
+  -moz-text-decoration-line: underline !important;
+}

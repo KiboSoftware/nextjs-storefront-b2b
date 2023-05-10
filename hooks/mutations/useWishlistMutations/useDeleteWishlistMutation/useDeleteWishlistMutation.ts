@@ -5,45 +5,21 @@ import getConfig from 'next/config'
 import { useMutation, useQueryClient } from 'react-query'
 
 import { makeGraphQLClient } from '@/lib/gql/client'
-import { createWishlistMutation } from '@/lib/gql/mutations'
+import { deleteWishlistMutation } from '@/lib/gql/mutations'
 import { wishlistKeys } from '@/lib/react-query/queryKeys'
 
-const createWishlist = async (customerAccountId: number) => {
-  const client = makeGraphQLClient()
-
-  const { publicRuntimeConfig } = getConfig()
-
-  const variables = {
-    wishlistInput: {
-      customerAccountId,
-      name: publicRuntimeConfig.defaultWishlistName,
-    },
-  }
-  const response = await client.request({
-    document: createWishlistMutation,
-    variables,
-  })
-
-  return response?.createWishlist
-}
-
-const createCustomWishlist = async (customInput: any) => {
+const deleteWishlist = async (wishlistId: number) => {
   const client = makeGraphQLClient()
 
   const variables = {
-    wishlistInput: {
-      customerAccountId: customInput.customerAccountId,
-      name: customInput.name,
-      items: customInput.items,
-    },
+    wishlistId,
   }
-
   const response = await client.request({
-    document: createWishlistMutation,
+    document: deleteWishlistMutation,
     variables,
   })
 
-  return response?.createWishlist
+  return response
 }
 
 /**
@@ -60,16 +36,11 @@ const createCustomWishlist = async (customInput: any) => {
  * @returns 'response?.createWishlistItem', which contains wishlist created for user.
  */
 
-export const useCreateWishlistMutation = () => {
+export const useDeleteWishlistMutation = () => {
   const queryClient = useQueryClient()
 
   return {
-    createWishlist: useMutation(createWishlist, {
-      onSuccess: () => {
-        queryClient.invalidateQueries(wishlistKeys.all)
-      },
-    }),
-    createCustomWishlist: useMutation(createCustomWishlist, {
+    deleteWishlist: useMutation(deleteWishlist, {
       onSuccess: () => {
         queryClient.invalidateQueries(wishlistKeys.all)
       },

@@ -323,5 +323,7 @@
   "subscription-frequency": "Subscription frequency",
   "fulfillment-options": "Fulfillment Options:",
   "subscription-cancelled-successfully": "Your subscription item has been cancelled.",
-  "card-ending-in": "Card "
+  "card-ending-in": "Card ",
+
+  "list-item": "List item"
 }

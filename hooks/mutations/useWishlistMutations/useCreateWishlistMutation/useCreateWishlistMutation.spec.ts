@@ -7,14 +7,14 @@ import { createQueryClientWrapper } from '@/__test__/utils/renderWithQueryClient
 const mockWishlist = wishlistMock.items[0]
 
 describe('[hooks] useCreateWishlistMutation', () => {
-  const { id, name, customerAccountId } = mockWishlist
+  const { id, name, customerAccountId, items } = mockWishlist
 
   it('should create wishlist', async () => {
     renderHook(
       async () => {
         const { createWishlist } = useCreateWishlistMutation()
         const response = await createWishlist.mutateAsync(customerAccountId)
-        expect(response).toStrictEqual({ id, name, customerAccountId, items: [] })
+        expect(response).toStrictEqual({ id, name, customerAccountId, items })
       },
       {
         wrapper: createQueryClientWrapper(),
