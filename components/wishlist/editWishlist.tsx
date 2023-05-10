@@ -10,7 +10,6 @@ import ProductSearch from '../common/ProductSearch/ProductSearch'
 import { useProductSearchQueries, useWishlist } from '@/hooks'
 import { useSearchSuggestionsQueries, useDebounce } from '@/hooks'
 import { useUpdateWishlistMutation } from '@/hooks'
-
 import Style from '@/styles/global.module.css'
 
 const style = {

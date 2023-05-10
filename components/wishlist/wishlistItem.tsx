@@ -11,7 +11,6 @@ import Image from 'next/image'
 import styles from './wishlist.module.css'
 import labels from '../../public/locales/en/common.json'
 import Accordion from '../common/Accordion/Accordion'
-
 import Style from '@/styles/global.module.css'
 
 const style = {

@@ -1,12 +1,12 @@
 import React from 'react'
 
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import { Button, Container, IconButton } from '@mui/material'
 
-import { useCreateWishlistMutation } from '@/hooks'
-import { useAuthContext } from '@/context'
 import styles from './wishlist.module.css'
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import ProductSearch from '../common/ProductSearch/ProductSearch'
+import { useAuthContext } from '@/context'
+import { useCreateWishlistMutation } from '@/hooks'
 const CreateWishlist = (props: any) => {
   const { user } = useAuthContext()
   const { createCustomWishlist } = useCreateWishlistMutation()

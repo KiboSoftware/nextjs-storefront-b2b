@@ -1,46 +1,37 @@
 import { useEffect, useState } from 'react'
 
+import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit'
+import FolderCopySharpIcon from '@mui/icons-material/FolderCopySharp'
+import MoreVertIcon from '@mui/icons-material/MoreVert'
 import {
   Container,
   FormControlLabel,
-  Autocomplete,
-  Box,
   Button,
-  Grid,
   IconButton,
   Table,
   TableBody,
   TableCell,
   tableCellClasses,
   TableContainer,
-  TableFooter,
   TableHead,
-  TablePagination,
   TableRow,
-  TextField,
   useTheme,
-  Backdrop,
-  Modal,
-  Fade,
-  Typography,
   Checkbox,
   useMediaQuery,
   Menu,
   MenuItem,
 } from '@mui/material'
-import EditWishlist from './editWishlist'
-import { useAllWishlistsQueries, useCreateWishlistMutation } from '@/hooks'
-import { styled } from '@mui/material/styles'
-import styles from './wishlist.module.css'
 import Paper from '@mui/material/Paper'
-import DeleteIcon from '@mui/icons-material/Delete'
-import EditIcon from '@mui/icons-material/Edit'
-import MoreVertIcon from '@mui/icons-material/MoreVert'
-import FolderCopySharpIcon from '@mui/icons-material/FolderCopySharp'
-import { useDeleteWishlistMutation } from '@/hooks/mutations/useWishlistMutations/useDeleteWishlistMutation/useDeleteWishlistMutation'
-import Pagination from '../common/pagination/Pagination'
-import { useAuthContext } from '@/context'
+import { styled } from '@mui/material/styles'
+
+import EditWishlist from './editWishlist'
+import styles from './wishlist.module.css'
 import { KiboDialog } from '../common'
+import Pagination from '../common/Pagination/Pagination'
+import { useAuthContext } from '@/context'
+import { useAllWishlistsQueries, useCreateWishlistMutation } from '@/hooks'
+import { useDeleteWishlistMutation } from '@/hooks/mutations/useWishlistMutations/useDeleteWishlistMutation/useDeleteWishlistMutation'
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: '#F7F7F7',
@@ -323,7 +314,7 @@ const Wishlist = (props: any) => {
             </TableBody>
           </Table>
         </TableContainer>
-        <Pagination pageCount={pageCount} onChange={setPage} />
+        <Pagination count={pageCount} onChange={setPage} />
       </Container>
       <KiboDialog
         isOpen={openDeleteModal}

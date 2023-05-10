@@ -1,8 +1,10 @@
 // take the input using e.currentTarget.id === productCode
 
 import React from 'react'
-import styles from './ProductSearch.module.css'
+
 import Image from 'next/image'
+
+import styles from './ProductSearch.module.css'
 import { useDebounce, useSearchSuggestionsQueries } from '@/hooks'
 import Style from '@/styles/global.module.css'
 

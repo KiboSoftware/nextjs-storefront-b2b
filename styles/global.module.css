@@ -1,0 +1,79 @@
+/* wishlist product  */
+.borderBottom {
+  border-bottom: solid 1px black !important;
+  margin-bottom: 15px !important;
+  padding: 15px !important;
+}
+.inputBox {
+  width: 300px !important;
+  font-size: 18px !important;
+  height: 35px;
+}
+.addProductButton {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-end !important;
+}
+.quantityInputBox {
+  width: 65px !important;
+  height: 35px !important;
+  font-size: 17px !important;
+}
+.deleteItem {
+  align-items: center !important;
+  display: flex !important;
+}
+.wishlistSearchUl {
+  list-style-type: none;
+  margin-top: 5px !important;
+  position: absolute;
+  z-index: 1;
+  width: 300px;
+  padding: 5px;
+  border: 1px solid;
+  background-color: white;
+  overflow-y: auto;
+  max-height: 311px;
+}
+.wishlistSearchLI {
+  margin: 0;
+  padding: 0;
+  line-height: 0;
+  height: 60px;
+}
+.wishlistSearch {
+  border: none;
+  padding: 10px;
+  width: -webkit-fill-available;
+  cursor: pointer;
+  background-color: white;
+  color: black;
+  display: flex;
+  text-align: start;
+}
+.wishlistSearch:hover {
+  background-color: gainsboro;
+}
+.wishlistSearchImage {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+.productOptionUl {
+  list-style-type: none;
+  margin-top: 0 !important;
+  padding: 5px;
+  background-color: white;
+  display: flex;
+  padding-left: 20px;
+}
+.productOptionLI {
+  padding-right: 10px;
+}
+.width100 {
+  width: 100px;
+}
+.padding10px {
+  padding: 10px !important;
+  padding-left: 15px !important;
+}
