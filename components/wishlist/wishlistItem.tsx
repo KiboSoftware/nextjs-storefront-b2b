@@ -1,15 +1,18 @@
-import { Box, Button, Container, Grid, IconButton, Modal, Typography } from '@mui/material'
+import React, { useState } from 'react'
+
+import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded'
+import CloseIcon from '@mui/icons-material/Close'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
-import CloseIcon from '@mui/icons-material/Close'
-import React, { useState } from 'react'
-import Style from '@/styles/global.module.css'
-import Image from 'next/image'
-import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded'
 import RemoveCircleOutlineRoundedIcon from '@mui/icons-material/RemoveCircleOutlineRounded'
+import { Box, Button, Container, Grid, IconButton, Modal, Typography } from '@mui/material'
+import Image from 'next/image'
+
 import styles from './wishlist.module.css'
-import Accordion from '../common/Accordion/Accordion'
 import labels from '../../public/locales/en/common.json'
+import Accordion from '../common/Accordion/Accordion'
+
+import Style from '@/styles/global.module.css'
 
 const style = {
   position: 'absolute',
