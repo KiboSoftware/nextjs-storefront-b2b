@@ -11,8 +11,8 @@ import { customerB2bUserMock } from '@/__mocks__/stories/customerB2bUserMock'
 import { userGetters } from '@/lib/getters'
 
 import { B2BUser } from '@/lib/gql/types'
-
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
+
 export default {
   title: 'Common/KiboDataTable',
   component: KiboDataTable,
@@ -30,18 +30,20 @@ const style = {
   },
 }
 
-const customerb2bUsers = userGetters.getCustomerB2bUsers(customerB2bUserMock?.items as B2BUser[])
+const customerb2bUsers: B2BUser[] = userGetters.getCustomerB2bUsers(
+  customerB2bUserMock?.items as B2BUser[]
+)
 
 const Template: ComponentStory<typeof KiboDataTable> = (args) => <KiboDataTable {...args} />
 
 export const DataTable = Template.bind({})
 
 DataTable.args = {
-  rows: customerb2bUsers as B2BUser[],
+  rows: customerb2bUsers.map((customer: B2BUser, index: number) => ({ ...customer, id: index })),
   columns: [
     {
       field: 'emailAddress',
-      headerName: 'Email Address',
+      headerName: 'Email address',
       type: 'string',
       sortable: false,
       filterable: false,
@@ -50,7 +52,7 @@ DataTable.args = {
     },
     {
       field: 'firstName',
-      headerName: 'First Name',
+      headerName: 'First name',
       type: 'string',
       sortable: false,
       filterable: false,
@@ -59,7 +61,7 @@ DataTable.args = {
     },
     {
       field: 'lastName',
-      headerName: 'Last Name',
+      headerName: 'Last name',
       type: 'string',
       sortable: false,
       filterable: false,

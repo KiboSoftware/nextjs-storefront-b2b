@@ -1,10 +1,10 @@
 import { ReactNode, createContext, Dispatch, SetStateAction, useState, useContext } from 'react'
 
 import {
-  useAddCustomerB2bUserMutations,
-  useUpdateCustomerB2bUserMutations,
-  useRemoveCustomerB2bUserMutations,
-} from '@/hooks/mutations/useB2bUserMutations/useB2bUserMutations'
+  useCreateCustomerB2bUserMutation,
+  useUpdateCustomerB2bUserMutation,
+  useDeleteCustomerB2bUserMutation,
+} from '@/hooks'
 import { useQueryClient } from 'react-query'
 
 export interface CustomerB2bUserContextType {
@@ -41,9 +41,9 @@ export const CustomerB2bUserContextProvider = ({
   const [error, setError] = useState<string>('')
   const [isLoading, setLoading] = useState<boolean>(false)
 
-  const { mutate: createB2bUser } = useAddCustomerB2bUserMutations()
-  const { mutate: updateB2bUser } = useUpdateCustomerB2bUserMutations()
-  const { mutate: deleteB2bUser } = useRemoveCustomerB2bUserMutations()
+  const { mutate: createB2bUser } = useCreateCustomerB2bUserMutation()
+  const { mutate: updateB2bUser } = useUpdateCustomerB2bUserMutation()
+  const { mutate: deleteB2bUser } = useDeleteCustomerB2bUserMutation()
 
   const queryClient = useQueryClient()
 

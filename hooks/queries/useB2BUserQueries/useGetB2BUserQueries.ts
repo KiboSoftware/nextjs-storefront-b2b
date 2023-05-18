@@ -48,23 +48,19 @@ const loadCustomerB2BUsers = async ({
   return response?.b2bAccountUsers
 }
 
-export const useCustomerB2BUsersQueries = ({
+export const useGetB2BUserQueries = ({
   b2bAccountId,
   filter,
   pageSize,
   startIndex,
   searchTerm,
 }: B2bAccountUsersParams): B2BUserResultType => {
-  const { data, isLoading, isSuccess, isError, error } = useQuery(
-    customerB2BUserKeys.users,
-    () => {
-      return loadCustomerB2BUsers({ b2bAccountId, filter, pageSize, startIndex, searchTerm })
-    },
-    {
-      enabled: !!b2bAccountId,
-      refetchOnReconnect: true,
-    }
-  )
+  const { data, isLoading, isSuccess, isError, error } = useQuery({
+    queryKey: customerB2BUserKeys.users,
+    queryFn: () => loadCustomerB2BUsers({ b2bAccountId, filter, pageSize, startIndex, searchTerm }),
+    enabled: !!b2bAccountId,
+    refetchOnReconnect: true,
+  })
   return {
     data,
     isLoading,
