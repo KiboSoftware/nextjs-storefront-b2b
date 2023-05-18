@@ -21,7 +21,6 @@ const style = {
     p: '2px 4px',
     display: 'flex',
     alignItems: 'center',
-    // maxWidth: { xs: '100%', md: 651 },
     borderRadius: 0,
   },
   inputBase: {
@@ -82,7 +81,7 @@ const SearchBar = (props: SearchProps) => {
               name="clearButton"
               size="small"
               onClick={handleClear}
-              disabled={searchTerm.length === 0}
+              disabled={!searchTerm || searchTerm.length === 0}
               aria-label={clearSearchAriaLabel}
             >
               <Close fontSize="small" />

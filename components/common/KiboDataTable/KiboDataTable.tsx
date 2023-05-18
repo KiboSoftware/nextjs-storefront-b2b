@@ -1,46 +1,45 @@
-import { Box, SxProps } from '@mui/material'
+import { Box, CircularProgress, SxProps, Theme, styled } from '@mui/material'
 import { DataGrid, GridColumnVisibilityModel } from '@mui/x-data-grid'
 
 interface KiboDataTableProps {
   columns: any[]
-  rows: any[]
+  rows: any[] | undefined
   columnVisibilityModel?: GridColumnVisibilityModel
   loading?: boolean
   sx?: SxProps<any>
 }
 
+const DataGridBox = styled(Box)(({ theme }: { theme: Theme }) => ({
+  width: '100%',
+  '& .MuiDataGrid-root': {
+    border: 'none',
+  },
+  '& .MuiDataGrid-columnHeadersInner .div': {
+    width: '100%',
+  },
+  '& .super-app-theme--header': {
+    backgroundColor: theme.palette.grey[100],
+  },
+  '& .MuiDataGrid-columnSeparator': {
+    display: 'none',
+  },
+}))
+
 const KiboDataTable = (props: KiboDataTableProps) => {
   const { columns, rows, columnVisibilityModel, loading, sx } = props
 
   return (
-    <Box
-      sx={{
-        width: '100%',
-        '& .MuiDataGrid-root': {
-          border: 'none',
-        },
-        '& .MuiDataGrid-columnHeadersInner .div': {
-          width: '100%',
-        },
-        '& .super-app-theme--header': {
-          backgroundColor: '#F7F7F7',
-        },
-        '& .MuiDataGrid-columnSeparator': {
-          display: 'none',
-        },
-        ...sx,
-      }}
-    >
+    <DataGridBox sx={sx}>
       <DataGrid
         columnVisibilityModel={columnVisibilityModel}
         columns={columns}
         disableColumnMenu
         hideFooterPagination
         hideFooterSelectedRowCount
-        rows={rows}
+        rows={rows || []}
         loading={loading}
       />
-    </Box>
+    </DataGridBox>
   )
 }
 

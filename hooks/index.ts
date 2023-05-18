@@ -19,7 +19,7 @@ export * from './queries/useReturnsQueries/useReturnsQueries'
 export * from './queries/useProductPriceQueries/useProductPriceQueries'
 
 // B2B User Queries
-export * from './queries/useB2BUserQueries/useB2BUserQueries'
+export * from './queries/useB2BUserQueries/useGetB2BUserQueries'
 
 // Multiship Query
 export * from './queries/multiShip/useCheckoutQueries/useCheckoutQueries'
@@ -101,3 +101,6 @@ export * from './mutations/useSubscription/useDeleteSubscriptionMutation/useDele
 export * from './mutations/multiShip/useCreateCheckoutPaymentActionMutation/useCreateCheckoutPaymentActionMutation'
 export * from './mutations/multiShip/useUpdateCheckoutPaymentActionMutation/useUpdateCheckoutPaymentActionMutation'
 export * from './mutations/useSubscription/useUpdateSubscriptionPayment/useUpdateSubscriptionPayment'
+export * from './mutations/useCustomerB2bUser/useCreateCustomerB2bUserMutation/useCreateCustomerB2bUserMutation'
+export * from './mutations/useCustomerB2bUser/useUpdateCustomerB2bUserMutation/useUpdateCustomerB2bUserMutation'
+export * from './mutations/useCustomerB2bUser/useDeleteCustomerB2bUserMutation/useDeleteCustomerB2bUserMutation'

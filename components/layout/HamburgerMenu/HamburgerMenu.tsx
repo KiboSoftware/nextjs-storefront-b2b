@@ -1,11 +1,19 @@
 import AccountCircle from '@mui/icons-material/AccountCircle'
-import { Box, SwipeableDrawer } from '@mui/material'
+import {
+  Box,
+  Divider,
+  List,
+  ListItem,
+  ListItemText,
+  SwipeableDrawer,
+  Link as MuiLink,
+  Typography,
+} from '@mui/material'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 
 import { HeaderAction } from '@/components/common'
 import { CategoryNestedNavigation } from '@/components/layout'
-import { MyAccountTemplate } from '@/components/page-templates'
 import { useAuthContext } from '@/context'
 import type { NavigationLink } from '@/lib/types'
 
@@ -22,7 +30,7 @@ interface HamburgerMenuProps {
 
 const styles = {
   container: {
-    width: '100vw',
+    width: '80vw',
     position: 'relative',
     height: '-webkit-fill-available',
     overflowY: 'scroll',
@@ -40,8 +48,6 @@ const styles = {
   },
   navLinksList: {
     width: '100%',
-    // maxHeight: '40%',
-    // overflowY: 'auto',
     pt: 0,
   },
 }
@@ -103,7 +109,26 @@ const HamburgerMenu = (props: HamburgerMenuProps) => {
             </CategoryNestedNavigation>
           </Box>
 
-          <MyAccountTemplate />
+          <Box sx={{ ...styles.spacer }}></Box>
+          <List sx={{ ...styles.navLinksList }}>
+            {navLinks?.map((nav) => (
+              <Box key={nav.text}>
+                <MuiLink underline="none">
+                  <ListItem button sx={{ paddingInline: 4 }}>
+                    <ListItemText
+                      primary={
+                        <Typography variant="body2" color="text.primary">
+                          {t(`${nav.text}`)}
+                        </Typography>
+                      }
+                      onClick={() => handleNavLinks(nav.link)}
+                    />
+                  </ListItem>
+                </MuiLink>
+                <Divider />
+              </Box>
+            ))}
+          </List>
         </Box>
       </SwipeableDrawer>
     </>

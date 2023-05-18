@@ -19,6 +19,7 @@
   "log-in": "Log In",
   "forgot-password": "Forgot Password",
   "dont-have-an-account-yet": "Don’t have an account yet?",
+  "account": "Account",
   "my-account": "My Account",
   "hi": "Hi",
   "price": "Price",
@@ -335,8 +336,10 @@
 
   "users": "Users",
   "add-user": "Add User",
+  "user-search-placeholder": "Search user by first name, last name, or email address.",
   "active": "Active",
   "in-active": "In Active",
+  "delete-user-confirmation-text": "Are you sure want to delete this user?",
 
   "returns": "Returns",
   "quotes": "Quotes",
