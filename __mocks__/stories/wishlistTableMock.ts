@@ -1,9 +1,12 @@
+import { WishlistTableProps } from '@/components/wishlist/WishlistTable/WishlistTable'
+
 function getDate(date: number) {
   const d = new Date(date)
   const dateString = `${d.getDate()}/${d.getMonth()}/${d.getFullYear()}`
   return dateString
 }
-export const wishlistTableMock: any = {
+
+export const wishlistTableMock: WishlistTableProps = {
   rows: [
     {
       customerAccountId: 1001,
@@ -22,8 +25,11 @@ export const wishlistTableMock: any = {
       items: [],
     },
   ],
+  hiddenColumns: {},
+  isLoading: false,
   pageCount: 1,
-  pageSize: 1,
-  startIndex: 1,
-  totalCount: 1,
+  handleCopyWishlist: () => alert('custom action in wishlist'),
+  handleDeleteWishlist: () => alert('custom action in wishlist'),
+  handleEditWishlist: () => alert('custom action in wishlist'),
+  pageOnChange: () => alert('custom action to change page from wishlist'),
 }

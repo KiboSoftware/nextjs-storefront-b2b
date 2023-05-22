@@ -15,7 +15,7 @@ const customIconButton = {
   color: '#000000 !important',
   textDecoration: 'underline !important',
 }
-interface WishlistTableProps {
+export interface WishlistTableProps {
   isLoading: boolean
   hiddenColumns: GridColumnVisibilityModel
   handleEditWishlist: any
