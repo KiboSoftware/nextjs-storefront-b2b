@@ -318,6 +318,7 @@ const MyAccountTemplate = () => {
             ...style.myAccountChildren,
             ...style.orderHistory,
           }}
+          onClick={() => router.push('/my-account/lists')}
         >
           <Typography variant="h3">{t('lists')}</Typography>
           <ChevronRightIcon />
