@@ -29,6 +29,12 @@ export const wishlist = /* GraphQL */ `
     customerAccountId
     name
     id
+    auditInfo {
+      createDate
+      createBy
+      updateDate
+      updateBy
+    }
     items {
       ...wishlistItem
     }
