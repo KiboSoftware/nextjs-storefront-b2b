@@ -243,6 +243,15 @@ let theme = createTheme({
         },
       },
     },
+    MuiPaginationItem: {
+      styleOverrides: {
+        root: {
+          '&.Mui-selected': {
+            backgroundColor: '#2B2B2B !important',
+          },
+        },
+      },
+    },
   },
 })
 // compose theme (place theme options that depend on the base theme here)
