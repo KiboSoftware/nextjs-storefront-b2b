@@ -1,7 +1,6 @@
 /**
- * @module useCreateWishlistMutation
+ * @module useDeleteWishlistMutation
  */
-import getConfig from 'next/config'
 import { useMutation, useQueryClient } from 'react-query'
 
 import { makeGraphQLClient } from '@/lib/gql/client'
@@ -23,17 +22,15 @@ const deleteWishlist = async (wishlistId: string) => {
 }
 
 /**
- * [Mutation hook] useCreateWishlistMutation uses the graphQL mutation
+ * [Mutation hook] useDeleteWishlistMutation uses the graphQL mutation
  *
- * <b>createWishlist(wishlistInput: WishlistInput): Wishlist</b>
+ * <b>deleteWishlist(wishlistId: string): Wishlist</b>
  *
- * Description : Creates the wishlist for logged in user
+ * Description : Deletes the wishlist
  *
- * Parameters passed to function createWishlist(customerAccountId: number) => expects object containing accountId to create wishlist.
+ * Parameters passed to function deleteWishlist(wishlistId: string) => expects to delete the wishlist
  *
- * On success, calls invalidateQueries on wishlistKeys and fetches the updated result.
- *
- * @returns 'response?.createWishlistItem', which contains wishlist created for user.
+ * @returns true if wishlist deleted
  */
 
 export const useDeleteWishlistMutation = () => {
