@@ -128,7 +128,7 @@ let theme = createTheme({
   },
   palette: {
     primary: {
-      main: '#2ea195',
+      main: '#2EA195',
       light: '#C0E3DF',
     },
     secondary: {
@@ -243,11 +243,12 @@ let theme = createTheme({
         },
       },
     },
-    MuiPaginationItem: {
+    MuiPagination: {
       styleOverrides: {
         root: {
-          '&.Mui-selected': {
-            backgroundColor: '#2B2B2B !important',
+          '& .Mui-selected': {
+            backgroundColor: `${grey[900]} !important`,
+            color: '#FFFFFF',
           },
         },
       },

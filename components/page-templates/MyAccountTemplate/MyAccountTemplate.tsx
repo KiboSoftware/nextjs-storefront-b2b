@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 
 import AccountCircle from '@mui/icons-material/AccountCircle'
 import ChevronLeft from '@mui/icons-material/ChevronLeft'
@@ -114,10 +114,6 @@ const MyAccountTemplate = () => {
     router.push('/my-account/order-history?filters=M-6')
   }
 
-  const handleGoToSubscription = useCallback(() => {
-    router.push('/my-account/subscription')
-  }, [router])
-
   const handleSave = async (
     address: BillingAddress,
     card: CardType,
@@ -226,7 +222,7 @@ const MyAccountTemplate = () => {
             variant={mdScreen ? 'h1' : 'h2'}
             sx={{ paddingLeft: { md: '0.5rem', xs: 0 } }}
           >
-            {t('Account')}
+            {t('account')}
           </Typography>
         </Box>
         <Divider sx={{ borderColor: 'grey.500' }} />
@@ -255,20 +251,6 @@ const MyAccountTemplate = () => {
           <Typography variant={mdScreen ? 'h1' : 'h2'}>{t('orders')}</Typography>
         </Box>
 
-        {/* code for subscription below */}
-        {/* <Divider sx={{ borderColor: 'grey.500' }} />
-        {isSubscriptionEnabled && (
-          <Box
-            sx={{
-              ...style.myAccountChildren,
-              ...style.orderHistory,
-            }}
-            onClick={handleGoToSubscription}
-          >
-            <Typography variant="h3">{t('my-subscription')}</Typography>
-            <ChevronRightIcon />
-          </Box>
-        )} */}
         {/* code for subscription ends here */}
 
         <Divider sx={{ borderColor: 'grey.500' }} />

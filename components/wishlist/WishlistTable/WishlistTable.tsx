@@ -6,7 +6,7 @@ import { GridRenderCellParams, GridColumnVisibilityModel } from '@mui/x-data-gri
 
 import WishlistOptionsMobile from '../WishlistOptionsMobile/WishlistOptionsMobile'
 import { KiboDataTable } from '@/components/common'
-import Pagination from '@/components/common/Pagination/Pagination'
+import Pagination from '@/components/common/KiboPagination/KiboPagination'
 
 const customIconButton = {
   fontWeight: '400 !important',
@@ -151,7 +151,7 @@ const WishlistTable = (props: WishlistTableProps) => {
         ]}
         rows={props.rows || []}
       />
-      <Pagination count={props.pageCount} onChange={props.pageOnChange} />
+      <Pagination count={props.pageCount} onChange={props.pageOnChange} size="medium" />
     </>
   )
 }

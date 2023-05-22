@@ -101,6 +101,10 @@ module.exports = {
       },
     ],
     isSubscriptionEnabled: true,
+    b2bUserListing: {
+      startIndex: 0,
+      pageSize: 5,
+    },
   },
   serverRuntimeConfig: {
     revalidate: process.env.GLOBAL_PAGE_REVALIDATE || 30,
