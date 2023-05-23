@@ -172,10 +172,9 @@
   "shopping-cart": "Shopping Cart",
   "save-for-later": "Save for Later",
   "add-to-favorites": "Add to Favorites",
-  "cart-item-count": "{{count}} items",
   "empty-cart-message": "You haven’t added any items to your shopping cart yet. Shop now to add your favorite items to your cart.",
-
-  "checkout": "Checkout ({{numberOfItems}} items)",
+  "checkout_one": "Checkout ({{count}} item)",
+  "checkout_other": "Checkout ({{count}} items)",
   "payment": "Payment",
   "review": "Review",
   "password-requirements": "Password Requirements",
@@ -343,5 +342,6 @@
 
   "returns": "Returns",
   "quotes": "Quotes",
-  "lists": "Lists"
+  "lists": "Lists",
+  "customer-name": "Customer Name"
 }
