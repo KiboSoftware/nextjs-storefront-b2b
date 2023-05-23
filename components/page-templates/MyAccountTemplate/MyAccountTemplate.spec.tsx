@@ -26,7 +26,7 @@ describe('[component] - MyAccountTemplate', () => {
     setup()
 
     const myAccount = screen.getByText(/my-account/i)
-    const myProfile = screen.getByText(/my-profile/i)
+    const myProfile = screen.getByText(/account-information/i)
     const addressBook = screen.getByText(/address-book/i)
     const paymentMethod = screen.getAllByText(/payment-method/)[0]
     const orderDetails = screen.getByText(/order-details/i)
