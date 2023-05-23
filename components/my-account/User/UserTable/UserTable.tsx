@@ -109,7 +109,7 @@ const UserTable = (props: UserTableProps) => {
           },
           {
             field: 'lastName',
-            headerName: t('last-name'),
+            headerName: t('last-name-or-sur-name'),
             type: 'string',
             flex: 1.2,
             ...dataTableColumnProperty,
