@@ -73,7 +73,7 @@ const WishlistTable = (props: WishlistTableProps) => {
           },
           {
             field: 'createBy',
-            headerName: 'Created By',
+            headerName: mdScreen ? 'Created By' : '',
             type: 'string',
             sortable: false,
             filterable: false,
