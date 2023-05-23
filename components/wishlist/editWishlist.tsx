@@ -7,9 +7,9 @@ import Image from 'next/image'
 
 import WishlistItem from './wishlistItem'
 import ProductSearch from '../common/ProductSearch/ProductSearch'
-import { useProductSearchQueries, useWishlist } from '@/hooks'
-import { useSearchSuggestionsQueries, useDebounce } from '@/hooks'
-import { useUpdateWishlistMutation } from '@/hooks'
+import { UseProductSearchResponse, useWishlist } from '@/hooks'
+import { useGetSearchSuggestions, useDebounce } from '@/hooks'
+import { useUpdateWishlistMutation } from '@/hooks/mutations/useWishlistMutations/useUpdateWishlistMutation/useUpdateWishlistMutation'
 import Style from '@/styles/global.module.css'
 
 const style = {
@@ -80,14 +80,12 @@ const EditWishlist = (props: any) => {
   const [open, setOpen] = React.useState(false)
   let productSuggestionGroup
 
-  const searchSuggestionResult = useSearchSuggestionsQueries(
-    useDebounce(state.productCode.trim(), 300)
-  )
+  const searchSuggestionResult = useGetSearchSuggestions(useDebounce(state.productCode.trim(), 300))
 
   const [searchParams, setSearchParams] = React.useState({ search: state.productCode.trim() })
   const { data } = useProductSearchQueries(searchParams)
 
-  const productData = data?.items?.filter((item) => item?.productCode === searchParams.search)
+  const productData = data?.items?.filter((item: any) => item?.productCode === searchParams.search)
 
   if (state.showSuggestions) {
     const getSuggestionGroup = (title: string) =>
@@ -467,3 +465,6 @@ const EditWishlist = (props: any) => {
   )
 }
 export default EditWishlist
+function useProductSearchQueries(searchParams: { search: string }): { data: any } {
+  throw new Error('Function not implemented.')
+}

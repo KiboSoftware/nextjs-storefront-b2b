@@ -4,10 +4,10 @@
 import { useQuery } from 'react-query'
 
 import { makeGraphQLClient } from '@/lib/gql/client'
+import { getCustomerB2BAccountUsers } from '@/lib/gql/queries'
 import { customerB2BUserKeys } from '@/lib/react-query/queryKeys'
 
 import type { B2BUser } from '@/lib/gql/types'
-import { getCustomerB2BAccountUsers } from '@/lib/gql/queries'
 
 /**
  * @hidden

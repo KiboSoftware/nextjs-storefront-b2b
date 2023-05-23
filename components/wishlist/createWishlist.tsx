@@ -6,10 +6,10 @@ import { Button, Container, IconButton } from '@mui/material'
 import styles from './wishlist.module.css'
 import ProductSearch from '../common/ProductSearch/ProductSearch'
 import { useAuthContext } from '@/context'
-import { useCreateWishlistMutation } from '@/hooks'
+import { useCreateWishlist } from '@/hooks'
 const CreateWishlist = (props: any) => {
   const { user } = useAuthContext()
-  const { createCustomWishlist } = useCreateWishlistMutation()
+  const { createCustomWishlist } = useCreateWishlist()
   const [state, setState] = React.useState({ name: '' })
   // const [openForm, setOpenForm] = React.useState(false);
   function handleSubmit(e: any) {

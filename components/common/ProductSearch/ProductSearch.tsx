@@ -5,7 +5,7 @@ import React from 'react'
 import Image from 'next/image'
 
 import styles from './ProductSearch.module.css'
-import { useDebounce, useSearchSuggestionsQueries } from '@/hooks'
+import { useDebounce, useGetSearchSuggestions } from '@/hooks'
 import Style from '@/styles/global.module.css'
 
 const ProductListItem = (props: any) => {
@@ -35,11 +35,11 @@ export default function ProductSearch(props: any) {
   })
 
   let productSuggestionGroup
-  const searchSuggestionResult = useSearchSuggestionsQueries(useDebounce(state.name.trim(), 300))
+  const searchSuggestionResult = useGetSearchSuggestions(useDebounce(state.name.trim(), 300))
   if (state.showSuggestion) {
     const getSuggestionGroup = (title: string) =>
       searchSuggestionResult.data
-        ? searchSuggestionResult.data?.suggestionGroups?.find((sg) => sg?.name === title)
+        ? searchSuggestionResult.data?.suggestionGroups?.find((sg: any) => sg?.name === title)
         : null
     productSuggestionGroup = getSuggestionGroup('Pages')
   }
@@ -68,7 +68,7 @@ export default function ProductSearch(props: any) {
           style={{ position: 'absolute', top: '100%', left: '0px' }}
         >
           {state.showSuggestion
-            ? productSuggestionGroup?.suggestions?.map((item) => {
+            ? productSuggestionGroup?.suggestions?.map((item: any) => {
                 return (
                   <ProductListItem
                     className="list"

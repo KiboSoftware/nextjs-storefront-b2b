@@ -1,11 +1,12 @@
 import { ReactNode, createContext, Dispatch, SetStateAction, useState, useContext } from 'react'
 
+import { useQueryClient } from 'react-query'
+
 import {
   useCreateCustomerB2bUserMutation,
   useUpdateCustomerB2bUserMutation,
   useDeleteCustomerB2bUserMutation,
 } from '@/hooks'
-import { useQueryClient } from 'react-query'
 
 export interface CustomerB2bUserContextType {
   b2bUser?: any

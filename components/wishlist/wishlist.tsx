@@ -14,12 +14,12 @@ import styles from './wishlist.module.css'
 import WishlistTable from './WishlistTable/WishlistTable'
 import { ConfirmationDialog } from '@/components/dialogs'
 import { useAuthContext, useModalContext } from '@/context'
-import { useAllWishlistsQueries, useCreateWishlistMutation } from '@/hooks'
+import { useAllWishlistsQueries, useCreateWishlist } from '@/hooks'
 import { useDeleteWishlistMutation } from '@/hooks/mutations/useWishlistMutations/useDeleteWishlistMutation/useDeleteWishlistMutation'
 
 const Wishlist = (props: any) => {
   const { user } = useAuthContext()
-  const { createCustomWishlist } = useCreateWishlistMutation()
+  const { createCustomWishlist } = useCreateWishlist()
   const { deleteWishlist } = useDeleteWishlistMutation()
   const { showModal } = useModalContext()
   const theme = useTheme()
