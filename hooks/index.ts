@@ -1,4 +1,5 @@
-// Query hooks
+// B2B User Queries
+export * from './queries/useB2BUserQueries/useGetB2BUserQueries'
 
 // address
 export * from './queries/address/useGetCustomerAddresses/useGetCustomerAddresses'
@@ -102,9 +103,6 @@ export * from './mutations/multishipCheckout/useVoidCheckoutPayment/useVoidCheck
 // My Account
 export * from './mutations/myAccount/useUpdateCustomerProfile/useUpdateCustomerProfile'
 export * from './mutations/myAccount/useChangePassword/useChangePassword'
-export * from './mutations/useCustomerB2bUser/useCreateCustomerB2bUserMutation/useCreateCustomerB2bUserMutation'
-export * from './mutations/useCustomerB2bUser/useDeleteCustomerB2bUserMutation/useDeleteCustomerB2bUserMutation'
-export * from './mutations/useCustomerB2bUser/useUpdateCustomerB2bUserMutation/useUpdateCustomerB2bUserMutation'
 
 // Product
 export * from './mutations/product/configure/useConfigureProduct'
@@ -137,3 +135,8 @@ export * from './mutations/subscription/useUpdateSubscriptionNextOrderDate/useUp
 export * from './mutations/subscription/useUpdateSubscriptionShippingInfo/useUpdateSubscriptionShippingInfo'
 export * from './mutations/subscription/useDeleteSubscription/useDeleteSubscription'
 export * from './mutations/subscription/useUpdateSubscriptionPayment/useUpdateSubscriptionPayment'
+
+// Customer B2B User
+export * from './mutations/useCustomerB2bUser/useCreateCustomerB2bUserMutation/useCreateCustomerB2bUserMutation'
+export * from './mutations/useCustomerB2bUser/useUpdateCustomerB2bUserMutation/useUpdateCustomerB2bUserMutation'
+export * from './mutations/useCustomerB2bUser/useDeleteCustomerB2bUserMutation/useDeleteCustomerB2bUserMutation'

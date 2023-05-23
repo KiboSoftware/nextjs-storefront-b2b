@@ -7,7 +7,7 @@ import Image from 'next/image'
 
 import WishlistItem from './wishlistItem'
 import ProductSearch from '../common/ProductSearch/ProductSearch'
-import { UseProductSearchResponse, useWishlist } from '@/hooks'
+import { useGetSearchedProducts, useWishlist } from '@/hooks'
 import { useGetSearchSuggestions, useDebounce } from '@/hooks'
 import { useUpdateWishlistMutation } from '@/hooks/mutations/useWishlistMutations/useUpdateWishlistMutation/useUpdateWishlistMutation'
 import Style from '@/styles/global.module.css'
@@ -83,7 +83,7 @@ const EditWishlist = (props: any) => {
   const searchSuggestionResult = useGetSearchSuggestions(useDebounce(state.productCode.trim(), 300))
 
   const [searchParams, setSearchParams] = React.useState({ search: state.productCode.trim() })
-  const { data } = useProductSearchQueries(searchParams)
+  const { data } = useGetSearchedProducts(searchParams)
 
   const productData = data?.items?.filter((item: any) => item?.productCode === searchParams.search)
 
