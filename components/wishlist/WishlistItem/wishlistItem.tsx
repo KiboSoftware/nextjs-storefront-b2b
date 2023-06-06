@@ -8,9 +8,9 @@ import RemoveCircleOutlineRoundedIcon from '@mui/icons-material/RemoveCircleOutl
 import { Box, Button, Container, Grid, IconButton, Modal, Typography } from '@mui/material'
 import Image from 'next/image'
 
-import styles from './wishlist.module.css'
-import labels from '../../public/locales/en/common.json'
-import Accordion from '../common/Accordion/Accordion'
+import Accordion from '@/components/common/Accordion/Accordion'
+import styles from '@/components/wishlist/wishlist.module.css'
+import labels from '@/public/locales/en/common.json'
 import Style from '@/styles/global.module.css'
 
 const style = {

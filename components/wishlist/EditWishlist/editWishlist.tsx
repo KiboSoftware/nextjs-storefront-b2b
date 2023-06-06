@@ -1,14 +1,13 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import EditIcon from '@mui/icons-material/Edit'
 import { Box, Button, IconButton, Modal, Typography } from '@mui/material'
 import { Container, Grid } from '@mui/material'
 import Image from 'next/image'
 
-import WishlistItem from './wishlistItem'
-import ProductSearch from '../common/ProductSearch/ProductSearch'
+import ProductSearch from '@/components/common/ProductSearch/ProductSearch'
+import WishlistItem from '@/components/wishlist/WishlistItem/wishlistItem'
 import { useGetSearchedProducts, useWishlist } from '@/hooks'
-import { useGetSearchSuggestions, useDebounce } from '@/hooks'
 import { useUpdateWishlistMutation } from '@/hooks/mutations/useWishlistMutations/useUpdateWishlistMutation/useUpdateWishlistMutation'
 import Style from '@/styles/global.module.css'
 
@@ -22,29 +21,6 @@ const style = {
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
-}
-
-const ProductListItem = (props: any) => {
-  function handleClick(e: any) {
-    props.onClick(e)
-  }
-  return (
-    <li className={Style.wishlistSearchLI}>
-      {' '}
-      <button className={Style.wishlistSearch} onClick={handleClick} value={props.code}>
-        {props.image ? (
-          <Image
-            className={Style.wishlistSearchImage}
-            src={`https:${props.image}`}
-            alt={props.name}
-            width={20}
-            height={20}
-          />
-        ) : null}
-        {props.name}
-      </button>
-    </li>
-  )
 }
 
 const ProductOption = (props: any) => {
@@ -70,30 +46,15 @@ const ProductOption = (props: any) => {
 const EditWishlist = (props: any) => {
   const wishlistData = props.data
   const { updateWishlist } = useUpdateWishlistMutation()
-  const [state, setState] = React.useState({
+  const [state, setState] = useState({
     productCode: '',
     quantity: '1',
     showSuggestions: false,
     name: wishlistData.name,
     openNameForm: false,
   })
-  const [open, setOpen] = React.useState(false)
-  let productSuggestionGroup
+  const [open, setOpen] = useState(false)
 
-  const searchSuggestionResult = useGetSearchSuggestions(useDebounce(state.productCode.trim(), 300))
-
-  const [searchParams, setSearchParams] = React.useState({ search: state.productCode.trim() })
-  const { data } = useGetSearchedProducts(searchParams)
-
-  const productData = data?.items?.filter((item: any) => item?.productCode === searchParams.search)
-
-  if (state.showSuggestions) {
-    const getSuggestionGroup = (title: string) =>
-      searchSuggestionResult.data
-        ? searchSuggestionResult.data?.suggestionGroups?.find((sg) => sg?.name === title)
-        : null
-    productSuggestionGroup = getSuggestionGroup('Pages')
-  }
   function handleChange(e: any) {
     // const id = e.target.id;
     // const value = e.target.value
@@ -109,7 +70,7 @@ const EditWishlist = (props: any) => {
             showSuggestions: e.target.value.length > 2,
           }
         })
-        setSearchParams({ search: e.target.value })
+        // setSearchParams({ search: e.target.value })
         break
       case 'productQty':
         setState((prevValue) => {
@@ -246,17 +207,24 @@ const EditWishlist = (props: any) => {
   }
 
   async function handleProductItemClick(e: any) {
-    console.log(e)
-    setState((prevValue: any) => {
-      return {
-        ...prevValue,
-        productCode: e.currentTarget.id,
-      }
-    })
-    // setSearchParams({
-    //     search: e.target.value
-    // });
-    // setOpen(true);
+    console.log(e.target.id)
+    const items = wishlistData.items
+    const item = items.find((i: any) => i.product.productCode === e.target.id)
+    if (item) {
+      console.log('update quantity')
+      item.quantity += 1
+    } else {
+      console.log('add new entry for item')
+      items.push({ product: { productCode: e.target.id }, quantity: 1 })
+    }
+    wishlistData.items = items
+    console.log(wishlistData)
+    const payload = {
+      wishlistId: wishlistData.id,
+      wishlistInput: wishlistData,
+    }
+    const response = await updateWishlist.mutateAsync(payload)
+    props.updateWishlistData(response.updateWishlist)
   }
   const handleClose = () => {
     setOpen(false)
@@ -338,35 +306,6 @@ const EditWishlist = (props: any) => {
               </Grid>
             </Grid>
             <Grid item xs={12}>
-              {/* <form onSubmit={ handleSubmit } id="wishlist" style={{position: 'relative'}}>
-                                <Grid container spacing={0.5} rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} direction="row" justifyContent="flex-start" alignItems="top" >
-                                    <Grid item xs={4}>
-                                            <Typography variant='caption'>Search for a product</Typography>
-                                            <input className={Style.inputBox}
-                                             placeholder='Start typing to search' 
-                                             id='productId' 
-                                             onChange={ handleChange } 
-                                             value={ state.productCode } />
-                                        </Grid>
-                                        {state.showSuggestions ? 
-                                    <ul className={Style.wishlistSearchUl} style={{position: 'absolute', top: '100%', left: '0px'}}>
-                                    {state.showSuggestions ? productSuggestionGroup?.suggestions?.map((item) => {
-                                        return <ProductListItem  className="list"
-                                                key={item?.suggestion?.product} 
-                                                name={item?.suggestion?.content?.productName}
-                                                code={item?.suggestion?.productCode}
-                                                image={item?.suggestion?.productImageUrls? item?.suggestion?.productImageUrls[0]:null}
-                                                item={item}
-                                                onClick={handleProductItemClick}
-                                            />
-                                    }) : null}
-                                    </ul> : null}
-                                    <Grid item xs={2}>
-                                        <p><strong>Product Quantity:</strong></p>
-                                        <input className={Style.inputBox} placeholder='Quantity' id='productQty' onChange={ handleChange } value={ state.quantity } /></Grid>
-                                    <Grid item xs={4} className={Style.addProductButton}><Button  variant='contained' color='primary' type='submit' form='wishlist'> Save List Name</Button></Grid>
-                                </Grid>
-                            </form> */}
               <ProductSearch handleProductItemClick={handleProductItemClick} />
               <Grid
                 container
@@ -383,7 +322,7 @@ const EditWishlist = (props: any) => {
               </Grid>
             </Grid>
           </Grid>
-          <Modal
+          {/* <Modal
             open={open}
             onClose={handleClose}
             aria-labelledby="modal-modal-title"
@@ -441,7 +380,7 @@ const EditWishlist = (props: any) => {
                 )
               })}
             </div>
-          </Modal>
+          </Modal> */}
         </Container>
       </Box>
       <br />
@@ -465,6 +404,3 @@ const EditWishlist = (props: any) => {
   )
 }
 export default EditWishlist
-function useProductSearchQueries(searchParams: { search: string }): { data: any } {
-  throw new Error('Function not implemented.')
-}

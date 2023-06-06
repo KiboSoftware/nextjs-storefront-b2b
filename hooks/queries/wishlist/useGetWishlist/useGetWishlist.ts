@@ -67,7 +67,7 @@ export const useGetWishlist = (): UseWishlistResponse => {
 }
 
 export const useAllWishlistsQueries = (props: any): any => {
-  const { data, isLoading, isSuccess, isFetching } = useQuery(
+  const { data, isLoading, isSuccess, isFetching, refetch } = useQuery(
     wishlistKeys.all.concat(props.startIndex),
     () => getAllWishlists(props),
     {

@@ -20,7 +20,7 @@
     "generate-docs:hooks": "npx typedoc --entryPointStrategy expand hooks/ --out docs/hooks --readme none --exclude \"**/*+(.spec)+(.ts|.tsx)\" --exclude \"**/index.ts\" ",
     "analyze": "cross-env ANALYZE=true next build",
     "prepare": "husky install",
-    "test:single": "jest components/wishlist/WishlistTable/WishlistTable.spec.tsx"
+    "test:single": "jest components/wishlist/CreateWishlist/CreateWishlist.spec.tsx"
   },
   "dependencies": {
     "@emotion/cache": "latest",

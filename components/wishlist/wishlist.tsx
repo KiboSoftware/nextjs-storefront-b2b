@@ -9,7 +9,7 @@ import {
   CircularProgress,
 } from '@mui/material'
 
-import EditWishlist from './editWishlist'
+import EditWishlist from './EditWishlist/editWishlist'
 import styles from './wishlist.module.css'
 import WishlistTable from './WishlistTable/WishlistTable'
 import { ConfirmationDialog } from '@/components/dialogs'
@@ -34,6 +34,7 @@ const Wishlist = (props: any) => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
   const userID = user?.userId
   const pageSize = 5
+  const [updateWishlist, setUpdateWishlist] = useState<boolean>(false)
 
   const [editList, setEditList] = useState(false)
   useEffect(() => {
@@ -147,7 +148,6 @@ const Wishlist = (props: any) => {
           }
         />
         <WishlistTable
-          isLoading={isLoading}
           hiddenColumns={hiddenColumns}
           rows={rows || []}
           handleEditWishlist={handleEditToWishlist}

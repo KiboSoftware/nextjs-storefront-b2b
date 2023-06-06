@@ -16,7 +16,6 @@ const customIconButton = {
   textDecoration: 'underline !important',
 }
 export interface WishlistTableProps {
-  isLoading: boolean
   hiddenColumns: GridColumnVisibilityModel
   handleEditWishlist: any
   handleCopyWishlist: any
@@ -33,7 +32,6 @@ const WishlistTable = (props: WishlistTableProps) => {
   return (
     <>
       <KiboDataTable
-        loading={props.isLoading}
         columnVisibilityModel={props.hiddenColumns}
         columns={[
           {
@@ -116,7 +114,11 @@ const WishlistTable = (props: WishlistTableProps) => {
                   />
                 ) : (
                   <>
-                    <IconButton id={params?.row?.id} sx={customIconButton}>
+                    <IconButton
+                      id={params?.row?.id}
+                      sx={customIconButton}
+                      data-testid="initiate-quote"
+                    >
                       Initiate Quote
                     </IconButton>
                     <IconButton id={params?.row?.id} sx={customIconButton}>

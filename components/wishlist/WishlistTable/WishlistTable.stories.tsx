@@ -9,13 +9,13 @@ import { wishlistTableMock } from '@/__mocks__/stories'
 const {
   rows,
   hiddenColumns,
-  isLoading,
   pageCount,
   handleCopyWishlist,
   handleDeleteWishlist,
   handleEditWishlist,
   pageOnChange,
 } = wishlistTableMock
+
 export default {
   title: 'Wishlist/WishlistTable',
   component: WishlistTable,
@@ -25,7 +25,6 @@ export const WishlistTableComponent: ComponentStory<typeof WishlistTable> = (arg
   <WishlistTable
     rows={rows}
     hiddenColumns={hiddenColumns}
-    isLoading={isLoading}
     pageCount={pageCount}
     handleCopyWishlist={handleCopyWishlist}
     handleDeleteWishlist={handleDeleteWishlist}
