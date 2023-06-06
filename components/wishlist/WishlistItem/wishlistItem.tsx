@@ -13,7 +13,7 @@ import styles from '@/components/wishlist/wishlist.module.css'
 import labels from '@/public/locales/en/common.json'
 import Style from '@/styles/global.module.css'
 
-const style = {
+const boxStyle = {
   position: 'absolute',
   top: '50%',
   left: '50%',
@@ -226,7 +226,7 @@ const WishlistItem = (props: any) => {
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
       >
-        <Box sx={{ ...style }}>
+        <Box sx={{ ...boxStyle }}>
           <ProductView item={props.item} closeModal={() => setOpen(false)} />
         </Box>
       </Modal>

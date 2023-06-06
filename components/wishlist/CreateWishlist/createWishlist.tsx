@@ -5,7 +5,7 @@ import { Button, useMediaQuery, useTheme, IconButton } from '@mui/material'
 import { useRouter } from 'next/router'
 
 import ProductSearch from '@/components/common/ProductSearch/ProductSearch'
-// import styles from '@/components/wishlist/wishlist.module.css'
+import styles from '@/components/wishlist/CreateWishlist/CreateWishlistStyle'
 import { useAuthContext } from '@/context'
 import { useCreateWishlist } from '@/hooks'
 
@@ -113,16 +113,14 @@ const CreateWishlist = (props: any) => {
       </div>
       <div>
         <form onSubmit={handleSubmit} style={{ margin: '10px auto' }} id="wishlist-form">
-          <div
-          //  className={`${styles.createListNameSection}`}
-          >
+          <div style={{ ...styles.listSection, flexDirection: 'column' }}>
             <label htmlFor="listName">List Name</label>
             <input
-              // className={`${styles.createListNameInput}`}
               placeholder="Name this list"
               name="listName"
               value={state.name}
               onChange={handleChange}
+              style={styles.input}
             />
           </div>
           <ProductSearch
