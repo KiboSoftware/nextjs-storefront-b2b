@@ -26,7 +26,6 @@ export const wishlistTableMock: WishlistTableProps = {
     },
   ],
   hiddenColumns: {},
-  isLoading: false,
   pageCount: 1,
   handleCopyWishlist: () => alert('custom action in wishlist'),
   handleDeleteWishlist: () => alert('custom action in wishlist'),
