@@ -145,8 +145,8 @@ const MyAccountTemplate = () => {
 
   const accordionData = [
     {
-      id: 'my-profile-accordion',
-      controls: 'my-profile-content',
+      id: 'account-information-accordion',
+      controls: 'account-information-content',
       header: t('account-information'),
       component: <MyProfile user={user as CustomerAccount} />,
       path: null,

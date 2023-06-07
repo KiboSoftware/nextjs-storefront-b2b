@@ -5,7 +5,7 @@ import { Container } from '@mui/system'
 
 interface KiboPaginationProps {
   count?: number
-  onChange: any
+  onChange: (value: number) => void
   size: 'small' | 'medium' | 'large'
   sx?: SxProps<Theme>
 }
