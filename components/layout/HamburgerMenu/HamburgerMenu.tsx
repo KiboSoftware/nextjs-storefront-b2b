@@ -33,7 +33,7 @@ const styles = {
     width: '80vw',
     position: 'relative',
     height: '-webkit-fill-available',
-    overflowY: 'hidden',
+    overflowY: 'scroll',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
@@ -48,8 +48,6 @@ const styles = {
   },
   navLinksList: {
     width: '100%',
-    maxHeight: '40%',
-    overflowY: 'auto',
     pt: 0,
   },
 }
@@ -110,6 +108,7 @@ const HamburgerMenu = (props: HamburgerMenuProps) => {
               </Box>
             </CategoryNestedNavigation>
           </Box>
+
           <Box sx={{ ...styles.spacer }}></Box>
           <List sx={{ ...styles.navLinksList }}>
             {navLinks?.map((nav) => (

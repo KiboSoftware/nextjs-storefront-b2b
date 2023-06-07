@@ -26,22 +26,28 @@ describe('[component] - MyAccountTemplate', () => {
     setup()
 
     const myAccount = screen.getByText(/my-account/i)
-    const myProfile = screen.getByText(/my-profile/i)
+    const myProfile = screen.getByText(/account-information/i)
     const addressBook = screen.getByText(/address-book/i)
     const paymentMethod = screen.getAllByText(/payment-method/)[0]
     const orderDetails = screen.getByText(/order-details/i)
+    const quickOrder = screen.getByText(/quick-order/i)
+    const returns = screen.getByText(/returns/i)
+    const quotes = screen.getByText(/quotes/i)
+    const lists = screen.getByText(/lists/i)
     const orderHistory = screen.getByText(/order-history/i)
     const logout = screen.getByText(/logout/i)
-    const mySubscription = screen.getByText(/my-subscription/i)
 
     expect(myAccount).toBeInTheDocument()
     expect(myProfile).toBeInTheDocument()
     expect(addressBook).toBeInTheDocument()
     expect(paymentMethod).toBeInTheDocument()
     expect(orderDetails).toBeInTheDocument()
+    expect(quickOrder).toBeInTheDocument()
+    expect(returns).toBeInTheDocument()
+    expect(quotes).toBeInTheDocument()
+    expect(lists).toBeInTheDocument()
     expect(orderHistory).toBeInTheDocument()
     expect(logout).toBeInTheDocument()
-    expect(mySubscription).toBeInTheDocument()
   })
 
   it('should redirect to order-history page when users click on Order History link', async () => {
@@ -58,17 +64,16 @@ describe('[component] - MyAccountTemplate', () => {
     })
   })
 
-  it('should redirect to my-subscription page when users click on My Subscription link', async () => {
+  it('should redirect to users list page when users click on Users link', async () => {
     const { user } = setup()
 
-    const mySubscription = screen.getByText(/my-subscription/i)
+    const users = screen.getByText(/users/i)
 
-    await user.click(mySubscription)
+    await user.click(users)
 
     expect(mockRouter).toMatchObject({
-      asPath: '/my-account/subscription',
-      pathname: '/my-account/subscription',
-      query: {},
+      asPath: '/my-account/users',
+      pathname: '/my-account/users',
     })
   })
 })
