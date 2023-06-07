@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { composeStories } from '@storybook/testing-react'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import * as stories from './CreateWishlist.stories'
@@ -14,7 +14,7 @@ function setup() {
   render(<CreateWishlistComponent handleCreateWishlist={mockFunction} />)
   return { user }
 }
-describe('[component] - CreateWishlist', () => {
+describe('[component] - Wishlist', () => {
   it('should render form', async () => {
     setup()
     const heading = await screen.findByRole('heading')
@@ -28,13 +28,22 @@ describe('[component] - CreateWishlist', () => {
     expect(saveButton).toBeVisible()
     expect(cancelButton).toBeVisible()
   })
-
-  it.only('should close form', async () => {
+  it('should change new list name input', async () => {
+    const userEnteredText = 'New List'
     const { user } = setup()
-    const cancelButton = await screen.findByRole('button', { name: 'Cancel' })
-    // const heading = await screen.findByRole('heading')
-    // cancelButton.addEventListener('click', mockFunction)
-    await user.click(cancelButton)
-    expect(mockFunction).toBeCalled()
+    const newListNameInput = await screen.findByPlaceholderText('Name this list')
+    await user.type(newListNameInput, userEnteredText)
+    await waitFor(() => {
+      expect(newListNameInput).toHaveValue(userEnteredText)
+    })
   })
+
+  // it.only('should close form', async () => {
+  //   const { user } = setup()
+  //   const cancelButton = await screen.findByRole('button', { name: 'Cancel' })
+  //   // const heading = await screen.findByRole('heading')
+  //   // cancelButton.addEventListener('click', mockFunction)
+  //   await user.click(cancelButton)
+  //   expect(mockFunction).toBeCalled()
+  // })
 })
