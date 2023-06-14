@@ -8,8 +8,14 @@ import styles from '@/components/common/ProductSearch/ProductSearchStyle'
 import { useDebounce, useGetSearchSuggestions } from '@/hooks'
 
 const ProductListItem = (props: any) => {
+  console.log(props.isLastItem)
   return (
-    <li style={styles.productListItem.li}>
+    <li
+      style={{
+        ...styles.productListItem.li,
+        borderBottom: props.isLastItem ? 'none' : styles.productListItem.li.borderBottom,
+      }}
+    >
       <button
         // className={Style.wishlistSearch}
         onClick={props.onClick}
@@ -31,7 +37,11 @@ const ProductListItem = (props: any) => {
             style={{ marginRight: '10px' }}
           />
         ) : null}
-        {props.name}
+        <span>
+          <strong>{props.name}</strong>
+          <br />
+          Code: {props.code}
+        </span>
       </button>
     </li>
   )
@@ -63,6 +73,7 @@ export default function ProductSearch(props: any) {
 
     handleProductItemClick(e)
   }
+  const totalCount = productSuggestionGroup?.suggestions?.length
   return (
     <div
       style={{
@@ -79,17 +90,17 @@ export default function ProductSearch(props: any) {
         value={state.name}
         style={styles.productSearch.createListSearchProductInput}
       />
-      {state.showSuggestion ? (
+      {state.showSuggestion && !searchSuggestionResult.isLoading ? (
         <ul
           style={{
             ...styles.productListItem.ul,
-            listStyleType: 'unset',
+            listStyleType: 'none',
             position: 'absolute',
             overflowY: 'auto',
           }}
         >
           {state.showSuggestion
-            ? productSuggestionGroup?.suggestions?.map((item: any) => {
+            ? productSuggestionGroup?.suggestions?.map((item: any, i: number) => {
                 return (
                   <ProductListItem
                     className="list"
@@ -103,6 +114,7 @@ export default function ProductSearch(props: any) {
                     }
                     item={item}
                     onClick={handleProductClick}
+                    isLastItem={i + 1 === totalCount}
                   />
                 )
               })
