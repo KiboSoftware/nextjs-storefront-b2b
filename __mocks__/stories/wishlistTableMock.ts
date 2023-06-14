@@ -30,5 +30,6 @@ export const wishlistTableMock: WishlistTableProps = {
   handleCopyWishlist: () => alert('custom action in wishlist'),
   handleDeleteWishlist: () => alert('custom action in wishlist'),
   handleEditWishlist: () => alert('custom action in wishlist'),
-  pageOnChange: () => alert('custom action to change page from wishlist'),
+  setPage: () => alert('custom action to change page from wishlist'),
+  isLoading: true,
 }
