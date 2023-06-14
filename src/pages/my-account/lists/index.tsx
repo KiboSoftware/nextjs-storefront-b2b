@@ -5,6 +5,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import { Grid, Button, useMediaQuery, useTheme, IconButton, Container } from '@mui/material'
 import { useRouter } from 'next/router'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { ReactQueryDevtools } from 'react-query/devtools'
 
 import CreateWishlist from '@/components/wishlist/CreateWishlist/createWishlist'
 import Wishlist from '@/components/wishlist/wishlist'
@@ -37,74 +38,71 @@ const ListsPage: NextPage = () => {
 
   if (!openForm) {
     return (
-      <Container>
-        <Grid container spacing={2} marginTop={2}>
-          <Grid xs={12}>
-            {editForm ? (
-              <></>
-            ) : (
-              <div>
-                {mdScreen ? (
-                  <IconButton
-                    style={{ paddingLeft: 0, fontSize: '14px', color: '#000' }}
-                    onClick={() => {
-                      router.push('/my-account')
-                    }}
-                  >
-                    <ArrowBackIosIcon style={{ width: '14px', color: '#000' }} />
-                    My Account
-                  </IconButton>
-                ) : null}
-                <h1
-                  style={{
-                    textAlign: 'center',
-                    fontSize: '20px',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
+      <Grid spacing={2} marginTop={2}>
+        <Grid xs={12}>
+          {editForm ? (
+            <></>
+          ) : (
+            <div>
+              {mdScreen ? (
+                <IconButton
+                  style={{ paddingLeft: 0, fontSize: '14px', color: '#000' }}
+                  onClick={() => {
+                    router.push('/my-account')
                   }}
                 >
-                  {mdScreen ? (
-                    <span style={{ fontSize: '28px', marginRight: 'auto' }}> Lists </span>
-                  ) : (
-                    <>
-                      <IconButton
-                        style={{ paddingLeft: 0, marginLeft: 0 }}
-                        onClick={() => {
-                          router.push('/my-account')
-                        }}
-                      >
-                        <ArrowBackIosIcon style={{ width: '14px', color: '#000' }} />
-                      </IconButton>
-                      <span style={{ marginLeft: 'auto', marginRight: 'auto' }}> Lists </span>
-                    </>
-                  )}
-                </h1>
-                <Button
-                  onClick={openNewWishlistForm}
-                  className={`${styles.addNewListButton}`}
-                  startIcon={<AddCircleOutlineIcon />}
-                  style={smScreen ? {} : { width: '100%' }}
-                >
-                  Create New List
-                </Button>
-              </div>
-            )}
-            <Wishlist handleEditForm={setEditForm} />
-          </Grid>
+                  <ArrowBackIosIcon style={{ width: '14px', color: '#000' }} />
+                  My Account
+                </IconButton>
+              ) : null}
+              <h1
+                style={{
+                  textAlign: 'center',
+                  fontSize: '20px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                {mdScreen ? (
+                  <span style={{ fontSize: '28px', marginRight: 'auto' }}> Lists </span>
+                ) : (
+                  <>
+                    <IconButton
+                      style={{ paddingLeft: 0, marginLeft: 0 }}
+                      onClick={() => {
+                        router.push('/my-account')
+                      }}
+                    >
+                      <ArrowBackIosIcon style={{ width: '14px', color: '#000' }} />
+                    </IconButton>
+                    <span style={{ marginLeft: 'auto', marginRight: 'auto' }}> Lists </span>
+                  </>
+                )}
+              </h1>
+              <Button
+                onClick={openNewWishlistForm}
+                className={`${styles.addNewListButton}`}
+                startIcon={<AddCircleOutlineIcon />}
+                style={smScreen ? {} : { width: '100%' }}
+              >
+                Create New List
+              </Button>
+            </div>
+          )}
+          <Wishlist handleEditForm={setEditForm} />
         </Grid>
-      </Container>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </Grid>
     )
   }
 
   return (
-    <Container>
-      <Grid container spacing={2} marginTop={2}>
-        <Grid xs={12}>
-          <CreateWishlist handleCreateWishlist={setOpenForm} />
-        </Grid>
+    <Grid spacing={2} marginTop={2}>
+      <Grid xs={12}>
+        <CreateWishlist handleCreateWishlist={setOpenForm} />
       </Grid>
-    </Container>
+    </Grid>
   )
 }
 
