@@ -1,12 +1,20 @@
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import FolderCopySharpIcon from '@mui/icons-material/FolderCopySharp'
-import { Box, Typography, IconButton, useMediaQuery, useTheme, createTheme } from '@mui/material'
+import {
+  Box,
+  Typography,
+  IconButton,
+  useMediaQuery,
+  useTheme,
+  Button,
+  styled,
+  CircularProgress,
+} from '@mui/material'
 import { GridRenderCellParams, GridColumnVisibilityModel } from '@mui/x-data-grid'
 
 import WishlistOptionsMobile from '../WishlistOptionsMobile/WishlistOptionsMobile'
-import { KiboDataTable } from '@/components/common'
-import Pagination from '@/components/common/KiboPagination/KiboPagination'
+import { KiboDataTable, KiboPagination } from '@/components/common'
 
 const customIconButton = {
   fontWeight: '400 !important',
@@ -21,14 +29,22 @@ export interface WishlistTableProps {
   handleCopyWishlist: any
   handleDeleteWishlist: any
   rows: any[]
-  pageOnChange: any
+  isLoading: boolean
+  setPage: (value: number) => void
   pageCount: number
 }
+
+const PaginationContainer = styled(Box)({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  marginTop: '-3.5rem',
+})
 
 const WishlistTable = (props: WishlistTableProps) => {
   const theme = useTheme()
   const mdScreen = useMediaQuery<any>(theme.breakpoints.up('md'))
-
+  console.log(props)
   return (
     <>
       <KiboDataTable
@@ -114,13 +130,9 @@ const WishlistTable = (props: WishlistTableProps) => {
                   />
                 ) : (
                   <>
-                    <IconButton
-                      id={params?.row?.id}
-                      sx={customIconButton}
-                      data-testid="initiate-quote"
-                    >
+                    <Button id={params?.row?.id} sx={customIconButton} data-testid="initiate-quote">
                       Initiate Quote
-                    </IconButton>
+                    </Button>
                     <IconButton id={params?.row?.id} sx={customIconButton}>
                       Add to Cart
                     </IconButton>
@@ -151,9 +163,27 @@ const WishlistTable = (props: WishlistTableProps) => {
             ),
           },
         ]}
+        sx={{ opacity: props.isLoading ? 0.5 : 1 }}
         rows={props.rows || []}
       />
-      <Pagination count={props.pageCount} onChange={props.pageOnChange} size="medium" />
+      <PaginationContainer>
+        <KiboPagination
+          count={props.pageCount}
+          onChange={props.setPage}
+          size="small"
+          sx={{ paddingLeft: '-1.5rem' }}
+        />
+        {/* <Typography
+          sx={{
+            textAlign: 'end',
+            color: theme.palette.grey[600],
+            width: { xs: '10rem', md: '12rem' },
+            fontSize: { xs: '0.9rem', md: '1rem' },
+          }}
+        > */}
+        {/* {mdScreen && 'Displaying '} {startRange} - {endRange} of {totalCount} */}
+        {/* </Typography> */}
+      </PaginationContainer>
     </>
   )
 }

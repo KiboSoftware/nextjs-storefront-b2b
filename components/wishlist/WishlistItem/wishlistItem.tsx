@@ -5,7 +5,17 @@ import CloseIcon from '@mui/icons-material/Close'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import RemoveCircleOutlineRoundedIcon from '@mui/icons-material/RemoveCircleOutlineRounded'
-import { Box, Button, Container, Grid, IconButton, Modal, Typography } from '@mui/material'
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  IconButton,
+  Modal,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material'
 import Image from 'next/image'
 
 import Accordion from '@/components/common/Accordion/Accordion'
@@ -107,6 +117,8 @@ const ProductView = (props: any) => {
 }
 
 const WishlistItem = (props: any) => {
+  const theme = useTheme()
+  const mdScreen = useMediaQuery<any>(theme.breakpoints.up('md'))
   // const { addToCart } = useAddToCartMutation();
   const [state, setState] = useState({ quantity: props.item?.quantity })
   const [open, setOpen] = useState(false)
@@ -145,81 +157,79 @@ const WishlistItem = (props: any) => {
 
   return (
     <>
-      <Container>
-        <Grid container spacing={2} className={Style.borderBottom}>
-          <Grid item xs={2}>
-            {props.item?.product?.imageUrl ? (
-              <Image
-                src={`https:${props.item?.product?.imageUrl}`}
-                alt={props.item?.product?.name}
-                width={70}
-                height={70}
-              />
-            ) : null}
-          </Grid>
-          <Grid container xs={10} spacing={1}>
-            <Grid xs={9}>
-              <p> {props.item?.product?.name}</p>
-              <div>
-                <strong>Quantity: </strong>
-                <IconButton
-                  name="decrement"
-                  onClick={handleQuantityChange}
-                  disabled={state.quantity <= 1}
-                >
-                  <RemoveCircleOutlineRoundedIcon />
-                </IconButton>
-                <input
-                  type="text"
-                  value={state.quantity}
-                  onChange={changeQuantity}
-                  id={props.item.id}
-                  style={{ textAlign: 'center', width: '43px', height: '37px', fontSize: '16px' }}
-                />
-                <IconButton name="increment" onClick={handleQuantityChange}>
-                  <AddCircleOutlineRoundedIcon />
-                </IconButton>
-              </div>
-              <p>
-                {' '}
-                <strong>Product Code: </strong>
-                {props.item?.product?.productCode}
-              </p>
-              <div>
-                <strong>{labels.total}: </strong>${props.item?.subtotal}
-                <span style={{ marginLeft: '10px' }}>
-                  <em>
-                    {labels['list-item']} - ${props.item?.product?.price?.price}
-                  </em>
-                </span>
-              </div>
-            </Grid>
-            <Grid
-              xs={3}
-              className={Style.deleteItem}
-              style={{ flexDirection: 'row', alignItems: 'center' }}
-            >
-              <Button
-                className={`${styles.editItemButton}`}
-                onClick={openEditModal}
-                startIcon={<EditIcon />}
-              >
-                Edit Item
-              </Button>
-              <Button
-                className={`${styles.deleteItemButton}`}
-                aria-label="delete"
-                id={props.item.id}
-                onClick={props.deleteItem}
-                startIcon={<DeleteIcon />}
-              >
-                Remove
-              </Button>
-              {/* <Button variant='contained' color='primary' onClick={handleAddToCart} id={props.item.id}> Add to cart</Button> */}
-            </Grid>
-          </Grid>
+      <Grid container spacing={2} className={Style.borderBottom}>
+        <Grid item xs={mdScreen ? 2 : 3}>
+          {props.item?.product?.imageUrl ? (
+            <Image
+              src={`https:${props.item?.product?.imageUrl}`}
+              alt={props.item?.product?.name}
+              width={70}
+              height={70}
+            />
+          ) : null}
         </Grid>
-      </Container>
+        <Grid xs={mdScreen ? 8 : 7}>
+          <p> {props.item?.product?.name}</p>
+          <div>
+            <strong>Quantity: </strong>
+            <IconButton
+              name="decrement"
+              onClick={handleQuantityChange}
+              disabled={state.quantity <= 1}
+            >
+              <RemoveCircleOutlineRoundedIcon />
+            </IconButton>
+            <input
+              type="text"
+              value={state.quantity}
+              onChange={changeQuantity}
+              id={props.item.id}
+              style={{ textAlign: 'center', width: '43px', height: '37px', fontSize: '16px' }}
+            />
+            <IconButton name="increment" onClick={handleQuantityChange}>
+              <AddCircleOutlineRoundedIcon />
+            </IconButton>
+          </div>
+          <p>
+            {' '}
+            <strong>Product Code: </strong>
+            {props.item?.product?.productCode}
+          </p>
+          <div>
+            <strong>{labels.total}: </strong>${props.item?.subtotal}
+            <span style={{ marginLeft: '10px' }}>
+              <em>
+                {labels['list-item']} - ${props.item?.product?.price?.price}
+              </em>
+            </span>
+          </div>
+        </Grid>
+        <Grid
+          xs={2}
+          className={Style.deleteItem}
+          style={{ flexDirection: 'row', alignItems: 'center' }}
+        >
+          <div style={{ maxWidth: '100%', display: 'flex', flexDirection: 'row' }}>
+            <Button
+              className={`${styles.editItemButton}`}
+              onClick={openEditModal}
+              startIcon={<EditIcon />}
+            >
+              {mdScreen ? 'Edit Item' : ''}
+            </Button>
+            <Button
+              className={`${styles.deleteItemButton}`}
+              aria-label="delete"
+              id={props.item.id}
+              onClick={props.deleteItem}
+              startIcon={<DeleteIcon />}
+            >
+              {mdScreen ? 'Remove' : ''}
+            </Button>
+          </div>
+          {/* <Button variant='contained' color='primary' onClick={handleAddToCart} id={props.item.id}> Add to cart</Button> */}
+        </Grid>
+      </Grid>
       <Modal
         open={open}
         onClose={() => setOpen(false)}

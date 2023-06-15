@@ -101,6 +101,7 @@ const ListsPage: NextPage = () => {
     <Grid spacing={2} marginTop={2}>
       <Grid xs={12}>
         <CreateWishlist handleCreateWishlist={setOpenForm} />
+        <ReactQueryDevtools initialIsOpen={false} />
       </Grid>
     </Grid>
   )

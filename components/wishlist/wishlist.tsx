@@ -7,6 +7,7 @@ import {
   Checkbox,
   useMediaQuery,
   CircularProgress,
+  Box,
 } from '@mui/material'
 
 import EditWishlist from './EditWishlist/editWishlist'
@@ -117,11 +118,6 @@ const Wishlist = (props: any) => {
       },
     })
   }
-
-  if (isLoading) {
-    const loaderStyle = { display: 'flex', marginLeft: 'auto', marginRight: 'auto' }
-    return <CircularProgress style={loaderStyle} />
-  }
   if (editList === true) {
     return (
       <>
@@ -137,7 +133,7 @@ const Wishlist = (props: any) => {
 
   return (
     <>
-      <Container style={{ padding: '10px 10px 10px 0' }}>
+      <Box style={{ padding: '10px 10px 10px 0' }}>
         <FormControlLabel
           label="Show only lists created by me"
           control={
@@ -149,14 +145,15 @@ const Wishlist = (props: any) => {
         />
         <WishlistTable
           hiddenColumns={hiddenColumns}
+          isLoading={isLoading}
           rows={rows || []}
           handleEditWishlist={handleEditToWishlist}
           handleCopyWishlist={handleCopyWishlist}
           handleDeleteWishlist={deleteWishlistEvent}
           pageCount={pageCount}
-          pageOnChange={setPage}
+          setPage={(value) => setPage(value)}
         />
-      </Container>
+      </Box>
     </>
   )
 }

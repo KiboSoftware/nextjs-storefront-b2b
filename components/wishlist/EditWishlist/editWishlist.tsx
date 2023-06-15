@@ -249,90 +249,89 @@ const EditWishlist = (props: any) => {
   return (
     <>
       <Box style={{ marginTop: '30px' }}>
-        <Container>
-          <Grid container spacing={2}>
+        <Grid spacing={2}>
+          <Grid
+            container
+            spacing={0.5}
+            rowSpacing={1}
+            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+            justifyContent="flex-end"
+            alignItems="center"
+          >
+            <Grid item xs={9}>
+              {state.openNameForm ? (
+                <>
+                  <form>
+                    <input
+                      onChange={(e) => setState({ ...state, name: e.target.value })}
+                      value={state.name}
+                      style={{
+                        maxWidth: '495px',
+                        height: '36px',
+                        fontSize: ' 14px',
+                        padding: '8px 12px',
+                        background: '#ffffff',
+                        border: '1px solid #cdcdcd',
+                        borderRadius: ' 4px',
+                      }}
+                    />
+                    <Button
+                      variant="contained"
+                      onClick={() => setState({ ...state, openNameForm: false })}
+                      style={{ marginLeft: '5px' }}
+                    >
+                      Save
+                    </Button>
+                  </form>
+                </>
+              ) : (
+                <>
+                  <Typography variant="h3">
+                    {state.name}
+                    <IconButton onClick={() => setState({ ...state, openNameForm: true })}>
+                      <EditIcon />
+                    </IconButton>
+                  </Typography>
+                </>
+              )}
+            </Grid>
+            <Grid item xs={3} className={Style.addProductButton}>
+              <Container style={{ justifyContent: 'end', display: 'flex' }}>
+                <Button
+                  variant="outlined"
+                  size="medium"
+                  onClick={() => {
+                    props.handleEditWishlist(false)
+                    props.handleEditForm(false)
+                  }}
+                  style={{ marginRight: '10px' }}
+                >
+                  Cancel
+                </Button>
+                <Button variant="contained" size="medium" onClick={handleSaveWishlist}>
+                  Save & Close
+                </Button>
+              </Container>
+            </Grid>
+          </Grid>
+          <Grid item xs={12}>
+            <ProductSearch handleProductItemClick={handleProductItemClick} />
             <Grid
               container
               spacing={0.5}
               rowSpacing={1}
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-              justifyContent="flex-end"
-              alignItems="center"
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="top"
             >
-              <Grid item xs={9}>
-                {state.openNameForm ? (
-                  <>
-                    <form>
-                      <input
-                        onChange={(e) => setState({ ...state, name: e.target.value })}
-                        value={state.name}
-                        style={{
-                          maxWidth: '495px',
-                          height: '36px',
-                          fontSize: ' 14px',
-                          padding: '8px 12px',
-                          background: '#ffffff',
-                          border: '1px solid #cdcdcd',
-                          borderRadius: ' 4px',
-                        }}
-                      />
-                      <Button
-                        variant="contained"
-                        onClick={() => setState({ ...state, openNameForm: false })}
-                        style={{ marginLeft: '5px' }}
-                      >
-                        Save
-                      </Button>
-                    </form>
-                  </>
-                ) : (
-                  <>
-                    <Typography variant="h3">
-                      {state.name}
-                      <IconButton onClick={() => setState({ ...state, openNameForm: true })}>
-                        <EditIcon />
-                      </IconButton>
-                    </Typography>
-                  </>
-                )}
-              </Grid>
-              <Grid item xs={3} className={Style.addProductButton}>
-                <Container style={{ justifyContent: 'space-between', display: 'flex' }}>
-                  <Button
-                    variant="outlined"
-                    size="medium"
-                    onClick={() => {
-                      props.handleEditWishlist(false)
-                      props.handleEditForm(false)
-                    }}
-                  >
-                    {' '}
-                    Cancel
-                  </Button>
-                  <Button variant="contained" size="medium" onClick={handleSaveWishlist}>
-                    Save & Close
-                  </Button>
-                </Container>
-              </Grid>
-            </Grid>
-            <Grid item xs={12}>
-              <ProductSearch handleProductItemClick={handleProductItemClick} />
-              <Grid
-                container
-                spacing={0.5}
-                rowSpacing={1}
-                columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-                direction="row"
-                justifyContent="flex-start"
-                alignItems="top"
-              >
-                <Grid item xs={4}></Grid>
-                <Grid item xs={4}></Grid>
-                <Grid item xs={4}></Grid>
-              </Grid>
+              <Grid item xs={4}></Grid>
+              <Grid item xs={4}></Grid>
+              <Grid item xs={4}></Grid>
             </Grid>
           </Grid>
-          {/* <Modal
+        </Grid>
+        {/* <Modal
             open={open}
             onClose={handleClose}
             aria-labelledby="modal-modal-title"
@@ -391,25 +390,22 @@ const EditWishlist = (props: any) => {
               })}
             </div>
           </Modal> */}
-        </Container>
       </Box>
       <br />
       <br />
 
-      <Container>
-        <h3 style={{ fontWeight: 'bold', margin: '20px 0' }}>List Items</h3>
-        {wishlistData?.items?.map((e: any, i: number) => {
-          return (
-            <WishlistItem
-              key={i}
-              item={e}
-              deleteItem={deleteItem}
-              changeQuantity={changeQuantity}
-              wishlistId={wishlistData.id}
-            />
-          )
-        })}
-      </Container>
+      <h3 style={{ fontWeight: 'bold', margin: '20px 0' }}>List Items</h3>
+      {wishlistData?.items?.map((e: any, i: number) => {
+        return (
+          <WishlistItem
+            key={i}
+            item={e}
+            deleteItem={deleteItem}
+            changeQuantity={changeQuantity}
+            wishlistId={wishlistData.id}
+          />
+        )
+      })}
     </>
   )
 }

@@ -213,6 +213,7 @@
   text-decoration-line: underline !important;
   color: #2b2b2b !important;
   -moz-text-decoration-line: underline !important;
+  min-width: 0px !important;
 }
 .deleteItemButton {
   font-weight: 400 !important;
@@ -222,4 +223,5 @@
   text-decoration-line: underline !important;
   color: #2b2b2b !important;
   -moz-text-decoration-line: underline !important;
+  min-width: 0px !important;
 }

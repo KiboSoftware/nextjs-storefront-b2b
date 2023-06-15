@@ -4,14 +4,18 @@ import { composeStories } from '@storybook/testing-react'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import CreateWishlist from './createWishlist'
 import * as stories from './CreateWishlist.stories'
+import { renderWithQueryClient } from '../../../__test__/utils/renderWithQueryClient'
 
 const mockFunction = jest.fn()
 
 const { CreateWishlistComponent } = composeStories(stories)
+
 function setup() {
   const user = userEvent.setup()
-  render(<CreateWishlistComponent handleCreateWishlist={mockFunction} />)
+
+  renderWithQueryClient(<CreateWishlist handleCreateWishlist={mockFunction} />)
   return { user }
 }
 describe('[component] - Wishlist', () => {
@@ -38,12 +42,13 @@ describe('[component] - Wishlist', () => {
     })
   })
 
-  // it.only('should close form', async () => {
-  //   const { user } = setup()
-  //   const cancelButton = await screen.findByRole('button', { name: 'Cancel' })
-  //   // const heading = await screen.findByRole('heading')
-  //   // cancelButton.addEventListener('click', mockFunction)
-  //   await user.click(cancelButton)
-  //   expect(mockFunction).toBeCalled()
-  // })
+  it.only('should close form', async () => {
+    const { user } = setup()
+    const cancelButton = await screen.findByRole('button', { name: 'Cancel' })
+    // const heading = await screen.findByRole('heading')
+    // cancelButton.addEventListener('click', mockFunction)
+    // screen.debug()
+    await user.click(cancelButton)
+    expect(mockFunction).toBeCalled()
+  })
 })

@@ -1,7 +1,7 @@
 /**
  * @module useGetWishlist
  */
-import { useQuery } from 'react-query'
+import { QueryClient, useQuery, useQueryClient } from 'react-query'
 
 import { makeGraphQLClient } from '@/lib/gql/client'
 import { getWishlistQuery } from '@/lib/gql/queries'
@@ -19,6 +19,12 @@ export interface UseWishlistResponse {
   isFetching: boolean
 }
 
+export interface UseAllWishlistsQueriesProps {
+  pageSize: any
+  startIndex: any
+  sortBy: string
+  filter: string
+}
 const getWishlists = async (): Promise<CrWishlist> => {
   const client = makeGraphQLClient()
   const response = await client.request({
@@ -66,13 +72,46 @@ export const useGetWishlist = (): UseWishlistResponse => {
   return { data, isLoading, isSuccess, isFetching }
 }
 
-export const useAllWishlistsQueries = (props: any): any => {
-  const { data, isLoading, isSuccess, isFetching, refetch } = useQuery(
-    wishlistKeys.all.concat(props.startIndex),
-    () => getAllWishlists(props),
+/**
+ * [Query hook] useAllGetWishlist uses the graphQL query
+ *
+ * Description : Fetches the all wishlists for logged in user. To authenticate the user, request header taking token from the cookie.
+ *
+ * Parameters passed to function getAllWishlists()
+ *
+ * On success, returns the first item of wishlists as it will always have single item with respect to customer account id.
+ *
+ * @returns all the fetched wishlist according to pageNumber, pageSize, filters and sortBy
+ */
+
+export const useAllWishlistsQueries = (props: UseAllWishlistsQueriesProps): any => {
+  const queryClient = useQueryClient()
+  const cachedData = queryClient.getQueryData(wishlistKeys.all.concat(props.startIndex.toString()))
+  console.log('cachedData', cachedData)
+  const { data, isLoading, isSuccess, isFetching } = useQuery(
+    wishlistKeys.all.concat(props.startIndex.toString()),
+    () => (cachedData ? cachedData : getAllWishlists(props)),
     {
       refetchOnWindowFocus: false,
-      // enabled: props.pageSize && props.sortBy && props.startIndex ? true : false
+      keepPreviousData: true,
+    }
+  )
+  // queryClient.prefetchQuery({
+  //   queryKey: wishlistKeys.all.concat((props.startIndex + props.pageSize).toString()),
+  //   queryFn: () =>
+  //     cachedData
+  //       ? cachedData
+  //       : getAllWishlists({ ...props, startIndex: props.startIndex + props.pageSize }),
+  // })
+  // prefetching next wishlist page and caching it
+  useQuery(
+    wishlistKeys.all.concat((props.startIndex + props.pageSize).toString()),
+    () =>
+      cachedData
+        ? cachedData
+        : getAllWishlists({ ...props, startIndex: props.startIndex + props.pageSize }),
+    {
+      refetchOnWindowFocus: false,
     }
   )
 

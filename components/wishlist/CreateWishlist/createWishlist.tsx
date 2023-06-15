@@ -91,6 +91,7 @@ const CreateWishlist = (props: any) => {
                   type="submit"
                   form="wishlist-form"
                   style={{ boxShadow: 'none', marginLeft: '9px' }}
+                  disabled={state.name.length === 0}
                 >
                   Save & Close
                 </Button>

@@ -13,7 +13,7 @@ const {
   handleCopyWishlist,
   handleDeleteWishlist,
   handleEditWishlist,
-  pageOnChange,
+  setPage,
 } = wishlistTableMock
 
 export default {
@@ -23,12 +23,13 @@ export default {
 
 export const WishlistTableComponent: ComponentStory<typeof WishlistTable> = (args) => (
   <WishlistTable
+    isLoading={false}
     rows={rows}
     hiddenColumns={hiddenColumns}
     pageCount={pageCount}
     handleCopyWishlist={handleCopyWishlist}
     handleDeleteWishlist={handleDeleteWishlist}
     handleEditWishlist={handleEditWishlist}
-    pageOnChange={pageOnChange}
+    setPage={setPage}
   />
 )
