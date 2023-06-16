@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import EditIcon from '@mui/icons-material/Edit'
-import { Box, Button, IconButton, Modal, Typography } from '@mui/material'
+import { Box, Button, IconButton, Modal, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { Container, Grid } from '@mui/material'
 import Image from 'next/image'
 
@@ -54,6 +54,8 @@ const EditWishlist = (props: any) => {
     openNameForm: false,
   })
   const [open, setOpen] = useState(false)
+  const theme = useTheme()
+  const mdScreen = useMediaQuery<any>(theme.breakpoints.up('md'))
 
   function handleChange(e: any) {
     // const id = e.target.id;
@@ -130,6 +132,7 @@ const EditWishlist = (props: any) => {
       console.log(e)
     }
   }
+
   async function AddToList(e: any) {
     e.preventDefault()
     try {
@@ -258,7 +261,7 @@ const EditWishlist = (props: any) => {
             justifyContent="flex-end"
             alignItems="center"
           >
-            <Grid item xs={9}>
+            <Grid item xs={mdScreen ? 9 : 12}>
               {state.openNameForm ? (
                 <>
                   <form>
@@ -295,24 +298,30 @@ const EditWishlist = (props: any) => {
                 </>
               )}
             </Grid>
-            <Grid item xs={3} className={Style.addProductButton}>
-              <Container style={{ justifyContent: 'end', display: 'flex' }}>
-                <Button
-                  variant="outlined"
-                  size="medium"
-                  onClick={() => {
-                    props.handleEditWishlist(false)
-                    props.handleEditForm(false)
-                  }}
-                  style={{ marginRight: '10px' }}
-                >
-                  Cancel
-                </Button>
-                <Button variant="contained" size="medium" onClick={handleSaveWishlist}>
-                  Save & Close
-                </Button>
-              </Container>
-            </Grid>
+            {mdScreen ? (
+              <>
+                <Grid item xs={3} className={Style.addProductButton}>
+                  <Container style={{ justifyContent: 'end', display: 'flex' }}>
+                    <Button
+                      variant="outlined"
+                      size="medium"
+                      onClick={() => {
+                        props.handleEditWishlist(false)
+                        props.handleEditForm(false)
+                      }}
+                      style={{ marginRight: '10px' }}
+                    >
+                      Cancel
+                    </Button>
+                    <Button variant="contained" size="medium" onClick={handleSaveWishlist}>
+                      Save & Close
+                    </Button>
+                  </Container>
+                </Grid>
+              </>
+            ) : (
+              <></>
+            )}
           </Grid>
           <Grid item xs={12}>
             <ProductSearch handleProductItemClick={handleProductItemClick} />
@@ -406,6 +415,46 @@ const EditWishlist = (props: any) => {
           />
         )
       })}
+      {!mdScreen ? (
+        <>
+          <Grid
+            item
+            xs={12}
+            className={Style.addProductButton}
+            style={{
+              width: '100%',
+              position: 'fixed',
+              left: '50%',
+              bottom: '0px',
+              transform: 'translateX(-50%)',
+              padding: '15px',
+              background: 'white',
+            }}
+          >
+            <Button
+              variant="outlined"
+              size="medium"
+              onClick={() => {
+                props.handleEditWishlist(false)
+                props.handleEditForm(false)
+              }}
+              style={{ width: '100%' }}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              size="medium"
+              onClick={handleSaveWishlist}
+              style={{ width: '100%', marginTop: '8px' }}
+            >
+              Save & Close
+            </Button>
+          </Grid>
+        </>
+      ) : (
+        <></>
+      )}
     </>
   )
 }
