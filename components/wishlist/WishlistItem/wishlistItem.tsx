@@ -19,37 +19,13 @@ import {
 import Image from 'next/image'
 
 import Accordion from '@/components/common/Accordion/Accordion'
-import styles from '@/components/wishlist/wishlist.module.css'
+import style from '@/components/wishlist/WishlistItem/WishlistItemStyle'
 import labels from '@/public/locales/en/common.json'
-import Style from '@/styles/global.module.css'
-
-const boxStyle = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '50%',
-  bgcolor: '#FFF',
-  boxShadow: '0px 0px 7px rgba(43, 43, 43, 0.5);',
-  pt: 2,
-  px: 4,
-  pb: 3,
-  padding: '0px',
-  overflowY: 'auto',
-}
-
-const modalHeaderStyle = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  borderBottom: '1px solid #EAEAEA',
-  padding: '10px 30px',
-}
 
 const ProductView = (props: any) => {
   return (
     <>
-      <div className="modal-head" style={modalHeaderStyle}>
+      <div className="modal-head" style={style.modal.header}>
         <Typography variant="h3" style={{ fontWeight: 'bold' }}>
           Product Configuration Options
         </Typography>
@@ -157,7 +133,8 @@ const WishlistItem = (props: any) => {
 
   return (
     <>
-      <Grid container spacing={2} className={Style.borderBottom}>
+      {/* <Grid spacing={2} className={Style.borderBottom}> */}
+      <Grid container style={{ borderBottom: '1px solid #CDCDCD', padding: '10px 0' }}>
         <Grid item xs={mdScreen ? 2 : 3}>
           {props.item?.product?.imageUrl ? (
             <Image
@@ -169,9 +146,25 @@ const WishlistItem = (props: any) => {
           ) : null}
         </Grid>
         <Grid xs={mdScreen ? 8 : 7}>
-          <p> {props.item?.product?.name}</p>
+          <p>
+            <strong>{props.item?.product?.name}</strong>
+          </p>
+          {mdScreen ? (
+            <></>
+          ) : (
+            <>
+              <div>
+                <strong>{labels.total}: </strong>${props.item?.subtotal}
+                <div>
+                  <em>
+                    {labels['list-item']} - ${props.item?.product?.price?.price}
+                  </em>
+                </div>
+              </div>
+            </>
+          )}
           <div>
-            <strong>Quantity: </strong>
+            <strong>Qty: </strong>
             <IconButton
               name="decrement"
               onClick={handleQuantityChange}
@@ -191,34 +184,38 @@ const WishlistItem = (props: any) => {
             </IconButton>
           </div>
           <p>
-            {' '}
             <strong>Product Code: </strong>
             {props.item?.product?.productCode}
           </p>
-          <div>
-            <strong>{labels.total}: </strong>${props.item?.subtotal}
-            <span style={{ marginLeft: '10px' }}>
-              <em>
-                {labels['list-item']} - ${props.item?.product?.price?.price}
-              </em>
-            </span>
-          </div>
+          {mdScreen ? (
+            <>
+              <div>
+                <strong>{labels.total}: </strong>${props.item?.subtotal}
+                <span style={{ marginLeft: '10px' }}>
+                  <em>
+                    {labels['list-item']} - ${props.item?.product?.price?.price}
+                  </em>
+                </span>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
         </Grid>
         <Grid
           xs={2}
-          className={Style.deleteItem}
-          style={{ flexDirection: 'row', alignItems: 'center' }}
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: mdScreen ? 'center' : 'flex-start',
+          }}
         >
           <div style={{ maxWidth: '100%', display: 'flex', flexDirection: 'row' }}>
-            <Button
-              className={`${styles.editItemButton}`}
-              onClick={openEditModal}
-              startIcon={<EditIcon />}
-            >
+            <Button onClick={openEditModal} startIcon={<EditIcon />} sx={style.buttons.tableAction}>
               {mdScreen ? 'Edit Item' : ''}
             </Button>
             <Button
-              className={`${styles.deleteItemButton}`}
+              sx={style.buttons.tableAction}
               aria-label="delete"
               id={props.item.id}
               onClick={props.deleteItem}
@@ -230,13 +227,14 @@ const WishlistItem = (props: any) => {
           {/* <Button variant='contained' color='primary' onClick={handleAddToCart} id={props.item.id}> Add to cart</Button> */}
         </Grid>
       </Grid>
+      {/* </Grid> */}
       <Modal
         open={open}
         onClose={() => setOpen(false)}
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
       >
-        <Box sx={{ ...boxStyle }}>
+        <Box sx={style.modal.box}>
           <ProductView item={props.item} closeModal={() => setOpen(false)} />
         </Box>
       </Modal>
