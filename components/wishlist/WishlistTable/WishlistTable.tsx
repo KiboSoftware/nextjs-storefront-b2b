@@ -24,7 +24,6 @@ const customIconButton = {
   textDecoration: 'underline !important',
 }
 export interface WishlistTableProps {
-  hiddenColumns: GridColumnVisibilityModel
   handleEditWishlist: any
   handleCopyWishlist: any
   handleDeleteWishlist: any
@@ -42,13 +41,15 @@ const PaginationContainer = styled(Box)({
 })
 
 const WishlistTable = (props: WishlistTableProps) => {
+  const { isLoading, pageCount, setPage, rows } = props
   const theme = useTheme()
   const mdScreen = useMediaQuery<any>(theme.breakpoints.up('md'))
-  console.log(props)
   return (
     <>
       <KiboDataTable
-        columnVisibilityModel={props.hiddenColumns}
+        columnVisibilityModel={{
+          createBy: mdScreen,
+        }}
         columns={[
           {
             field: 'name',
@@ -56,7 +57,7 @@ const WishlistTable = (props: WishlistTableProps) => {
             type: 'string',
             sortable: false,
             filterable: false,
-            flex: !mdScreen ? 6 : 2,
+            flex: mdScreen ? 2 : 7,
             headerClassName: 'super-app-theme--header',
             renderCell: (params: GridRenderCellParams<any>) => {
               return (
@@ -82,7 +83,7 @@ const WishlistTable = (props: WishlistTableProps) => {
             type: 'string',
             sortable: false,
             filterable: false,
-            flex: !mdScreen ? 3 : 1,
+            flex: mdScreen ? 1 : 3,
             headerClassName: 'super-app-theme--header',
           },
           {
@@ -91,23 +92,8 @@ const WishlistTable = (props: WishlistTableProps) => {
             type: 'string',
             sortable: false,
             filterable: false,
-            flex: mdScreen ? 2 : 1,
+            flex: 2,
             headerClassName: 'super-app-theme--header',
-            columnVisibilityModel: {
-              status: false,
-              traderName: false,
-            },
-            renderCell: (params: GridRenderCellParams<any>) => {
-              return (
-                <>
-                  {!mdScreen ? null : (
-                    <Box>
-                      <Typography>{params.row.createBy}</Typography>
-                    </Box>
-                  )}
-                </>
-              )
-            },
           },
           {
             field: 'actions',
@@ -115,7 +101,7 @@ const WishlistTable = (props: WishlistTableProps) => {
             type: 'string',
             sortable: false,
             filterable: false,
-            flex: !mdScreen ? 1 : 2,
+            flex: mdScreen ? 2 : 1,
             headerClassName: 'super-app-theme--header',
             renderCell: (params: GridRenderCellParams<any>) => (
               <>
@@ -163,13 +149,13 @@ const WishlistTable = (props: WishlistTableProps) => {
             ),
           },
         ]}
-        sx={{ opacity: props.isLoading ? 0.5 : 1 }}
-        rows={props.rows || []}
+        sx={{ opacity: isLoading ? 0.5 : 1 }}
+        rows={rows || []}
       />
       <PaginationContainer>
         <KiboPagination
-          count={props.pageCount}
-          onChange={props.setPage}
+          count={pageCount}
+          onChange={setPage}
           size="small"
           sx={{ paddingLeft: '-1.5rem' }}
         />

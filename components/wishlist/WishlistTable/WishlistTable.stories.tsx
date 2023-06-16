@@ -6,15 +6,8 @@ import WishlistTable from './WishlistTable'
 import { wishlistTableMock } from '@/__mocks__/stories'
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
-const {
-  rows,
-  hiddenColumns,
-  pageCount,
-  handleCopyWishlist,
-  handleDeleteWishlist,
-  handleEditWishlist,
-  setPage,
-} = wishlistTableMock
+const { rows, pageCount, handleCopyWishlist, handleDeleteWishlist, handleEditWishlist, setPage } =
+  wishlistTableMock
 
 export default {
   title: 'Wishlist/WishlistTable',
@@ -25,7 +18,6 @@ export const WishlistTableComponent: ComponentStory<typeof WishlistTable> = (arg
   <WishlistTable
     isLoading={false}
     rows={rows}
-    hiddenColumns={hiddenColumns}
     pageCount={pageCount}
     handleCopyWishlist={handleCopyWishlist}
     handleDeleteWishlist={handleDeleteWishlist}
