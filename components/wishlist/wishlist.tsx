@@ -1,14 +1,6 @@
 import { useEffect, useState, MouseEvent, ChangeEvent } from 'react'
 
-import {
-  Container,
-  FormControlLabel,
-  useTheme,
-  Checkbox,
-  useMediaQuery,
-  CircularProgress,
-  Box,
-} from '@mui/material'
+import { FormControlLabel, useTheme, Checkbox, useMediaQuery, Box } from '@mui/material'
 
 import EditWishlist from './EditWishlist/editWishlist'
 import styles from './wishlist.module.css'
@@ -29,20 +21,13 @@ const Wishlist = (props: any) => {
   const [listFilter, setListFilter] = useState('')
   const [page, setPage] = useState(1)
   const [startIndex, setStartIndex] = useState(0)
-  const [hiddenColumns, setHiddenColumns] = useState({
-    createdBy: true,
-  })
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
   const userID = user?.userId
   const pageSize = 5
-  const [updateWishlist, setUpdateWishlist] = useState<boolean>(false)
 
   const [editList, setEditList] = useState(false)
   useEffect(() => {
     setStartIndex(pageSize * (page - 1))
-    setHiddenColumns({
-      createdBy: mdScreen,
-    })
   }, [page, listFilter, mdScreen])
 
   function checkboxHandleChange(e: ChangeEvent<HTMLInputElement>) {
@@ -144,7 +129,6 @@ const Wishlist = (props: any) => {
           }
         />
         <WishlistTable
-          hiddenColumns={hiddenColumns}
           isLoading={isLoading}
           rows={rows || []}
           handleEditWishlist={handleEditToWishlist}
