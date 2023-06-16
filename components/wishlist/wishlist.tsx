@@ -3,7 +3,6 @@ import { useEffect, useState, MouseEvent, ChangeEvent } from 'react'
 import { FormControlLabel, useTheme, Checkbox, useMediaQuery, Box } from '@mui/material'
 
 import EditWishlist from './EditWishlist/editWishlist'
-import styles from './wishlist.module.css'
 import WishlistTable from './WishlistTable/WishlistTable'
 import { ConfirmationDialog } from '@/components/dialogs'
 import { useAuthContext, useModalContext } from '@/context'
@@ -121,12 +120,7 @@ const Wishlist = (props: any) => {
       <Box style={{ padding: '10px 10px 10px 0' }}>
         <FormControlLabel
           label="Show only lists created by me"
-          control={
-            <Checkbox
-              onChange={checkboxHandleChange}
-              className={`${styles.showOnlyListCheckbox}`}
-            />
-          }
+          control={<Checkbox onChange={checkboxHandleChange} sx={{ fontSize: '16px' }} />}
         />
         <WishlistTable
           isLoading={isLoading}

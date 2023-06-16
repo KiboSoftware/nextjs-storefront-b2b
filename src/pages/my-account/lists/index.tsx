@@ -9,7 +9,6 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 
 import CreateWishlist from '@/components/wishlist/CreateWishlist/createWishlist'
 import Wishlist from '@/components/wishlist/wishlist'
-import styles from '@/components/wishlist/wishlist.module.css'
 
 import type { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next'
 
@@ -23,6 +22,23 @@ export const getServerSideProps: GetServerSideProps = async (
       ...(await serverSideTranslations(locale as string, ['common'])),
     },
   }
+}
+
+const addNewListButtonStyles = {
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: '8px 16px',
+  gap: '8px',
+  height: '37px',
+  backgroundColor: '#2b2b2b',
+  borderRadius: '4px',
+  color: '#ffffff',
+  fontWeight: '400',
+  fontSize: '18px',
+  marginBottom: '24px',
+  marginTop: '32px',
 }
 
 const ListsPage: NextPage = () => {
@@ -82,7 +98,7 @@ const ListsPage: NextPage = () => {
               </h1>
               <Button
                 onClick={openNewWishlistForm}
-                className={`${styles.addNewListButton}`}
+                sx={addNewListButtonStyles}
                 startIcon={<AddCircleOutlineIcon />}
                 style={smScreen ? {} : { width: '100%' }}
               >
