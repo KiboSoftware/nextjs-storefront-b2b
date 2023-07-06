@@ -17,7 +17,9 @@ const queryClientHandler = (error: any, showSnackbar: any) => {
 
   console.log(`id: ${id}, title: ${code}, status: ${status}`)
 
-  showSnackbar(getErrorMessage(code), status)
+  if (process.env.TEST_ENV !== 'true') {
+    showSnackbar(getErrorMessage(code), status)
+  }
 }
 
 export const generateQueryClient = (showSnackbar?: any): QueryClient => {
