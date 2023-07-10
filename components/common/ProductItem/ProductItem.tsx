@@ -39,6 +39,7 @@ export interface ProductItemProps {
   width?: string
   subscriptionFrequency?: string
   showChangeStoreLink?: boolean
+  isQuickOrder?: boolean
   onStoreLocatorClick?: () => void
 }
 
@@ -55,6 +56,7 @@ const styles = {
 const ProductItem = (props: ProductItemProps) => {
   const {
     id,
+    productCode,
     image,
     name,
     options,
@@ -67,6 +69,7 @@ const ProductItem = (props: ProductItemProps) => {
     link,
     children,
     width = '25%',
+    isQuickOrder = false,
     subscriptionFrequency,
     showChangeStoreLink,
     onStoreLocatorClick,
@@ -96,6 +99,15 @@ const ProductItem = (props: ProductItemProps) => {
             <Typography variant="h4" data-testid="productName" pb={0.375}>
               {name}
             </Typography>
+            {isQuickOrder && productCode && (
+              <Box data-testid="product-code">
+                <KeyValueDisplay
+                  option={{ name: 'Code', value: productCode }}
+                  variant="body2"
+                  fontWeight="bold"
+                />
+              </Box>
+            )}
 
             {children}
 
