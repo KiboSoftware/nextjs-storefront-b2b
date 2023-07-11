@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { Box, InputLabel } from '@mui/material'
 import Autocomplete from '@mui/material/Autocomplete'
 import TextField from '@mui/material/TextField'
+import { matchSorter } from 'match-sorter'
 import getConfig from 'next/config'
 import { useTranslation } from 'next-i18next'
 
@@ -10,10 +11,15 @@ import { ProductItem } from '@/components/common'
 import { useDebounce, useGetSearchedProducts } from '@/hooks'
 import { productGetters } from '@/lib/getters'
 
-import { CrProduct } from '@/lib/gql/types'
+import { CrProduct, Product } from '@/lib/gql/types'
 
-const QuickOrderProductSearch = (props: any) => {
+export interface B2BProductSearchProps {
+  onAddProduct: (params?: CrProduct) => void
+}
+
+const B2BProductSearch = (props: B2BProductSearchProps) => {
   const { t } = useTranslation('common')
+  const { onAddProduct } = props
   const { publicRuntimeConfig } = getConfig()
   const [value, setValue] = useState('')
   const renderOption = (props: any, option: any) => {
@@ -32,12 +38,14 @@ const QuickOrderProductSearch = (props: any) => {
       </li>
     )
   }
+
   const handleInputChange = async (event: any, value: any) => {
     setValue(value)
   }
 
   const handleChange = async (event: any, value: any) => {
-    console.log('handle change value', value)
+    onAddProduct(value)
+    setValue('')
   }
 
   const { data: productSearchResult, isLoading } = useGetSearchedProducts({
@@ -45,9 +53,19 @@ const QuickOrderProductSearch = (props: any) => {
     pageSize: 16,
   })
 
-  const quickOrderProductSearchResult = productSearchResult?.items || []
+  const filterOptions = (options: any, { inputValue }: { inputValue: any }) =>
+    matchSorter(options, inputValue, {
+      keys: [
+        { threshold: matchSorter.rankings.CONTAINS, key: 'content.productName' },
+        'productCode',
+      ],
+    })
+
+  const b2bProductSearchResult = productSearchResult?.items || ([] as any)
+
   return (
     <Autocomplete
+      selectOnFocus
       freeSolo
       sx={{
         '& .MuiOutlinedInput-root': {
@@ -58,7 +76,7 @@ const QuickOrderProductSearch = (props: any) => {
         },
         width: { md: '445px' },
       }}
-      options={quickOrderProductSearchResult}
+      options={b2bProductSearchResult}
       getOptionLabel={(option) => productGetters.getName(option as CrProduct)}
       renderInput={(params) => (
         <Box>
@@ -71,8 +89,9 @@ const QuickOrderProductSearch = (props: any) => {
       renderOption={renderOption}
       onInputChange={handleInputChange}
       onChange={handleChange}
+      filterOptions={filterOptions}
     />
   )
 }
 
-export default QuickOrderProductSearch
+export default B2BProductSearch
