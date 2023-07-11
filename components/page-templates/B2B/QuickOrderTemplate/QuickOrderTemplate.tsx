@@ -4,19 +4,11 @@ import ArrowBackIos from '@mui/icons-material/ArrowBackIos'
 import { Stack, Typography, Box, Button } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 
+import { quickOrderTemplateStyles } from './QuickOrderTemplate.style'
 import B2BProductSearch from '@/components/b2b/B2BProductSearch/B2BProductSearch'
 import { useProductCardActions } from '@/hooks'
 import { FulfillmentOptions as FulfillmentOptionsConstant } from '@/lib/constants'
 import { productGetters } from '@/lib/getters'
-
-const styles = {
-  wrapIcon: {
-    display: 'flex',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-    cursor: 'pointer',
-  },
-}
 
 const QuickOrderTemplate = (props: any) => {
   const { t } = useTranslation('common')
@@ -42,8 +34,13 @@ const QuickOrderTemplate = (props: any) => {
   return (
     <Box px={1} py={2}>
       <Stack>
-        <Stack sx={styles.wrapIcon} direction="row" gap={2} onClick={() => null}>
-          <ArrowBackIos fontSize="inherit" sx={styles.wrapIcon} />
+        <Stack
+          sx={{ ...quickOrderTemplateStyles.wrapIcon }}
+          direction="row"
+          gap={2}
+          onClick={() => null}
+        >
+          <ArrowBackIos fontSize="inherit" sx={{ ...quickOrderTemplateStyles.wrapIcon }} />
           <Typography variant="body2">{t('my-account')}</Typography>
         </Stack>
 

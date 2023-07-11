@@ -7,11 +7,12 @@ import { matchSorter } from 'match-sorter'
 import getConfig from 'next/config'
 import { useTranslation } from 'next-i18next'
 
+import { b2bProductSearchStyle } from './B2BProductSearch.style'
 import { ProductItem } from '@/components/common'
 import { useDebounce, useGetSearchedProducts } from '@/hooks'
 import { productGetters } from '@/lib/getters'
 
-import { CrProduct, Product } from '@/lib/gql/types'
+import { CrProduct } from '@/lib/gql/types'
 
 export interface B2BProductSearchProps {
   onAddProduct: (params?: CrProduct) => void
@@ -68,13 +69,7 @@ const B2BProductSearch = (props: B2BProductSearchProps) => {
       selectOnFocus
       freeSolo
       sx={{
-        '& .MuiOutlinedInput-root': {
-          padding: 0,
-        },
-        '& .MuiOutlinedInput-root .MuiAutocomplete-input': {
-          padding: '5px',
-        },
-        width: { md: '445px' },
+        ...b2bProductSearchStyle.searchBox,
       }}
       options={b2bProductSearchResult}
       getOptionLabel={(option) => productGetters.getName(option as CrProduct)}
