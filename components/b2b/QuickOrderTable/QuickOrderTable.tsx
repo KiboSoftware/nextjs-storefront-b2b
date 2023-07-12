@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useMemo } from 'react'
 
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
@@ -16,41 +16,6 @@ import { uiHelpers } from '@/lib/helpers'
 import { FulfillmentOption } from '@/lib/types'
 
 import { CrCartItem, CrProduct, Maybe, Location } from '@/lib/gql/types'
-
-function createData(name: string, calories: number, fat: number, carbs: number, protein: number) {
-  return { name, calories, fat, carbs, protein }
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-]
-
-const columns = [
-  {
-    field: 'product',
-    headerName: 'Product',
-  },
-  {
-    field: 'fulfillment',
-    headerName: 'Fulfillment Method',
-  },
-  {
-    field: 'quantity',
-    headerName: 'Quantity',
-  },
-  {
-    field: 'price',
-    headerName: 'Price',
-  },
-  {
-    field: 'itemTotal',
-    headerName: 'Item Total',
-  },
-]
 
 interface QuickOrderTableProps {
   cartItems: CrCartItem[]
@@ -71,6 +36,32 @@ export default function QuickOrderTable(props: QuickOrderTableProps) {
     onStoreSetOrUpdate,
     onQuantityUpdate,
   } = props
+
+  const columns = useMemo(
+    () => [
+      {
+        field: 'product-header',
+        headerName: t('product-header'),
+      },
+      {
+        field: 'fulfillment-method-header',
+        headerName: t('fulfillment-method-header'),
+      },
+      {
+        field: 'quantity-header',
+        headerName: t('quantity-header'),
+      },
+      {
+        field: 'price-header',
+        headerName: t('price-header'),
+      },
+      {
+        field: 'item-total-header',
+        headerName: t('item-total-header'),
+      },
+    ],
+    []
+  )
 
   const { getProductLink } = uiHelpers()
 

@@ -80,6 +80,7 @@ const B2BProductSearch = (props: B2BProductSearchProps) => {
           sx={(theme) => ({
             borderRadius: 0,
             position: 'absolute',
+            top: '80%',
             zIndex: theme.zIndex.modal,
             width: '100%',
           })}

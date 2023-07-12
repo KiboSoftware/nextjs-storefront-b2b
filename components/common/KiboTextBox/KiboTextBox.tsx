@@ -103,11 +103,9 @@ const KiboTextBox = (props: KiboTextBoxProps) => {
         {...rest}
       />
 
-      {helperText && (
-        <FormHelperText id="helper-text" error aria-errormessage={helperText}>
-          {error ? helperText : ' '}
-        </FormHelperText>
-      )}
+      <FormHelperText id="helper-text" error aria-errormessage={helperText}>
+        {error ? helperText : ' '}
+      </FormHelperText>
     </FormControl>
   )
 }
