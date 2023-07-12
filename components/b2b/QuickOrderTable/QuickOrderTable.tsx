@@ -86,6 +86,7 @@ export default function QuickOrderTable(props: QuickOrderTableProps) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="quick order table" size="medium">
+        {!cartItems.length ? <caption>No Products Added</caption> : null}
         <TableHead>
           <TableRow
             sx={{

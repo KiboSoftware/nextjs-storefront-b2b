@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react'
 
 import {
   Box,
+  CircularProgress,
   Collapse,
   Fade,
   InputLabel,
   List,
   ListItem,
+  ListItemButton,
   Paper,
   Popover,
   Popper,
@@ -38,12 +40,19 @@ const B2BProductSearch = (props: B2BProductSearchProps) => {
 
   const [searchTerm, setSearchTerm] = useState<string>('')
 
-  const handleSearch = (userEnteredValue: string) => setSearchTerm(userEnteredValue)
+  const handleSearch = (_: string, userEnteredValue: string) => setSearchTerm(userEnteredValue)
 
   const [isPopperOpen, setIsPopperOpen] = useState<boolean>(false)
 
   const handlePopperOpen = () => setIsPopperOpen(true)
   const handlePopperClose = () => setIsPopperOpen(false)
+
+  const { data: productSearchResult, isLoading } = useGetSearchedProducts({
+    search: useDebounce(searchTerm, publicRuntimeConfig.debounceTimeout),
+    pageSize: 16,
+  })
+
+  const b2bProductSearchResult = productSearchResult?.items || ([] as any)
 
   useEffect(() => {
     searchTerm.trim() ? handlePopperOpen() : handlePopperClose()
@@ -56,71 +65,59 @@ const B2BProductSearch = (props: B2BProductSearchProps) => {
     setSearchTerm('')
   }
 
-  const { data: productSearchResult, isLoading } = useGetSearchedProducts({
-    search: useDebounce(searchTerm, publicRuntimeConfig.debounceTimeout),
-    pageSize: 16,
-  })
-
-  const b2bProductSearchResult = productSearchResult?.items || ([] as any)
-
   return (
-    // <Autocomplete
-    //   selectOnFocus
-    //   freeSolo
-    //   sx={{
-    //     ...b2bProductSearchStyle.searchBox,
-    //   }}
-    //   options={b2bProductSearchResult}
-    //   getOptionLabel={(option) => productGetters.getName(option as CrProduct)}
-    //   renderInput={(params) => (
-    //     <Box>
-    //       <InputLabel shrink htmlFor="kibo-input">
-    //         {t('search-for-product')}
-    //       </InputLabel>
-    //       <TextField {...params} placeholder={t('search-by-name-or-code')} />
-    //     </Box>
-    //   )}
-    //   renderOption={renderOption}
-    //   onInputChange={handleInputChange}
-    //   onChange={handleChange}
-    //   filterOptions={filterOptions}
-    // />
-    <Stack>
-      <Box sx={{ zIndex: 1400 }}>
-        <SearchBar searchTerm={searchTerm} onSearch={handleSearch} showClearButton />
-      </Box>
-      <Collapse
-        in={isPopperOpen}
-        timeout="auto"
-        unmountOnExit
-        role="contentinfo"
-        sx={{ zIndex: 1400 }}
-      >
+    <Stack sx={{ position: 'relative' }}>
+      <KiboTextBox
+        label={t('search-for-product')}
+        value={searchTerm}
+        placeholder={t('search-by-name-or-code')}
+        autocomplete="off"
+        onChange={handleSearch}
+      />
+      <Collapse in={isPopperOpen} timeout="auto" unmountOnExit role="contentinfo">
         <Paper
           elevation={3}
-          sx={{ mt: 1, borderRadius: 0, position: 'relative', zIndex: 1400, width: '100%' }}
+          sx={(theme) => ({
+            borderRadius: 0,
+            position: 'absolute',
+            zIndex: theme.zIndex.modal,
+            width: '100%',
+          })}
         >
-          <List>
-            {b2bProductSearchResult.map((option: any) => {
-              return (
-                <ListItem
-                  {...props}
-                  key={productGetters.getProductId(option as CrProduct)}
-                  onClick={(evt) => handleChange(evt, option)}
-                >
-                  <ProductItem
-                    image={
-                      productGetters.getCoverImage(option) &&
-                      productGetters.handleProtocolRelativeUrl(productGetters.getCoverImage(option))
-                    }
-                    name={productGetters.getName(option as CrProduct)}
-                    productCode={productGetters.getProductId(option as CrProduct)}
-                    isQuickOrder={true}
-                  />
-                </ListItem>
-              )
-            })}
-          </List>
+          {isLoading && (
+            <Box width="100%" display={'flex'} justifyContent={'center'} p={2}>
+              <CircularProgress size={20} />
+            </Box>
+          )}
+          {!isLoading && !b2bProductSearchResult.length ? (
+            <Box width="100%" display={'flex'} justifyContent={'center'} pt={2}>
+              <Typography>{t('no-products-found')}</Typography>
+            </Box>
+          ) : null}
+          {!isLoading && (
+            <List sx={{ cursor: 'pointer' }}>
+              {b2bProductSearchResult.map((option: any) => {
+                return (
+                  <ListItemButton
+                    key={productGetters.getProductId(option as CrProduct)}
+                    onClick={(evt) => handleChange(evt, option)}
+                  >
+                    <ProductItem
+                      image={
+                        productGetters.getCoverImage(option) &&
+                        productGetters.handleProtocolRelativeUrl(
+                          productGetters.getCoverImage(option)
+                        )
+                      }
+                      name={productGetters.getName(option as CrProduct)}
+                      productCode={productGetters.getProductId(option as CrProduct)}
+                      isQuickOrder={true}
+                    />
+                  </ListItemButton>
+                )
+              })}
+            </List>
+          )}
         </Paper>
       </Collapse>
     </Stack>

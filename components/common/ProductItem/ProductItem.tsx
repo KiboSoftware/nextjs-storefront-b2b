@@ -93,7 +93,15 @@ const ProductItem = (props: ProductItemProps) => {
         </Box>
 
         <Stack mr={1} flex={1}>
-          <CardContent sx={{ py: 0, px: 1 }}>
+          <CardContent
+            sx={{
+              py: 0,
+              px: 1,
+              '&.MuiCardContent-root:last-child': {
+                pb: 0,
+              },
+            }}
+          >
             <Typography variant="h4" data-testid="productName" pb={0.375}>
               {name}
             </Typography>

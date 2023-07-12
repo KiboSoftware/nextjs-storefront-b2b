@@ -91,7 +91,7 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
             </Stack>
           </Grid>
         ) : null}
-        <Grid item xs={4} sx={{ zIndex: 1400 }}>
+        <Grid item xs={4}>
           <B2BProductSearch onAddProduct={handleAddProduct} />
         </Grid>
         <Grid item xs={12}>
