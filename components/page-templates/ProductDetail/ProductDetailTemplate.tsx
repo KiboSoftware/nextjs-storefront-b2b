@@ -448,6 +448,7 @@ const ProductDetailTemplate = (props: ProductDetailTemplateProps) => {
           )}
           {purchaseType === PurchaseTypes.ONETIMEPURCHASE && (
             <FulfillmentOptions
+              title={t('fulfillment-options')}
               fulfillmentOptions={fulfillmentOptions}
               selected={selectedFulfillmentOption?.method}
               onFulfillmentOptionChange={(value: string) => handleFulfillmentOptionChange(value)}

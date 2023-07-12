@@ -168,6 +168,7 @@ const CartItem = (props: CartItemProps) => {
 
             <Box sx={{ ...styles.subContainer }}>
               <FulfillmentOptions
+                title={t('fulfillment-options')}
                 fulfillmentOptions={fulfillmentOptions}
                 selected={cartItem?.fulfillmentMethod || ''}
                 onFulfillmentOptionChange={(fulfillmentMethod: string) =>

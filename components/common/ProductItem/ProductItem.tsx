@@ -45,11 +45,12 @@ export interface ProductItemProps {
 
 const styles = {
   imageContainer: {
-    height: 120,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
+    minWidth: '80px',
+    aspectRatio: 1,
   },
 }
 
@@ -68,7 +69,6 @@ const ProductItem = (props: ProductItemProps) => {
     purchaseLocation,
     link,
     children,
-    width = '25%',
     isQuickOrder = false,
     subscriptionFrequency,
     showChangeStoreLink,
@@ -82,14 +82,12 @@ const ProductItem = (props: ProductItemProps) => {
   return (
     <Box key={id}>
       <Box sx={{ display: 'flex', pb: 1, pr: 1, gap: 2, flex: 1 }}>
-        <Box sx={{ ...styles.imageContainer, width }}>
+        <Box sx={{ ...styles.imageContainer }}>
           <Link href={link || ''} passHref>
             <KiboImage
               src={productGetters.handleProtocolRelativeUrl(image) || DefaultImage}
-              layout="fill"
               alt={name}
-              objectFit="contain"
-              errorimage={DefaultImage}
+              fill
             />
           </Link>
         </Box>
