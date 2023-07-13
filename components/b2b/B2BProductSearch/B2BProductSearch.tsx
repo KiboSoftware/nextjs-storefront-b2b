@@ -95,7 +95,7 @@ const B2BProductSearch = (props: B2BProductSearchProps) => {
             </Box>
           ) : null}
           {!isLoading && (
-            <List sx={{ cursor: 'pointer' }}>
+            <List sx={{ cursor: 'pointer', maxHeight: '30vh', overflowY: 'auto' }}>
               {b2bProductSearchResult.map((option: any) => {
                 return (
                   <ListItemButton

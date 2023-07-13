@@ -116,8 +116,8 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
             <Typography variant="h1">{t('quick-order')}</Typography>
           </Box>
         </Grid>
-        {tabAndDesktopScreen ? (
-          <Grid item sm={6} display={'flex'} justifyContent={'flex-end'}>
+        <Grid item sm={6} display={'flex'} justifyContent={'flex-end'}>
+          {tabAndDesktopScreen && cartItems.length ? (
             <Stack direction="row" gap={2}>
               <Button variant="contained" color="secondary">
                 {t('initiate-quote')}
@@ -126,9 +126,9 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
                 {t('checkout')}
               </Button>
             </Stack>
-          </Grid>
-        ) : null}
-        <Grid item xs={4}>
+          ) : null}
+        </Grid>
+        <Grid item xs={12} md={4}>
           <B2BProductSearch onAddProduct={handleAddProduct} />
         </Grid>
         <Grid item xs={12}>
@@ -155,7 +155,7 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
               />
             )}
 
-            {!tabAndDesktopScreen ? (
+            {!tabAndDesktopScreen && cartItems.length ? (
               <Stack spacing={2}>
                 <Button variant="contained" color="secondary">
                   {t('initiate-quote')}
@@ -167,25 +167,27 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
             ) : null}
           </Stack>
         </Grid>
-        <Grid item xs={12}>
-          <Stack sx={quickOrderTemplateStyles.promoCode}>
-            <PromoCodeBadge
-              onApplyCouponCode={handleApplyPromoCode}
-              onRemoveCouponCode={handleRemovePromoCode}
-              promoError={!!promoError}
-              helpText={promoError}
-              couponLabel="Coupon"
-            />
-            <KeyValueDisplay
-              option={{
-                name: t('order-total'),
-                value: `${t('currency', { val: cartTotal })} `,
-              }}
-              variant="body1"
-              sx={quickOrderTemplateStyles.orderTotal}
-            />
-          </Stack>
-        </Grid>
+        {cartItems.length ? (
+          <Grid item xs={12}>
+            <Stack sx={quickOrderTemplateStyles.promoCode}>
+              <PromoCodeBadge
+                onApplyCouponCode={handleApplyPromoCode}
+                onRemoveCouponCode={handleRemovePromoCode}
+                promoError={!!promoError}
+                helpText={promoError}
+                couponLabel="Coupon"
+              />
+              <KeyValueDisplay
+                option={{
+                  name: t('order-total'),
+                  value: `${t('currency', { val: cartTotal })} `,
+                }}
+                variant="body1"
+                sx={quickOrderTemplateStyles.orderTotal}
+              />
+            </Stack>
+          </Grid>
+        ) : null}
       </Grid>
     </>
   )
