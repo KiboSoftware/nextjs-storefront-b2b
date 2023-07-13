@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import ArrowBackIos from '@mui/icons-material/ArrowBackIos'
 import { Stack, Typography, Box, Button, Grid, useMediaQuery, Theme } from '@mui/material'
@@ -7,12 +7,15 @@ import { useTranslation } from 'next-i18next'
 import { quickOrderTemplateStyles } from './QuickOrderTemplate.style'
 import { QuickOrderTable, B2BProductSearch } from '@/components/b2b'
 import { CartItemList } from '@/components/cart'
+import { KeyValueDisplay, PromoCodeBadge } from '@/components/common'
 import {
   useCartActions,
   useGetCart,
   useGetPurchaseLocation,
   useGetStoreLocations,
   useProductCardActions,
+  useUpdateCartCoupon,
+  useDeleteCartCoupon,
 } from '@/hooks'
 import { FulfillmentOptions as FulfillmentOptionsConstant } from '@/lib/constants'
 import { cartGetters, orderGetters, productGetters } from '@/lib/getters'
@@ -26,10 +29,11 @@ export interface QuickOrderTemplateProps {
 const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
   const { t } = useTranslation('common')
 
+  const [promoError, setPromoError] = useState<string>('')
   const { data: cart } = useGetCart(props?.cart)
   const cartItems = cartGetters.getCartItems(cart)
   const tabAndDesktopScreen = useMediaQuery((theme: Theme) => theme.breakpoints.up('sm'))
-
+  const cartTotal = orderGetters.getTotal(cart)
   const { openProductQuickViewModal, handleAddToCart } = useProductCardActions()
 
   const handleAddProduct = (product: any) => {
@@ -43,9 +47,15 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
         },
         quantity: 1,
       }
-      handleAddToCart(payload, false)
+      handleAddToCart(payload, true)
     } else {
-      openProductQuickViewModal(product)
+      const dialogProps = {
+        title: t('product-configuration-options'),
+        cancel: t('cancel'),
+        addItemToCart: t('add-item-to-cart'),
+        isB2B: true,
+      }
+      openProductQuickViewModal(product, dialogProps)
     }
   }
 
@@ -53,12 +63,39 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
   const { data: locations } = useGetStoreLocations({ filter: locationCodes })
   const { data: purchaseLocation } = useGetPurchaseLocation()
   const fulfillmentLocations = locations && Object.keys(locations).length ? locations : []
+  const { updateCartCoupon } = useUpdateCartCoupon()
+  const { deleteCartCoupon } = useDeleteCartCoupon()
 
   const { onFulfillmentOptionChange, handleQuantityUpdate, handleProductPickupLocation } =
     useCartActions({
       cartItems: cartItems as CrCartItem[],
       purchaseLocation,
     })
+
+  const handleApplyPromoCode = async (couponCode: string) => {
+    try {
+      setPromoError('')
+      const response = await updateCartCoupon.mutateAsync({
+        cartId: cart?.id as string,
+        couponCode,
+      })
+      if (response?.invalidCoupons?.length) {
+        setPromoError(response?.invalidCoupons[0]?.reason)
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  }
+  const handleRemovePromoCode = async (couponCode: string) => {
+    try {
+      await deleteCartCoupon.mutateAsync({
+        cartId: cart?.id as string,
+        couponCode,
+      })
+    } catch (err) {
+      console.error(err)
+    }
+  }
 
   return (
     <>
@@ -128,6 +165,25 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
                 </Button>
               </Stack>
             ) : null}
+          </Stack>
+        </Grid>
+        <Grid item xs={12}>
+          <Stack sx={quickOrderTemplateStyles.promoCode}>
+            <PromoCodeBadge
+              onApplyCouponCode={handleApplyPromoCode}
+              onRemoveCouponCode={handleRemovePromoCode}
+              promoError={!!promoError}
+              helpText={promoError}
+              couponLabel="Coupon"
+            />
+            <KeyValueDisplay
+              option={{
+                name: t('order-total'),
+                value: `${t('currency', { val: cartTotal })} `,
+              }}
+              variant="body1"
+              sx={quickOrderTemplateStyles.orderTotal}
+            />
           </Stack>
         </Grid>
       </Grid>

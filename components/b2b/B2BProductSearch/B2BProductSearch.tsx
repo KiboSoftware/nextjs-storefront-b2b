@@ -17,7 +17,6 @@ import {
 } from '@mui/material'
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete'
 import TextField from '@mui/material/TextField'
-import { matchSorter } from 'match-sorter'
 import PopupState, { bindToggle, bindPopper } from 'material-ui-popup-state'
 import getConfig from 'next/config'
 import { useTranslation } from 'next-i18next'

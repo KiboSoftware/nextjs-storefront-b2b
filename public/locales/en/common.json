@@ -387,5 +387,8 @@
   "fulfillment-method-header": "Fulfillment Method",
   "quantity-header": "Quantity",
   "price-header": "Price",
-  "item-total-header": "Item Total"
+  "item-total-header": "Item Total",
+  "product-configuration-options": "Product configuration options",
+  "add-item-to-cart": "Add item to Cart",
+  "add-item-to-list": "Add item to List"
 }

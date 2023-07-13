@@ -5,4 +5,12 @@ export const quickOrderTemplateStyles = {
     flexWrap: 'wrap',
     cursor: 'pointer',
   },
+  promoCode: {
+    flexDirection: 'row',
+    gap: '24px',
+    justifyContent: 'flex-end',
+  },
+  orderTotal: {
+    alignItems: 'center',
+  },
 }
