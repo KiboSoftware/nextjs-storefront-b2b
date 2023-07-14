@@ -72,7 +72,7 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
       purchaseLocation,
     })
 
-  const handleApplyPromoCode = async (couponCode: string) => {
+  const handleApplyCouponCode = async (couponCode: string) => {
     try {
       setPromoError('')
       const response = await updateCartCoupon.mutateAsync({
@@ -86,7 +86,7 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
       console.error(err)
     }
   }
-  const handleRemovePromoCode = async (couponCode: string) => {
+  const handleRemoveCouponCode = async (couponCode: string) => {
     try {
       await deleteCartCoupon.mutateAsync({
         cartId: cart?.id as string,
@@ -171,8 +171,8 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
           <Grid item xs={12}>
             <Stack sx={quickOrderTemplateStyles.promoCode}>
               <PromoCodeBadge
-                onApplyCouponCode={handleApplyPromoCode}
-                onRemoveCouponCode={handleRemovePromoCode}
+                onApplyCouponCode={handleApplyCouponCode}
+                onRemoveCouponCode={handleRemoveCouponCode}
                 promoError={!!promoError}
                 helpText={promoError}
                 couponLabel="Coupon"

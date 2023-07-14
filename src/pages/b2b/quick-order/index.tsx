@@ -1,25 +1,34 @@
+import getConfig from 'next/config'
+import Head from 'next/head'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 import { QuickOrderTemplate } from '@/components/page-templates'
+import { getCart } from '@/lib/api/operations'
 
-import type { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next'
+import type { GetServerSidePropsContext, NextApiRequest, NextApiResponse, NextPage } from 'next'
 
-export const getServerSideProps: GetServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  const { locale } = context
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const { locale, req, res } = context
+  const response = await getCart(req as NextApiRequest, res as NextApiResponse)
+  const { serverRuntimeConfig } = getConfig()
+  const isMultiShipEnabled = serverRuntimeConfig.isMultiShipEnabled
 
   return {
     props: {
+      isMultiShipEnabled,
+      cart: response?.currentCart || null,
       ...(await serverSideTranslations(locale as string, ['common'])),
     },
   }
 }
 
-const QuickOrderPage: NextPage = () => {
+const QuickOrderPage: NextPage = (props: any) => {
   return (
     <>
-      <QuickOrderTemplate cart={{}} />
+      <Head>
+        <meta name="robots" content="noindex,nofollow" />
+      </Head>
+      <QuickOrderTemplate cart={props.cart} />
     </>
   )
 }
