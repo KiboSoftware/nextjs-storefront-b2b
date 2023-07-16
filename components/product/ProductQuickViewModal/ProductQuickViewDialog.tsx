@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Button, Stack } from '@mui/material'
+import { Button, Stack, Theme, useMediaQuery } from '@mui/material'
 
 import { productQuickViewDialogStyle } from './ProductQuickViewDialog.style'
 import KiboDialog from '@/components/common/KiboDialog/KiboDialog'
@@ -27,6 +27,7 @@ const ProductQuickViewDialogFooter = (props: any) => {
     addToCartPayload,
   } = props
   const { handleAddToCart, handleWishList } = useProductCardActions()
+  const tabAndDesktopScreen = useMediaQuery((theme: Theme) => theme.breakpoints.up('sm'))
 
   const handleAddProductToCart = () => {
     handleAddToCart(addToCartPayload, true)
@@ -38,8 +39,16 @@ const ProductQuickViewDialogFooter = (props: any) => {
   }
 
   return (
-    <Stack sx={{ ...productQuickViewDialogStyle.footer }}>
-      <Button variant="contained" color="secondary" onClick={onClose}>
+    <Stack
+      {...(!tabAndDesktopScreen && { spacing: 2 })}
+      sx={{ ...productQuickViewDialogStyle.footer }}
+    >
+      <Button
+        variant="contained"
+        color="secondary"
+        {...(!tabAndDesktopScreen && { fullWidth: true })}
+        onClick={onClose}
+      >
         {cancel}
       </Button>
       {addItemToCart && (
@@ -47,6 +56,7 @@ const ProductQuickViewDialogFooter = (props: any) => {
           variant="contained"
           color="primary"
           onClick={handleAddProductToCart}
+          {...(!tabAndDesktopScreen && { fullWidth: true })}
           {...(!isValidateAddToCart && { disabled: true })}
         >
           {addItemToCart}
@@ -57,6 +67,7 @@ const ProductQuickViewDialogFooter = (props: any) => {
           variant="contained"
           color="primary"
           onClick={handleAddProductToList}
+          {...(!tabAndDesktopScreen && { fullWidth: true })}
           {...(!isValidateAddToWishlist && { disabled: true })}
         >
           {addItemToList}

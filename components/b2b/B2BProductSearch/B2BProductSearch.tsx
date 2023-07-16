@@ -5,7 +5,6 @@ import {
   CircularProgress,
   Collapse,
   Fade,
-  InputLabel,
   List,
   ListItem,
   ListItemButton,
@@ -22,7 +21,7 @@ import getConfig from 'next/config'
 import { useTranslation } from 'next-i18next'
 
 import { b2bProductSearchStyle } from './B2BProductSearch.style'
-import { KiboTextBox, ProductItem, SearchBar } from '@/components/common'
+import { KiboTextBox, ProductItem } from '@/components/common'
 import { useDebounce, useGetSearchedProducts } from '@/hooks'
 import { productGetters } from '@/lib/getters'
 

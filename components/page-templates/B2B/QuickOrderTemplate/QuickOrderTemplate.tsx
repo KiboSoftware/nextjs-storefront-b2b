@@ -117,7 +117,7 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
           </Box>
         </Grid>
         <Grid item sm={6} display={'flex'} justifyContent={'flex-end'}>
-          {tabAndDesktopScreen && cartItems.length ? (
+          {tabAndDesktopScreen ? (
             <Stack direction="row" gap={2}>
               <Button variant="contained" color="secondary">
                 {t('initiate-quote')}

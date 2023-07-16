@@ -5,9 +5,17 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { QuickOrderTemplate } from '@/components/page-templates'
 import { getCart } from '@/lib/api/operations'
 
-import type { GetServerSidePropsContext, NextApiRequest, NextApiResponse, NextPage } from 'next'
+import type {
+  GetServerSideProps,
+  GetServerSidePropsContext,
+  NextApiRequest,
+  NextApiResponse,
+  NextPage,
+} from 'next'
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
   const { locale, req, res } = context
   const response = await getCart(req as NextApiRequest, res as NextApiResponse)
   const { serverRuntimeConfig } = getConfig()
@@ -28,7 +36,7 @@ const QuickOrderPage: NextPage = (props: any) => {
       <Head>
         <meta name="robots" content="noindex,nofollow" />
       </Head>
-      <QuickOrderTemplate cart={props.cart} />
+      <QuickOrderTemplate {...props} />
     </>
   )
 }
