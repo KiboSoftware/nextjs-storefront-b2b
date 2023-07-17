@@ -22,14 +22,14 @@ const ProductItemMock = () => <div data-testid="product-item-component" />
 jest.mock('@/components/common/ProductItem/ProductItem', () => () => ProductItemMock())
 
 const onChangeMock = jest.fn()
-const onBlurMock = jest.fn()
 
 describe('[components] - B2BProductSearch', () => {
   const setup = () => {
     const user = userEvent.setup()
-    renderWithQueryClient(<Common />)
+    renderWithQueryClient(<Common onAddProduct={onChangeMock} />)
     return {
       user,
+      onChangeMock,
     }
   }
 
@@ -44,6 +44,21 @@ describe('[components] - B2BProductSearch', () => {
     await waitFor(() => {
       const productItems = screen.queryAllByTestId(/product-item-component/i)
       expect(productItems.length).toBe(17)
+    })
+  })
+
+  it('should call handleChange while users click on product item', async () => {
+    const { user, onChangeMock } = setup()
+
+    const textBox = screen.getByRole('textbox', { name: 'search-for-product' })
+
+    user.type(textBox, 'shirt')
+
+    await waitFor(() => {
+      const productItems = screen.queryAllByTestId(/product-item-component/i)
+      user.click(productItems[0])
+
+      expect(onChangeMock).toBeCalled()
     })
   })
 })

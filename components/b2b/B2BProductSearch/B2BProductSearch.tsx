@@ -69,7 +69,7 @@ const B2BProductSearch = (props: B2BProductSearchProps) => {
         label={t('search-for-product')}
         value={searchTerm}
         placeholder={t('search-by-name-or-code')}
-        autocomplete="off"
+        autoComplete="off"
         onChange={handleSearch}
       />
       <Collapse in={isPopperOpen} timeout="auto" unmountOnExit role="contentinfo">
