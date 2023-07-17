@@ -4,19 +4,12 @@ import {
   Box,
   CircularProgress,
   Collapse,
-  Fade,
   List,
-  ListItem,
   ListItemButton,
   Paper,
-  Popover,
-  Popper,
   Stack,
   Typography,
 } from '@mui/material'
-import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete'
-import TextField from '@mui/material/TextField'
-import PopupState, { bindToggle, bindPopper } from 'material-ui-popup-state'
 import getConfig from 'next/config'
 import { useTranslation } from 'next-i18next'
 
@@ -25,7 +18,7 @@ import { KiboTextBox, ProductItem } from '@/components/common'
 import { useDebounce, useGetSearchedProducts } from '@/hooks'
 import { productGetters } from '@/lib/getters'
 
-import { CrProduct } from '@/lib/gql/types'
+import { CrProduct, Product } from '@/lib/gql/types'
 
 export interface B2BProductSearchProps {
   onAddProduct: (params?: CrProduct) => void
@@ -50,7 +43,7 @@ const B2BProductSearch = (props: B2BProductSearchProps) => {
     pageSize: 16,
   })
 
-  const b2bProductSearchResult = productSearchResult?.items || ([] as any)
+  const b2bProductSearchResult = productSearchResult?.items ?? ([] as Product[])
 
   useEffect(() => {
     searchTerm.trim() ? handlePopperOpen() : handlePopperClose()
@@ -94,7 +87,7 @@ const B2BProductSearch = (props: B2BProductSearchProps) => {
             </Box>
           ) : null}
           {!isLoading && (
-            <List sx={{ cursor: 'pointer', maxHeight: '30vh', overflowY: 'auto' }}>
+            <List sx={b2bProductSearchStyle.dropDown}>
               {b2bProductSearchResult.map((option: any) => {
                 return (
                   <ListItemButton

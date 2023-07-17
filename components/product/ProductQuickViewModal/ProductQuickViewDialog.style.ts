@@ -5,5 +5,7 @@ export const productQuickViewDialogStyle = {
     marginTop: '0.5rem',
     gap: { md: '24px' },
     display: { xs: 'block', md: 'flex' },
+    width: '100%',
+    justifyContent: { md: 'flex-end' },
   },
 }

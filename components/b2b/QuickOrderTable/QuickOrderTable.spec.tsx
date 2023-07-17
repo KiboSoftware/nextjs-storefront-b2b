@@ -2,7 +2,7 @@ import React from 'react'
 
 import '@testing-library/jest-dom'
 import { composeStories } from '@storybook/testing-react'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 
 import * as stories from './QuickOrderTable.stories'
 import { renderWithQueryClient } from '@/__test__/utils'

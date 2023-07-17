@@ -108,8 +108,8 @@ export default function QuickOrderTable(props: QuickOrderTableProps) {
               </TableCell>
               <TableCell>
                 <FulfillmentOptions
-                  fulfillmentOptions={handleSupportedFulfillmentOptions(cartItem as CrCartItem)}
-                  selected={cartItem?.fulfillmentMethod || ''}
+                  fulfillmentOptions={handleSupportedFulfillmentOptions(cartItem)}
+                  selected={cartItem?.fulfillmentMethod ?? ''}
                   onFulfillmentOptionChange={(fulfillmentMethod: string) =>
                     onFulfillmentOptionChange(fulfillmentMethod, cartItem?.id as string)
                   }

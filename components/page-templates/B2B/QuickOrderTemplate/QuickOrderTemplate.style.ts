@@ -13,4 +13,8 @@ export const quickOrderTemplateStyles = {
   orderTotal: {
     alignItems: 'center',
   },
+  noCartItems: {
+    fontStyle: 'italic',
+    color: 'grey.600',
+  },
 }

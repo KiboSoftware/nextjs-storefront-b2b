@@ -20,7 +20,7 @@ const Template: ComponentStory<typeof QuickOrderTable> = (args) => <QuickOrderTa
 
 export const Common = Template.bind({})
 
-const locationList = locationCollectionMock?.spLocations?.items || []
+const locationList = locationCollectionMock?.spLocations?.items ?? []
 
 Common.args = {
   cartItems: (cartResponse?.items as CrCartItem[]) || [],

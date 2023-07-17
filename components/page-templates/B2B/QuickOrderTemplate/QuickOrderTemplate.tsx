@@ -143,31 +143,40 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
                 onStoreSetOrUpdate={handleProductPickupLocation}
               />
             ) : (
-              <CartItemList
-                cartItems={cartItems}
-                fulfillmentLocations={fulfillmentLocations as Location[]}
-                purchaseLocation={purchaseLocation}
-                onCartItemDelete={() => null}
-                onCartItemQuantityUpdate={handleQuantityUpdate}
-                onFulfillmentOptionChange={onFulfillmentOptionChange}
-                onProductPickupLocation={handleProductPickupLocation}
-                onCartItemActionSelection={() => null}
-              />
+              <Stack spacing={2}>
+                <Typography variant="h2">{t('cart')}</Typography>
+                {cartItems.length > 0 ? (
+                  <CartItemList
+                    cartItems={cartItems}
+                    fulfillmentLocations={fulfillmentLocations as Location[]}
+                    purchaseLocation={purchaseLocation}
+                    onCartItemDelete={() => null}
+                    onCartItemQuantityUpdate={handleQuantityUpdate}
+                    onFulfillmentOptionChange={onFulfillmentOptionChange}
+                    onProductPickupLocation={handleProductPickupLocation}
+                    onCartItemActionSelection={() => null}
+                  />
+                ) : (
+                  <Typography variant="body1" sx={quickOrderTemplateStyles.noCartItems}>
+                    {t('search-to-add-products')}
+                  </Typography>
+                )}
+              </Stack>
             )}
 
             {!tabAndDesktopScreen && cartItems.length ? (
               <Stack spacing={2}>
-                <Button variant="contained" color="secondary">
-                  {t('initiate-quote')}
-                </Button>
                 <Button variant="contained" color="primary">
                   {t('checkout')}
+                </Button>
+                <Button variant="contained" color="secondary">
+                  {t('initiate-quote')}
                 </Button>
               </Stack>
             ) : null}
           </Stack>
         </Grid>
-        {cartItems.length ? (
+        {tabAndDesktopScreen ? (
           <Grid item xs={12}>
             <Stack sx={quickOrderTemplateStyles.promoCode}>
               <PromoCodeBadge
