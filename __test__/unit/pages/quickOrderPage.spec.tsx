@@ -29,7 +29,7 @@ jest.mock('next-i18next/serverSideTranslations', () => ({
 
 const QuickOrderTemplate = () => <div data-testid="quick-order-template-mock" />
 jest.mock(
-  '@/components/page-templates/b2b/QuickOrderTemplate/QuickOrderTemplate.tsx',
+  '@/components/page-templates/B2B/QuickOrderTemplate/QuickOrderTemplate.tsx',
   () => () => QuickOrderTemplate()
 )
 
