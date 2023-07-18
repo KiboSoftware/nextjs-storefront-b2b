@@ -16,6 +16,7 @@ import {
   useProductCardActions,
   useUpdateCartCoupon,
   useDeleteCartCoupon,
+  useDeleteCartItem,
 } from '@/hooks'
 import { FulfillmentOptions as FulfillmentOptionsConstant } from '@/lib/constants'
 import { cartGetters, orderGetters, productGetters } from '@/lib/getters'
@@ -28,13 +29,28 @@ export interface QuickOrderTemplateProps {
 
 const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
   const { t } = useTranslation('common')
+  const tabAndDesktopScreen = useMediaQuery((theme: Theme) => theme.breakpoints.up('sm'))
 
   const [promoError, setPromoError] = useState<string>('')
   const { data: cart } = useGetCart(props?.cart)
   const cartItems = cartGetters.getCartItems(cart)
-  const tabAndDesktopScreen = useMediaQuery((theme: Theme) => theme.breakpoints.up('sm'))
   const cartTotal = orderGetters.getTotal(cart)
+
+  const locationCodes = orderGetters.getFulfillmentLocationCodes(cartItems as CrCartItem[])
+  const { data: locations } = useGetStoreLocations({ filter: locationCodes })
+  const fulfillmentLocations = locations && Object.keys(locations).length ? locations : []
+
+  const { deleteCartItem } = useDeleteCartItem()
+  const { updateCartCoupon } = useUpdateCartCoupon()
+  const { deleteCartCoupon } = useDeleteCartCoupon()
+
+  const { data: purchaseLocation } = useGetPurchaseLocation()
   const { openProductQuickViewModal, handleAddToCart } = useProductCardActions()
+  const { onFulfillmentOptionChange, handleQuantityUpdate, handleProductPickupLocation } =
+    useCartActions({
+      cartItems: cartItems as CrCartItem[],
+      purchaseLocation,
+    })
 
   const handleAddProduct = (product: any) => {
     if (!productGetters.isVariationProduct(product)) {
@@ -59,19 +75,6 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
     }
   }
 
-  const locationCodes = orderGetters.getFulfillmentLocationCodes(cartItems as CrCartItem[])
-  const { data: locations } = useGetStoreLocations({ filter: locationCodes })
-  const { data: purchaseLocation } = useGetPurchaseLocation()
-  const fulfillmentLocations = locations && Object.keys(locations).length ? locations : []
-  const { updateCartCoupon } = useUpdateCartCoupon()
-  const { deleteCartCoupon } = useDeleteCartCoupon()
-
-  const { onFulfillmentOptionChange, handleQuantityUpdate, handleProductPickupLocation } =
-    useCartActions({
-      cartItems: cartItems as CrCartItem[],
-      purchaseLocation,
-    })
-
   const handleApplyCouponCode = async (couponCode: string) => {
     try {
       setPromoError('')
@@ -86,6 +89,7 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
       console.error(err)
     }
   }
+
   const handleRemoveCouponCode = async (couponCode: string) => {
     try {
       await deleteCartCoupon.mutateAsync({
@@ -95,6 +99,10 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
     } catch (err) {
       console.error(err)
     }
+  }
+
+  const handleDeleteItem = async (cartItemId: string) => {
+    await deleteCartItem.mutateAsync({ cartItemId })
   }
 
   return (
@@ -108,14 +116,23 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
             onClick={() => null}
           >
             <ArrowBackIos fontSize="inherit" sx={quickOrderTemplateStyles.wrapIcon} />
-            <Typography variant="body2">{t('my-account')}</Typography>
+            {tabAndDesktopScreen && <Typography variant="body2">{t('my-account')}</Typography>}
+            {!tabAndDesktopScreen && (
+              <Box sx={quickOrderTemplateStyles.quickOrderTextBox}>
+                <Typography variant="h2" sx={quickOrderTemplateStyles.quickOrderText}>
+                  {t('quick-order')}
+                </Typography>
+              </Box>
+            )}
           </Stack>
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <Box>
-            <Typography variant="h1">{t('quick-order')}</Typography>
-          </Box>
-        </Grid>
+        {tabAndDesktopScreen && (
+          <Grid item xs={12} sm={6}>
+            <Box>
+              <Typography variant="h1">{t('quick-order')}</Typography>
+            </Box>
+          </Grid>
+        )}
         <Grid item sm={6} display={'flex'} justifyContent={'flex-end'}>
           {tabAndDesktopScreen ? (
             <Stack direction="row" gap={2}>
@@ -141,6 +158,7 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
                 onFulfillmentOptionChange={onFulfillmentOptionChange}
                 onQuantityUpdate={handleQuantityUpdate}
                 onStoreSetOrUpdate={handleProductPickupLocation}
+                onCartItemDelete={handleDeleteItem}
               />
             ) : (
               <Stack spacing={2}>
@@ -150,7 +168,7 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
                     cartItems={cartItems}
                     fulfillmentLocations={fulfillmentLocations as Location[]}
                     purchaseLocation={purchaseLocation}
-                    onCartItemDelete={() => null}
+                    onCartItemDelete={handleDeleteItem}
                     onCartItemQuantityUpdate={handleQuantityUpdate}
                     onFulfillmentOptionChange={onFulfillmentOptionChange}
                     onProductPickupLocation={handleProductPickupLocation}

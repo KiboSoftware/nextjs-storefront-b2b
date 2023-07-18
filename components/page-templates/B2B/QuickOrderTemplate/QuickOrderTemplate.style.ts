@@ -5,6 +5,12 @@ export const quickOrderTemplateStyles = {
     flexWrap: 'wrap',
     cursor: 'pointer',
   },
+  quickOrderTextBox: {
+    margin: { xs: 'auto' },
+  },
+  quickOrderText: {
+    paddingRight: { xs: '35px' },
+  },
   promoCode: {
     flexDirection: 'row',
     gap: '24px',

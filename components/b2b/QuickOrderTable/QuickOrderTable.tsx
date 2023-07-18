@@ -1,5 +1,7 @@
 import React, { useMemo } from 'react'
 
+import { Delete } from '@mui/icons-material'
+import { IconButton } from '@mui/material'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -24,10 +26,10 @@ interface QuickOrderTableProps {
   onFulfillmentOptionChange: (value: string, id: string) => void
   onStoreSetOrUpdate: (id: string) => void
   onQuantityUpdate: (cartItemId: string, quantity: number) => void
+  onCartItemDelete: (cartItemId: string) => void
 }
 
 export default function QuickOrderTable(props: QuickOrderTableProps) {
-  const { t } = useTranslation('common')
   const {
     cartItems,
     fulfillmentLocations,
@@ -35,8 +37,11 @@ export default function QuickOrderTable(props: QuickOrderTableProps) {
     onFulfillmentOptionChange,
     onStoreSetOrUpdate,
     onQuantityUpdate,
+    onCartItemDelete,
   } = props
 
+  const { t } = useTranslation('common')
+  const { getProductLink } = uiHelpers()
   const columns = useMemo(
     () => [
       {
@@ -59,11 +64,13 @@ export default function QuickOrderTable(props: QuickOrderTableProps) {
         field: 'item-total-header',
         headerName: t('item-total-header'),
       },
+      {
+        field: 'delete-item-header',
+        headerName: '',
+      },
     ],
     []
   )
-
-  const { getProductLink } = uiHelpers()
 
   const handleSupportedFulfillmentOptions = (cartItem: CrCartItem): FulfillmentOption[] => {
     const location =
@@ -163,6 +170,16 @@ export default function QuickOrderTable(props: QuickOrderTableProps) {
                       : undefined
                   }
                 />
+              </TableCell>
+              <TableCell>
+                <IconButton
+                  sx={{ p: 0.5 }}
+                  aria-label="item-delete"
+                  name="item-delete"
+                  onClick={() => onCartItemDelete(cartItem?.id as string)}
+                >
+                  <Delete />
+                </IconButton>
               </TableCell>
             </TableRow>
           ))}

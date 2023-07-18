@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 
 import { cartMock } from '@/__mocks__/stories/cartMock'
 import { createQueryClientWrapper } from '@/__test__/utils'
-import QuickOrderPage, { getServerSideProps } from '@/src/pages/b2b/quick-order'
+import QuickOrderPage, { getServerSideProps } from '@/src/pages/my-account/b2b/quick-order'
 
 const mockQuickOrderCart = cartMock
 

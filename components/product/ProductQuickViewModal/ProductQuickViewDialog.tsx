@@ -30,7 +30,7 @@ const ProductQuickViewDialogFooter = (props: any) => {
   const tabAndDesktopScreen = useMediaQuery((theme: Theme) => theme.breakpoints.up('sm'))
 
   const handleAddProductToCart = () => {
-    handleAddToCart(addToCartPayload, true)
+    handleAddToCart(addToCartPayload, false)
     onClose()
   }
 
