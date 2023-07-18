@@ -58,6 +58,14 @@ const styles = {
   subContainer: {
     flex: 1,
     padding: '0 0.5rem',
+    paddingTop: {
+      xs: 2,
+      md: 0,
+    },
+    paddingLeft: {
+      xs: 0,
+      md: 2,
+    },
   },
   icon: {
     alignItems: 'flex-start',
@@ -155,9 +163,10 @@ const CartItem = (props: CartItemProps) => {
                 </Box>
               </ProductItem>
 
-              <Box sx={{ display: { xs: 'none', sm: 'none', md: 'block', ml: 1 } }}>
+              {/* TBD */}
+              {/* <Box sx={{ display: { xs: 'none', sm: 'none', md: 'block', ml: 1 } }}>
                 <CartItemActions />
-              </Box>
+              </Box> */}
             </Box>
 
             <Divider
@@ -180,12 +189,13 @@ const CartItem = (props: CartItemProps) => {
           </Box>
 
           <Box sx={{ ...styles.icon }}>
-            <Box sx={{ display: { xs: 'block', sm: 'block', md: 'none' } }}>
+            {/* TBD */}
+            {/* <Box sx={{ display: { xs: 'block', sm: 'block', md: 'none' } }}>
               <CartItemActionsMobile
                 actions={actions || []}
                 onMenuItemSelection={() => handleActionSelection()}
               />
-            </Box>
+            </Box> */}
             <IconButton
               sx={{ p: 0.5 }}
               aria-label="item-delete"
