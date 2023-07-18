@@ -9,11 +9,11 @@ export const useProductCardActions = () => {
   const { addToCart } = useAddCartItem()
   const { addOrRemoveWishlistItem, checkProductInWishlist } = useWishlist()
 
-  const handleAddToCart = async (payload: any, isQuickOrder?: boolean) => {
+  const handleAddToCart = async (payload: any, showConfirmationModal = true) => {
     try {
       const cartResponse = await addToCart.mutateAsync(payload)
 
-      if (cartResponse.id && !isQuickOrder) {
+      if (cartResponse.id && showConfirmationModal) {
         showModal({
           Component: AddToCartDialog,
           props: {

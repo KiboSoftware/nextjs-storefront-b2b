@@ -47,7 +47,7 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
         },
         quantity: 1,
       }
-      handleAddToCart(payload, true)
+      handleAddToCart(payload, false)
     } else {
       const dialogProps = {
         title: t('product-configuration-options'),
