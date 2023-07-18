@@ -18,3 +18,10 @@ const Template: ComponentStory<typeof QuickOrderTemplate> = (args) => (
 )
 
 export const Common = Template.bind({})
+
+export const QuickOrderTemplateMobile = Template.bind({})
+QuickOrderTemplateMobile.parameters = {
+  viewport: {
+    defaultViewport: 'iphone12promax',
+  },
+}
