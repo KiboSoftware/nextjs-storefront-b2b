@@ -4,6 +4,7 @@ import '@testing-library/jest-dom'
 import { composeStories } from '@storybook/testing-react'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import getConfig from 'next/config'
 
 import * as stories from './B2BProductSearch.stories'
 import { productSearchResultMock } from '@/__mocks__/stories'
@@ -22,7 +23,7 @@ const ProductItemMock = () => <div data-testid="product-item-component" />
 jest.mock('@/components/common/ProductItem/ProductItem', () => () => ProductItemMock())
 
 const onChangeMock = jest.fn()
-
+const { publicRuntimeConfig } = getConfig()
 describe('[components] - B2BProductSearch', () => {
   const setup = () => {
     const user = userEvent.setup()
@@ -43,7 +44,7 @@ describe('[components] - B2BProductSearch', () => {
     expect(textBox).toBeVisible()
     await waitFor(() => {
       const productItems = screen.queryAllByTestId(/product-item-component/i)
-      expect(productItems.length).toBe(17)
+      expect(productItems.length).toBe(publicRuntimeConfig?.b2bProductSearchPageSize)
     })
   })
 

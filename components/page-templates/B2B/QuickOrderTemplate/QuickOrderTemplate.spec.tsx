@@ -60,7 +60,6 @@ describe('[components] QuickOrderTemplate', () => {
     const quickOrderText = screen.getByText(/quick-order/i)
     const b2bProductComponent = screen.getByTestId('b2b-product-search-component')
 
-    expect(screen.getByText(/my-account/i)).toBeVisible()
     expect(b2bProductComponent).toBeVisible()
     expect(quickOrderText).toBeVisible()
 

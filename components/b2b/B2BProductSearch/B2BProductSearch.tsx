@@ -44,7 +44,7 @@ const B2BProductSearch = (props: B2BProductSearchProps) => {
 
   const { data: productSearchResult, isLoading } = useGetSearchedProducts({
     search: useDebounce(searchTerm, publicRuntimeConfig.debounceTimeout),
-    pageSize: 16,
+    pageSize: publicRuntimeConfig?.b2bProductSearchPageSize,
   })
 
   const b2bProductSearchResult = productSearchResult?.items ?? ([] as Product[])
