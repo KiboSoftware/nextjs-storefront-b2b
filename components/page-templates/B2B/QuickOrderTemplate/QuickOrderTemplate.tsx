@@ -194,27 +194,27 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
             ) : null}
           </Stack>
         </Grid>
-        {tabAndDesktopScreen ? (
-          <Grid item xs={12}>
-            <Stack sx={quickOrderTemplateStyles.promoCode}>
-              <PromoCodeBadge
-                onApplyCouponCode={handleApplyCouponCode}
-                onRemoveCouponCode={handleRemoveCouponCode}
-                promoError={!!promoError}
-                helpText={promoError}
-                couponLabel="Coupon"
-              />
-              <KeyValueDisplay
-                option={{
-                  name: t('order-total'),
-                  value: `${t('currency', { val: cartTotal })} `,
-                }}
-                variant="body1"
-                sx={quickOrderTemplateStyles.orderTotal}
-              />
-            </Stack>
-          </Grid>
-        ) : null}
+
+        <Grid item xs={12}>
+          <Stack sx={quickOrderTemplateStyles.promoCode}>
+            <PromoCodeBadge
+              onApplyCouponCode={handleApplyCouponCode}
+              onRemoveCouponCode={handleRemoveCouponCode}
+              promoError={!!promoError}
+              helpText={promoError}
+              couponLabel="Coupon"
+              promoList={cart?.couponCodes as string[]}
+            />
+            <KeyValueDisplay
+              option={{
+                name: t('order-total'),
+                value: `${t('currency', { val: cartTotal })} `,
+              }}
+              variant="body1"
+              sx={quickOrderTemplateStyles.orderTotal}
+            />
+          </Stack>
+        </Grid>
       </Grid>
     </>
   )

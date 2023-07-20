@@ -84,7 +84,7 @@ const PromoCodeBadge = (props: PromoCodeBadgeProps) => {
         </Button>
       </Stack>
       {promoList?.map((coupon: string) => (
-        <Box key={coupon} data-testid="promotype" component="div" sx={styles.boxStyle}>
+        <Box key={coupon} data-testid="applied-coupon" component="div" sx={styles.boxStyle}>
           <Stack direction="row" spacing={0.5} alignItems="center">
             <Typography sx={{ textAlign: 'left' }}>{coupon}</Typography>
             <CloseIcon
