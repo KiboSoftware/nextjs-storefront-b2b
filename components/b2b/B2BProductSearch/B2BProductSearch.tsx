@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
 import {
   Box,
@@ -28,30 +28,22 @@ const B2BProductSearch = (props: B2BProductSearchProps) => {
   const { onAddProduct } = props
   const { t } = useTranslation('common')
   const { publicRuntimeConfig } = getConfig()
-
   const [searchTerm, setSearchTerm] = useState<string>('')
-  const [isPopperOpen, setIsPopperOpen] = useState<boolean>(false)
-
-  const handleSearch = (_: string, userEnteredValue: string) => setSearchTerm(userEnteredValue)
-  const handlePopperOpen = () => setIsPopperOpen(true)
-  const handlePopperClose = () => setIsPopperOpen(false)
-  const handleChange = async (event: any, value: any) => {
-    if (value) {
-      onAddProduct(value)
-    }
-    setSearchTerm('')
-  }
-
   const { data: productSearchResult, isLoading } = useGetSearchedProducts({
     search: useDebounce(searchTerm, publicRuntimeConfig.debounceTimeout),
     pageSize: publicRuntimeConfig?.b2bProductSearchPageSize,
   })
 
   const b2bProductSearchResult = productSearchResult?.items ?? ([] as Product[])
+  const isPopperOpen: boolean = searchTerm.trim() ? true : false
 
-  useEffect(() => {
-    searchTerm.trim() ? handlePopperOpen() : handlePopperClose()
-  }, [searchTerm])
+  const handleSearch = (_: string, userEnteredValue: string) => setSearchTerm(userEnteredValue)
+  const handleProductClick = async (event: any, value: any) => {
+    if (value) {
+      onAddProduct(value)
+    }
+    setSearchTerm('')
+  }
 
   return (
     <Stack sx={{ position: 'relative' }}>
@@ -89,7 +81,7 @@ const B2BProductSearch = (props: B2BProductSearchProps) => {
                 return (
                   <ListItemButton
                     key={productGetters.getProductId(option as CrProduct)}
-                    onClick={(evt) => handleChange(evt, option)}
+                    onClick={(evt) => handleProductClick(evt, option)}
                   >
                     <ProductItem
                       image={

@@ -25,14 +25,16 @@ import { CrCart, CrCartItem, Location } from '@/lib/gql/types'
 
 export interface QuickOrderTemplateProps {
   cart: CrCart
+  onAccountTitleClick: () => void
 }
 
 const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
+  const { cart: cartData, onAccountTitleClick } = props
   const { t } = useTranslation('common')
-  const tabAndDesktopScreen = useMediaQuery((theme: Theme) => theme.breakpoints.up('sm'))
+  const mdScreen = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'))
 
   const [promoError, setPromoError] = useState<string>('')
-  const { data: cart } = useGetCart(props?.cart)
+  const { data: cart } = useGetCart(cartData)
   const cartItems = cartGetters.getCartItems(cart)
   const cartTotal = orderGetters.getTotal(cart)
 
@@ -53,7 +55,15 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
     })
 
   const handleAddProduct = (product: any) => {
-    if (!productGetters.isVariationProduct(product)) {
+    if (productGetters.isVariationProduct(product)) {
+      const dialogProps = {
+        title: t('product-configuration-options'),
+        cancel: t('cancel'),
+        addItemToCart: t('add-item-to-cart'),
+        isB2B: true,
+      }
+      openProductQuickViewModal(product, dialogProps)
+    } else {
       const payload = {
         product: {
           productCode: productGetters.getProductId(product),
@@ -64,14 +74,6 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
         quantity: 1,
       }
       handleAddToCart(payload, false)
-    } else {
-      const dialogProps = {
-        title: t('product-configuration-options'),
-        cancel: t('cancel'),
-        addItemToCart: t('add-item-to-cart'),
-        isB2B: true,
-      }
-      openProductQuickViewModal(product, dialogProps)
     }
   }
 
@@ -109,15 +111,12 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
     <>
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <Stack
-            sx={quickOrderTemplateStyles.wrapIcon}
-            direction="row"
-            gap={2}
-            onClick={() => null}
-          >
-            <ArrowBackIos fontSize="inherit" sx={quickOrderTemplateStyles.wrapIcon} />
-            {tabAndDesktopScreen && <Typography variant="body2">{t('my-account')}</Typography>}
-            {!tabAndDesktopScreen && (
+          <Stack sx={quickOrderTemplateStyles.wrapIcon} direction="row" gap={2}>
+            <Box sx={{ display: 'flex' }} onClick={onAccountTitleClick}>
+              <ArrowBackIos fontSize="inherit" sx={quickOrderTemplateStyles.wrapIcon} />
+              {mdScreen && <Typography variant="body2">{t('my-account')}</Typography>}
+            </Box>
+            {!mdScreen && (
               <Box sx={quickOrderTemplateStyles.quickOrderTextBox}>
                 <Typography variant="h2" sx={quickOrderTemplateStyles.quickOrderText}>
                   {t('quick-order')}
@@ -126,7 +125,7 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
             )}
           </Stack>
         </Grid>
-        {tabAndDesktopScreen && (
+        {mdScreen && (
           <Grid item xs={12} sm={6}>
             <Box>
               <Typography variant="h1">{t('quick-order')}</Typography>
@@ -134,7 +133,7 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
           </Grid>
         )}
         <Grid item sm={6} display={'flex'} justifyContent={'flex-end'}>
-          {tabAndDesktopScreen ? (
+          {mdScreen ? (
             <Stack direction="row" gap={2}>
               <Button variant="contained" color="secondary">
                 {t('initiate-quote')}
@@ -150,7 +149,7 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
         </Grid>
         <Grid item xs={12}>
           <Stack gap={3}>
-            {tabAndDesktopScreen ? (
+            {mdScreen ? (
               <QuickOrderTable
                 cartItems={cartItems as CrCartItem[]}
                 fulfillmentLocations={fulfillmentLocations}
@@ -182,7 +181,7 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
               </Stack>
             )}
 
-            {!tabAndDesktopScreen && cartItems.length ? (
+            {!mdScreen && cartItems.length ? (
               <Stack spacing={2}>
                 <Button variant="contained" color="primary">
                   {t('checkout')}
@@ -194,17 +193,18 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
             ) : null}
           </Stack>
         </Grid>
-
         <Grid item xs={12}>
           <Stack sx={quickOrderTemplateStyles.promoCode}>
-            <PromoCodeBadge
-              onApplyCouponCode={handleApplyCouponCode}
-              onRemoveCouponCode={handleRemoveCouponCode}
-              promoError={!!promoError}
-              helpText={promoError}
-              couponLabel="Coupon"
-              promoList={cart?.couponCodes as string[]}
-            />
+            <Box sx={quickOrderTemplateStyles.promoCodeBadge}>
+              <PromoCodeBadge
+                onApplyCouponCode={handleApplyCouponCode}
+                onRemoveCouponCode={handleRemoveCouponCode}
+                promoError={!!promoError}
+                helpText={promoError}
+                couponLabel="Coupon"
+                promoList={cart?.couponCodes as string[]}
+              />
+            </Box>
             <KeyValueDisplay
               option={{
                 name: t('order-total'),

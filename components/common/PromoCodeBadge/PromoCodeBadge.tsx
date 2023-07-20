@@ -21,6 +21,7 @@ const styles = {
     display: 'inline-block',
     mr: '0.5rem',
     px: '0.5rem',
+    mb: '0.5rem',
     backgroundColor: 'grey.500',
   },
   textBoxStyle: {

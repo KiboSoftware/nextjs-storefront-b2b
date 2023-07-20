@@ -17,26 +17,20 @@ import { useTranslation } from 'next-i18next'
 
 import { CartItemList } from '@/components/cart'
 import { PromoCodeBadge, OrderSummary } from '@/components/common'
-import { StoreLocatorDialog } from '@/components/dialogs'
-import { useModalContext } from '@/context'
 import {
   useGetCart,
   useInitiateOrder,
   useGetStoreLocations,
   useGetPurchaseLocation,
-  useUpdateCartItemQuantity,
   useDeleteCartItem,
-  useUpdateCartItem,
   useUpdateCartCoupon,
   useDeleteCartCoupon,
   useInitiateCheckout,
   useCartActions,
 } from '@/hooks'
-import { FulfillmentOptions } from '@/lib/constants'
 import { orderGetters, cartGetters } from '@/lib/getters'
-import type { LocationCustom } from '@/lib/types'
 
-import type { Maybe, CrCart, Location, CrCartItemInput, CrCartItem } from '@/lib/gql/types'
+import type { CrCart, Location, CrCartItem } from '@/lib/gql/types'
 
 export interface CartTemplateProps {
   isMultiShipEnabled: boolean
@@ -53,10 +47,7 @@ const CartTemplate = (props: CartTemplateProps) => {
   const router = useRouter()
   const { initiateOrder } = useInitiateOrder()
   const { initiateCheckout } = useInitiateCheckout()
-  const { updateCartItemQuantity } = useUpdateCartItemQuantity()
   const { deleteCartItem } = useDeleteCartItem()
-  const { updateCartItem } = useUpdateCartItem()
-  const { showModal, closeModal } = useModalContext()
 
   const cartItemCount = cartGetters.getCartItemCount(cart)
   const cartItems = cartGetters.getCartItems(cart)

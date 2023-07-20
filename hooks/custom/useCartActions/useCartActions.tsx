@@ -6,12 +6,12 @@ import { LocationCustom } from '@/lib/types'
 
 import { CrCartItem, CrCartItemInput, Maybe, Location } from '@/lib/gql/types'
 
-interface useCartActionsProps {
+interface UseCartActionsProps {
   cartItems: CrCartItem[]
   purchaseLocation: Location
 }
 
-export const useCartActions = ({ cartItems, purchaseLocation }: useCartActionsProps) => {
+export const useCartActions = ({ cartItems, purchaseLocation }: UseCartActionsProps) => {
   const { showModal, closeModal } = useModalContext()
   const { updateCartItem } = useUpdateCartItem()
   const { updateCartItemQuantity } = useUpdateCartItemQuantity()

@@ -5,7 +5,7 @@ import { AddToCartDialog } from '@/components/dialogs'
 import { ProductQuickViewDialog } from '@/components/product'
 import { useModalContext } from '@/context'
 import { useAddCartItem, useWishlist } from '@/hooks'
-import { ProductCustom, WishlistProductInput } from '@/lib/types'
+import { ProductCustom } from '@/lib/types'
 
 const showModalMock = jest.fn()
 jest.mock('@/context', () => ({

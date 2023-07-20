@@ -27,7 +27,7 @@ const ProductQuickViewDialogFooter = (props: any) => {
     addToCartPayload,
   } = props
   const { handleAddToCart, handleWishList } = useProductCardActions()
-  const tabAndDesktopScreen = useMediaQuery((theme: Theme) => theme.breakpoints.up('sm'))
+  const mdScreen = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'))
 
   const handleAddProductToCart = () => {
     handleAddToCart(addToCartPayload, false)
@@ -39,14 +39,11 @@ const ProductQuickViewDialogFooter = (props: any) => {
   }
 
   return (
-    <Stack
-      {...(!tabAndDesktopScreen && { spacing: 2 })}
-      sx={{ ...productQuickViewDialogStyle.footer }}
-    >
+    <Stack {...(!mdScreen && { spacing: 2 })} sx={{ ...productQuickViewDialogStyle.footer }}>
       <Button
         variant="contained"
         color="secondary"
-        {...(!tabAndDesktopScreen && { fullWidth: true })}
+        {...(!mdScreen && { fullWidth: true })}
         onClick={onClose}
       >
         {cancel}
@@ -56,7 +53,7 @@ const ProductQuickViewDialogFooter = (props: any) => {
           variant="contained"
           color="primary"
           onClick={handleAddProductToCart}
-          {...(!tabAndDesktopScreen && { fullWidth: true })}
+          {...(!mdScreen && { fullWidth: true })}
           {...(!isValidateAddToCart && { disabled: true })}
         >
           {addItemToCart}
@@ -67,7 +64,7 @@ const ProductQuickViewDialogFooter = (props: any) => {
           variant="contained"
           color="primary"
           onClick={handleAddProductToList}
-          {...(!tabAndDesktopScreen && { fullWidth: true })}
+          {...(!mdScreen && { fullWidth: true })}
           {...(!isValidateAddToWishlist && { disabled: true })}
         >
           {addItemToList}

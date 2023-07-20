@@ -126,7 +126,6 @@ export default function QuickOrderTable(props: QuickOrderTableProps) {
               <TableCell>
                 <QuantitySelector
                   quantity={cartItem?.quantity || 1} // needs to be modified
-                  label={t('qty')}
                   maxQuantity={100} // needs to be modified
                   onIncrease={() =>
                     onQuantityUpdate(cartItem?.id as string, cartItem?.quantity + 1)

@@ -33,7 +33,7 @@ describe('useCartActions', () => {
 
   const setup = (location?: Location) => {
     const { result } = renderHook(() =>
-      useCartActions({ cartItems, purchaseLocation: location || purchaseLocation })
+      useCartActions({ cartItems, purchaseLocation: location ?? purchaseLocation })
     )
 
     return { result }

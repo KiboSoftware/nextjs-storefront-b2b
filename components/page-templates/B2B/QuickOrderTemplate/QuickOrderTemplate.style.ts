@@ -15,7 +15,9 @@ export const quickOrderTemplateStyles = {
     flexDirection: 'row',
     gap: '24px',
     justifyContent: 'flex-end',
+    display: { xs: 'block', md: 'flex' },
   },
+  promoCodeBadge: { maxWidth: { md: '350px', sm: '100%' } },
   orderTotal: {
     alignItems: 'center',
   },
