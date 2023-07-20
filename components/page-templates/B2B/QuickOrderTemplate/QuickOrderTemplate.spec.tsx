@@ -2,7 +2,7 @@ import React from 'react'
 
 import { useMediaQuery } from '@mui/material'
 import { composeStories } from '@storybook/testing-react'
-import { screen, render, waitFor, cleanup } from '@testing-library/react'
+import { screen, waitFor, cleanup } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { graphql } from 'msw'
 

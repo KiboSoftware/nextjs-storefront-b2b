@@ -2,22 +2,28 @@ import React from 'react'
 
 import '@testing-library/jest-dom'
 import { composeStories } from '@storybook/testing-react'
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import * as stories from './QuickOrderTable.stories'
 import { renderWithQueryClient } from '@/__test__/utils'
 
 const { Common } = composeStories(stories)
 
+const user = userEvent.setup()
+
 const ProductItemMock = () => <div data-testid="product-item-component" />
 jest.mock('@/components/common/ProductItem/ProductItem', () => () => ProductItemMock())
 
 jest.mock('@/components/common/FulfillmentOptions/FulfillmentOptions', () => ({
   __esModule: true,
-  default: ({ onFulfillmentOptionChange }: any) => (
+  default: ({ onFulfillmentOptionChange, onStoreSetOrUpdate }: any) => (
     <div data-testid="fulfillment-options-component">
       <button data-testid="onFulfillmentOptionChange-button" onClick={onFulfillmentOptionChange}>
         onFulfillmentOptionChange
+      </button>
+      <button data-testid="onStoreSetOrUpdate-button" onClick={onStoreSetOrUpdate}>
+        onStoreSetOrUpdate
       </button>
     </div>
   ),
@@ -135,5 +141,19 @@ describe('[components] - QuickOrderTable', () => {
     expect(onFulfillmentOptionChange).toHaveBeenCalledTimes(
       Common.args?.cartItems?.length as number
     )
+  })
+  it('should call onStoreSetOrUpdate callback function when user selects store locator', () => {
+    // arrange
+    const onStoreSetOrUpdateMock = jest.fn()
+    renderWithQueryClient(<Common {...Common.args} onStoreSetOrUpdate={onStoreSetOrUpdateMock} />)
+
+    // assert
+    Common.args?.cartItems?.map(async (item, index) => {
+      user.click(screen.getAllByTestId('onStoreSetOrUpdate-button')[index])
+
+      await waitFor(() => {
+        expect(onStoreSetOrUpdateMock).toHaveBeenCalledWith(item.id)
+      })
+    })
   })
 })
