@@ -11,3 +11,4 @@ export { default as AddressFormDialog } from './AddressFormDialog/AddressFormDia
 export { default as EditOrderDateDialog } from './EditOrderDateDialog/EditOrderDateDialog'
 export { default as EditBillingAddress } from './EditBillingAddress/EditBillingAddress'
 export { default as UserFormDialog } from './UserFormDialog/UserFormDialog'
+export { default as AccountHierarchyFormDialog } from './AccountHierarchyFormDialog/AccountHierarchyFormDialog'

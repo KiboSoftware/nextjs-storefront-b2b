@@ -15,3 +15,4 @@ export { default as ResetPasswordConfirmationTemplate } from './ResetPasswordCon
 export { default as B2BTemplate } from './B2B/B2BTemplate/B2BTemplate'
 export { default as UsersTemplate } from './B2B/UsersTemplate/UsersTemplate'
 export { default as QuickOrderTemplate } from './B2B/QuickOrderTemplate/QuickOrderTemplate'
+export { default as AccountHierarchyTemplate } from './B2B/AccountHierarchyTemplate/AccountHierarchyTemplate'
