@@ -407,5 +407,8 @@
   "number": "Number",
   "edit-quote": "Edit Quote",
   "email-quote": "Email Quote",
-  "delete-quote": "Delete Quote"
+  "delete-quote": "Delete Quote",
+  "pending": "Pending",
+  "in-review": "In Review",
+  "ready-for-checkout": "Ready For Checkout"
 }

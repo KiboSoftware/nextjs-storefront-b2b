@@ -13,7 +13,7 @@ import {
 } from '@mui/material'
 
 interface KiboRadioProps {
-  title?: string
+  title?: string | React.ReactNode
   selected?: string
   align?: 'baseline' | 'center' | 'flex-start'
   radioOptions: {
