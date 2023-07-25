@@ -8,3 +8,4 @@ export { default as SubscriptionItem } from './Subscription/SubscriptionItem/Sub
 export { default as ListTable } from './Lists/ListTable/ListTable'
 export { default as UserTable } from './User/UserTable/UserTable'
 export { default as UserForm } from './User/UserForm/UserForm'
+export { default as AccountHierarchyForm } from './AccountHierarchy/AccountHierarchyForm/AccountHierarchyForm'

@@ -385,7 +385,6 @@
   "save-address-to-account": "Save this address to your account",
   "no-payment-details-found": "No payment details found!",
 
-  "quick-order": "Quick Order",
   "search-for-product": "Search for a product",
   "search-by-name-or-code": "Search by product name or code",
   "initiate-quote": "Initiate Quote",
@@ -399,5 +398,11 @@
   "product-configuration-options": "Product configuration options",
   "add-item-to-cart": "Add item to Cart",
   "add-item-to-list": "Add item to List",
-  "search-to-add-products": "Search to start adding products to this order"
+  "search-to-add-products": "Search to start adding products to this order",
+  "add-child-account": "Add Child Account",
+  "parent-account": "Parent account",
+  "company-name": "Company name",
+  "tax-id": "Tax ID",
+  "optional": "Optional",
+  "create-account": "Create Account"
 }
