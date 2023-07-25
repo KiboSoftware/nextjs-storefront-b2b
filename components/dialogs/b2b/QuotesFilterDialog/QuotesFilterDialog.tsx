@@ -109,7 +109,7 @@ const QuotesFilterActions = (props: QuotesFilterActionsProps) => {
   return (
     <Stack gap={2} width="100%" direction={tabAndDesktop ? 'row' : 'column'}>
       <Button
-        name="cancel"
+        name="clear"
         sx={{ width: '100%' }}
         variant="contained"
         color="secondary"
@@ -127,6 +127,7 @@ const QuotesFilterActions = (props: QuotesFilterActionsProps) => {
 // Component
 const QuotesFilterDialog = (props: CartDetailsProps) => {
   const { closeModal } = props
+  const { t } = useTranslation('common')
 
   const handleFilterApply = () => {
     closeModal()
@@ -136,7 +137,7 @@ const QuotesFilterDialog = (props: CartDetailsProps) => {
   }
 
   const DialogArgs = {
-    Title: 'Apply Filter',
+    Title: t('apply-filter'),
     Content: <QuotesFilterContent />,
     showContentTopDivider: true,
     showContentBottomDivider: false,

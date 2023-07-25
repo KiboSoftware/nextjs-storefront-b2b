@@ -410,5 +410,6 @@
   "delete-quote": "Delete Quote",
   "pending": "Pending",
   "in-review": "In Review",
-  "ready-for-checkout": "Ready For Checkout"
+  "ready-for-checkout": "Ready For Checkout",
+  "apply-filter": "Apply Filter"
 }
