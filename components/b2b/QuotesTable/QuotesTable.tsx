@@ -21,14 +21,24 @@ import {
 } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 
-import { KiboPagination, Price } from '@/components/common'
+import { KiboPagination, KiboSelect, Price, SearchBar } from '@/components/common'
+import { EmailQuoteDialog, QuotesFilterDialog } from '@/components/dialogs'
+import { useModalContext } from '@/context'
 import { quoteGetters } from '@/lib/getters'
-import { CategorySearchParams } from '@/lib/types'
 
-import { Quote, QuoteCollection } from '@/lib/gql/types'
+import { QuoteCollection } from '@/lib/gql/types'
+
+interface SortingValues {
+  value: string
+  id: string
+}
 
 interface QuotesTableProps {
   quoteCollection: QuoteCollection
+  sortingValues: {
+    options: SortingValues[]
+    selected: string
+  }
 }
 
 const desktopColumns = [
@@ -82,10 +92,12 @@ const mobileColumns = [
 ]
 
 const QuotesTable = (props: QuotesTableProps) => {
-  const { quoteCollection } = props
+  const { quoteCollection, sortingValues } = props
   const { t } = useTranslation('common')
   const theme = useTheme()
+  const { showModal } = useModalContext()
   const tabAndDesktop = useMediaQuery(theme.breakpoints.up('sm'))
+  const [searchTerm, setSearchTerm] = React.useState('')
 
   // Mobile Actions
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -102,6 +114,7 @@ const QuotesTable = (props: QuotesTableProps) => {
   }
 
   const handleEmailQuote = () => {
+    showModal({ Component: EmailQuoteDialog })
     handleClose()
   }
 
@@ -109,12 +122,55 @@ const QuotesTable = (props: QuotesTableProps) => {
     handleClose()
   }
 
+  const handleFilterButtonClick = () => {
+    showModal({ Component: QuotesFilterDialog })
+  }
+
+  const handleQuoteSearch = (term: string) => {
+    setSearchTerm(term)
+  }
+
   const quotes = quoteGetters.getQuotes(quoteCollection)
 
   const columns = tabAndDesktop ? desktopColumns : mobileColumns
 
+  const onSortItemSelection = (value: any) => null
+
   return (
     <>
+      <Toolbar
+        sx={{
+          paddingInline: 0,
+        }}
+      >
+        <Box>
+          <SearchBar searchTerm={searchTerm} onSearch={handleQuoteSearch} showClearButton />
+        </Box>
+        <Box ml="auto" display="flex" alignItems={'center'}>
+          <Box>
+            <KiboSelect
+              name="sort-plp"
+              sx={{ typography: 'body2' }}
+              // value={sortingValues?.selected}
+              placeholder={t('sort-by')}
+              onChange={(_name, value) => onSortItemSelection(value)}
+            >
+              {sortingValues?.options?.map((sortingVal: any) => (
+                <MenuItem sx={{ typography: 'body2' }} key={sortingVal?.id} value={sortingVal?.id}>
+                  {sortingVal?.value}
+                </MenuItem>
+              ))}
+            </KiboSelect>
+          </Box>
+          <Box>
+            <Tooltip title="Filter list">
+              <IconButton onClick={handleFilterButtonClick}>
+                <FilterList />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        </Box>
+      </Toolbar>
       <TableContainer component={Paper}>
         <Table sx={{ maxWidth: '100%' }} aria-label="quick order table" size="small">
           <TableHead>

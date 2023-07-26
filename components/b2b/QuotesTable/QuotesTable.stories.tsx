@@ -11,7 +11,6 @@ import { CrCartItem, Location } from '@/lib/gql/types'
 export default {
   title: 'B2B/Quotes/QuotesTable',
   component: QuotesTable,
-
   argTypes: {
     backgroundColor: { control: 'color' },
   },
@@ -22,6 +21,16 @@ const Template: ComponentStory<typeof QuotesTable> = (args) => <QuotesTable {...
 export const Common = Template.bind({})
 
 Common.args = {
-  //   quoteCollection:  {...quotesMock, items: []},
   quoteCollection: quotesMock,
+  sortingValues: {
+    selected: '',
+    options: [
+      { value: 'First Created', id: 'first created' },
+      { value: 'Last Created', id: 'last created' },
+      { value: 'Quote name: A-Z', id: 'name asc' },
+      { value: 'Quote name: Z-A', id: 'name desc' },
+      { value: 'Quote number: Low-High', id: 'number asc' },
+      { value: 'Quote number: High-Low', id: 'number desc' },
+    ],
+  },
 }
