@@ -492,13 +492,7 @@ export const b2bAccountUsersHandlers = [
 
   // useCreateCustomerB2bAccountMutation
   graphql.mutation('createCustomerB2bAccount', (_req, res, ctx) => {
-    return res(
-      ctx.data({
-        data: {
-          createCustomerB2bAccount: b2BAccountResponseMock,
-        },
-      })
-    )
+    return res(ctx.data({ createCustomerB2bAccount: b2BAccountResponseMock }))
   }),
 ]
 

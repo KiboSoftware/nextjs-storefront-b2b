@@ -16,6 +16,7 @@ describe('[hooks] useCreateCustomerB2bAccountMutation', () => {
     result.current.createCustomerB2bAccount.mutateAsync({ ...b2BAccountInputMock })
 
     await waitFor(() => {
+      console.log(result.current.createCustomerB2bAccount)
       expect(result.current.createCustomerB2bAccount.data).toStrictEqual(b2BAccountResponseMock)
     })
   })
