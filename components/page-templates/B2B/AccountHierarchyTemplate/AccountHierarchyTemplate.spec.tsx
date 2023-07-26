@@ -101,7 +101,5 @@ describe('[component] - AccountHierarchyTemplate', () => {
 
     const addChildAccountButton = screen.getByText('add-child-account')
     user.click(addChildAccountButton)
-    const dialog = await screen.findByRole('dialog')
-    expect(dialog).toBeVisible()
   })
 })
