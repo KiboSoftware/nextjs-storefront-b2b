@@ -18,11 +18,7 @@ import { useTranslation } from 'next-i18next'
 
 import { KiboDialog, KiboRadio } from '@/components/common'
 
-import type { CrCartItem as CartItemType } from '@/lib/gql/types'
-
 interface CartDetailsProps {
-  cartItem: CartItemType
-  isDialogCentered: boolean
   closeModal: () => void
 }
 

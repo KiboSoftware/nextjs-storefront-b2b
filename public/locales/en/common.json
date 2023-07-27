@@ -413,5 +413,6 @@
   "ready-for-checkout": "Ready For Checkout",
   "apply-filter": "Apply Filter",
   "add-comment": "Add comment",
-  "type-something": "Type something ..."
+  "type-something": "Type something ...",
+  "quote-history": "Quote History"
 }
