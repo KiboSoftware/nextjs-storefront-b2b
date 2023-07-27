@@ -1,3 +1,25 @@
+const commerceSummary = {
+  totalOrderAmount: {
+    amount: 0,
+  },
+  orderCount: 0,
+  wishlistCount: 0,
+  visitsCount: 0,
+}
+
+const updatedAndCreatedBy = {
+  updateBy: 'tbd',
+  createBy: 'tbd',
+}
+
+const userFlags = {
+  isLocked: false,
+  isActive: true,
+  isRemoved: false,
+  acceptsMarketing: false,
+  hasExternalPassword: false,
+}
+
 export const accountHierarchy = {
   accounts: [
     {
@@ -9,11 +31,7 @@ export const accountHierarchy = {
           lastName: 'Jadhav',
           localeCode: 'en-us',
           userId: '0abbfb8811d94deba8e9f13906173a0f',
-          isLocked: false,
-          isActive: true,
-          isRemoved: false,
-          acceptsMarketing: false,
-          hasExternalPassword: false,
+          ...userFlags,
         },
         {
           emailAddress: 'geetanshu.chhabra@kibocommerce.com',
@@ -22,11 +40,7 @@ export const accountHierarchy = {
           lastName: 'chabbra',
           localeCode: 'en-US',
           userId: 'c0a204d4fce347f1ac059eb4814dfbbd',
-          isLocked: false,
-          isActive: true,
-          isRemoved: false,
-          acceptsMarketing: false,
-          hasExternalPassword: false,
+          ...userFlags,
         },
       ],
       isActive: true,
@@ -35,14 +49,7 @@ export const accountHierarchy = {
       approvalStatus: 'Approved',
       id: 1004,
       customerSet: 'default',
-      commerceSummary: {
-        totalOrderAmount: {
-          amount: 0,
-        },
-        orderCount: 0,
-        wishlistCount: 0,
-        visitsCount: 0,
-      },
+      commerceSummary,
       companyOrOrganization: 'Sushant Account',
       segments: [],
       taxExempt: false,
@@ -50,8 +57,7 @@ export const accountHierarchy = {
       auditInfo: {
         updateDate: '2023-07-20T06:36:32.782Z',
         createDate: '2023-04-17T06:45:26.149Z',
-        updateBy: 'tbd',
-        createBy: 'tbd',
+        ...updatedAndCreatedBy,
       },
       customerSinceDate: '2023-04-17T06:45:26.149Z',
       accountType: 'B2B',
@@ -65,11 +71,7 @@ export const accountHierarchy = {
           firstName: 'Jadhav',
           localeCode: 'en-IN',
           userId: 'd05881f3aa3e4fe8b16fd335fac1515d',
-          isLocked: false,
-          isActive: true,
-          isRemoved: false,
-          acceptsMarketing: false,
-          hasExternalPassword: false,
+          ...userFlags,
         },
       ],
       isActive: true,
@@ -79,14 +81,7 @@ export const accountHierarchy = {
       approvalStatus: 'Approved',
       id: 1022,
       customerSet: 'default',
-      commerceSummary: {
-        totalOrderAmount: {
-          amount: 0,
-        },
-        orderCount: 0,
-        wishlistCount: 0,
-        visitsCount: 0,
-      },
+      commerceSummary,
       companyOrOrganization: 'Child 2',
       segments: [],
       taxExempt: false,
@@ -94,8 +89,7 @@ export const accountHierarchy = {
       auditInfo: {
         updateDate: '2023-07-20T05:24:25.359Z',
         createDate: '2023-07-20T05:24:25.359Z',
-        updateBy: 'tbd',
-        createBy: 'tbd',
+        ...updatedAndCreatedBy,
       },
       customerSinceDate: '2023-07-20T05:24:25.355Z',
       accountType: 'B2B',
@@ -109,11 +103,7 @@ export const accountHierarchy = {
           firstName: 'Jadhav',
           localeCode: 'en-IN',
           userId: 'acb5518aa25f469b945eff274561f2df',
-          isLocked: false,
-          isActive: true,
-          isRemoved: false,
-          acceptsMarketing: false,
-          hasExternalPassword: false,
+          ...userFlags,
         },
       ],
       isActive: true,
@@ -123,14 +113,7 @@ export const accountHierarchy = {
       approvalStatus: 'Approved',
       id: 1020,
       customerSet: 'default',
-      commerceSummary: {
-        totalOrderAmount: {
-          amount: 0,
-        },
-        orderCount: 0,
-        wishlistCount: 0,
-        visitsCount: 0,
-      },
+      commerceSummary,
       companyOrOrganization: 'Child 1',
       segments: [],
       taxExempt: false,
@@ -138,8 +121,7 @@ export const accountHierarchy = {
       auditInfo: {
         updateDate: '2023-07-21T06:39:41.769Z',
         createDate: '2023-07-19T08:38:02.409Z',
-        updateBy: 'tbd',
-        createBy: 'tbd',
+        ...updatedAndCreatedBy,
       },
       customerSinceDate: '2023-07-19T08:38:02.403Z',
       accountType: 'B2B',
@@ -153,11 +135,7 @@ export const accountHierarchy = {
           firstName: 'Jadhav',
           localeCode: 'en-IN',
           userId: 'accb4762028b4622af0d5ae99f29bc0c',
-          isLocked: false,
-          isActive: true,
-          isRemoved: false,
-          acceptsMarketing: false,
-          hasExternalPassword: false,
+          ...userFlags,
         },
       ],
       isActive: true,
@@ -167,14 +145,7 @@ export const accountHierarchy = {
       approvalStatus: 'Approved',
       id: 1024,
       customerSet: 'default',
-      commerceSummary: {
-        totalOrderAmount: {
-          amount: 0,
-        },
-        orderCount: 0,
-        wishlistCount: 0,
-        visitsCount: 0,
-      },
+      commerceSummary,
       companyOrOrganization: 'Child 3',
       segments: [],
       taxExempt: false,
@@ -182,8 +153,7 @@ export const accountHierarchy = {
       auditInfo: {
         updateDate: '2023-07-21T06:54:14.079Z',
         createDate: '2023-07-21T06:15:38.934Z',
-        updateBy: 'tbd',
-        createBy: 'tbd',
+        ...updatedAndCreatedBy,
       },
       customerSinceDate: '2023-07-21T06:15:38.931Z',
       accountType: 'B2B',

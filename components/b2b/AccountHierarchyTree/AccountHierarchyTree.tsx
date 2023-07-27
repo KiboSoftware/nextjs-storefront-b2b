@@ -164,7 +164,7 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
 
   const handleCollapse = (collapseCase: 'ALL' | 'NONE') => {
     const instance = refNestable.current as any
-    instance && instance.collapse(collapseCase)
+    instance?.collapse(collapseCase)
   }
 
   // Use Confirmation Dialog
