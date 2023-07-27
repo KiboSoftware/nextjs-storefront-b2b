@@ -108,6 +108,24 @@ const getPaymentMethods = (order: CrOrder) => {
     }) as PaymentMethod[]
 }
 
+const getPurchaseOrderPaymentMethods = (order: CrOrder) => {
+  const payments: CrPayment[] =
+    (order?.payments?.filter(
+      (payment) => payment?.status?.toLowerCase() === 'new'
+    ) as CrPayment[]) || []
+  console.log('payments', payments)
+  if (!payments) return []
+
+  return payments
+    .filter((p: CrPayment) => p?.billingInfo?.purchaseOrder)
+    .map((item: CrPayment) => {
+      return {
+        purchaseOrderNumber: item?.billingInfo?.purchaseOrder?.purchaseOrderNumber,
+        paymentTerms: item?.billingInfo?.purchaseOrder?.paymentTerm?.code,
+      }
+    })
+}
+
 const getPersonalDetails = (order: CrOrder): CrContact => {
   return {
     email: getEmail(order),
@@ -158,6 +176,7 @@ const getCheckoutDetails = (order: CrOrder): CheckoutDetails => {
     shippingDetails: getShippingDetails(order),
     billingDetails: getBillingDetails(order),
     paymentMethods: getPaymentMethods(order),
+    purchaseOrderPaymentMethods: getPurchaseOrderPaymentMethods(order),
   }
 }
 

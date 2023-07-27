@@ -207,6 +207,13 @@ export const checkoutPaymentFragment = /* GraphQL */ `
         ...billingContactFragment
       }
       isSameBillingShippingAddress
+      purchaseOrder {
+        purchaseOrderNumber
+        paymentTerm {
+          description
+          code
+        }
+      }
       card {
         paymentServiceCardId
         isTokenized
