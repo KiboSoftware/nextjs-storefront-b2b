@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event'
 import * as stories from './AccountHierarchyForm.stories' // import all stories from the stories file
 import { createQueryClientWrapper } from '@/__test__/utils'
 
-const { Common } = composeStories(stories)
+const { Common, AddAccountToChild } = composeStories(stories)
 
 const onClose = jest.fn()
 const onSave = jest.fn()
@@ -24,17 +24,19 @@ describe('[component] User Form', () => {
   it('should render user form', async () => {
     setup()
 
-    const parentAccountField = screen.getByLabelText('parent-account') as HTMLInputElement
-    const companyNameField = screen.getByLabelText('company-name')
-    const taxIdField = screen.getByLabelText('tax-id (optional)')
-    const emaiAddressField = screen.getByLabelText('email')
-    const firstNameField = screen.getByLabelText('first-name')
-    const lastNameField = screen.getByLabelText('last-name-or-sur-name')
+    const parentAccountField = screen.getByRole('textbox', { name: '' }) as HTMLInputElement
+    const companyNameField = screen.getByRole('textbox', { name: 'company-name' })
+    const taxIdField = screen.getByRole('textbox', { name: 'tax-id (optional)' })
+    const emaiAddressField = screen.getByRole('textbox', { name: 'email' })
+    const firstNameField = screen.getByRole('textbox', { name: 'first-name' })
+    const lastNameField = screen.getByRole('textbox', { name: 'last-name-or-sur-name' })
     const submitButton = await screen.findByTestId('submit-button')
     const cancelButton = await screen.findByTestId('cancel-button')
 
-    expect(parentAccountField).toBeVisible()
-    await waitFor(() => expect(parentAccountField.value).toBe('Test Organization'))
+    expect(parentAccountField).toBeInTheDocument()
+    await waitFor(() =>
+      expect(parseInt(parentAccountField.value)).toBe(Common?.args?.accounts?.[0]?.id)
+    )
     expect(companyNameField).toBeVisible()
     expect(taxIdField).toBeVisible()
     expect(emaiAddressField).toBeVisible()
@@ -69,5 +71,21 @@ describe('[component] User Form', () => {
 
     user.click(submitButton)
     await waitFor(() => expect(onSave).toHaveBeenCalledTimes(1))
+  })
+
+  it('should show normal textbox when account added to child account', async () => {
+    const user = userEvent.setup()
+
+    render(<Common {...AddAccountToChild.args} onSave={onSave} onClose={onClose} />)
+
+    const companyNameField = screen.getByRole('textbox', {
+      name: 'parent-account',
+    }) as HTMLInputElement
+
+    await waitFor(() =>
+      expect(companyNameField.value).toBe(
+        AddAccountToChild?.args?.accounts?.[0]?.companyOrOrganization
+      )
+    )
   })
 })

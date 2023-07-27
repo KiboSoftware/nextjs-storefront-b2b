@@ -26,7 +26,7 @@ interface AccountHierarchyDialogProps {
 const onCloseMock = jest.fn()
 
 const AccountHierarchyMock = ({ onClose }: { onClose: () => void }) => (
-  <div data-testid="user-form-mock">
+  <div data-testid="account-hierarchy-form-mock">
     <button data-testid="cancel-account-mock-button" onClick={onClose}>
       Cancel
     </button>
@@ -38,6 +38,12 @@ const AccountHierarchyMock = ({ onClose }: { onClose: () => void }) => (
 jest.mock(
   '@/components/my-account/AccountHierarchy/AccountHierarchyForm/AccountHierarchyForm',
   () => () => AccountHierarchyMock({ onClose: onCloseMock })
+)
+
+const AccountHierarchyTreeMock = () => <div data-testid="account-hierarchy-tree-mock"></div>
+jest.mock(
+  '@/components/b2b/AccountHierarchyTree/AccountHierarchyTree',
+  () => () => AccountHierarchyTreeMock()
 )
 
 jest.mock('@/components/dialogs', () => ({
@@ -101,5 +107,12 @@ describe('[component] - AccountHierarchyTemplate', () => {
 
     const addChildAccountButton = screen.getByText('add-child-account')
     user.click(addChildAccountButton)
+  })
+
+  it('should render account hierarchy tree', () => {
+    setup()
+
+    const accountHierarchyTreeMock = screen.getByTestId('account-hierarchy-tree-mock')
+    expect(accountHierarchyTreeMock).toBeVisible()
   })
 })

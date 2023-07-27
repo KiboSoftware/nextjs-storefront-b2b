@@ -39,7 +39,8 @@ const AccountHierarchyTemplate = () => {
     showModal({
       Component: AccountHierarchyFormDialog,
       props: {
-        user,
+        accounts: [user],
+        isAddingAccountToChild: false,
         primaryButtonText: t('create-account'),
         title: t('confirmation'),
         onSave: handleFormSubmit,

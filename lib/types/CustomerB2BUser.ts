@@ -55,7 +55,7 @@ export interface B2bUserRoleParams {
 export interface CreateCustomerB2bAccountParams {
   parentAccount?: CustomerAccount
   companyOrOrganization: string
-  taxId: string
+  taxId?: string
   firstName: string
   lastName: string
   emailAddress: string
