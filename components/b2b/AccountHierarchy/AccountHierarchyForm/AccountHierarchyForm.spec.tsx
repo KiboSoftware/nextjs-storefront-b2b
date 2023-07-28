@@ -24,7 +24,7 @@ describe('[component] User Form', () => {
   it('should render user form', async () => {
     setup()
 
-    const parentAccountField = screen.getByRole('textbox', { name: '' }) as HTMLInputElement
+    const parentAccountField: HTMLInputElement = screen.getByRole('textbox', { name: '' })
     const companyNameField = screen.getByRole('textbox', { name: 'company-name' })
     const taxIdField = screen.getByRole('textbox', { name: 'tax-id (optional)' })
     const emaiAddressField = screen.getByRole('textbox', { name: 'email' })
@@ -51,11 +51,11 @@ describe('[component] User Form', () => {
 
     render(<Common {...Common.args} onSave={onSave} onClose={onClose} />)
 
-    const companyNameField = screen.getByLabelText('company-name') as HTMLInputElement
-    const taxIdField = screen.getByLabelText('tax-id (optional)') as HTMLInputElement
-    const emaiAddressField = screen.getByLabelText('email') as HTMLInputElement
-    const firstNameField = screen.getByLabelText('first-name') as HTMLInputElement
-    const lastNameField = screen.getByLabelText('last-name-or-sur-name') as HTMLInputElement
+    const companyNameField: HTMLInputElement = screen.getByLabelText('company-name')
+    const taxIdField: HTMLInputElement = screen.getByLabelText('tax-id (optional)')
+    const emaiAddressField: HTMLInputElement = screen.getByLabelText('email')
+    const firstNameField: HTMLInputElement = screen.getByLabelText('first-name')
+    const lastNameField: HTMLInputElement = screen.getByLabelText('last-name-or-sur-name')
     const submitButton = await screen.findByTestId('submit-button')
 
     user.type(companyNameField, 'ABC Enterprise')
@@ -74,13 +74,11 @@ describe('[component] User Form', () => {
   })
 
   it('should show normal textbox when account added to child account', async () => {
-    const user = userEvent.setup()
-
     render(<Common {...AddAccountToChild.args} onSave={onSave} onClose={onClose} />)
 
-    const companyNameField = screen.getByRole('textbox', {
+    const companyNameField: HTMLInputElement = screen.getByRole('textbox', {
       name: 'parent-account',
-    }) as HTMLInputElement
+    })
 
     await waitFor(() =>
       expect(companyNameField.value).toBe(
