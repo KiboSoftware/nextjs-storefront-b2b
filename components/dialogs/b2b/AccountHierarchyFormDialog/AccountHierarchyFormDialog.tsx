@@ -1,7 +1,7 @@
 import { useTranslation } from 'next-i18next'
 
+import { AccountHierarchyForm } from '@/components/b2b'
 import { KiboDialog } from '@/components/common'
-import { AccountHierarchyForm } from '@/components/my-account'
 import { CreateCustomerB2bAccountParams } from '@/lib/types'
 
 import { CustomerAccount } from '@/lib/gql/types'
