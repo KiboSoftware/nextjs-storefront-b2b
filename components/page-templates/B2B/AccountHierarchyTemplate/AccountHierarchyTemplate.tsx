@@ -5,12 +5,12 @@ import { useTranslation } from 'next-i18next'
 
 import { accountHierarchyTemplateStyles } from './AccountHierarchyTemplate.styles'
 import { accountHierarchy } from '@/__mocks__/stories/accountHierarchy'
-import AccountHierarchyTree from '@/components/b2b/AccountHierarchyTree/AccountHierarchyTree'
+import { AccountHierarchyTree } from '@/components/b2b'
 import { AccountHierarchyFormDialog } from '@/components/dialogs'
 import { useAuthContext, useModalContext } from '@/context'
 import { useCreateCustomerB2bAccountMutation } from '@/hooks'
 import { B2BRoles } from '@/lib/constants'
-import { buildCreateCustomerB2bAccountParams } from '@/lib/helpers/buildCreateCustomerB2bAccountParams'
+import { buildCreateCustomerB2bAccountParams } from '@/lib/helpers'
 import { CreateCustomerB2bAccountParams } from '@/lib/types'
 
 const AccountHierarchyTemplate = () => {

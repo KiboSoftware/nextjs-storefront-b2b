@@ -55,13 +55,13 @@ const AccountHierarchyMock = ({ onClose }: { onClose: () => void }) => (
   </div>
 )
 jest.mock(
-  '@/components/my-account/AccountHierarchy/AccountHierarchyForm/AccountHierarchyForm',
+  '@/components/b2b/AccountHierarchy/AccountHierarchyForm/AccountHierarchyForm',
   () => () => AccountHierarchyMock({ onClose: onCloseMock })
 )
 
 const AccountHierarchyTreeMock = () => <div data-testid="account-hierarchy-tree-mock"></div>
 jest.mock(
-  '@/components/b2b/AccountHierarchyTree/AccountHierarchyTree',
+  '@/components/b2b/AccountHierarchy/AccountHierarchyTree/AccountHierarchyTree',
   () => () => AccountHierarchyTreeMock()
 )
 

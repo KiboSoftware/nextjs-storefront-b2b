@@ -10,5 +10,5 @@ export { default as EditSubscriptionFrequencyDialog } from './EditSubscriptionFr
 export { default as AddressFormDialog } from './AddressFormDialog/AddressFormDialog'
 export { default as EditOrderDateDialog } from './EditOrderDateDialog/EditOrderDateDialog'
 export { default as EditBillingAddress } from './EditBillingAddress/EditBillingAddress'
-export { default as UserFormDialog } from './UserFormDialog/UserFormDialog'
+export { default as UserFormDialog } from './b2b/UserFormDialog/UserFormDialog'
 export { default as AccountHierarchyFormDialog } from './b2b/AccountHierarchyFormDialog/AccountHierarchyFormDialog'
