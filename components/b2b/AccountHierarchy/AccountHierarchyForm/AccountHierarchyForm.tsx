@@ -120,7 +120,7 @@ const AccountHierarchyForm = (props: AccountHierarchyFormProps) => {
                 placeholder={t('select-parent-account')}
                 error={!!errors?.parentAccount}
                 helperText={errors?.parentAccount?.message as string}
-                value={selectedParentAccount?.id?.toString() || ''}
+                value={selectedParentAccount?.id?.toString() ?? ''}
               >
                 {accounts?.map((account: CustomerAccount) => {
                   return (
