@@ -11,13 +11,7 @@ import { publicRuntimeConfig } from '../next.config'
 import storefrontTheme from '../styles/theme'
 import i18n from './i18n'
 import { RouterContext } from 'next/dist/shared/lib/router-context'
-import {
-  AuthContextProvider,
-  ModalContextProvider,
-  DialogRoot,
-  HeaderContextProvider,
-  SnackbarRoot,
-} from '@/context'
+import { ModalContextProvider, DialogRoot } from '@/context/ModalContext'
 import { ThemeProvider } from '@mui/material/styles'
 
 import theme from '@/styles/theme'
@@ -34,15 +28,16 @@ Object.defineProperty(NextImage, 'default', {
 export const decorators = [
   muiTheme([storefrontTheme]),
   (storyFn) => (
-    <ThemeProvider theme={theme}>
-      <ModalContextProvider>
-        <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={theme}>
+        <ModalContextProvider>
           <I18nextProvider i18n={i18n}>
-            {storyFn()} <DialogRoot />
+            {storyFn()}
+            <DialogRoot />
           </I18nextProvider>
-        </QueryClientProvider>
-      </ModalContextProvider>
-    </ThemeProvider>
+        </ModalContextProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
   ),
 ]
 
