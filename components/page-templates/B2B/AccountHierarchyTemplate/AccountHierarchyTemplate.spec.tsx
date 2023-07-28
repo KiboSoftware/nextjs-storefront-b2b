@@ -3,8 +3,10 @@ import React from 'react'
 
 import '@testing-library/jest-dom'
 import { composeStories } from '@storybook/testing-react'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import mediaQuery from 'css-mediaquery'
+import { useRouter } from 'next/router'
 
 import * as stories from './AccountHierarchyTemplate.stories' // import all stories from the stories file
 import { createQueryClientWrapper } from '@/__test__/utils'
@@ -24,6 +26,23 @@ interface AccountHierarchyDialogProps {
 
 // Mock
 const onCloseMock = jest.fn()
+
+jest.mock('next/router', () => ({
+  useRouter: () => ({
+    push: jest.fn(),
+  }),
+}))
+
+const createMatchMedia = (width: number) => (query: string) => ({
+  matches: mediaQuery.match(query, { width }),
+  addListener: () => jest.fn(),
+  removeListener: () => jest.fn(),
+  media: query,
+  onchange: null,
+  addEventListener: jest.fn(),
+  removeEventListener: jest.fn(),
+  dispatchEvent: jest.fn(),
+})
 
 const AccountHierarchyMock = ({ onClose }: { onClose: () => void }) => (
   <div data-testid="account-hierarchy-form-mock">
@@ -67,6 +86,10 @@ jest.mock('@/components/dialogs', () => ({
   },
 }))
 
+jest.mock('next/router', () => ({
+  useRouter: jest.fn(),
+}))
+
 const setup = () => {
   const user = userEvent.setup()
   render(
@@ -100,6 +123,9 @@ describe('[component] - AccountHierarchyTemplate', () => {
 
     const addUserButton = screen.getByText('add-child-account')
     expect(addUserButton).toBeVisible()
+
+    const accountHierarchyTreeMock = screen.getByTestId('account-hierarchy-tree-mock')
+    expect(accountHierarchyTreeMock).toBeVisible()
   })
 
   it('should open add child account form in dialog when add child account button clicked', async () => {
@@ -109,10 +135,19 @@ describe('[component] - AccountHierarchyTemplate', () => {
     user.click(addChildAccountButton)
   })
 
-  it('should render account hierarchy tree', () => {
+  it('should navigate to "/my-account" when account title is clicked', async () => {
+    window.matchMedia = createMatchMedia(1400)
+
+    const mockPush = jest.fn()
+    ;(useRouter as jest.Mock).mockReturnValue({
+      push: mockPush,
+    })
+
     setup()
 
-    const accountHierarchyTreeMock = screen.getByTestId('account-hierarchy-tree-mock')
-    expect(accountHierarchyTreeMock).toBeVisible()
+    const accountTitleElement = screen.getByText(/my-account/i)
+    fireEvent.click(accountTitleElement)
+
+    expect(mockPush).toHaveBeenCalledWith('/my-account')
   })
 })
