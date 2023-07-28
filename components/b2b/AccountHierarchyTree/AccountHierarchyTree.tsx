@@ -16,6 +16,7 @@ import {
   ListItemText,
   Typography,
 } from '@mui/material'
+import { useTranslation } from 'next-i18next'
 import Nestable from 'react-nestable'
 
 import { B2BRoles } from '@/lib/constants'
@@ -70,13 +71,15 @@ const AccountActions = (props: AccountActionsProps) => {
   const { onAdd, onEdit, onDelete, onBuyersClick, onQuotesClick } = props
   const role = React.useContext(RoleContext)
 
+  const { t } = useTranslation('common')
+
   return (
     <Box display={'flex'} gap={2} alignItems={'center'} onClick={(e) => e.stopPropagation()}>
       <Typography variant="caption" onClick={onBuyersClick}>
-        Buyers
+        {t('buyers')}
       </Typography>
       <Typography variant="caption" onClick={onQuotesClick}>
-        Quotes
+        {t('quotes')}
       </Typography>
       {role === B2BRoles.ADMIN && (
         <Box display={'flex'} gap={2}>
@@ -121,6 +124,7 @@ const TreeLabel = (props: TreeLabelProps) => {
   return (
     <List dense={true}>
       <ListItem
+        data-testid="tree-label"
         secondaryAction={
           role !== B2BRoles.NON_PURCHASER ? (
             <AccountActions
@@ -143,6 +147,8 @@ const TreeLabel = (props: TreeLabelProps) => {
 
 export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
   const { accounts, hierarchy, role } = props
+
+  const { t } = useTranslation('common')
 
   const renderItem = (props: any) => {
     const { item, collapseIcon, handler } = props
@@ -175,8 +181,8 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
   return (
     <RoleContext.Provider value={role}>
       <Box display={'flex'} justifyContent={'flex-end'} gap={2}>
-        <Button onClick={() => handleCollapse('NONE')}>Expand All</Button>
-        <Button onClick={() => handleCollapse('ALL')}>Collapse All</Button>
+        <Button onClick={() => handleCollapse('NONE')}>{t('expand-all')}</Button>
+        <Button onClick={() => handleCollapse('ALL')}>{t('collapse-all')}</Button>
       </Box>
       <Nestable
         ref={(el) => (refNestable.current = el)}

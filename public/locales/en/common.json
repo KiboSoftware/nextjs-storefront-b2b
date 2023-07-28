@@ -404,5 +404,8 @@
   "tax-id": "Tax ID",
   "optional": "Optional",
   "create-account": "Create Account",
-  "select-parent-account": "Select parent account"
+  "select-parent-account": "Select parent account",
+  "expand-all": "Expand All",
+  "collapse-all": "Collapse All",
+  "buyers": "Buyers"
 }
