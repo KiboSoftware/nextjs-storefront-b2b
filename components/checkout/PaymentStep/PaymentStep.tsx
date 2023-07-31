@@ -178,13 +178,13 @@ const PaymentStep = (props: PaymentStepProps) => {
   const checkoutPayment = orderGetters.getSelectedPaymentType(checkout)
   const checkoutPaymentType = checkoutPayment?.paymentType?.toString() || ''
 
-  console.log('checkoutPayment', checkoutPayment, 'checkoutPaymentType', checkoutPaymentType)
-
   const [selectedPaymentTypeRadio, setSelectedPaymentTypeRadio] =
     useState<string>(checkoutPaymentType)
 
   const handlePaymentTypeRadioChange = (value: string) => {
     setSelectedPaymentTypeRadio(value)
+    setIsAddingNewPayment(false)
+    setBillingFormAddress(initialBillingAddressData)
   }
 
   const [isAddingNewPayment, setIsAddingNewPayment] = useState<boolean>(false)
@@ -242,7 +242,7 @@ const PaymentStep = (props: PaymentStepProps) => {
     cvv: '',
   }
   const {
-    formState: { errors, isValid },
+    formState: { errors, isValid: isCvvValid },
     control,
   } = useForm({
     mode: 'all',
@@ -251,6 +251,8 @@ const PaymentStep = (props: PaymentStepProps) => {
     resolver: yupResolver(useDetailsSchema()),
     shouldFocusError: true,
   })
+
+  console.log('isValid', isCvvValid)
 
   // default card details if payment method is card
   const defaultCustomerAccountCard = userGetters.getDefaultPaymentBillingMethod(cardOptions)
@@ -365,17 +367,11 @@ const PaymentStep = (props: PaymentStepProps) => {
     const accountPaymentDetails =
       userGetters.getSavedCardsAndBillingDetails(cardsCollection, addressCollection) || []
 
-    console.log('accountPaymentDetails', accountPaymentDetails)
-
     // find default payment details from server data
     const defaultCard = userGetters.getDefaultPaymentBillingMethod(accountPaymentDetails)
 
-    console.log('defaultCard', defaultCard)
-
     // get previously saved checkout payments
     const checkoutPaymentWithNewStatus = orderGetters.getSelectedPaymentType(checkout)
-
-    console.log('checkoutPaymentWithNewStatus', checkoutPaymentWithNewStatus)
 
     // if checkoutPayment details are not present in accountPaymentDetails, push it and set it as selected radio
     if (checkoutPaymentWithNewStatus?.paymentType === PaymentType.CREDITCARD) {
@@ -703,15 +699,16 @@ const PaymentStep = (props: PaymentStepProps) => {
 
   useEffect(() => {
     if (selectedPaymentTypeRadio === PaymentType.CREDITCARD) {
-      if (isAddingNewPayment || !cvv) setStepStatusIncomplete()
+      if (isAddingNewPayment || !isCvvValid) setStepStatusIncomplete()
       else setStepStatusValid()
     } else if (selectedPaymentTypeRadio === PaymentType.PURCHASEORDER) {
       if (isAddingNewPayment || !savedPaymentBillingDetailsForPurchaseOrder)
         setStepStatusIncomplete()
       else setStepStatusValid()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    cvv,
+    isCvvValid,
     isAddingNewPayment,
     savedPaymentBillingDetailsForPurchaseOrder,
     selectedPaymentTypeRadio,
@@ -760,7 +757,7 @@ const PaymentStep = (props: PaymentStepProps) => {
                   label={paymentType.name}
                 />
                 {paymentType.id === selectedPaymentTypeRadio ? (
-                  <Box sx={{ maxWidth: '100%', marginBottom: '1.75rem' }}>
+                  <Box sx={{ maxWidth: '100%', mb: 1 }}>
                     {shouldShowPreviouslySavedCards && (
                       <Stack gap={2} width="100%" data-testid="saved-payment-methods">
                         {cardOptions?.length ? (
@@ -859,7 +856,7 @@ const PaymentStep = (props: PaymentStepProps) => {
                     {shouldShowPreviouslySavedPaymentsForPurchaseOrder ? (
                       <Stack gap={2} width="100%" data-testid="saved-payment-methods">
                         {savedPaymentBillingDetailsForPurchaseOrder ? (
-                          <>
+                          <Box pl={2}>
                             <KeyValueDisplay
                               option={{
                                 name: t('po-number'),
@@ -900,7 +897,7 @@ const PaymentStep = (props: PaymentStepProps) => {
                                   ?.contact.address as CrAddress
                               )}
                             />
-                          </>
+                          </Box>
                         ) : (
                           <Typography variant="h4">
                             {t('no-previously-saved-payment-methods')}
@@ -954,7 +951,13 @@ const PaymentStep = (props: PaymentStepProps) => {
                               width: '100%',
                               paddingLeft: '0.5rem',
                             }}
-                            control={<Checkbox name={`${t('billing-address-same-as-shipping')}`} />}
+                            key={selectedPaymentTypeRadio}
+                            control={
+                              <Checkbox
+                                name={`${t('billing-address-same-as-shipping')}`}
+                                key={selectedPaymentTypeRadio}
+                              />
+                            }
                             label={`${t('billing-address-same-as-shipping')}`}
                             onChange={(_, value) => handleSameAsShippingAddressCheckbox(value)}
                           />
