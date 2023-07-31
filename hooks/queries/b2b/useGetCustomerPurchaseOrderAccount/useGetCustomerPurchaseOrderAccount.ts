@@ -7,16 +7,20 @@ import { makeGraphQLClient } from '@/lib/gql/client'
 import { getCustomerPurchaseOrderQuery } from '@/lib/gql/queries'
 import { customerPurchaseOrderAccountKeys } from '@/lib/react-query/queryKeys'
 
+import { CustomerPurchaseOrderAccount } from '@/lib/gql/types'
+
 /**
  * @hidden
  */
 export interface UseCustomerPurchaseOrderAccountResponse {
-  data: any
+  data?: CustomerPurchaseOrderAccount
   isLoading: boolean
   isSuccess: boolean
 }
 
-const loadCustomerCustomerPurchaseOrderAccount = async (accountId: number) => {
+const loadCustomerCustomerPurchaseOrderAccount = async (
+  accountId: number
+): Promise<CustomerPurchaseOrderAccount> => {
   const client = makeGraphQLClient()
 
   const response = await client.request({
@@ -29,11 +33,7 @@ const loadCustomerCustomerPurchaseOrderAccount = async (accountId: number) => {
 export const useGetCustomerPurchaseOrderAccount = (
   accountId: number
 ): UseCustomerPurchaseOrderAccountResponse => {
-  const {
-    data = {},
-    isLoading,
-    isSuccess,
-  } = useQuery({
+  const { data, isLoading, isSuccess } = useQuery({
     queryKey: customerPurchaseOrderAccountKeys?.purchaseOrderAccountById(accountId),
     queryFn: () => loadCustomerCustomerPurchaseOrderAccount(accountId),
     enabled: !!accountId,

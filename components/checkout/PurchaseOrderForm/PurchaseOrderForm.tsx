@@ -17,9 +17,11 @@ import * as yup from 'yup'
 
 import { KiboSelect, KiboTextBox } from '@/components/common'
 
+import { CrPurchaseOrderPayment, CustomerPurchaseOrderPaymentTerm } from '@/lib/gql/types'
+
 const schema = yup.object().shape({
-  poNumber: yup.string().required('This field is required'),
-  paymentTerms: yup.string().when('$purchaseOrderPaymentTerms', {
+  purchaseOrderNumber: yup.string().required('This field is required'),
+  paymentTerm: yup.string().when('$purchaseOrderPaymentTerms', {
     is: (purchaseOrderPaymentTerms: any) =>
       purchaseOrderPaymentTerms && purchaseOrderPaymentTerms.length > 1,
     then: yup.string().required('This field is required when more data is present.'),
@@ -27,7 +29,16 @@ const schema = yup.object().shape({
   }),
 })
 
-const PurchaseOrderForm = (props: any) => {
+interface PurchaseOrderFormProps {
+  creditLimit: number
+  availableBalance: number
+  purchaseOrderPaymentTerms: CustomerPurchaseOrderPaymentTerm[]
+  validateForm: boolean
+  onFormStatusChange: (isValid: boolean) => void
+  onSavePurchaseData: (data: CrPurchaseOrderPayment) => void
+}
+
+const PurchaseOrderForm = (props: PurchaseOrderFormProps) => {
   const {
     creditLimit,
     availableBalance,
@@ -45,13 +56,13 @@ const PurchaseOrderForm = (props: any) => {
   } = useForm({
     mode: 'onBlur',
     reValidateMode: 'onBlur',
-    // defaultValues: '',
     resolver: yupResolver(schema),
     shouldFocusError: true,
     context: { purchaseOrderPaymentTerms },
   })
   const singlePurchaseOrderPaymentTerms =
-    (purchaseOrderPaymentTerms?.length <= 1 && purchaseOrderPaymentTerms?.[0]) ?? null
+    purchaseOrderPaymentTerms?.length === 1 ? purchaseOrderPaymentTerms?.[0] : null
+
   const generateSelectOptions = () =>
     purchaseOrderPaymentTerms?.map((paymentTerm: any) => {
       return (
@@ -62,7 +73,12 @@ const PurchaseOrderForm = (props: any) => {
     })
 
   const onValid = async (formData: any) => {
-    const purchaseOrderFormData = { ...formData }
+    const purchaseOrderFormData = {
+      ...formData,
+      paymentTerm: purchaseOrderPaymentTerms.find(
+        (term: any) => term.description === formData.paymentTerm
+      ),
+    }
     onSavePurchaseData(purchaseOrderFormData)
   }
 
@@ -103,7 +119,7 @@ const PurchaseOrderForm = (props: any) => {
         )}
         <Grid item xs={12} md={6}>
           <Controller
-            name="poNumber"
+            name="purchaseOrderNumber"
             control={control}
             // defaultValue={contact?.address?.address1}
             render={({ field }) => (
@@ -147,7 +163,7 @@ const PurchaseOrderForm = (props: any) => {
         {purchaseOrderPaymentTerms.length > 1 && (
           <Grid item xs={12} md={6}>
             <Controller
-              name="paymentTerms"
+              name="paymentTerm"
               control={control}
               defaultValue=""
               render={({ field }) => (

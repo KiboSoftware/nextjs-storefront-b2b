@@ -4,6 +4,7 @@ import getConfig from 'next/config'
 import { useRouter } from 'next/router'
 
 import { DetailsStep, PaymentStep, ReviewStep, StandardShippingStep } from '@/components/checkout'
+import PaymentStepNew from '@/components/checkout/PaymentStep/PaymentStepNew'
 import { CheckoutUITemplate } from '@/components/page-templates'
 import { useAuthContext } from '@/context'
 import {
@@ -154,10 +155,11 @@ const StandardShipCheckoutTemplate = (props: StandardShipCheckoutProps) => {
           savedUserAddressData={savedUserAddressData}
           isAuthenticated={isAuthenticated}
         />
-        <PaymentStep
+        <PaymentStepNew
           checkout={order as CrOrder}
           onVoidPayment={handleVoidPayment}
           onAddPayment={handleAddPayment}
+          isMultiShipEnabled={false}
         />
         <ReviewStep
           checkout={order as CrOrder}

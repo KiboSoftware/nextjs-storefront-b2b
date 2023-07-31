@@ -384,7 +384,7 @@ describe('[components] PaymentStep', () => {
           userId: 1012,
         })
 
-        const checkoutPayments = orderGetters.getSelectedPaymentMethods(
+        const checkoutPayments = orderGetters.getSelectedPaymentType(
           orderMock.checkout,
           PaymentType.CREDITCARD
         )
@@ -440,7 +440,7 @@ describe('[components] PaymentStep', () => {
         userId: 0,
       })
 
-      const checkoutPayments = orderGetters.getSelectedPaymentMethods(
+      const checkoutPayments = orderGetters.getSelectedPaymentType(
         orderMock.checkout,
         PaymentType.CREDITCARD
       )

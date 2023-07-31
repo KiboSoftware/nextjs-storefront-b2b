@@ -113,7 +113,6 @@ const getPurchaseOrderPaymentMethods = (order: CrOrder) => {
     (order?.payments?.filter(
       (payment) => payment?.status?.toLowerCase() === 'new'
     ) as CrPayment[]) || []
-  console.log('payments', payments)
   if (!payments) return []
 
   return payments
@@ -146,7 +145,7 @@ const getShippingDetails = (order: CrOrder): ShippingDetails => {
 }
 
 const getBillingDetails = (order: CrOrder): BillingDetails => {
-  const activePayment = getSelectedPaymentMethods(order, PaymentType.CREDITCARD)
+  const activePayment = getSelectedPaymentType(order, PaymentType.CREDITCARD)
   const contact =
     order?.billingInfo?.billingContact || (activePayment?.billingInfo?.billingContact as CrContact)
   return {
@@ -180,10 +179,14 @@ const getCheckoutDetails = (order: CrOrder): CheckoutDetails => {
   }
 }
 
-const getSelectedPaymentMethods = (order?: CrOrder | Checkout, paymentType?: string) => {
-  return order?.payments?.find(
-    (each) => each?.paymentType === paymentType && each?.status?.toLowerCase() === 'new'
-  )
+const getSelectedPaymentType = (order?: CrOrder | Checkout, paymentType?: string): CrPayment => {
+  return order?.payments?.find((each) => {
+    if (paymentType) {
+      return each?.paymentType === paymentType && each?.status?.toLowerCase() === 'new'
+    }
+
+    return each?.status?.toLowerCase() === 'new'
+  }) as CrPayment
 }
 
 const getId = (order: CrOrder) => order.id as string
@@ -329,7 +332,7 @@ export const orderGetters = {
   getFulfillmentLocationCodes,
   getCheckoutDetails,
   getShippingContact,
-  getSelectedPaymentMethods,
+  getSelectedPaymentType,
   getShippingMethodCode,
   getLocationCode,
   getPaymentMethods,
