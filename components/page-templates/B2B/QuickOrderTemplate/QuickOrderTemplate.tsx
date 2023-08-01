@@ -177,7 +177,7 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
                   loading={showLoadingButton}
                   disabled={!cartItemCount || showLoadingButton}
                 >
-                  {t('go-to-checkout')}
+                  {t('checkout')}
                 </LoadingButton>
               </Stack>
             </Stack>
