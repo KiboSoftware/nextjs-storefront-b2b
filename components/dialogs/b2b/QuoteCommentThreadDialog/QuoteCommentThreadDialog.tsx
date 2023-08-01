@@ -6,12 +6,16 @@ import { quoteMock } from '@/__mocks__/stories/quoteMock'
 import { QuotesCommentThread } from '@/components/b2b'
 import { KiboDialog } from '@/components/common'
 
+import { QuoteComment } from '@/lib/gql/types'
+
 interface QuoteCommentThreadDialogProps {
+  userId: string
+  comments: QuoteComment[]
   closeModal: () => void
 }
 
 const QuoteCommentThreadDialog = (props: QuoteCommentThreadDialogProps) => {
-  const { closeModal } = props
+  const { userId, comments, closeModal } = props
   const { t } = useTranslation('common')
 
   const handleComment = () => {
@@ -19,9 +23,9 @@ const QuoteCommentThreadDialog = (props: QuoteCommentThreadDialogProps) => {
   }
 
   const DialogArgs = {
-    Title: t('email-quote'),
+    Title: t('comment-thread'),
     Content: (
-      <QuotesCommentThread comments={quoteMock.comments} userId={''} onAddComment={handleComment} />
+      <QuotesCommentThread comments={comments} userId={userId} onAddComment={handleComment} />
     ),
     showContentTopDivider: true,
     showContentBottomDivider: false,

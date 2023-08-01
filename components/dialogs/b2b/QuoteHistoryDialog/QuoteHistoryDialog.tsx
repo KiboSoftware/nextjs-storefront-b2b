@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { Button, Stack } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 
 import { quoteMock } from '@/__mocks__/stories/quoteMock'
@@ -17,6 +18,20 @@ const QuoteHistoryDialog = (props: QuoteHistoryDialogProps) => {
   const DialogArgs = {
     Title: t('quote-history'),
     Content: <QuoteHistory auditHistory={quoteMock.auditHistory} />,
+    Actions: (
+      <Stack width="20%">
+        <Button
+          name="clear"
+          size="small"
+          sx={{ width: '100%' }}
+          variant="contained"
+          color="secondary"
+          onClick={() => closeModal()}
+        >
+          {t('close')}
+        </Button>
+      </Stack>
+    ),
     showContentTopDivider: true,
     showContentBottomDivider: false,
     isDialogCentered: true,

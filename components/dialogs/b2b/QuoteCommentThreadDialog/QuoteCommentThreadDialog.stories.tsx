@@ -3,6 +3,7 @@ import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
 import QuoteCommentThreadDialog from './QuoteCommentThreadDialog'
+import { quoteMock } from '@/__mocks__/stories/quoteMock'
 
 export default {
   title: 'Dialogs/B2B/QuoteCommentThreadDialog',
@@ -16,3 +17,7 @@ const Template: ComponentStory<typeof QuoteCommentThreadDialog> = ({ ...args }) 
 
 // Common
 export const Common = Template.bind({})
+Common.args = {
+  comments: quoteMock.comments,
+  userId: quoteMock.userId,
+}

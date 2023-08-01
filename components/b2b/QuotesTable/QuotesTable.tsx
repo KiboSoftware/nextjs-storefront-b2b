@@ -1,6 +1,11 @@
-import React, { useMemo } from 'react'
+import React, { useCallback } from 'react'
 
-import { Delete, Edit, FilterList, Mail, MoreVert } from '@mui/icons-material'
+import Delete from '@mui/icons-material/Delete'
+import Edit from '@mui/icons-material/Edit'
+import FiberManualRecord from '@mui/icons-material/FiberManualRecord'
+import FilterList from '@mui/icons-material/FilterList'
+import Mail from '@mui/icons-material/Mail'
+import MoreVert from '@mui/icons-material/MoreVert'
 import {
   Box,
   IconButton,
@@ -13,7 +18,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Toolbar,
   Tooltip,
   Typography,
   useMediaQuery,
@@ -44,15 +48,15 @@ interface QuotesTableProps {
 const desktopColumns = [
   {
     field: 'quoteNumber',
-    headerName: 'quote-number',
+    headerName: '#',
   },
   {
     field: 'quoteName',
-    headerName: 'quote-name',
+    headerName: 'name',
   },
   {
     field: 'expirationDate',
-    headerName: 'expiration-date',
+    headerName: 'expires-on',
   },
   {
     field: 'createdDate',
@@ -74,8 +78,12 @@ const desktopColumns = [
 
 const mobileColumns = [
   {
+    field: 'status',
+    headerName: '',
+  },
+  {
     field: 'quoteNumber',
-    headerName: 'number',
+    headerName: '#',
   },
   {
     field: 'quoteName',
@@ -83,13 +91,19 @@ const mobileColumns = [
   },
   {
     field: 'expirationDate',
-    headerName: 'expiration-date',
+    headerName: 'expires-on',
   },
   {
     field: 'actions',
     headerName: '',
   },
 ]
+
+const statusColorCode: any = {
+  Pending: 'disabled',
+  InReview: 'warning',
+  ReadyForCheckout: 'success',
+}
 
 const QuotesTable = (props: QuotesTableProps) => {
   const { quoteCollection, sortingValues } = props
@@ -98,6 +112,10 @@ const QuotesTable = (props: QuotesTableProps) => {
   const { showModal } = useModalContext()
   const tabAndDesktop = useMediaQuery(theme.breakpoints.up('sm'))
   const [searchTerm, setSearchTerm] = React.useState('')
+
+  const getStatusColorCode = useCallback((status: string) => {
+    return statusColorCode[status]
+  }, [])
 
   // Mobile Actions
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -138,15 +156,19 @@ const QuotesTable = (props: QuotesTableProps) => {
 
   return (
     <>
-      <Toolbar
+      <Box
         sx={{
           paddingInline: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+          pb: 1,
         }}
       >
-        <Box>
+        <Box width="100%">
           <SearchBar searchTerm={searchTerm} onSearch={handleQuoteSearch} showClearButton />
         </Box>
-        <Box ml="auto" display="flex" alignItems={'center'}>
+        <Box width="100%" display="flex" justifyContent={'space-between'} alignItems={'center'}>
           <Box>
             <KiboSelect
               name="sort-plp"
@@ -170,9 +192,13 @@ const QuotesTable = (props: QuotesTableProps) => {
             </Tooltip>
           </Box>
         </Box>
-      </Toolbar>
+      </Box>
       <TableContainer component={Paper}>
-        <Table sx={{ maxWidth: '100%' }} aria-label="quick order table" size="small">
+        <Table
+          sx={{ maxWidth: '100%', whiteSpace: 'nowrap' }}
+          aria-label="quick order table"
+          size="small"
+        >
           <TableHead>
             <TableRow
               sx={{
@@ -182,7 +208,7 @@ const QuotesTable = (props: QuotesTableProps) => {
               }}
             >
               {columns.map((column) => (
-                <TableCell key={column.field} sx={{ fontWeight: 700 }}>
+                <TableCell component={'th'} key={column.field} sx={{ fontWeight: 700 }}>
                   {t(column.headerName)}
                 </TableCell>
               ))}
@@ -201,46 +227,59 @@ const QuotesTable = (props: QuotesTableProps) => {
                       key={quote.id}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
-                      <TableCell component="th" scope="row">
+                      {!tabAndDesktop ? (
+                        <TableCell size="small" component="td" scope="row" variant={'body'}>
+                          <FiberManualRecord fontSize="small" color={getStatusColorCode(status)} />
+                        </TableCell>
+                      ) : null}
+                      <TableCell component="td" scope="row">
                         <Typography variant="body2">{number}</Typography>
                       </TableCell>
-                      <TableCell component="th" scope="row">
+                      <TableCell component="td" scope="row">
                         <Typography variant="body2">{name}</Typography>
                       </TableCell>
-                      <TableCell component="th" scope="row">
+                      <TableCell component="td" scope="row">
                         <Typography variant="body2">{expirationDate || '24-07-2023'}</Typography>
                       </TableCell>
                       {tabAndDesktop ? (
                         <>
-                          <TableCell component="th" scope="row">
+                          <TableCell component="td" scope="row">
                             <Typography variant="body2">{createdDate}</Typography>
                           </TableCell>
-                          <TableCell component="th" scope="row">
+                          <TableCell component="td" scope="row">
                             <Price
                               variant="body2"
                               price={t('currency', { val: total.toString() })}
                             />
                           </TableCell>
-                          <TableCell component="th" scope="row">
-                            <Typography variant="body2">{status}</Typography>
+                          <TableCell component="td" scope="row">
+                            <Box display={'flex'} gap={1}>
+                              <FiberManualRecord
+                                fontSize="small"
+                                color={getStatusColorCode(status)}
+                              />
+                              <Typography variant="body2">{status}</Typography>
+                            </Box>
                           </TableCell>
-                          <TableCell component="th" scope="row" align="right">
-                            <IconButton onClick={handleEditQuote}>
-                              <Edit />
-                            </IconButton>
-                            <IconButton onClick={handleEmailQuote}>
-                              <Mail />
-                            </IconButton>
-                            <IconButton onClick={handleDeleteQuote}>
-                              <Delete />
-                            </IconButton>
+                          <TableCell component="td" scope="row" align="right">
+                            <Box display={'flex'} justifyContent={'flex-end'}>
+                              <IconButton size="small" onClick={handleEditQuote}>
+                                <Edit fontSize="small" />
+                              </IconButton>
+                              <IconButton size="small" onClick={handleEmailQuote}>
+                                <Mail fontSize="small" />
+                              </IconButton>
+                              <IconButton size="small" onClick={handleDeleteQuote}>
+                                <Delete fontSize="small" />
+                              </IconButton>
+                            </Box>
                           </TableCell>
                         </>
                       ) : (
                         <>
-                          <TableCell component="th" scope="row">
-                            <IconButton onClick={handleClick}>
-                              <MoreVert />
+                          <TableCell component="td" scope="row" align="right">
+                            <IconButton size="small" onClick={handleClick}>
+                              <MoreVert fontSize="small" />
                             </IconButton>
                           </TableCell>
                         </>
@@ -268,9 +307,15 @@ const QuotesTable = (props: QuotesTableProps) => {
             horizontal: 'right',
           }}
         >
-          <MenuItem onClick={handleEditQuote}>{t('edit-quote')}</MenuItem>
-          <MenuItem onClick={handleEmailQuote}>{t('email-quote')}</MenuItem>
-          <MenuItem onClick={handleDeleteQuote}>{t('delete-quote')}</MenuItem>
+          <MenuItem onClick={handleEditQuote}>
+            <Typography variant="body2">{t('edit-quote')}</Typography>
+          </MenuItem>
+          <MenuItem onClick={handleEmailQuote}>
+            <Typography variant="body2">{t('email-quote')}</Typography>
+          </MenuItem>
+          <MenuItem onClick={handleDeleteQuote}>
+            <Typography variant="body2">{t('delete-quote')}</Typography>
+          </MenuItem>
         </Menu>
       </TableContainer>
       <Box pt={2}>

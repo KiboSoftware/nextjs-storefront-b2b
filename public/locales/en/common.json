@@ -400,7 +400,7 @@
   "search-to-add-products": "Search to start adding products to this order",
   "quote-number": "Quote Number",
   "quote-name": "Quote Name",
-  "expiration-date": "Expiration Date",
+  "expires-on": "Expires on",
   "created-date": "Created Date",
   "no-quotes-found": "No quotes are added yet",
   "name": "Name",
@@ -414,5 +414,6 @@
   "apply-filter": "Apply Filter",
   "add-comment": "Add comment",
   "type-something": "Type something ...",
-  "quote-history": "Quote History"
+  "quote-history": "Quote History",
+  "comment-thread": "Comment Thread"
 }
