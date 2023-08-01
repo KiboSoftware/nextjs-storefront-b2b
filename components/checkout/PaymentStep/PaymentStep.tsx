@@ -181,14 +181,13 @@ const PaymentStep = (props: PaymentStepProps) => {
   const [selectedPaymentTypeRadio, setSelectedPaymentTypeRadio] =
     useState<string>(checkoutPaymentType)
 
+  const [isAddingNewPayment, setIsAddingNewPayment] = useState<boolean>(false)
+
   const handlePaymentTypeRadioChange = (value: string) => {
     setSelectedPaymentTypeRadio(value)
     setIsAddingNewPayment(false)
     setBillingFormAddress(initialBillingAddressData)
   }
-
-  const [isAddingNewPayment, setIsAddingNewPayment] = useState<boolean>(false)
-
   // Purchase Order details
   const handleInitialPODetails: SavedPODetails | null = useMemo(() => {
     return checkoutPaymentType === PaymentType.PURCHASEORDER
@@ -251,8 +250,6 @@ const PaymentStep = (props: PaymentStepProps) => {
     resolver: yupResolver(useDetailsSchema()),
     shouldFocusError: true,
   })
-
-  console.log('isValid', isCvvValid)
 
   // default card details if payment method is card
   const defaultCustomerAccountCard = userGetters.getDefaultPaymentBillingMethod(cardOptions)
@@ -416,12 +413,12 @@ const PaymentStep = (props: PaymentStepProps) => {
   const handleRadioSavedCardSelection = (value: string) => {
     setStepStatusIncomplete()
     setSelectedCardRadio(value)
-    setCvv('')
     setIsCVVAddedForNewPayment(false)
+    setCvv('')
   }
 
   const handleAddPaymentMethod = () => {
-    // setBillingFormAddress(initialBillingAddressData)
+    setBillingFormAddress(initialBillingAddressData)
     setIsAddingNewPayment(true)
   }
 
@@ -444,7 +441,7 @@ const PaymentStep = (props: PaymentStepProps) => {
         cardInfo: {
           id: tokenizedCardResponse.id,
           cardNumberPart: tokenizedCardResponse.numberPart,
-          paymentType: selectedCardRadio,
+          paymentType: PaymentType.CREDITCARD,
           expireMonth: card.expireMonth,
           expireYear: card.expireYear,
           isCardInfoSaved: card.isCardInfoSaved,
@@ -467,10 +464,6 @@ const PaymentStep = (props: PaymentStepProps) => {
     setSavedPaymentBillingDetailsForPurchaseOrder({
       purchaseOrder: {
         purchaseOrderNumber: purchaseOrderFormData?.purchaseOrderNumber,
-        // paymentTerm:
-        //   customerPurchaseOrderPaymentTerms?.length <= 1
-        //     ? customerPurchaseOrderPaymentTerms?.[0]
-        //     : purchaseOrderFormData?.paymentTerms,
         paymentTerm: purchaseOrderFormData?.paymentTerm,
       },
       billingAddressInfo: {
@@ -568,36 +561,39 @@ const PaymentStep = (props: PaymentStepProps) => {
       setStepNext()
       return
     }
+    paymentActionToBeAdded = {
+      ...buildCardPaymentActionForCheckoutParams(
+        CurrencyCode.US,
+        checkout,
+        { ...cardDetails },
+        tokenizedData,
+        selectedPaymentMethod?.billingAddressInfo?.contact as CrContact,
+        isSameAsShipping
+      ),
+      actionName: '',
+    }
 
     if (paymentWithNewStatus?.paymentType === PaymentType.CREDITCARD) {
       const card = paymentWithNewStatus?.billingInfo?.card
-      cardDetails.cardType = card?.paymentOrCardType as string
-      cardDetails.expireMonth = card?.expireMonth as number
-      cardDetails.expireYear = card?.expireYear as number
-      cardDetails.paymentType = paymentWithNewStatus?.paymentType as string
+      const voidedCard = {
+        paymentWorkflow: paymentWithNewStatus?.paymentWorkflow as string,
+        isCardInfoSaved: card?.isCardInfoSaved as boolean,
+        cardType: card?.paymentOrCardType as string,
+        expireMonth: card?.expireMonth as number,
+        expireYear: card?.expireYear as number,
+        paymentType: paymentWithNewStatus?.paymentType as string,
+      }
 
       paymentActionToBeVoided = buildCardPaymentActionForCheckoutParams(
         CurrencyCode.US,
         checkout,
-        cardDetails,
+        voidedCard,
         tokenizedData,
         paymentWithNewStatus?.billingInfo?.billingContact as CrContact,
         isSameAsShipping
       )
 
       paymentActionToBeVoided = { ...paymentActionToBeVoided, actionName: 'VoidPayment' }
-    }
-
-    paymentActionToBeAdded = {
-      ...buildCardPaymentActionForCheckoutParams(
-        CurrencyCode.US,
-        checkout,
-        cardDetails,
-        tokenizedData,
-        selectedPaymentMethod?.billingAddressInfo?.contact as CrContact,
-        isSameAsShipping
-      ),
-      actionName: '',
     }
 
     return {
@@ -699,7 +695,7 @@ const PaymentStep = (props: PaymentStepProps) => {
 
   useEffect(() => {
     if (selectedPaymentTypeRadio === PaymentType.CREDITCARD) {
-      if (isAddingNewPayment || !isCvvValid) setStepStatusIncomplete()
+      if (isAddingNewPayment || (!isCVVAddedForNewPayment && !isCvvValid)) setStepStatusIncomplete()
       else setStepStatusValid()
     } else if (selectedPaymentTypeRadio === PaymentType.PURCHASEORDER) {
       if (isAddingNewPayment || !savedPaymentBillingDetailsForPurchaseOrder)

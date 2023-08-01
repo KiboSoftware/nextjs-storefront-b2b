@@ -75,9 +75,9 @@ const PurchaseOrderForm = (props: PurchaseOrderFormProps) => {
   const onValid = async (formData: any) => {
     const purchaseOrderFormData = {
       ...formData,
-      paymentTerm: purchaseOrderPaymentTerms.find(
-        (term: any) => term.description === formData.paymentTerm
-      ),
+      paymentTerm: singlePurchaseOrderPaymentTerms
+        ? singlePurchaseOrderPaymentTerms
+        : purchaseOrderPaymentTerms.find((term: any) => term.description === formData.paymentTerm),
     }
     onSavePurchaseData(purchaseOrderFormData)
   }

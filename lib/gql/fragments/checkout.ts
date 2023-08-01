@@ -221,6 +221,7 @@ export const checkoutPaymentFragment = /* GraphQL */ `
         cardNumberPartOrMask
         expireMonth
         expireYear
+        isCardInfoSaved
       }
     }
   }
