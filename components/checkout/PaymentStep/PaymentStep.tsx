@@ -67,6 +67,7 @@ import type {
   CustomerPurchaseOrderPaymentTerm,
   CrPayment,
   CrPurchaseOrderPayment,
+  CrPurchaseOrderPaymentTerm,
 } from '@/lib/gql/types'
 
 interface PaymentStepProps {
@@ -853,25 +854,15 @@ const PaymentStep = (props: PaymentStepProps) => {
                       <Stack gap={2} width="100%" data-testid="saved-payment-methods">
                         {savedPaymentBillingDetailsForPurchaseOrder ? (
                           <Box pl={2}>
-                            <KeyValueDisplay
-                              option={{
-                                name: t('po-number'),
-                                value:
-                                  savedPaymentBillingDetailsForPurchaseOrder?.purchaseOrder
-                                    ?.purchaseOrderNumber,
-                              }}
-                              variant="body1"
-                            />
-                            <KeyValueDisplay
-                              option={{
-                                name: t('payment-terms'),
-                                value:
-                                  savedPaymentBillingDetailsForPurchaseOrder?.purchaseOrder
-                                    ?.paymentTerm?.code,
-                              }}
-                              variant="body1"
-                            />
-                            <AddressCard
+                            <PaymentBillingCard
+                              purchaseOrderNumber={
+                                savedPaymentBillingDetailsForPurchaseOrder?.purchaseOrder
+                                  ?.purchaseOrderNumber as string
+                              }
+                              paymentTerm={
+                                savedPaymentBillingDetailsForPurchaseOrder?.purchaseOrder
+                                  ?.paymentTerm as CrPurchaseOrderPaymentTerm
+                              }
                               address1={addressGetters.getAddress1(
                                 savedPaymentBillingDetailsForPurchaseOrder?.billingAddressInfo
                                   ?.contact.address as CrAddress

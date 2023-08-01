@@ -229,6 +229,13 @@ const getOrderPaymentCardDetails = (card: CrPaymentCard) => {
   }
 }
 
+const getOrderPurchaseOrderDetails = (purchaseOrder: any) => {
+  return {
+    purchaseOrderNumber: purchaseOrder?.purchaseOrderNumber,
+    paymentTerm: purchaseOrder?.paymentTerm,
+  }
+}
+
 const getPaymentBillingDetails = (data?: CustomerContact | CrContact) => {
   return {
     firstName: addressGetters.getFirstName(data),
@@ -338,4 +345,5 @@ export const orderGetters = {
   getPaymentMethods,
   getOrderStatus,
   getFinalOrderPayment,
+  getOrderPurchaseOrderDetails,
 }
