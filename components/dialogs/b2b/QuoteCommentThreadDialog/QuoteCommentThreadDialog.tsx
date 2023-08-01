@@ -2,7 +2,6 @@ import React from 'react'
 
 import { useTranslation } from 'next-i18next'
 
-import { quoteMock } from '@/__mocks__/stories/quoteMock'
 import { QuotesCommentThread } from '@/components/b2b'
 import { KiboDialog } from '@/components/common'
 

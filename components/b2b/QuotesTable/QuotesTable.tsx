@@ -214,7 +214,7 @@ const QuotesTable = (props: QuotesTableProps) => {
               ))}
             </TableRow>
           </TableHead>
-          {!Boolean(quotes.length) ? (
+          {quotes.length === 0 ? (
             <caption>{t('no-quotes-found')}</caption>
           ) : (
             <TableBody>

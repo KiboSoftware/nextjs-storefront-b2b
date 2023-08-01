@@ -9,7 +9,7 @@ import { AuditRecord } from '@/lib/gql/types'
 
 // Common
 export default {
-  title: 'B2B/QuoteHistory',
+  title: 'B2B/Quotes/QuoteHistory',
   component: QuoteHistory,
 } as ComponentMeta<typeof QuoteHistory>
 

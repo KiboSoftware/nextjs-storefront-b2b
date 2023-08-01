@@ -28,7 +28,7 @@ const KeyValueDisplay = (prop: KeyValueDisplayProps) => {
       <Typography
         variant={variant}
         color="grey.600"
-        fontWeight={fontWeight || 700}
+        fontWeight={fontWeight ?? 700}
         sx={{ pr: 1 }}
         component="span"
       >

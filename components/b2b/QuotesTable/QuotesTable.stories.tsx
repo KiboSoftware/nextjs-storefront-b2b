@@ -3,10 +3,7 @@ import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
 import QuotesTable from './QuotesTable'
-import { cartResponse, locationCollectionMock } from '@/__mocks__/stories'
 import { quotesMock } from '@/__mocks__/stories/quotesMock'
-
-import { CrCartItem, Location } from '@/lib/gql/types'
 
 export default {
   title: 'B2B/Quotes/QuotesTable',

@@ -17,7 +17,7 @@ const getCreatedDate = (quote: Quote) =>
     ? format(new Date(quote.auditInfo?.createDate), DateFormat.DATE_FORMAT)
     : ''
 
-const getTotal = (quote: Quote) => quote.total as number
+const getTotal = (quote: Quote) => quote.total
 
 const getStatus = (quote: Quote) => quote.status as string
 

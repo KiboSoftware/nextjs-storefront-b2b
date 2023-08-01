@@ -3,7 +3,6 @@ import React from 'react'
 import { Box, Divider, Grid, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 
-import { KeyValueDisplay } from '@/components/common'
 import { quoteGetters } from '@/lib/getters'
 
 import { AuditRecord } from '@/lib/gql/types'
@@ -80,7 +79,6 @@ const QuoteHistoryItem = ({ record }: { record: AuditRecord }) => {
 
 const QuoteHistory = (props: QuoteHistoryProps) => {
   const { auditHistory } = props
-  const { t } = useTranslation('common')
   // Your component logic here
 
   return (
