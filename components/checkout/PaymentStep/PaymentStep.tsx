@@ -244,6 +244,7 @@ const PaymentStep = (props: PaymentStepProps) => {
   const {
     formState: { errors, isValid: isCvvValid },
     control,
+    resetField,
   } = useForm({
     mode: 'all',
     reValidateMode: 'onBlur',
@@ -323,7 +324,10 @@ const PaymentStep = (props: PaymentStepProps) => {
       isAddressValid: true,
       isDataUpdated: address.isDataUpdated,
     } as Address
-    setBillingFormAddress(updatedAddress)
+    setBillingFormAddress({
+      ...billingFormAddress,
+      ...updatedAddress,
+    })
   }
 
   const handleBillingFormValidDetails = (isValid: boolean) => {
@@ -415,7 +419,7 @@ const PaymentStep = (props: PaymentStepProps) => {
     setStepStatusIncomplete()
     setSelectedCardRadio(value)
     setIsCVVAddedForNewPayment(false)
-    setCvv('')
+    resetField('cvv')
   }
 
   const handleAddPaymentMethod = () => {
@@ -779,6 +783,7 @@ const PaymentStep = (props: PaymentStepProps) => {
                                         )}
                                         expireMonth={cardGetters.getExpireMonth(card?.cardInfo)}
                                         expireYear={cardGetters.getExpireYear(card?.cardInfo)}
+                                        paymentType={cardGetters.getPaymentType(card?.cardInfo)}
                                         cardType={cardGetters
                                           .getCardType(card?.cardInfo)
                                           ?.toUpperCase()}
