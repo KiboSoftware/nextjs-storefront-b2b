@@ -5,6 +5,8 @@ import { ComponentStory, ComponentMeta } from '@storybook/react'
 import QuoteHistory from './QuoteHistory'
 import { quoteMock } from '@/__mocks__/stories/quoteMock'
 
+import { AuditRecord } from '@/lib/gql/types'
+
 // Common
 export default {
   title: 'B2B/QuoteHistory',
@@ -16,5 +18,5 @@ const Template: ComponentStory<typeof QuoteHistory> = (args) => <QuoteHistory {.
 export const Common = Template.bind({})
 
 Common.args = {
-  auditHistory: quoteMock.auditHistory,
+  auditHistory: quoteMock.auditHistory as AuditRecord[],
 }

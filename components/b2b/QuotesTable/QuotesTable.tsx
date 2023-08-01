@@ -214,79 +214,75 @@ const QuotesTable = (props: QuotesTableProps) => {
               ))}
             </TableRow>
           </TableHead>
-          {!quotes.length ? (
+          {!Boolean(quotes.length) ? (
             <caption>{t('no-quotes-found')}</caption>
           ) : (
             <TableBody>
-              {quotes.length &&
-                quotes.map((quote) => {
-                  const { number, name, expirationDate, createdDate, total, status } =
-                    quoteGetters.getQuoteDetails(quote)
-                  return (
-                    <TableRow
-                      key={quote.id}
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                      {!tabAndDesktop ? (
-                        <TableCell size="small" component="td" scope="row" variant={'body'}>
-                          <FiberManualRecord fontSize="small" color={getStatusColorCode(status)} />
+              {quotes.map((quote) => {
+                const { number, name, expirationDate, createdDate, total, status } =
+                  quoteGetters.getQuoteDetails(quote)
+                return (
+                  <TableRow
+                    key={quote.id}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    {!tabAndDesktop ? (
+                      <TableCell size="small" component="td" scope="row" variant={'body'}>
+                        <FiberManualRecord fontSize="small" color={getStatusColorCode(status)} />
+                      </TableCell>
+                    ) : null}
+                    <TableCell component="td" scope="row">
+                      <Typography variant="body2">{number}</Typography>
+                    </TableCell>
+                    <TableCell component="td" scope="row">
+                      <Typography variant="body2">{name}</Typography>
+                    </TableCell>
+                    <TableCell component="td" scope="row">
+                      <Typography variant="body2">{expirationDate || '24-07-2023'}</Typography>
+                    </TableCell>
+                    {tabAndDesktop ? (
+                      <>
+                        <TableCell component="td" scope="row">
+                          <Typography variant="body2">{createdDate}</Typography>
                         </TableCell>
-                      ) : null}
-                      <TableCell component="td" scope="row">
-                        <Typography variant="body2">{number}</Typography>
-                      </TableCell>
-                      <TableCell component="td" scope="row">
-                        <Typography variant="body2">{name}</Typography>
-                      </TableCell>
-                      <TableCell component="td" scope="row">
-                        <Typography variant="body2">{expirationDate || '24-07-2023'}</Typography>
-                      </TableCell>
-                      {tabAndDesktop ? (
-                        <>
-                          <TableCell component="td" scope="row">
-                            <Typography variant="body2">{createdDate}</Typography>
-                          </TableCell>
-                          <TableCell component="td" scope="row">
-                            <Price
-                              variant="body2"
-                              price={t('currency', { val: total.toString() })}
+                        <TableCell component="td" scope="row">
+                          <Price variant="body2" price={t('currency', { val: total.toString() })} />
+                        </TableCell>
+                        <TableCell component="td" scope="row">
+                          <Box display={'flex'} gap={1}>
+                            <FiberManualRecord
+                              fontSize="small"
+                              color={getStatusColorCode(status)}
                             />
-                          </TableCell>
-                          <TableCell component="td" scope="row">
-                            <Box display={'flex'} gap={1}>
-                              <FiberManualRecord
-                                fontSize="small"
-                                color={getStatusColorCode(status)}
-                              />
-                              <Typography variant="body2">{status}</Typography>
-                            </Box>
-                          </TableCell>
-                          <TableCell component="td" scope="row" align="right">
-                            <Box display={'flex'} justifyContent={'flex-end'}>
-                              <IconButton size="small" onClick={handleEditQuote}>
-                                <Edit fontSize="small" />
-                              </IconButton>
-                              <IconButton size="small" onClick={handleEmailQuote}>
-                                <Mail fontSize="small" />
-                              </IconButton>
-                              <IconButton size="small" onClick={handleDeleteQuote}>
-                                <Delete fontSize="small" />
-                              </IconButton>
-                            </Box>
-                          </TableCell>
-                        </>
-                      ) : (
-                        <>
-                          <TableCell component="td" scope="row" align="right">
-                            <IconButton size="small" onClick={handleClick}>
-                              <MoreVert fontSize="small" />
+                            <Typography variant="body2">{status}</Typography>
+                          </Box>
+                        </TableCell>
+                        <TableCell component="td" scope="row" align="right">
+                          <Box display={'flex'} justifyContent={'flex-end'}>
+                            <IconButton size="small" onClick={handleEditQuote}>
+                              <Edit fontSize="small" />
                             </IconButton>
-                          </TableCell>
-                        </>
-                      )}
-                    </TableRow>
-                  )
-                })}
+                            <IconButton size="small" onClick={handleEmailQuote}>
+                              <Mail fontSize="small" />
+                            </IconButton>
+                            <IconButton size="small" onClick={handleDeleteQuote}>
+                              <Delete fontSize="small" />
+                            </IconButton>
+                          </Box>
+                        </TableCell>
+                      </>
+                    ) : (
+                      <>
+                        <TableCell component="td" scope="row" align="right">
+                          <IconButton size="small" onClick={handleClick}>
+                            <MoreVert fontSize="small" />
+                          </IconButton>
+                        </TableCell>
+                      </>
+                    )}
+                  </TableRow>
+                )
+              })}
             </TableBody>
           )}
         </Table>

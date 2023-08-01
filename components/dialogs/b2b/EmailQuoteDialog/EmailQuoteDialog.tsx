@@ -31,7 +31,7 @@ const EmailQuoteContent = () => {
   const handleEnterPress = (event: any) => {
     if (event.key === 'Enter' || event.keyCode === 13) {
       const { value } = event.target
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      const emailRegex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)
       if (emailRegex.test(value)) {
         setEmails([...emails, value])
         setErrorText('')

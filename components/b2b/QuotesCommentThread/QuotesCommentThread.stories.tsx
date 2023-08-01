@@ -26,5 +26,5 @@ const Template: ComponentStory<typeof QuotesCommentThread> = (args) => (
 export const Common = Template.bind({})
 Common.args = {
   comments: quoteMock.comments,
-  userId: quoteMock.userId,
+  userId: quoteMock.userId as string,
 }
