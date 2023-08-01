@@ -18,7 +18,7 @@ export const buildPurchaseOrderPaymentActionForCheckoutParams = (
   isBillingAddressAsShipping: boolean
 ): PaymentActionInput => {
   const billingInfo: CrBillingInfo = {
-    billingContact: { ...billingAddress, email: billingAddress?.email || checkout?.email },
+    billingContact: { ...billingAddress, email: billingAddress?.email ?? checkout?.email },
     purchaseOrder: {
       purchaseOrderNumber: purchaseOrderData?.purchaseOrderNumber,
       paymentTerm: {

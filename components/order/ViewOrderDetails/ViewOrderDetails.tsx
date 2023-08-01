@@ -80,7 +80,7 @@ const ViewOrderDetails = (props: ViewOrderDetailsProps) => {
   const purchaseOrderDetails = orderGetters?.getOrderPurchaseOrderDetails(
     payment?.billingInfo?.purchaseOrder
   )
-  const paymentType = payment?.payment?.paymentType || ''
+  const paymentType = payment?.payment?.paymentType ?? ''
 
   const orderSummeryArgs = {
     nameLabel: t('order-summary'),

@@ -62,29 +62,28 @@ const PaymentBillingCard = (props: PaymentBillingCardProps) => {
         />
       )}
 
-      {paymentType === PaymentType.PURCHASEORDER &&
-        (purchaseOrderNumber || paymentTerm?.description) && (
-          <>
-            {purchaseOrderNumber && (
-              <KeyValueDisplay
-                option={{
-                  name: t('po-number'),
-                  value: purchaseOrderNumber,
-                }}
-                variant="body1"
-              />
-            )}
-            {paymentTerm?.description && (
-              <KeyValueDisplay
-                option={{
-                  name: t('payment-terms'),
-                  value: paymentTerm?.description,
-                }}
-                variant="body1"
-              />
-            )}
-          </>
-        )}
+      {paymentType === PaymentType.PURCHASEORDER && (
+        <>
+          {/* {purchaseOrderNumber && ( */}
+          <KeyValueDisplay
+            option={{
+              name: t('po-number'),
+              value: purchaseOrderNumber,
+            }}
+            variant="body1"
+          />
+          {/* )} */}
+          {/* {paymentTerm?.description && ( */}
+          <KeyValueDisplay
+            option={{
+              name: t('payment-terms'),
+              value: paymentTerm?.description,
+            }}
+            variant="body1"
+          />
+          {/* )} */}
+        </>
+      )}
 
       <AddressCard
         firstName={firstName}

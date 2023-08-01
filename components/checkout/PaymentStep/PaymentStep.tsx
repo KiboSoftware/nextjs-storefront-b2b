@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEvent, useCallback, useMemo } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import Help from '@mui/icons-material/Help'
@@ -22,14 +22,7 @@ import { Controller, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
 import { CardDetailsForm, PurchaseOrderForm } from '@/components/checkout'
-import {
-  AddressForm,
-  KiboTextBox,
-  KiboRadio,
-  PaymentBillingCard,
-  AddressCard,
-  KeyValueDisplay,
-} from '@/components/common'
+import { AddressForm, KiboTextBox, KiboRadio, PaymentBillingCard } from '@/components/common'
 import { useCheckoutStepContext, STEP_STATUS, useAuthContext, useSnackbarContext } from '@/context'
 import {
   useGetCards,
@@ -65,7 +58,6 @@ import type {
   Checkout,
   CuAddress,
   CustomerPurchaseOrderPaymentTerm,
-  CrPayment,
   CrPurchaseOrderPayment,
   CrPurchaseOrderPaymentTerm,
 } from '@/lib/gql/types'
@@ -177,7 +169,7 @@ const PaymentStep = (props: PaymentStepProps) => {
 
   // getting the selected Payment type from checkout.payments
   const checkoutPayment = orderGetters.getSelectedPaymentType(checkout)
-  const checkoutPaymentType = checkoutPayment?.paymentType?.toString() || ''
+  const checkoutPaymentType = checkoutPayment?.paymentType?.toString() ?? ''
 
   const [selectedPaymentTypeRadio, setSelectedPaymentTypeRadio] =
     useState<string>(checkoutPaymentType)
@@ -209,8 +201,8 @@ const PaymentStep = (props: PaymentStepProps) => {
   const { data: customerPurchaseOrderAccount, isSuccess: isCustomerPurchaseOrderAccount } =
     useGetCustomerPurchaseOrderAccount(user?.id as number)
 
-  const creditLimit = customerPurchaseOrderAccount?.creditLimit || 0
-  const availableBalance = customerPurchaseOrderAccount?.availableBalance || 0
+  const creditLimit = customerPurchaseOrderAccount?.creditLimit ?? 0
+  const availableBalance = customerPurchaseOrderAccount?.availableBalance ?? 0
   const customerPurchaseOrderPaymentTerms = (
     customerPurchaseOrderAccount?.customerPurchaseOrderPaymentTerms as CustomerPurchaseOrderPaymentTerm[]
   )?.filter(
@@ -615,7 +607,7 @@ const PaymentStep = (props: PaymentStepProps) => {
     const isSameAsShipping = addressGetters.getIsBillingShippingAddressSame(
       savedPaymentBillingDetailsForPurchaseOrder?.billingAddressInfo
     )
-    const purchaseOrderData = savedPaymentBillingDetailsForPurchaseOrder?.purchaseOrder || {}
+    const purchaseOrderData = savedPaymentBillingDetailsForPurchaseOrder?.purchaseOrder ?? {}
 
     const paymentWithNewStatus = orderGetters.getSelectedPaymentType(checkout)
 
@@ -675,7 +667,7 @@ const PaymentStep = (props: PaymentStepProps) => {
       selectedPaymentTypeRadio && (await paymentMethodSelection[selectedPaymentTypeRadio]())
 
     if (checkout?.id) {
-      await onAddPayment(checkout.id, responseForAdd.paymentActionToBeAdded)
+      await onAddPayment(checkout.id, responseForAdd?.paymentActionToBeAdded)
       setStepStatusComplete()
       setStepNext()
     }
@@ -888,6 +880,7 @@ const PaymentStep = (props: PaymentStepProps) => {
                                 savedPaymentBillingDetailsForPurchaseOrder?.billingAddressInfo
                                   ?.contact.address as CrAddress
                               )}
+                              paymentType={PaymentType.PURCHASEORDER}
                             />
                           </Box>
                         ) : (

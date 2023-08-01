@@ -13,3 +13,19 @@ const Template: ComponentStory<typeof PurchaseOrderForm> = (args) => <PurchaseOr
 
 // Common
 export const Common = Template.bind({})
+
+Common.args = {
+  availableBalance: 10000,
+  creditLimit: 10000,
+  purchaseOrderPaymentTerms: [
+    { code: '30', description: '30', siteId: 41315 },
+    { code: '60', description: '60', siteId: 41315 },
+  ],
+}
+
+export const SinglePaymentTermPurchaseOrderForm = Template.bind({})
+SinglePaymentTermPurchaseOrderForm.args = {
+  availableBalance: 10000,
+  creditLimit: 10000,
+  purchaseOrderPaymentTerms: [{ code: '30', description: '30', siteId: 41315 }],
+}

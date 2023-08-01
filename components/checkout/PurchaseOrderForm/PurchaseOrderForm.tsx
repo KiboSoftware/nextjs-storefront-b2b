@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import {
@@ -12,7 +12,7 @@ import {
   MenuItem,
 } from '@mui/material'
 import { useTranslation } from 'next-i18next'
-import { useForm, Controller, ControllerRenderProps } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import * as yup from 'yup'
 
 import { KiboSelect, KiboTextBox } from '@/components/common'
@@ -98,7 +98,7 @@ const PurchaseOrderForm = (props: PurchaseOrderFormProps) => {
       }}
       noValidate
       autoComplete="off"
-      data-testid="address-form"
+      data-testid="purchase-order-form"
     >
       <Grid container rowSpacing={1} columnSpacing={{ md: 4 }}>
         {!mdScreen && (
