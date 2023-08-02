@@ -9,6 +9,7 @@ import * as stories from './ViewOrderDetails.stories'
 const { Common, WithReturnItemButton } = composeStories(stories)
 
 const onReturnItemsVisibleMock = jest.fn()
+const onGoBackToOrderHistoryMock = jest.fn()
 
 const addressCardMock = () => <div data-testid="address-card-component" />
 jest.mock('@/components/common/AddressCard/AddressCard', () => () => addressCardMock())
@@ -30,7 +31,19 @@ jest.mock(
 )
 
 const setup = (isOrderStatus: boolean, title: string) => {
-  render(<Common {...Common.args} isOrderStatus={isOrderStatus} title={title} />)
+  const user = userEvent.setup()
+  render(
+    <Common
+      {...Common.args}
+      isOrderStatus={isOrderStatus}
+      title={title}
+      onGoBackToOrderHistory={onGoBackToOrderHistoryMock}
+    />
+  )
+  return {
+    user,
+    onGoBackToOrderHistoryMock,
+  }
 }
 const returnItemSetup = () => {
   const user = userEvent.setup()
@@ -63,6 +76,16 @@ describe('[component] - ViewOrderDetails', () => {
     expect(screen.getAllByTestId('key-value-display-component')).toHaveLength(3)
     expect(screen.getByTestId('payment-billing-card-component')).toBeVisible()
     expect(screen.getByText('payment-information')).toBeVisible()
+  })
+
+  it('should call onGoBackToOrderHistory when user click on Order history icon', async () => {
+    const { user, onGoBackToOrderHistoryMock } = setup(false, 'view-order-details')
+
+    const orderHistory = screen.getByText(/order-history/i)
+    user.click(orderHistory)
+    await waitFor(() => {
+      expect(onGoBackToOrderHistoryMock).toBeCalled()
+    })
   })
 
   it('should render component for Order status', () => {

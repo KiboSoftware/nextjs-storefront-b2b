@@ -10,6 +10,7 @@ import {
   checkoutGroupRatesMock,
   orderSubscriptionNowMock,
   customerB2BUserForPage0Mock,
+  customerPurchaseOrderMock,
 } from '../stories'
 import { cartItemMock } from '../stories/cartItemMock'
 import { cartCouponMock, cartMock } from '../stories/cartMock'
@@ -78,6 +79,10 @@ export const checkoutHandlers = [
 
   graphql.query('getShippingRates', (_req, res, ctx) => {
     return res(ctx.data(shippingRateMock))
+  }),
+  // Purchase order
+  graphql.query('customerPurchaseOrderAccount', (_req, res, ctx) => {
+    return res(ctx.data(customerPurchaseOrderMock))
   }),
 
   // Payment Step
