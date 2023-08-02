@@ -5,6 +5,7 @@ import { AuditRecord, AuditRecordChangeField, Quote, QuoteCollection } from '../
 
 const getQuotes = (collection: QuoteCollection) => collection.items as Quote[]
 
+const getQuoteId = (quote: Quote) => quote.id as string
 const getNumber = (quote: Quote) => quote.number as number
 
 const getName = (quote: Quote) => quote.name as string
@@ -33,8 +34,11 @@ const getRecordUpdateDate = (record: AuditRecord) =>
 const getChangedRecordFields = (record: AuditRecord) =>
   record.changes?.[0]?.fields as AuditRecordChangeField[]
 
+const getRecordId = (record: AuditRecord) => record.id
+
 const getRecordDetails = (record: AuditRecord) => {
   return {
+    id: getRecordId(record),
     recordType: getRecordType(record),
     getRecordCreatedBy: getRecordCreatedBy(record),
     getRecordUpdateDate: getRecordUpdateDate(record),
@@ -44,6 +48,7 @@ const getRecordDetails = (record: AuditRecord) => {
 
 const getQuoteDetails = (quote: Quote) => {
   return {
+    quoteId: getQuoteId(quote),
     number: getNumber(quote),
     name: getName(quote),
     expirationDate: getExpirationDate(quote),

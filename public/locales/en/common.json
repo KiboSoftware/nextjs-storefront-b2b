@@ -415,5 +415,12 @@
   "add-comment": "Add comment",
   "type-something": "Type something ...",
   "quote-history": "Quote History",
-  "comment-thread": "Comment Thread"
+  "comment-thread": "Comment Thread",
+  "no-quote-history": "No quote history yet",
+  "no-comments-added": "No comments added yet",
+  "added-by": "Added by",
+  "updated-by": "Updated by",
+  "field-change": "Field change",
+  "changed-from": "Changed From",
+  "changed-to": "Changed To"
 }

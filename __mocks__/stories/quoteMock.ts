@@ -233,7 +233,7 @@ export const quoteMock = {
       },
     },
     {
-      id: '99e4ecf9f4c742d08ad6b04b00cffeb9',
+      id: 'b3a1f0e8e1d648c4a36e7b05c1f2f823',
       text: 'Sent a new Quote Request Again',
       auditInfo: {
         updateDate: '2023-07-26T12:37:17.201Z',
@@ -243,7 +243,7 @@ export const quoteMock = {
       },
     },
     {
-      id: '99e4ecf9f4c742d08ad6b04b00cffeb9',
+      id: 'c52f98a1b7d542f1b9e6c3d6a8f1e4c7',
       text: 'Check again',
       auditInfo: {
         updateDate: '2023-07-26T12:37:17.201Z',

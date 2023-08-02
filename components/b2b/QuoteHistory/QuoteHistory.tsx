@@ -13,16 +13,18 @@ interface QuoteHistoryProps {
 }
 
 const QuoteHistoryItem = ({ record }: { record: AuditRecord }) => {
-  const { recordType, getRecordCreatedBy, getRecordUpdateDate, changedFields } =
+  const { id, recordType, getRecordCreatedBy, getRecordUpdateDate, changedFields } =
     quoteGetters.getRecordDetails(record)
 
+  const { t } = useTranslation('common')
+
   const actionText: any = {
-    Add: 'Added By',
-    Update: 'Updated By',
+    Add: t('added-by'),
+    Update: t('updated-by'),
   }
 
   return (
-    <Stack spacing={2} pb={1}>
+    <Stack spacing={2} pb={1} data-testid={`quote-history-item`}>
       <Box>
         <Typography
           variant={'body2'}
@@ -37,35 +39,35 @@ const QuoteHistoryItem = ({ record }: { record: AuditRecord }) => {
       <Grid container display="flex" justifyContent={'space-between'}>
         <Grid item xs={4}>
           <Typography variant={'body2'} color="grey.600" sx={{ pr: 1 }}>
-            Field Change
+            {t('field-change')}
           </Typography>
         </Grid>
         <Grid item xs={4}>
           <Typography variant={'body2'} color="grey.600" sx={{ pr: 1 }}>
-            Changed From
+            {t('changed-from')}
           </Typography>
         </Grid>
         <Grid item xs={4}>
           <Typography variant={'body2'} color="grey.600" sx={{ pr: 1 }}>
-            Changed To
+            {t('changed-to')}
           </Typography>
         </Grid>
       </Grid>
       {changedFields.map((field) => (
         <Grid container key={field.name} display="flex" justifyContent={'space-between'}>
           <Grid item xs={4}>
-            <Typography variant={'body2'} sx={{ pr: 1 }}>
-              {field.name}
+            <Typography variant={'body2'} sx={{ pr: 1 }} data-testid={`field-name-${id}`}>
+              {field?.name ?? '-'}
             </Typography>
           </Grid>
           <Grid item xs={4}>
-            <Typography variant={'body2'} sx={{ pr: 1 }}>
-              {field.oldValue}
+            <Typography variant={'body2'} sx={{ pr: 1 }} data-testid={`old-value-${id}`}>
+              {field.oldValue ?? '-'}
             </Typography>
           </Grid>
           <Grid item xs={4}>
-            <Typography variant={'body2'} sx={{ pr: 1 }}>
-              {field.newValue}
+            <Typography variant={'body2'} sx={{ pr: 1 }} data-testid={`new-value-${id}`}>
+              {field?.newValue ?? '-'}
             </Typography>
           </Grid>
         </Grid>
@@ -79,7 +81,13 @@ const QuoteHistoryItem = ({ record }: { record: AuditRecord }) => {
 
 const QuoteHistory = (props: QuoteHistoryProps) => {
   const { auditHistory } = props
+  const { t } = useTranslation('common')
+
   // Your component logic here
+
+  if (auditHistory.length === 0) {
+    return <Typography variant="body2">{t('no-quote-history')}</Typography>
+  }
 
   return (
     <>

@@ -31,3 +31,15 @@ Common.args = {
     ],
   },
 }
+
+export const Mobile = Template.bind({})
+
+Mobile.args = {
+  ...Common.args,
+}
+
+Mobile.parameters = {
+  viewport: {
+    defaultViewport: 'iphone12promax',
+  },
+}

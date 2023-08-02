@@ -217,39 +217,53 @@ const QuotesTable = (props: QuotesTableProps) => {
           {quotes.length === 0 ? (
             <caption>{t('no-quotes-found')}</caption>
           ) : (
-            <TableBody>
+            <TableBody data-testid="quotes-table-body">
               {quotes.map((quote) => {
-                const { number, name, expirationDate, createdDate, total, status } =
+                const { quoteId, number, name, expirationDate, createdDate, total, status } =
                   quoteGetters.getQuoteDetails(quote)
                 return (
                   <TableRow
-                    key={quote.id}
+                    key={quoteId}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
                     {!tabAndDesktop ? (
-                      <TableCell size="small" component="td" scope="row" variant={'body'}>
+                      <TableCell
+                        size="small"
+                        component="td"
+                        scope="row"
+                        variant={'body'}
+                        data-testid={`quote-status-mobile`}
+                      >
                         <FiberManualRecord fontSize="small" color={getStatusColorCode(status)} />
                       </TableCell>
                     ) : null}
                     <TableCell component="td" scope="row">
-                      <Typography variant="body2">{number}</Typography>
+                      <Typography variant="body2" data-testid={`quote-number`}>
+                        {number}
+                      </Typography>
                     </TableCell>
                     <TableCell component="td" scope="row">
-                      <Typography variant="body2">{name}</Typography>
+                      <Typography variant="body2" data-testid={`quote-name`}>
+                        {name}
+                      </Typography>
                     </TableCell>
                     <TableCell component="td" scope="row">
-                      <Typography variant="body2">{expirationDate || '24-07-2023'}</Typography>
+                      <Typography variant="body2" data-testid={`quote-expirationDate`}>
+                        {expirationDate}
+                      </Typography>
                     </TableCell>
                     {tabAndDesktop ? (
                       <>
                         <TableCell component="td" scope="row">
-                          <Typography variant="body2">{createdDate}</Typography>
+                          <Typography variant="body2" data-testid={`quote-createdDate`}>
+                            {createdDate}
+                          </Typography>
                         </TableCell>
-                        <TableCell component="td" scope="row">
+                        <TableCell component="td" scope="row" data-testid={`quote-total`}>
                           <Price variant="body2" price={t('currency', { val: total.toString() })} />
                         </TableCell>
                         <TableCell component="td" scope="row">
-                          <Box display={'flex'} gap={1}>
+                          <Box display={'flex'} gap={1} data-testid={`quote-status`}>
                             <FiberManualRecord
                               fontSize="small"
                               color={getStatusColorCode(status)}
