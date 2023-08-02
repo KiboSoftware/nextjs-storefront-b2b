@@ -77,8 +77,9 @@ describe('[components] - QuotesTable', () => {
       renderWithQueryClient(<Common />)
 
       Common.args?.quoteCollection?.items?.map((item, index) => {
-        const { number, name, expirationDate, createdDate, total, status } =
-          quoteGetters.getQuoteDetails(item as Quote)
+        const { number, name, expirationDate, createdDate, status } = quoteGetters.getQuoteDetails(
+          item as Quote
+        )
 
         expect(screen.getAllByTestId('quote-number')[index]).toHaveTextContent(number.toString())
         expect(screen.getAllByTestId('quote-name')[index]).toHaveTextContent(name)
