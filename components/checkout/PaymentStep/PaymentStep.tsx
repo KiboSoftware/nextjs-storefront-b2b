@@ -153,6 +153,16 @@ const PaymentStep = (props: PaymentStepProps) => {
   const { data: addressCollection, isSuccess: isAddressFetchSuccess } = useGetCustomerAddresses(
     user?.id as number
   )
+  const { data: customerPurchaseOrderAccount, isSuccess: isCustomerPurchaseOrderAccount } =
+    useGetCustomerPurchaseOrderAccount(user?.id as number)
+  const newPaymentTypes = paymentTypes
+    .map((paymentType: any) =>
+      paymentType.id === 'CreditCard' ||
+      (paymentType.id === 'PurchaseOrder' && user?.id && customerPurchaseOrderAccount?.isEnabled)
+        ? paymentType
+        : null
+    )
+    .filter(Boolean)
   const {
     stepStatus,
     setStepNext,
@@ -197,9 +207,6 @@ const PaymentStep = (props: PaymentStepProps) => {
     savedPaymentBillingDetailsForPurchaseOrder,
     setSavedPaymentBillingDetailsForPurchaseOrder,
   ] = useState<SavedPODetails | null>(handleInitialPODetails)
-
-  const { data: customerPurchaseOrderAccount, isSuccess: isCustomerPurchaseOrderAccount } =
-    useGetCustomerPurchaseOrderAccount(user?.id as number)
 
   const creditLimit = customerPurchaseOrderAccount?.creditLimit ?? 0
   const availableBalance = customerPurchaseOrderAccount?.availableBalance ?? 0
@@ -740,7 +747,7 @@ const PaymentStep = (props: PaymentStepProps) => {
           onChange={(_, value: string) => handlePaymentTypeRadioChange(value)}
           data-testid="payment-types"
         >
-          {paymentTypes.map((paymentType: PaymentsType) => {
+          {newPaymentTypes.map((paymentType: PaymentsType) => {
             return (
               <Box key={paymentType.id}>
                 <FormControlLabel

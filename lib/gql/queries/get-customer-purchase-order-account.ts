@@ -4,6 +4,7 @@ const getCustomerPurchaseOrderQuery = /* GraphQL */ `
       creditLimit
       availableBalance
       totalAvailableBalance
+      isEnabled
       overdraftAllowance
       overdraftAllowanceType
       customerPurchaseOrderPaymentTerms {
