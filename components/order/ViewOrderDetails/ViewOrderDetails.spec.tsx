@@ -6,7 +6,8 @@ import userEvent from '@testing-library/user-event'
 
 import * as stories from './ViewOrderDetails.stories'
 
-const { Common, WithReturnItemButton } = composeStories(stories)
+const { Common, WithReturnItemButton, ViewOrderDetailsWithoutPaymentDetails } =
+  composeStories(stories)
 
 const onReturnItemsVisibleMock = jest.fn()
 const onGoBackToOrderHistoryMock = jest.fn()
@@ -117,5 +118,17 @@ describe('[component] - ViewOrderDetails', () => {
     await waitFor(() => {
       expect(onReturnItemsVisibleMock).toHaveBeenCalledWith(true)
     })
+  })
+
+  it("should show 'No payment details found' when we don't have payments detail", async () => {
+    render(
+      <ViewOrderDetailsWithoutPaymentDetails
+        {...ViewOrderDetailsWithoutPaymentDetails.args}
+        isOrderStatus={false}
+        title={'view-order-status'}
+      />
+    )
+
+    expect(screen.getByText(/no-payment-details-found/i)).toBeInTheDocument()
   })
 })

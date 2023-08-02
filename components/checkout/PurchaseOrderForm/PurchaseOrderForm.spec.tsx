@@ -5,11 +5,12 @@ import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import * as stories from './PurchaseOrderForm.stories' // import all stories from the stories file
-const { Common } = composeStories(stories)
+const { Common, SinglePaymentTermPurchaseOrderForm } = composeStories(stories)
 
 const onChangeMock = jest.fn()
 const onBlurMock = jest.fn()
 const onFormStatusChangeMock = jest.fn()
+const onSavePurchaseDataMock = jest.fn()
 
 const user = userEvent.setup()
 
@@ -18,9 +19,15 @@ const KiboTextBoxMock = () => (
 )
 jest.mock('../../common/KiboTextBox/KiboTextBox', () => () => KiboTextBoxMock())
 
-describe('[components] CardDetailsForm', () => {
+describe('[components] PurchaseOrderForm', () => {
   it('should render component', () => {
-    render(<Common {...Common.args} onFormStatusChange={onFormStatusChangeMock} />)
+    render(
+      <Common
+        {...Common.args}
+        onSavePurchaseData={onSavePurchaseDataMock}
+        onFormStatusChange={onFormStatusChangeMock}
+      />
+    )
 
     const purchaseOrderComponent = screen.getByTestId('purchase-order-form')
     const textBoxList = screen.getByTestId('text-box-mock')
@@ -32,5 +39,12 @@ describe('[components] CardDetailsForm', () => {
     expect(creditLimit).toBeInTheDocument()
     expect(availableBalance).toBeInTheDocument()
     expect(screen.getAllByText(/currency/i)[0]).toBeInTheDocument()
+  })
+
+  it('should render single payment term for single payment Terms', () => {
+    render(<SinglePaymentTermPurchaseOrderForm {...SinglePaymentTermPurchaseOrderForm.args} />)
+    const singlePaymentTerm = SinglePaymentTermPurchaseOrderForm.args
+      ?.purchaseOrderPaymentTerms?.[0]?.description as string
+    expect(screen.getByText(singlePaymentTerm)).toBeInTheDocument()
   })
 })
