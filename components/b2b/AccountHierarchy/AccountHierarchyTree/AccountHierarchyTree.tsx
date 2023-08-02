@@ -1,10 +1,7 @@
 import * as React from 'react'
 
-import AddCircle from '@mui/icons-material/AddCircle'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-import Delete from '@mui/icons-material/Delete'
 import DragIndicator from '@mui/icons-material/DragIndicator'
-import Edit from '@mui/icons-material/Edit'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import {
   Box,
@@ -15,24 +12,27 @@ import {
   ListItemIcon,
   ListItemText,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Nestable from 'react-nestable'
 
+import { AccountHierarchyStyles } from './AccountHierarchyTree.styles'
+import { AccountHierarchyActions } from '@/components/b2b'
 import { B2BRoles } from '@/lib/constants'
+import { AddChildAccountProps } from '@/lib/types/AccountHierarchy'
+
+import { B2BAccount } from '@/lib/gql/types'
 
 interface TreeLabelProps {
   label: string
   icons?: any
-}
-
-interface AccountActionsProps {
-  role?: string
-  onBuyersClick: () => void
-  onQuotesClick: () => void
-  onAdd: () => void
-  onEdit: () => void
-  onDelete: () => void
+  onViewAccountClick: () => void
+  onAddAccountClick: () => void
+  onEditAccountClick: () => void
+  onDeleteAccountClick: () => void
+  onAccountSwap: () => void
 }
 
 interface Hierarchy {
@@ -46,10 +46,14 @@ interface TreeItemListProps {
 }
 
 interface AccountHierarchyTreeProps extends TreeItemListProps {
+  handleViewAccount: (item: B2BAccount) => void
+  handleChildAccountFormSubmit: ({ isAddingAccountToChild, accounts }: AddChildAccountProps) => void
+  handleSwapAccount: (b2BAccount: B2BAccount) => void
+  handleDeleteAccount: (b2BAccount: B2BAccount) => void
   role: string
 }
 
-const RoleContext = React.createContext(B2BRoles.NON_PURCHASER)
+const RoleContext = React.createContext(B2BRoles.PURCHASER)
 
 const CollapseStateIndicator = ({ isCollapsed }: { isCollapsed: boolean }) => {
   return (
@@ -67,75 +71,36 @@ const Handler = () => {
   )
 }
 
-const AccountActions = (props: AccountActionsProps) => {
-  const { onAdd, onEdit, onDelete, onBuyersClick, onQuotesClick } = props
-  const role = React.useContext(RoleContext)
-
-  const { t } = useTranslation('common')
-
-  return (
-    <Box display={'flex'} gap={2} alignItems={'center'} onClick={(e) => e.stopPropagation()}>
-      <Typography variant="caption" onClick={onBuyersClick}>
-        {t('buyers')}
-      </Typography>
-      <Typography variant="caption" onClick={onQuotesClick}>
-        {t('quotes')}
-      </Typography>
-      {role === B2BRoles.ADMIN && (
-        <Box display={'flex'} gap={2}>
-          <IconButton
-            size="small"
-            sx={{ p: 0.5 }}
-            aria-label="item-add"
-            name="item-add"
-            onClick={onAdd}
-          >
-            <AddCircle />
-          </IconButton>
-          <IconButton
-            size="small"
-            sx={{ p: 0.5 }}
-            aria-label="item-edit"
-            name="item-edit"
-            onClick={onEdit}
-          >
-            <Edit />
-          </IconButton>
-          <IconButton
-            size="small"
-            sx={{ p: 0.5 }}
-            aria-label="item-delete"
-            name="item-delete"
-            onClick={onDelete}
-          >
-            <Delete />
-          </IconButton>
-        </Box>
-      )}
-    </Box>
-  )
-}
-
 const TreeLabel = (props: TreeLabelProps) => {
-  const { label, icons } = props
+  const {
+    label,
+    icons,
+    onViewAccountClick,
+    onAddAccountClick,
+    onDeleteAccountClick,
+    onEditAccountClick,
+  } = props
 
+  const theme = useTheme()
   const role = React.useContext(RoleContext) // need to fetch using useAuthContext
+  console.log('role', role)
+  const mdScreen = useMediaQuery(theme.breakpoints.up('md'))
 
   return (
     <List dense={true}>
       <ListItem
         data-testid="tree-label"
         secondaryAction={
-          role !== B2BRoles.NON_PURCHASER ? (
-            <AccountActions
-              role={role}
-              onBuyersClick={() => null}
-              onQuotesClick={() => null}
-              onAdd={() => null}
-              onEdit={() => null}
-              onDelete={() => null}
-            />
-          ) : null
+          <AccountHierarchyActions
+            role={B2BRoles.ADMIN}
+            mdScreen={mdScreen}
+            onBuyersClick={() => null}
+            onQuotesClick={() => null}
+            onAdd={() => onAddAccountClick()}
+            onView={() => onViewAccountClick()}
+            onEdit={() => onEditAccountClick()}
+            onDelete={() => onDeleteAccountClick()}
+          />
         }
       >
         {icons ? <ListItemIcon>{icons}</ListItemIcon> : null}
@@ -146,7 +111,15 @@ const TreeLabel = (props: TreeLabelProps) => {
 }
 
 export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
-  const { accounts, hierarchy, role } = props
+  const {
+    accounts,
+    hierarchy,
+    role,
+    handleViewAccount,
+    handleChildAccountFormSubmit,
+    handleDeleteAccount,
+    handleSwapAccount,
+  } = props
 
   const { t } = useTranslation('common')
 
@@ -155,9 +128,35 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
 
     const currentAccount = accounts?.find((account: any) => account.id === item.id)
 
+    const onViewAccountClick = () => {
+      handleViewAccount(currentAccount)
+    }
+
+    const onAddAccountClick = () =>
+      handleChildAccountFormSubmit({
+        isAddingAccountToChild: true,
+        accounts: [currentAccount],
+      })
+
+    const onEditAccountClick = () =>
+      handleChildAccountFormSubmit({
+        isAddingAccountToChild: false,
+        accounts,
+        accountToEdit: currentAccount,
+      })
+
+    const onDeleteAccountClick = () => handleDeleteAccount(currentAccount)
+
+    const onAccountSwap = () => handleSwapAccount(currentAccount)
+
     return (
       <TreeLabel
         label={currentAccount?.companyOrOrganization}
+        onViewAccountClick={onViewAccountClick}
+        onAddAccountClick={onAddAccountClick}
+        onEditAccountClick={onEditAccountClick}
+        onDeleteAccountClick={onDeleteAccountClick}
+        onAccountSwap={onAccountSwap}
         icons={
           <ListItemIcon sx={{ display: 'flex' }}>
             <IconButton size="small">{handler}</IconButton>
@@ -180,9 +179,22 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
 
   return (
     <RoleContext.Provider value={role}>
-      <Box display={'flex'} justifyContent={'flex-end'} gap={2}>
-        <Button onClick={() => handleCollapse('NONE')}>{t('expand-all')}</Button>
-        <Button onClick={() => handleCollapse('ALL')}>{t('collapse-all')}</Button>
+      <Box sx={{ ...AccountHierarchyStyles.expandCollapseButtonBox }} gap={1}>
+        <Button
+          sx={{ ...AccountHierarchyStyles.expandCollapseButtonStyle }}
+          onClick={() => handleCollapse('NONE')}
+        >
+          {t('expand-all')}
+        </Button>
+        <Button
+          sx={{ ...AccountHierarchyStyles.expandCollapseButtonStyle }}
+          onClick={() => handleCollapse('ALL')}
+        >
+          {t('collapse-all')}
+        </Button>
+      </Box>
+      <Box sx={{ backgroundColor: '#F7F7F7', padding: '15px' }}>
+        <Typography fontWeight="bold">{t('org-name')}</Typography>
       </Box>
       <Nestable
         ref={(el) => (refNestable.current = el)}
@@ -192,8 +204,8 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
         renderCollapseIcon={({ isCollapsed }) => (
           <CollapseStateIndicator isCollapsed={isCollapsed} />
         )}
-        onChange={confirmChange}
-        //onChange={(items) => console.log(items)}
+        onChange={() => handleSwapAccount(accounts[0])}
+        // onChange={(items) => console.log(items)}
       />
     </RoleContext.Provider>
   )

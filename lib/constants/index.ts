@@ -169,3 +169,28 @@ export const B2BRoles = {
   NON_PURCHASER: 'non-purchasers',
   BUYER: 'buyer',
 }
+
+export const AllAccountActions = {
+  EDIT_ACCOUNT: 'Edit account',
+  ADD_ACCOUNT: 'Add a child account',
+  VIEW_BUYER_ACCOUNT: 'View buyers for this account',
+  VIEW_ACCOUNT: 'View account',
+  VIEW_ACCOUNTS: 'View accounts for this account',
+  DELETE_ACCOUNT: 'Delete account',
+}
+
+export const AccountActions = {
+  [B2BRoles.ADMIN]: [
+    AllAccountActions.EDIT_ACCOUNT,
+    AllAccountActions.ADD_ACCOUNT,
+    AllAccountActions.VIEW_BUYER_ACCOUNT,
+    AllAccountActions.VIEW_ACCOUNTS,
+    AllAccountActions.DELETE_ACCOUNT,
+  ],
+  [B2BRoles.PURCHASER]: [
+    AllAccountActions.VIEW_ACCOUNT,
+    AllAccountActions.VIEW_BUYER_ACCOUNT,
+    AllAccountActions.VIEW_ACCOUNTS,
+  ],
+  [B2BRoles.NON_PURCHASER]: [AllAccountActions.VIEW_ACCOUNT],
+}

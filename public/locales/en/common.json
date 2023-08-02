@@ -404,8 +404,18 @@
   "tax-id": "Tax ID",
   "optional": "Optional",
   "create-account": "Create Account",
+  "edit-account": "Edit Account",
   "select-parent-account": "Select parent account",
   "expand-all": "Expand All",
   "collapse-all": "Collapse All",
-  "buyers": "Buyers"
+  "buyers": "Buyers",
+  "view-account": "View Account",
+  "b2b-account-id": "B2B Account ID",
+  "user-first-name": "User first name",
+  "user-last-name": "User last name",
+  "org-name": "Organization name",
+  "delete-account-confirm-message": "Are you sure you want to delete this account?",
+  "swap-account-hierarchy": "Swap account hierarchy",
+  "swap-account-hierarchy-text": "Are you sure you want to restructure this account?\n This action may affect user and account permissions, access roles, and other settings.",
+  "yes-move-anyway": "Yes, move anyway"
 }
