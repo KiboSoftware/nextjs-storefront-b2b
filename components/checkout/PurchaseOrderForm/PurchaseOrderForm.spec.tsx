@@ -47,4 +47,21 @@ describe('[components] PurchaseOrderForm', () => {
       ?.purchaseOrderPaymentTerms?.[0]?.description as string
     expect(screen.getByText(singlePaymentTerm)).toBeInTheDocument()
   })
+
+  it('should call onFormStatusChangeMock when users type purchase order number', async () => {
+    render(
+      <SinglePaymentTermPurchaseOrderForm
+        {...SinglePaymentTermPurchaseOrderForm.args}
+        validateForm={false}
+        onSavePurchaseData={onSavePurchaseDataMock}
+        onFormStatusChange={onFormStatusChangeMock}
+      />
+    )
+    const textBox = screen.getByTestId('text-box-mock')
+
+    user.type(textBox, '123')
+    await waitFor(() => {
+      expect(onFormStatusChangeMock).toBeCalled()
+    })
+  })
 })
