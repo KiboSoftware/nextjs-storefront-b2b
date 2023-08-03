@@ -13,6 +13,7 @@ import {
 } from '@mui/material'
 
 interface KiboRadioProps {
+  name?: string
   title?: string | React.ReactNode
   selected?: string
   align?: 'baseline' | 'center' | 'flex-start'
@@ -29,6 +30,7 @@ interface KiboRadioProps {
 
 export const KiboRadio = (props: KiboRadioProps) => {
   const {
+    name,
     title,
     radioOptions,
     selected = '',
@@ -51,7 +53,7 @@ export const KiboRadio = (props: KiboRadioProps) => {
         {title}
       </FormLabel>
       <RadioGroup
-        aria-labelledby="kibo-radio"
+        aria-label={name ?? 'kibo-radio'}
         name="radio-buttons-group"
         value={selected}
         onChange={handleChange}

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
-import QuoteHistory from './QuoteHistory'
+import QuoteHistory from './QuotesHistory'
 import { quoteMock } from '@/__mocks__/stories/quoteMock'
 
 import { AuditRecord } from '@/lib/gql/types'

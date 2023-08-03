@@ -13,3 +13,4 @@ export { default as EditBillingAddress } from './EditBillingAddress/EditBillingA
 export { default as UserFormDialog } from './UserFormDialog/UserFormDialog'
 export { default as EmailQuoteDialog } from './b2b/EmailQuoteDialog/EmailQuoteDialog'
 export { default as QuotesFilterDialog } from './b2b/QuotesFilterDialog/QuotesFilterDialog'
+export { default as QuoteCommentThreadDialog } from './b2b/QuotesCommentThreadDialog/QuotesCommentThreadDialog'

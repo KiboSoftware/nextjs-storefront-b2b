@@ -4,7 +4,7 @@ import { Button, Stack } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 
 import { quoteMock } from '@/__mocks__/stories/quoteMock'
-import { QuoteHistory } from '@/components/b2b'
+import { QuotesHistory } from '@/components/b2b'
 import { KiboDialog } from '@/components/common'
 
 interface QuoteHistoryDialogProps {
@@ -17,7 +17,7 @@ const QuoteHistoryDialog = (props: QuoteHistoryDialogProps) => {
 
   const DialogArgs = {
     Title: t('quote-history'),
-    Content: <QuoteHistory auditHistory={quoteMock.auditHistory} />,
+    Content: <QuotesHistory auditHistory={quoteMock.auditHistory} />,
     Actions: (
       <Stack width="20%">
         <Button

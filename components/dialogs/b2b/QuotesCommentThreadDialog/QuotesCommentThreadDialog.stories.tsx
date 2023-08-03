@@ -2,7 +2,7 @@ import React from 'react'
 
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
-import QuoteCommentThreadDialog from './QuoteCommentThreadDialog'
+import QuoteCommentThreadDialog from './QuotesCommentThreadDialog'
 import { quoteMock } from '@/__mocks__/stories/quoteMock'
 
 export default {

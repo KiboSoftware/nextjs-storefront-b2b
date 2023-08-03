@@ -86,6 +86,7 @@ const QuotesFilterContent = () => {
         </Grid>
         <Grid item xs={12}>
           <KiboRadio
+            name="quote-status"
             title={<InputLabel shrink>{t('status')}</InputLabel>}
             radioOptions={statusFilterRadioOptions}
             onChange={() => null}

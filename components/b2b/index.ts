@@ -2,4 +2,4 @@ export { default as B2BProductSearch } from '@/components/b2b/B2BProductSearch/B
 export { default as B2BProductDetailsTable } from '@/components/b2b/B2BProductDetailsTable/B2BProductDetailsTable'
 export { default as QuotesCommentThread } from '@/components/b2b/QuotesCommentThread/QuotesCommentThread'
 export { default as QuotesTable } from '@/components/b2b/QuotesTable/QuotesTable'
-export { default as QuoteHistory } from '@/components/b2b/QuoteHistory/QuoteHistory'
+export { default as QuotesHistory } from '@/components/b2b/QuotesHistory/QuotesHistory'

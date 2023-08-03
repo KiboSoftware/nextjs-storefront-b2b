@@ -2,7 +2,7 @@ import React from 'react'
 
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
-import QuoteHistoryDialog from './QuoteHistoryDialog'
+import QuoteHistoryDialog from './QuotesHistoryDialog'
 
 export default {
   title: 'Dialogs/B2B/QuoteHistoryDialog',

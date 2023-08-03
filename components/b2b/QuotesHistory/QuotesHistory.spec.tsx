@@ -5,13 +5,13 @@ import { composeStories } from '@storybook/testing-react'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import * as stories from './QuoteHistory.stories'
+import * as stories from './QuotesHistory.stories'
 import { renderWithQueryClient } from '@/__test__/utils/renderWithQueryClient'
 
 const { Common } = composeStories(stories)
 
 describe('[components] - QuoteHistory', () => {
-  const user = userEvent.setup()
+  userEvent.setup()
 
   it('should render QuoteHistory component with all provided records', () => {
     renderWithQueryClient(<Common />)
