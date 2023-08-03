@@ -3,7 +3,7 @@ import React from 'react'
 import '@testing-library/jest-dom'
 import { useMediaQuery } from '@mui/material'
 import { composeStories } from '@storybook/testing-react'
-import { screen, waitFor } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import * as stories from './QuotesTable.stories'
@@ -104,7 +104,7 @@ describe('[components] - QuotesTable', () => {
       renderWithQueryClient(<Mobile />)
 
       Mobile.args?.quoteCollection?.items?.map((item, index) => {
-        const { number, name, expirationDate, status } = quoteGetters.getQuoteDetails(item as Quote)
+        const { number, name, expirationDate } = quoteGetters.getQuoteDetails(item as Quote)
 
         expect(screen.getAllByTestId('quote-number')[index]).toHaveTextContent(number.toString())
         expect(screen.getAllByTestId('quote-name')[index]).toHaveTextContent(name)

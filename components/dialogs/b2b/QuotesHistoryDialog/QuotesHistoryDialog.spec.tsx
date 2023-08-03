@@ -28,7 +28,7 @@ describe('[components]  QuotesHistoryDialog', () => {
 
     const closeButtons = screen.getAllByRole('button', { name: 'close' })
 
-    closeButtons.map(async (closeButton) => {
+    closeButtons.forEach(async (closeButton) => {
       expect(closeButton).toBeVisible()
 
       await user.click(closeButton)
