@@ -42,7 +42,7 @@ const PurchaseOrderForm = (props: PurchaseOrderFormProps) => {
   const {
     creditLimit,
     availableBalance,
-    purchaseOrderPaymentTerms = [],
+    purchaseOrderPaymentTerms,
     validateForm,
     onFormStatusChange,
     onSavePurchaseData,
