@@ -26,7 +26,7 @@ import {
 import { useTranslation } from 'next-i18next'
 
 import { KiboPagination, KiboSelect, Price, SearchBar } from '@/components/common'
-import { EmailQuoteDialog, QuotesFilterDialog } from '@/components/dialogs'
+import { QuotesFilterDialog } from '@/components/dialogs'
 import { useModalContext } from '@/context'
 import { quoteGetters } from '@/lib/getters'
 
@@ -132,7 +132,8 @@ const QuotesTable = (props: QuotesTableProps) => {
   }
 
   const handleEmailQuote = () => {
-    showModal({ Component: EmailQuoteDialog })
+    // TODO
+    // showModal({ Component: EmailQuoteDialog })
     handleClose()
   }
 
