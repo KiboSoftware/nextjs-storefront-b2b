@@ -27,6 +27,8 @@ const loadCustomerCustomerPurchaseOrderAccount = async (
     document: getCustomerPurchaseOrderQuery,
     variables: { accountId },
   })
+
+  console.log('response', response)
   return response?.customerPurchaseOrderAccount
 }
 
@@ -40,5 +42,6 @@ export const useGetCustomerPurchaseOrderAccount = (
     refetchOnWindowFocus: false,
   })
 
+  console.log('data', data)
   return { data, isLoading, isSuccess }
 }

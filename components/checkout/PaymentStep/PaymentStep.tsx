@@ -60,12 +60,18 @@ import type {
   CustomerPurchaseOrderPaymentTerm,
   CrPurchaseOrderPayment,
   CrPurchaseOrderPaymentTerm,
+  CardCollection,
+  CustomerContactCollection,
+  CustomerPurchaseOrderAccount,
 } from '@/lib/gql/types'
 
 interface PaymentStepProps {
   checkout: CrOrder | Checkout
   contact?: ContactForm
   isMultiShipEnabled?: boolean
+  addressCollection?: CustomerContactCollection
+  cardCollection?: CardCollection
+  customerPurchaseOrderAccount?: CustomerPurchaseOrderAccount
   onVoidPayment: (id: string, paymentId: string, paymentAction: PaymentActionInput) => Promise<void>
   onAddPayment: (id: string, paymentAction: PaymentActionInput) => Promise<void>
 }
@@ -141,20 +147,22 @@ type SavedPODetails = {
 } | null
 
 const PaymentStep = (props: PaymentStepProps) => {
-  const { checkout, isMultiShipEnabled = false, onVoidPayment, onAddPayment } = props
+  const {
+    checkout,
+    isMultiShipEnabled = false,
+    cardCollection,
+    addressCollection,
+    customerPurchaseOrderAccount,
+    onVoidPayment,
+    onAddPayment,
+  } = props
 
   const { t } = useTranslation('common')
   const { isAuthenticated, user } = useAuthContext()
   const { loadPaymentTypes } = usePaymentTypes()
   const paymentTypes = loadPaymentTypes()
   const { validateCustomerAddress } = useValidateCustomerAddress()
-  // getting saved card and billing details
-  const { data: cardsCollection, isSuccess: isCardFetchSuccess } = useGetCards(user?.id as number)
-  const { data: addressCollection, isSuccess: isAddressFetchSuccess } = useGetCustomerAddresses(
-    user?.id as number
-  )
-  const { data: customerPurchaseOrderAccount, isSuccess: isCustomerPurchaseOrderAccount } =
-    useGetCustomerPurchaseOrderAccount(user?.id as number)
+
   const newPaymentTypes = paymentTypes
     .map((paymentType: any) =>
       paymentType.id === 'CreditCard' ||
@@ -163,6 +171,7 @@ const PaymentStep = (props: PaymentStepProps) => {
         : null
     )
     .filter(Boolean)
+
   const {
     stepStatus,
     setStepNext,
@@ -362,11 +371,11 @@ const PaymentStep = (props: PaymentStepProps) => {
   const handleInitialCardDetailsLoad = () => {
     setStepStatusIncomplete()
 
-    if (!cardsCollection || !addressCollection) return
+    if (!cardCollection || !addressCollection) return
 
     // get card and billing address formatted data from server
     const accountPaymentDetails =
-      userGetters.getSavedCardsAndBillingDetails(cardsCollection, addressCollection) || []
+      userGetters.getSavedCardsAndBillingDetails(cardCollection, addressCollection) || []
 
     // find default payment details from server data
     const defaultCard = userGetters.getDefaultPaymentBillingMethod(accountPaymentDetails)
@@ -695,7 +704,11 @@ const PaymentStep = (props: PaymentStepProps) => {
       handleValidateBillingAddress({ ...billingFormAddress.contact.address })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cardFormDetails.isDataUpdated, billingFormAddress.isDataUpdated])
+  }, [
+    cardFormDetails.isDataUpdated,
+    billingFormAddress.isDataUpdated,
+    purchaseOrderFormDetails.isPurchaseOrderFormValidated,
+  ])
 
   useEffect(() => {
     if (selectedPaymentTypeRadio === PaymentType.CREDITCARD) {
@@ -742,7 +755,7 @@ const PaymentStep = (props: PaymentStepProps) => {
       <FormControl>
         <RadioGroup
           aria-labelledby="payment-types-radio"
-          name="radio-buttons-group"
+          aria-label="payment-types"
           value={selectedPaymentTypeRadio}
           onChange={(_, value: string) => handlePaymentTypeRadioChange(value)}
           data-testid="payment-types"
@@ -758,7 +771,7 @@ const PaymentStep = (props: PaymentStepProps) => {
                 />
                 {paymentType.id === selectedPaymentTypeRadio ? (
                   <Box sx={{ maxWidth: '100%', mb: 1 }}>
-                    {shouldShowPreviouslySavedCards && (
+                    {shouldShowPreviouslySavedCards ? (
                       <Stack gap={2} width="100%" data-testid="saved-payment-methods">
                         {cardOptions?.length ? (
                           <>
@@ -853,7 +866,7 @@ const PaymentStep = (props: PaymentStepProps) => {
                           </Typography>
                         )}
                       </Stack>
-                    )}
+                    ) : null}
                     {shouldShowPreviouslySavedPaymentsForPurchaseOrder ? (
                       <Stack gap={2} width="100%" data-testid="saved-payment-methods">
                         {savedPaymentBillingDetailsForPurchaseOrder ? (

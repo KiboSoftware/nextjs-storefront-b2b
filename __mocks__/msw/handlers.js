@@ -11,6 +11,7 @@ import {
   orderSubscriptionNowMock,
   customerB2BUserForPage0Mock,
   customerPurchaseOrderMock,
+  customerPurchaseOrderAccountMock,
 } from '../stories'
 import { cartItemMock } from '../stories/cartItemMock'
 import { cartCouponMock, cartMock } from '../stories/cartMock'
@@ -160,6 +161,10 @@ export const checkoutHandlers = [
 ]
 
 export const accountHandlers = [
+  graphql.query('customerPurchaseOrderAccount', (_req, res, ctx) => {
+    return res(ctx.data(customerPurchaseOrderAccountMock))
+  }),
+
   graphql.query('customerAccountCards', (_req, res, ctx) => {
     return res(ctx.data(customerAccountCardsMock))
   }),

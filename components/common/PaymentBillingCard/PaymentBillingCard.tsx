@@ -63,8 +63,7 @@ const PaymentBillingCard = (props: PaymentBillingCardProps) => {
       )}
 
       {paymentType === PaymentType.PURCHASEORDER && (
-        <>
-          {/* {purchaseOrderNumber && ( */}
+        <Box data-testid="purchase-order-card">
           <KeyValueDisplay
             option={{
               name: t('po-number'),
@@ -72,8 +71,6 @@ const PaymentBillingCard = (props: PaymentBillingCardProps) => {
             }}
             variant="body1"
           />
-          {/* )} */}
-          {/* {paymentTerm?.description && ( */}
           <KeyValueDisplay
             option={{
               name: t('payment-terms'),
@@ -81,8 +78,7 @@ const PaymentBillingCard = (props: PaymentBillingCardProps) => {
             }}
             variant="body1"
           />
-          {/* )} */}
-        </>
+        </Box>
       )}
 
       <AddressCard

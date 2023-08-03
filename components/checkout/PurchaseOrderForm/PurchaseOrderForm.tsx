@@ -35,7 +35,7 @@ interface PurchaseOrderFormProps {
   purchaseOrderPaymentTerms: CustomerPurchaseOrderPaymentTerm[]
   validateForm: boolean
   onFormStatusChange: (isValid: boolean) => void
-  onSavePurchaseData: (data: CrPurchaseOrderPayment) => void
+  onSavePurchaseData: (data: CrPurchaseOrderPayment & { isDataUpdated: boolean }) => void
 }
 
 const PurchaseOrderForm = (props: PurchaseOrderFormProps) => {
@@ -74,6 +74,7 @@ const PurchaseOrderForm = (props: PurchaseOrderFormProps) => {
 
   const onValid = async (formData: any) => {
     const purchaseOrderFormData = {
+      isDataUpdated: true,
       ...formData,
       paymentTerm: singlePurchaseOrderPaymentTerms
         ? singlePurchaseOrderPaymentTerms
