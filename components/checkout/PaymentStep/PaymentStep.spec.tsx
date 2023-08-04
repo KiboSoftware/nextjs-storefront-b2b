@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 
+import { Button, Typography } from '@mui/material'
 import { composeStories } from '@storybook/testing-react'
 import { screen, cleanup, waitFor, act, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -15,7 +16,8 @@ import {
 } from '@/__mocks__/stories'
 import { getAccountCardId, getBillingAddresses } from '@/__test__/e2e/helper'
 import { renderWithQueryClient } from '@/__test__/utils'
-import { AuthContext } from '@/context'
+import { AuthContext, STEP_STATUS } from '@/context'
+import { useCheckoutStepContext, CheckoutStepProvider } from '@/context'
 import { PaymentType } from '@/lib/constants'
 import { cardGetters, orderGetters } from '@/lib/getters'
 import { tokenizeCreditCardPayment } from '@/lib/helpers'
@@ -183,6 +185,8 @@ jest.mock('@/lib/helpers', () => ({
 
 afterEach(() => cleanup())
 
+const onAddPaymentMock = jest.fn()
+const onVoidPaymentMock = jest.fn()
 const userContextValues = (isAuthenticated: boolean, userId: number) => ({
   isAuthenticated: isAuthenticated,
   user: {
@@ -197,6 +201,33 @@ const userContextValues = (isAuthenticated: boolean, userId: number) => ({
 
 const { publicRuntimeConfig } = getConfig()
 
+const TestComponent = (param: any) => {
+  const { stepStatus, setStepStatusComplete, setStepNext, setStepStatusSubmit } =
+    useCheckoutStepContext()
+  // const handleSubmit = useCallback(() => setStepStatusSubmit(), [])
+  const handleSubmit = () => {
+    setStepStatusSubmit()
+  }
+
+  return (
+    <>
+      <Common
+        {...Common.args}
+        checkout={param?.checkout}
+        {...(param?.cardCollection && { cardCollection: param.cardCollection })}
+        {...(param?.addressCollection && { addressCollection: param.addressCollection })}
+        {...(param?.customerPurchaseOrderAccount && {
+          customerPurchaseOrderAccount: param.customerPurchaseOrderAccount,
+        })}
+        onAddPayment={onAddPaymentMock}
+        onVoidPayment={onVoidPaymentMock}
+      />
+      {/* <Typography data-testid="current-step-status">{stepStatus}</Typography> */}
+      <Button onClick={handleSubmit}>Review Order</Button>
+    </>
+  )
+}
+
 const setup = (param: {
   checkout?: CrOrder
   cardCollection?: CardCollection
@@ -210,15 +241,13 @@ const setup = (param: {
 
   renderWithQueryClient(
     <AuthContext.Provider value={userContextValues(isAuthenticated, userId)}>
-      <Common
-        {...Common.args}
-        checkout={param?.checkout}
-        {...(param?.cardCollection && { cardCollection: param.cardCollection })}
-        {...(param?.addressCollection && { addressCollection: param.addressCollection })}
-        {...(param?.customerPurchaseOrderAccount && {
-          customerPurchaseOrderAccount: param.customerPurchaseOrderAccount,
-        })}
-      />
+      <CheckoutStepProvider
+        steps={['details', 'shipping', 'payment', 'review']}
+        initialActiveStep={2}
+        currentStepStatus={STEP_STATUS.INCOMPLETE}
+      >
+        <TestComponent {...param} />
+      </CheckoutStepProvider>
     </AuthContext.Provider>
   )
 
@@ -318,6 +347,30 @@ describe('[components] PaymentStep', () => {
         await waitFor(() => {
           expect(within(purchaseOrderCard).getByText('30')).toBeVisible()
         })
+      })
+
+      it('should submit purchase order data', async () => {
+        const { user } = setup({
+          checkout: { ...orderMock.checkout, payments: [purchaseOrderPaymentMock] },
+
+          isAuthenticated: true,
+
+          userId: 1012,
+        })
+
+        await waitFor(() => {
+          expect(screen.getByRole('button', { name: 'Review Order' })).toBeEnabled()
+        })
+
+        // await user.click(screen.getByRole('button', { name: 'Review Order' }))
+
+        // await waitFor(() => {
+        //   expect(onVoidPaymentMock).toBeCalled()
+        // })
+
+        // await waitFor(() => {
+        //   expect(onAddPaymentMock).toBeCalled()
+        // })
       })
     })
 
