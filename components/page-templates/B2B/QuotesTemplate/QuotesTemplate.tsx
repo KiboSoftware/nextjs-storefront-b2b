@@ -4,18 +4,19 @@ import { Box, Button, Grid, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 
 import { QuotesTable } from '@/components/b2b'
-import { QuoteSortingOptions } from '@/lib/types'
+import { QuoteFilters, QuoteSortingOptions } from '@/lib/types'
 
 import { QueryQuotesArgs, QuoteCollection } from '@/lib/gql/types'
 
 interface QuotesTemplateProps {
   sortingValues: QuoteSortingOptions
   quoteCollection: QuoteCollection
+  filters: QuoteFilters
   setQuotesSearchParam: (param: QueryQuotesArgs) => void
 }
 
 const QuotesTemplate = (props: QuotesTemplateProps) => {
-  const { quoteCollection, sortingValues, setQuotesSearchParam } = props
+  const { quoteCollection, sortingValues, filters, setQuotesSearchParam } = props
   const { t } = useTranslation('common')
 
   return (
@@ -35,6 +36,7 @@ const QuotesTemplate = (props: QuotesTemplateProps) => {
           setQuotesSearchParam={setQuotesSearchParam}
           quoteCollection={quoteCollection}
           sortingValues={sortingValues}
+          filters={filters}
         />
       </Grid>
     </Grid>

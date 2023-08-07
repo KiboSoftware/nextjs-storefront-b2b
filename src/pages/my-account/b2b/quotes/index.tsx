@@ -6,6 +6,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 import { QuotesTemplate } from '@/components/page-templates'
 import { useGetQuotes } from '@/hooks'
+import { parseFilterParamToObject } from '@/lib/helpers'
 
 import { QueryQuotesArgs } from '@/lib/gql/types'
 
@@ -24,7 +25,7 @@ const QuotesPage: NextPage = (props) => {
 
   const [quotesSearchParam, setQuotesSearchParam] = useState<QueryQuotesArgs>({
     filter: '',
-    pageSize: parseInt(publicRuntimeConfig.B2BQuotes.pageSize),
+    pageSize: parseInt(publicRuntimeConfig.B2BQuotes.pageSize) || 5,
     sortBy: 'number desc',
     startIndex: 0,
     q: '',
@@ -40,9 +41,7 @@ const QuotesPage: NextPage = (props) => {
   const handleQuotesSearchParam = (param: QueryQuotesArgs) => {
     setQuotesSearchParam((prevSearchParam) => ({
       ...prevSearchParam,
-      filter: quotesSearchParam.filter
-        ? quotesSearchParam.filter + ' or ' + param.filter
-        : param.filter,
+      filter: quotesSearchParam.filter ? quotesSearchParam.filter : param.filter,
       ...param,
     }))
   }
@@ -53,6 +52,7 @@ const QuotesPage: NextPage = (props) => {
         {...props}
         quoteCollection={quoteCollection}
         sortingValues={sortingValues}
+        filters={parseFilterParamToObject(quotesSearchParam.filter as string)}
         setQuotesSearchParam={handleQuotesSearchParam}
       />
     </>

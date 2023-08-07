@@ -21,10 +21,9 @@ import { KiboDialog, KiboRadio } from '@/components/common'
 import { QuoteFilters } from '@/lib/types'
 
 interface QuotesFilterDialogProps {
-  filterValues: QuoteFilters
-  setFilterValues: (val: QuoteFilters) => void
-  onFilterApply: (val: QuoteFilters) => void
-  onFilterClear: () => void
+  filters: QuoteFilters
+  // setFilterValues: (val: QuoteFilters) => void
+  onFilterAction: (val: QuoteFilters) => void
   closeModal: () => void
 }
 
@@ -46,8 +45,6 @@ const FilterTypes = {
 }
 
 const FilterInput = ({ label = '', value = '', handleDateChange }: FilterInputProps) => {
-  const [date, setDate] = useState(value)
-
   return (
     <FormControl variant="standard" fullWidth>
       <InputLabel shrink htmlFor={label}>
@@ -56,10 +53,9 @@ const FilterInput = ({ label = '', value = '', handleDateChange }: FilterInputPr
       <DatePicker
         openTo="day"
         views={['year', 'month', 'day']}
-        value={date}
+        value={value ? dayjs(value) : null}
         onChange={(newValue) => {
-          handleDateChange(dayjs(newValue).format('YYYY-MM-DD') as string)
-          setDate(newValue as string)
+          handleDateChange(dayjs(newValue).format('YYYY-MM-DD'))
         }}
         renderInput={(params) => (
           <TextField
@@ -85,7 +81,7 @@ interface QuotesFilterContentProps {
 const QuotesFilterContent = (props: QuotesFilterContentProps) => {
   const { filterValues, onFilterInput } = props
   const { t } = useTranslation('common')
-  const [status, setStatus] = useState(filterValues[FilterTypes.STATUS])
+  // const [status, setStatus] = useState(filterValues[FilterTypes.STATUS])
 
   const statusFilterRadioOptions = [
     {
@@ -127,10 +123,9 @@ const QuotesFilterContent = (props: QuotesFilterContentProps) => {
             name="quote-status"
             title={<InputLabel shrink>{t('status')}</InputLabel>}
             radioOptions={statusFilterRadioOptions}
-            selected={status}
+            selected={filterValues[FilterTypes.STATUS]}
             onChange={(value) => {
               onFilterInput(value, FilterTypes.STATUS)
-              setStatus(value)
             }}
           />
         </Grid>
@@ -163,18 +158,12 @@ const QuotesFilterActions = (props: QuotesFilterActionsProps) => {
   )
 }
 
-const initialFilterValues = {
-  expirationDate: '',
-  createDate: '',
-  status: '',
-}
-
 // Component
 const QuotesFilterDialog = (props: QuotesFilterDialogProps) => {
-  const { filterValues, setFilterValues, onFilterApply, onFilterClear, closeModal } = props
+  const { filters, onFilterAction, closeModal } = props
   const { t } = useTranslation('common')
 
-  // const [filterValues, setFilterValues] = useState<QuoteFilters>(initialFilterValues)
+  const [filterValues, setFilterValues] = useState<QuoteFilters>(filters)
 
   const handleFilterInput = (value: string, field: string) => {
     setFilterValues({
@@ -184,19 +173,18 @@ const QuotesFilterDialog = (props: QuotesFilterDialogProps) => {
   }
 
   const handleFilterApply = () => {
-    onFilterApply(filterValues)
+    onFilterAction(filterValues)
     closeModal()
   }
 
   const handleFilterClear = () => {
-    // onFilterClear()
-    // onFilterApply(filterValues)
     setFilterValues({
       ...filterValues,
       expirationDate: '',
       createDate: '',
       status: '',
     })
+    onFilterAction(filterValues)
   }
 
   const DialogArgs = {

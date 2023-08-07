@@ -39,6 +39,7 @@ import { QueryQuotesArgs, QuoteCollection } from '@/lib/gql/types'
 interface QuotesTableProps {
   quoteCollection: QuoteCollection
   sortingValues: QuoteSortingOptions
+  filters: QuoteFilters
   setQuotesSearchParam: (param: QueryQuotesArgs) => void
 }
 
@@ -109,7 +110,7 @@ const initialFilterValues = {
 }
 
 const QuotesTable = (props: QuotesTableProps) => {
-  const { quoteCollection, sortingValues, setQuotesSearchParam } = props
+  const { quoteCollection, sortingValues, filters, setQuotesSearchParam } = props
 
   const { publicRuntimeConfig } = getConfig()
 
@@ -119,10 +120,6 @@ const QuotesTable = (props: QuotesTableProps) => {
   const tabAndDesktop = useMediaQuery(theme.breakpoints.up('sm'))
   const [searchTerm, setSearchTerm] = React.useState('')
   const debouncedTerm = useDebounce(searchTerm, publicRuntimeConfig.debounceTimeout)
-
-  const [filterValues, setFilterValues] = useState<QuoteFilters>(initialFilterValues)
-  const filterValuesRef = useRef(filterValues)
-  filterValuesRef.current = filterValues
 
   const getStatusColorCode = useCallback((status: string) => {
     return statusColorCode[status]
@@ -152,36 +149,22 @@ const QuotesTable = (props: QuotesTableProps) => {
     handleClose()
   }
 
-  const handleFilterApply = () => {
-    setQuotesSearchParam({ filter: buildQuotesFilterParam(filterValuesRef.current) })
-  }
-
-  const handleFilterClear = () => {
-    setFilterValues({
-      ...filterValuesRef.current,
-      ...initialFilterValues,
-    })
+  const handleFilterAction = (filters: QuoteFilters) => {
+    setQuotesSearchParam({ filter: buildQuotesFilterParam(filters) })
   }
 
   const handleFilterButtonClick = () => {
     showModal({
       Component: QuotesFilterDialog,
       props: {
-        filterValues: filterValuesRef.current,
-        setFilterValues: setFilterValues,
-        onFilterApply: handleFilterApply,
-        onFilterClear: handleFilterClear,
+        filters: filters,
+        onFilterAction: handleFilterAction,
       },
     })
   }
 
   const handleQuoteSearch = (term: string) => {
     setSearchTerm(term)
-    setFilterValues({
-      ...filterValuesRef.current,
-      ...(!parseInt(term) && { name: term, number: '' }),
-      ...(parseInt(term) && { number: term, name: term }),
-    })
   }
 
   const quotes = quoteGetters.getQuotes(quoteCollection)
@@ -193,14 +176,12 @@ const QuotesTable = (props: QuotesTableProps) => {
   const onSortItemSelection = (value: any) => setQuotesSearchParam({ sortBy: value })
 
   useEffect(() => {
-    if (debouncedTerm) {
-      handleFilterApply()
-    }
+    handleFilterAction({
+      ...filters,
+      ...(!parseInt(debouncedTerm) && { name: debouncedTerm, number: '' }),
+      ...(parseInt(debouncedTerm) && { number: debouncedTerm, name: debouncedTerm }),
+    })
   }, [debouncedTerm])
-
-  // useEffect(() => {
-  //   filterValuesRef.current = filterValues
-  // }, [filterValues])
 
   return (
     <>
