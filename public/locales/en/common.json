@@ -439,5 +439,6 @@
   "available-balance": "Available Balance",
   "payment-terms": "Payment Terms",
   "po-external-id": "PO External ID",
-  "select-payment-term": "Select a Payment Term"
+  "select-payment-term": "Select a Payment Term",
+  "expiration-date": "Expiration Date"
 }
