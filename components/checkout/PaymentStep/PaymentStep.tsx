@@ -955,13 +955,7 @@ const PaymentStep = (props: PaymentStepProps) => {
                               width: '100%',
                               paddingLeft: '0.5rem',
                             }}
-                            key={selectedPaymentTypeRadio}
-                            control={
-                              <Checkbox
-                                name={`${t('billing-address-same-as-shipping')}`}
-                                key={selectedPaymentTypeRadio}
-                              />
-                            }
+                            control={<Checkbox name={`${t('billing-address-same-as-shipping')}`} />}
                             label={`${t('billing-address-same-as-shipping')}`}
                             onChange={(_, value) => handleSameAsShippingAddressCheckbox(value)}
                           />

@@ -203,18 +203,15 @@ const userContextValues = (isAuthenticated: boolean, userId: number) => ({
 const { publicRuntimeConfig } = getConfig()
 
 const TestComponent = (param: any) => {
-  const { stepStatus, setStepStatusComplete, setStepNext, setStepStatusSubmit } =
-    useCheckoutStepContext()
+  const { stepStatus, setStepStatusSubmit } = useCheckoutStepContext()
 
   const handleSubmit = () => {
     setStepStatusSubmit()
-    // param.setStatus()
   }
 
   return (
     <>
       <PaymentStep
-        key={stepStatus}
         checkout={param?.checkout || Common.args?.checkout}
         cardCollection={param?.cardCollection || Common.args?.cardCollection}
         addressCollection={param?.addressCollection || Common.args?.addressCollection}
@@ -239,21 +236,14 @@ const setup = (param: {
 }) => {
   const user = userEvent.setup()
   const { isAuthenticated, userId } = param
-  // let currentStepStatus = STEP_STATUS.INCOMPLETE
-
-  // const setStatus = () => (currentStepStatus = STEP_STATUS.SUBMIT)
 
   renderWithQueryClient(
     <AuthContext.Provider value={userContextValues(isAuthenticated, userId)}>
       <CheckoutStepProvider
         steps={['details', 'shipping', 'payment', 'review']}
         initialActiveStep={2}
-        // currentStepStatus={currentStepStatus}
       >
-        <TestComponent
-          {...param}
-          // setStatus={setStatus}
-        />
+        <TestComponent {...param} />
       </CheckoutStepProvider>
     </AuthContext.Provider>
   )
@@ -306,7 +296,7 @@ describe('[components] PaymentStep', () => {
         ).toBeVisible()
       })
 
-      xit(`shouldn't select Purchase Order if not saved before; Should add new purchase order.`, async () => {
+      it(`shouldn't select Purchase Order if not saved before; Should add new purchase order.`, async () => {
         const { user } = setup({
           checkout: { ...orderMock.checkout, payments: [] },
           isAuthenticated: true,
@@ -398,7 +388,7 @@ describe('[components] PaymentStep', () => {
         ).toBeChecked()
       })
 
-      xit("Shouldn't select card if not previously saved in session; no saved account cards; add new card.", async () => {
+      it("shouldn't select card if not previously saved in session; no saved account cards; add new card.", async () => {
         const { user } = setup({
           checkout: { ...orderMock.checkout, payments: [] },
           cardCollection: { items: [], totalCount: 0 },
@@ -460,27 +450,30 @@ describe('[components] PaymentStep', () => {
         expect(screen.getByTestId('credit-card-view')).toBeVisible()
       })
 
-      // it('should submit card data', async () => {
-      //   const { user } = setup({
-      //     checkout: { ...orderMock.checkout, payments: [cardPaymentMock] },
-      //     isAuthenticated: true,
-      //     userId: 1012,
-      //   })
+      it('should submit card details to checkout session', async () => {
+        const { user } = setup({
+          checkout: { ...orderMock.checkout, payments: [cardPaymentMock] },
+          isAuthenticated: true,
+          userId: 1012,
+        })
 
-      //   await waitFor(() => {
-      //     expect(screen.getByRole('button', { name: 'Review Order' })).toBeEnabled()
-      //   })
+        expect(
+          screen.queryByRole('radio', {
+            name: cardGetters.getPaymentServiceCardId(cardPaymentMock.billingInfo.card),
+          })
+        ).toBeChecked()
 
-      //   await user.click(screen.getByRole('button', { name: 'Review Order' }))
+        const cvvTextbox = screen.getAllByLabelText(/security-code/i)
+        expect(cvvTextbox[1]).toBeVisible()
+        await user.type(cvvTextbox[1] as Element, '123')
 
-      //   await waitFor(() => {
-      //     expect(onVoidPaymentMock).toBeCalled()
-      //   })
+        expect(screen.getByRole('button', { name: 'Review Order' })).toBeEnabled()
+        await user.click(screen.getByRole('button', { name: 'Review Order' }))
 
-      //   await waitFor(() => {
-      //     expect(onAddPaymentMock).toBeCalled()
-      //   })
-      // })
+        await waitFor(() => {
+          expect(onAddPaymentMock).toBeCalled()
+        })
+      })
     })
   })
 
