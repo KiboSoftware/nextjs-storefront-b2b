@@ -265,8 +265,7 @@ const PaymentStep = (props: PaymentStepProps) => {
   const defaultCustomerAccountCard = userGetters.getDefaultPaymentBillingMethod(cardOptions)
 
   const shouldShowCardForm =
-    selectedPaymentTypeRadio === PaymentType.CREDITCARD &&
-    (isAddingNewPayment || cardOptions.length === 0)
+    selectedPaymentTypeRadio === PaymentType.CREDITCARD && isAddingNewPayment
 
   const shouldShowPurchaseOrderForm =
     selectedPaymentTypeRadio === PaymentType.PURCHASEORDER && isAddingNewPayment
