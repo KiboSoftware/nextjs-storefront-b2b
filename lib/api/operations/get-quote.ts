@@ -1,25 +1,24 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { fetcher, getAdditionalHeader, getUserClaimsFromRequest } from '@/lib/api/util'
-import { getCheckoutQuery as query } from '@/lib/gql/queries'
+import { getQuoteByIDQuery as query } from '@/lib/gql/queries'
 
-import type { CrOrder } from '@/lib/gql/types'
+import type { Quote } from '@/lib/gql/types'
 
-export default async function getCheckout(
-  checkoutId: string,
+export default async function getQuote(
+  quoteId: string,
   req: NextApiRequest,
   res: NextApiResponse
-): Promise<CrOrder> {
+): Promise<Quote> {
   const variables = {
-    checkoutId,
+    quoteId,
   }
+  console.log('get-quote', quoteId)
 
   const userClaims = await getUserClaimsFromRequest(req, res)
 
   const headers = getAdditionalHeader(req)
-  console.log('get-checkout headers', userClaims, headers)
-
   const response = await fetcher({ query, variables }, { userClaims, headers })
-  console.log('response', response)
-  return response.data?.checkout
+  console.log('respons', response)
+  return response.data?.quote
 }

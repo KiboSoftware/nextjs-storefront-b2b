@@ -65,6 +65,29 @@ const getQuotesPaginationDetails = (collection: QuoteCollection) => {
     pageSize: collection?.pageSize,
   }
 }
+const getQuoteCreateDate = (quote: Quote, withTimestamp?: string) => {
+  return quote?.auditInfo?.createDate
+    ? withTimestamp
+      ? format(new Date(quote?.auditInfo?.createDate), DateFormat.DATE_FORMAT_WITH_TIME)
+      : format(new Date(quote?.auditInfo?.createDate), DateFormat.DATE_FORMAT_WITH_SLASH)
+    : quote?.auditInfo?.createDate
+}
+
+const getQuoteSubmittedDate = (quote: Quote, withTimestamp?: boolean) => {
+  return quote?.submittedDate
+    ? withTimestamp
+      ? format(new Date(quote?.submittedDate), DateFormat.DATE_FORMAT_WITH_TIME)
+      : format(new Date(quote?.submittedDate), DateFormat.DATE_FORMAT_WITH_SLASH)
+    : quote?.submittedDate
+}
+
+const getQuoteExpirationData = (quote: Quote, withTimestamp?: boolean) => {
+  return quote?.expirationDate
+    ? withTimestamp
+      ? format(new Date(quote?.expirationDate), DateFormat.DATE_FORMAT_WITH_TIME)
+      : format(new Date(quote?.expirationDate), DateFormat.DATE_FORMAT_WITH_SLASH)
+    : quote?.expirationDate
+}
 
 export const quoteGetters = {
   getQuotes,
@@ -77,4 +100,7 @@ export const quoteGetters = {
   getQuoteDetails,
   getRecordDetails,
   getQuotesPaginationDetails,
+  getQuoteCreateDate,
+  getQuoteExpirationData,
+  getQuoteSubmittedDate,
 }
