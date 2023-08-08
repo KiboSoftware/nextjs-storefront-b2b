@@ -24,13 +24,7 @@ import * as yup from 'yup'
 import { CardDetailsForm, PurchaseOrderForm } from '@/components/checkout'
 import { AddressForm, KiboTextBox, KiboRadio, PaymentBillingCard } from '@/components/common'
 import { useCheckoutStepContext, STEP_STATUS, useAuthContext, useSnackbarContext } from '@/context'
-import {
-  useGetCards,
-  useGetCustomerAddresses,
-  useGetCustomerPurchaseOrderAccount,
-  usePaymentTypes,
-  useValidateCustomerAddress,
-} from '@/hooks'
+import { usePaymentTypes, useValidateCustomerAddress } from '@/hooks'
 import { CurrencyCode, PaymentType, PaymentWorkflow } from '@/lib/constants'
 import { addressGetters, cardGetters, orderGetters, userGetters } from '@/lib/getters'
 import {

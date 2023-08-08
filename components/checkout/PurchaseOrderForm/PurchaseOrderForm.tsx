@@ -51,7 +51,7 @@ const PurchaseOrderForm = (props: PurchaseOrderFormProps) => {
   const mdScreen = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'))
   const {
     control,
-    formState: { errors, isValid },
+    formState: { isValid },
     handleSubmit,
   } = useForm({
     mode: 'onBlur',

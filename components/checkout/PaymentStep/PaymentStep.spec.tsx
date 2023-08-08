@@ -1,27 +1,19 @@
-import React, { useCallback, useState } from 'react'
+import React from 'react'
 
-import { Button, Typography } from '@mui/material'
+import { Button } from '@mui/material'
 import { composeStories } from '@storybook/testing-react'
-import { screen, cleanup, waitFor, act, within } from '@testing-library/react'
+import { screen, cleanup, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 // eslint-disable-next-line import/order
 import getConfig from 'next/config'
 import PaymentStep from './PaymentStep'
 import * as stories from './PaymentStep.stories' // import all stories from the stories file
 const { Common } = composeStories(stories)
-import {
-  cardPaymentMock,
-  orderMock,
-  purchaseOrderPaymentMock,
-  userAddressMock,
-} from '@/__mocks__/stories'
-import { getAccountCardId, getBillingAddresses } from '@/__test__/e2e/helper'
+import { cardPaymentMock, orderMock, purchaseOrderPaymentMock } from '@/__mocks__/stories'
 import { renderWithQueryClient } from '@/__test__/utils'
-import { AuthContext, STEP_STATUS } from '@/context'
+import { AuthContext } from '@/context'
 import { useCheckoutStepContext, CheckoutStepProvider } from '@/context'
-import { PaymentType } from '@/lib/constants'
-import { cardGetters, orderGetters } from '@/lib/getters'
-import { tokenizeCreditCardPayment } from '@/lib/helpers'
+import { cardGetters } from '@/lib/getters'
 import { Address, CardForm } from '@/lib/types'
 
 import {

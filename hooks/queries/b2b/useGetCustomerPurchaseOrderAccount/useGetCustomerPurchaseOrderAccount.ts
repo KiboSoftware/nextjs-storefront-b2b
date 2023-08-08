@@ -28,9 +28,24 @@ const loadCustomerCustomerPurchaseOrderAccount = async (
     variables: { accountId },
   })
 
-  console.log('response', response)
   return response?.customerPurchaseOrderAccount
 }
+
+/**
+ * [Query hook] useGetCustomerPurchaseOrderAccount uses the graphQL query
+ *
+ * <b>customerPurchaseOrderAccount(accountId: Int!): CustomerPurchaseOrderAccount</b>
+ *
+ * Description : Fetches customer purchase order account details for a particular user
+ *
+ * Parameters passed to function loadCustomerCustomerPurchaseOrderAccount(accountId: number) => expects accountId
+ *
+ * On success, returns the purchase order account data of customer's account
+ *
+ * @param accountId stores the user id of the user whose purchase order account details needed to be fetched
+ *
+ * @returns 'response?.customerPurchaseOrderAccount' which contains all purchase order account data for the requested user based on accountId
+ */
 
 export const useGetCustomerPurchaseOrderAccount = (
   accountId: number
@@ -42,6 +57,5 @@ export const useGetCustomerPurchaseOrderAccount = (
     refetchOnWindowFocus: false,
   })
 
-  console.log('data', data)
   return { data, isLoading, isSuccess }
 }
