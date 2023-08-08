@@ -4,7 +4,7 @@ export const buildQuotesFilterParam = (filters: QuoteFilters): string => {
   const conditions = []
 
   if (filters.name && parseInt(filters.number as string)) {
-    conditions.push(`(name cont ${filters.name} or number eq ${filters.number})`)
+    conditions.push(`name cont ${filters.name} or number eq ${filters.number}`)
   } else {
     if (filters.name) {
       conditions.push(`name cont ${filters.name}`)

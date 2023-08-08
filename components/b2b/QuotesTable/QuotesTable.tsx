@@ -103,12 +103,6 @@ const statusColorCode: any = {
   ReadyForCheckout: 'success',
 }
 
-const initialFilterValues = {
-  expirationDate: '',
-  createDate: '',
-  status: '',
-}
-
 const QuotesTable = (props: QuotesTableProps) => {
   const { quoteCollection, sortingValues, filters, setQuotesSearchParam } = props
 
@@ -128,9 +122,11 @@ const QuotesTable = (props: QuotesTableProps) => {
   // Mobile Actions
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
   }
+
   const handleClose = () => {
     setAnchorEl(null)
   }
@@ -178,7 +174,7 @@ const QuotesTable = (props: QuotesTableProps) => {
   useEffect(() => {
     handleFilterAction({
       ...filters,
-      ...(!parseInt(debouncedTerm) && { name: debouncedTerm, number: '' }),
+      ...(!parseInt(debouncedTerm) && { name: debouncedTerm.trim(), number: '' }),
       ...(parseInt(debouncedTerm) && { number: debouncedTerm, name: debouncedTerm }),
     })
   }, [debouncedTerm])
@@ -229,7 +225,7 @@ const QuotesTable = (props: QuotesTableProps) => {
           </Box>
           <Box>
             <Tooltip title="Filter list">
-              <IconButton onClick={handleFilterButtonClick}>
+              <IconButton onClick={handleFilterButtonClick} data-testid="filter-button">
                 <FilterList />
               </IconButton>
             </Tooltip>

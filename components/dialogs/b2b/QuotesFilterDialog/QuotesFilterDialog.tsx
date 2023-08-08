@@ -22,7 +22,6 @@ import { QuoteFilters } from '@/lib/types'
 
 interface QuotesFilterDialogProps {
   filters: QuoteFilters
-  // setFilterValues: (val: QuoteFilters) => void
   onFilterAction: (val: QuoteFilters) => void
   closeModal: () => void
 }
@@ -53,6 +52,7 @@ const FilterInput = ({ label = '', value = '', handleDateChange }: FilterInputPr
       <DatePicker
         openTo="day"
         views={['year', 'month', 'day']}
+        inputFormat="YYYY-MM-DD"
         value={value ? dayjs(value) : null}
         onChange={(newValue) => {
           handleDateChange(dayjs(newValue).format('YYYY-MM-DD'))
