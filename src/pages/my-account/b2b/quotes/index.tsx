@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react'
+import { useState } from 'react'
 
 import { GetServerSidePropsContext, NextPage } from 'next'
 import getConfig from 'next/config'

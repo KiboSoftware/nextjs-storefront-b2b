@@ -81,7 +81,6 @@ interface QuotesFilterContentProps {
 const QuotesFilterContent = (props: QuotesFilterContentProps) => {
   const { filterValues, onFilterInput } = props
   const { t } = useTranslation('common')
-  // const [status, setStatus] = useState(filterValues[FilterTypes.STATUS])
 
   const statusFilterRadioOptions = [
     {

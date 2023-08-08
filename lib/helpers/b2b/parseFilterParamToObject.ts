@@ -8,7 +8,11 @@ export const parseFilterParamToObject = (filterParam: string): QuoteFilters => {
     status: '',
   }
 
-  const conditions = filterParam.split(' and ')
+  if (!filterParam) {
+    return filters
+  }
+
+  const conditions = filterParam?.split(' and ')
 
   for (const condition of conditions) {
     if (condition.includes('name cont')) {
