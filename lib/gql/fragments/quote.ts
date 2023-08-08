@@ -5,8 +5,30 @@ fragment quoteFragment on Quote {
         siteId
         tenantId
         number
-        submittedDate
+        submittedDate 
+        expirationDate
+        total
+        status 
+        subTotal        
+        shippingSubTotal
+        handlingSubTotal
+        itemTaxTotal
+        shippingTaxTotal
+        handlingTaxTotal
+        dutyTotal
         items {
+            id
+            quantity
+            fulfillmentMethod 
+            unitPrice {
+            listAmount
+            saleAmount
+            }
+            discountTotal
+            discountedTotal
+            total            
+            shippingTotal        
+            dutyAmount
             product {
                 productCode
                 name
@@ -35,10 +57,57 @@ fragment quoteFragment on Quote {
             }
         }
         auditInfo {
+            updateDate
             createDate
+            updateBy
             createBy
         }
+        auditHistory {
+            changes {
+                type
+                path
+                fields {
+                    name
+                    oldValue
+                    newValue
+                }
+            }
+        }
+        comments {
+            id
+            text
+            auditInfo {
+            updateDate
+            createDate
+            updateBy
+            createBy
+            }
+        }
+        fulfillmentInfo {
+            fulfillmentContact {
+                id
+                email
+                firstName
+                lastNameOrSurname
+                phoneNumbers {
+                home
+                mobile
+                work
+                }
+                address {
+                    address1
+                    address2
+                    address3
+                    address4
+                    cityOrTown
+                    stateOrProvince
+                    postalOrZipCode
+                    addressType 
+                    isValidated
+                }
+            }
+        }
         userId
-        accountId
+        customerAccountId
   }
 `

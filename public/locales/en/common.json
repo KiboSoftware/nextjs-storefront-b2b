@@ -449,5 +449,6 @@
   "submit-for-approval": "Submit For Approval",
   "print-quote": "Print Quote",
   "enter-quote-name": "Enter a quote name",
-  "account-name": "Account Name"
+  "account-name": "Account Name",
+  "add-item-to-quote": "Add Item to Quote"
 }

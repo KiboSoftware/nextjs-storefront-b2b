@@ -26,7 +26,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { locale, params, req, res } = context
   const { quoteId } = params as any
   const { publicRuntimeConfig } = getConfig()
-  const quote = await getQuote(quoteId, req as NextApiRequest, res as NextApiResponse)
+  const draft = true
+  const quote = await getQuote(quoteId, draft, req as NextApiRequest, res as NextApiResponse)
 
   if (!quote) {
     return { notFound: true }
@@ -44,7 +45,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 const QuotePage: NextPage<QuotePageProps> = (props) => {
   const { t } = useTranslation('common')
   const { quoteId, quote: initialQuote, ...rest } = props
-  const { data: quoteResult } = useGetQuoteByID({ quoteId, initialQuote })
+  const draft = true
+  const { data: quoteResult } = useGetQuoteByID({ quoteId, draft, initialQuote })
   return (
     <>
       {/* <div>a</div> */}

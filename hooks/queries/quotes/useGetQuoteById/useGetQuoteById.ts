@@ -10,6 +10,7 @@ import { quoteKeys } from '@/lib/react-query/queryKeys'
 import type { Quote } from '@/lib/gql/types'
 interface UseGetQuoteById {
   quoteId: string
+  draft: boolean
   isMultiShip?: boolean
   initialQuote?: Quote
 }
@@ -23,14 +24,13 @@ export interface UseGetQuoteByIdResponse {
   isSuccess: boolean
 }
 
-const getQuoteById = async (quoteId: string) => {
+const getQuoteById = async (quoteId: string, draft: boolean) => {
   const client = makeGraphQLClient()
 
   const response = await client.request({
     document: getQuoteByIDQuery,
-    variables: { quoteId },
+    variables: { quoteId, draft },
   })
-  console.log('getquotebyid', quoteId, response)
 
   return response?.quote
 }
@@ -48,6 +48,7 @@ const getQuoteById = async (quoteId: string) => {
  */
 export const useGetQuoteByID = ({
   quoteId,
+  draft,
   initialQuote,
 }: UseGetQuoteById): UseGetQuoteByIdResponse => {
   const id = quoteId
@@ -58,7 +59,7 @@ export const useGetQuoteByID = ({
     isSuccess,
   } = useQuery({
     queryKey: quoteKeys.detail(id),
-    queryFn: () => getQuoteById(quoteId),
+    queryFn: () => getQuoteById(quoteId, draft),
     initialData: initialQuote,
     enabled: !!quoteId,
   })

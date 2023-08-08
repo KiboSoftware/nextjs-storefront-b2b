@@ -16,23 +16,22 @@ import { useTranslation } from 'next-i18next'
 import { createNewQuoteTemplateStyles } from './CreateNewQuoteTemplate.style'
 import { B2BProductDetailsTable, B2BProductSearch } from '@/components/b2b'
 import { CartItemList } from '@/components/cart'
-import { KeyValueDisplay, KiboTextBox, PromoCodeBadge } from '@/components/common'
+import { KiboTextBox } from '@/components/common'
 import { useAuthContext } from '@/context'
 import {
-  useCartActions,
-  useGetCart,
   useGetPurchaseLocation,
   useGetStoreLocations,
   useProductCardActions,
   useUpdateCartCoupon,
   useDeleteCartCoupon,
-  useDeleteCartItem,
   useGetB2BUserQueries,
+  useDeleteQuoteItem,
 } from '@/hooks'
+import { useCreateQuoteItem } from '@/hooks/mutations/quotes/useCreateQuoteItem/useCreateQuoteItem'
 import { FulfillmentOptions as FulfillmentOptionsConstant } from '@/lib/constants'
-import { cartGetters, orderGetters, productGetters, quoteGetters } from '@/lib/getters'
+import { orderGetters, productGetters, quoteGetters } from '@/lib/getters'
 
-import { CrCart, CrCartItem, Location, Quote } from '@/lib/gql/types'
+import { Location, Quote } from '@/lib/gql/types'
 
 export interface CreateNewQuoteTemplateProps {
   quote: Quote
@@ -57,48 +56,56 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
   const expirationDate = quoteGetters.getQuoteExpirationData(quote) ?? '-'
   const accountName = user?.companyOrOrganization
   const createdBy = (data?.items?.[0]?.firstName + ' ' + data?.items?.[0]?.lastName) as string
+  const quoteItems = quote?.items
+  const quoteId = quoteGetters.getQuoteId(quote)
 
-  // const locationCodes = orderGetters.getFulfillmentLocationCodes(cartItems as CrCartItem[])
-  // const { data: locations } = useGetStoreLocations({ filter: locationCodes })
-  // const fulfillmentLocations = locations && Object.keys(locations).length ? locations : []
+  const locationCodes = orderGetters.getFulfillmentLocationCodes(quoteItems as any)
+  const { data: locations } = useGetStoreLocations({ filter: locationCodes })
+  const fulfillmentLocations = locations && Object.keys(locations).length ? locations : []
 
-  const { deleteCartItem } = useDeleteCartItem()
+  const { deleteQuoteItem } = useDeleteQuoteItem()
   const { updateCartCoupon } = useUpdateCartCoupon()
   const { deleteCartCoupon } = useDeleteCartCoupon()
+  const { createQuoteItem } = useCreateQuoteItem()
+  const updateMode = 'ApplyToDraft'
 
   const { data: purchaseLocation } = useGetPurchaseLocation()
-  const { openProductQuickViewModal, handleAddToCart } = useProductCardActions()
-  // const { onFulfillmentOptionChange, handleQuantityUpdate, handleProductPickupLocation } =
-  //   useCartActions({
-  //     cartItems: cartItems as CrCartItem[],
-  //     purchaseLocation,
-  //   })
+  const { openProductQuickViewModal, handleAddToQuote } = useProductCardActions()
+
+  const addItemToQuote = async (
+    quoteId: string,
+    updateMode: string,
+    product: any,
+    quantity: number
+  ) => {
+    handleAddToQuote(quoteId, updateMode, product, quantity)
+  }
 
   const handleAddProduct = (product: any) => {
     if (productGetters.isVariationProduct(product)) {
       const dialogProps = {
         title: t('product-configuration-options'),
         cancel: t('cancel'),
-        addItemToCart: t('add-item-to-cart'),
+        addItemToQuote: t('add-item-to-quote'),
         isB2B: true,
       }
-      openProductQuickViewModal(product, dialogProps)
-    } else {
-      const payload = {
-        product: {
-          productCode: productGetters.getProductId(product),
-          variationProductCode: productGetters.getVariationProductCode(product),
-          fulfillmentMethod: FulfillmentOptionsConstant.SHIP,
-          purchaseLocationCode: '',
-        },
-        quantity: 1,
+      const quoteDetails = {
+        quoteId: quoteId,
+        updateMode: updateMode,
       }
-      handleAddToCart(payload, false)
+      openProductQuickViewModal(product, dialogProps, quoteDetails)
+    } else {
+      const productData = {
+        productCode: productGetters.getProductId(product),
+        variationProductCode: productGetters.getVariationProductCode(product),
+        fulfillmentMethod: FulfillmentOptionsConstant.SHIP,
+        purchaseLocationCode: '',
+      }
+      addItemToQuote(quoteId, updateMode, productData, 1)
     }
   }
-
-  const handleDeleteItem = async (cartItemId: string) => {
-    await deleteCartItem.mutateAsync({ cartItemId })
+  const handleDeleteItem = async (quoteItemId: string) => {
+    await deleteQuoteItem.mutateAsync({ quoteItemId, quoteId, updateMode })
   }
 
   return (
@@ -209,29 +216,29 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
           </Typography>
           <B2BProductSearch onAddProduct={handleAddProduct} />
         </Grid>
-        {/* <Grid item xs={12}>
+        <Grid item xs={12}>
           <Stack gap={3}>
             {mdScreen ? (
               <B2BProductDetailsTable
-                items={cartItems as CrCartItem[]}
+                items={quoteItems as any[]}
                 fulfillmentLocations={fulfillmentLocations}
                 purchaseLocation={purchaseLocation}
-                onFulfillmentOptionChange={onFulfillmentOptionChange}
-                onQuantityUpdate={handleQuantityUpdate}
-                onStoreSetOrUpdate={handleProductPickupLocation}
+                onFulfillmentOptionChange={() => null}
+                onQuantityUpdate={() => null}
+                onStoreSetOrUpdate={() => null}
                 onItemDelete={handleDeleteItem}
               />
             ) : (
               <Stack spacing={2}>
-                {cartItems.length > 0 ? (
+                {quoteItems && quoteItems?.length > 0 ? (
                   <CartItemList
-                    cartItems={cartItems}
+                    cartItems={quoteItems}
                     fulfillmentLocations={fulfillmentLocations as Location[]}
                     purchaseLocation={purchaseLocation}
                     onCartItemDelete={handleDeleteItem}
-                    onCartItemQuantityUpdate={handleQuantityUpdate}
-                    onFulfillmentOptionChange={onFulfillmentOptionChange}
-                    onProductPickupLocation={handleProductPickupLocation}
+                    onCartItemQuantityUpdate={() => null}
+                    onFulfillmentOptionChange={() => null}
+                    onProductPickupLocation={() => null}
                     onCartItemActionSelection={() => null}
                   />
                 ) : (
@@ -242,7 +249,7 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
               </Stack>
             )}
 
-            {!mdScreen && cartItems.length ? (
+            {!mdScreen && quoteItems?.length ? (
               <Box paddingY={1} display="flex" flexDirection={'column'} gap={2}>
                 <Button variant="contained" color="primary" fullWidth>
                   {t('submit-for-approval')}
@@ -263,7 +270,7 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
               </Box>
             ) : null}
           </Stack>
-        </Grid> */}
+        </Grid>
       </Grid>
     </>
   )

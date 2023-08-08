@@ -103,4 +103,5 @@ export const quoteGetters = {
   getQuoteCreateDate,
   getQuoteExpirationData,
   getQuoteSubmittedDate,
+  getQuoteId,
 }
