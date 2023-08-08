@@ -41,7 +41,6 @@ const QuotesPage: NextPage = (props) => {
   const handleQuotesSearchParam = (param: QueryQuotesArgs) => {
     setQuotesSearchParam((prevSearchParam) => ({
       ...prevSearchParam,
-      filter: quotesSearchParam.filter ? quotesSearchParam.filter : param.filter,
       ...param,
     }))
   }
