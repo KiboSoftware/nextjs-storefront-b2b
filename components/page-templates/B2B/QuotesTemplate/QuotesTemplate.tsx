@@ -27,7 +27,7 @@ const QuotesTemplate = (props: QuotesTemplateProps) => {
       <Grid item xs={12}>
         <Box width={'100%'}>
           <Button variant="contained" color="inherit">
-            {'Create a Quote'}
+            {t('create-a-quote')}
           </Button>
         </Box>
       </Grid>

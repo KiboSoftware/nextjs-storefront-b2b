@@ -10,7 +10,7 @@ describe('buildQuotesFilterParam', () => {
     }
 
     const expectedFilterParam =
-      '(name cont SampleName or number eq 42) and expirationDate ge 2023-12-31 and status eq active'
+      'name cont SampleName or number eq 42 and expirationDate ge 2023-12-31 and status eq active'
 
     const result = buildQuotesFilterParam(filters)
 
