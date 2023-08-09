@@ -501,7 +501,7 @@ export const b2bHandlers = [
   // useCreateCustomerB2bAccountMutation
   graphql.mutation('createCustomerB2bAccount', (_req, res, ctx) => {
     return res(ctx.data({ createCustomerB2bAccount: b2BAccountResponseMock }))
-  },
+  }),
   // useGetQuoteById
   graphql.query('getQuoteByID', (_req, res, ctx) => {
     return res(ctx.data({ quote: quoteMock?.items?.[0] }))
