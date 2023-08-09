@@ -17,7 +17,7 @@ import { CustomerAccount } from '@/lib/gql/types'
 
 const { Common } = composeStories(stories)
 
-interface AccountHierarchyDialogProps {
+interface AccountHierarchyFormDialogProps {
   formTitle?: string
   user?: CustomerAccount
   onSave: (data: CreateCustomerB2bAccountParams) => void
@@ -67,7 +67,7 @@ jest.mock(
 
 jest.mock('@/components/dialogs', () => ({
   __esModule: true,
-  AccountHierarchyDialog: (props: AccountHierarchyDialogProps) => {
+  AccountHierarchyFormDialog: (props: AccountHierarchyFormDialogProps) => {
     const params = {
       parentAccount: { id: 1023, companyOrOrganization: 'Parent Account' },
       companyOrOrganization: 'ABCD',

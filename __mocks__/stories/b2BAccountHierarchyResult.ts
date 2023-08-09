@@ -1,3 +1,5 @@
+import { B2BAccountHierarchyResult } from '@/lib/types/CustomerB2BAccount'
+
 const commerceSummary = {
   totalOrderAmount: {
     amount: 0,
@@ -34,7 +36,7 @@ const commonAccountDetails = {
   migrationRequired: false,
 }
 
-export const accountHierarchy = {
+export const b2BAccountHierarchyResult: B2BAccountHierarchyResult = {
   accounts: [
     {
       users: [

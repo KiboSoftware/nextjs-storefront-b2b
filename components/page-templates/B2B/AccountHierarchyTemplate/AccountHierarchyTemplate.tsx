@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 
 import { accountHierarchyTemplateStyles } from './AccountHierarchyTemplate.styles'
-import { accountHierarchy } from '@/__mocks__/stories/accountHierarchy'
+import { b2BAccountHierarchyResult } from '@/__mocks__/stories'
 import { AccountHierarchyTree } from '@/components/b2b'
 import { AccountHierarchyFormDialog } from '@/components/dialogs'
 import { useAuthContext, useModalContext } from '@/context'
@@ -12,6 +12,8 @@ import { useCreateCustomerB2bAccountMutation } from '@/hooks'
 import { B2BRoles } from '@/lib/constants'
 import { buildCreateCustomerB2bAccountParams } from '@/lib/helpers'
 import { CreateCustomerB2bAccountParams } from '@/lib/types'
+
+import { B2BAccount } from '@/lib/gql/types'
 
 const AccountHierarchyTemplate = () => {
   const theme = useTheme()
@@ -28,7 +30,10 @@ const AccountHierarchyTemplate = () => {
   }
 
   const handleFormSubmit = async (formValues: CreateCustomerB2bAccountParams) => {
-    const variables = buildCreateCustomerB2bAccountParams({ ...formValues, parentAccount: user })
+    const variables = buildCreateCustomerB2bAccountParams({
+      ...formValues,
+      parentAccount: user as B2BAccount,
+    })
     const createCustomerB2BAccount = await createCustomerB2bAccount.mutateAsync({
       ...variables,
     })
@@ -89,8 +94,8 @@ const AccountHierarchyTemplate = () => {
         </Grid>
       </Grid>
       <AccountHierarchyTree
-        accounts={accountHierarchy.accounts}
-        hierarchy={accountHierarchy.hierarchy}
+        accounts={b2BAccountHierarchyResult.accounts}
+        hierarchy={b2BAccountHierarchyResult.hierarchy}
         role={B2BRoles.ADMIN}
       />
     </>

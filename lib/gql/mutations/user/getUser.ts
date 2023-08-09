@@ -9,6 +9,7 @@ export const getCurrentUser = /* GraphQL */ `
       userName
       isAnonymous
       companyOrOrganization
+      accountType
     }
   }
 `
