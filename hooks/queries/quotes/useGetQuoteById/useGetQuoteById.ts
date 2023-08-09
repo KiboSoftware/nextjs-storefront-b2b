@@ -11,7 +11,6 @@ import type { Quote } from '@/lib/gql/types'
 interface UseGetQuoteById {
   quoteId: string
   draft: boolean
-  isMultiShip?: boolean
   initialQuote?: Quote
 }
 

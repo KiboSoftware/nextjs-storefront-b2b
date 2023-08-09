@@ -501,6 +501,25 @@ export const b2bHandlers = [
   // useCreateCustomerB2bAccountMutation
   graphql.mutation('createCustomerB2bAccount', (_req, res, ctx) => {
     return res(ctx.data({ createCustomerB2bAccount: b2BAccountResponseMock }))
+  },
+  // useGetQuoteById
+  graphql.query('getQuoteByID', (_req, res, ctx) => {
+    return res(ctx.data({ quote: quoteMock?.items?.[0] }))
+  }),
+
+  //useCreateQuote
+  graphql.mutation('createQuote', (_req, res, ctx) => {
+    return res(ctx.data({ createQuote: quoteMock?.items?.[0] }))
+  }),
+
+  // useCreateQuoteItem
+  graphql.mutation('createQuoteItem', (_req, res, ctx) => {
+    return res(ctx.data({ createQuoteItem: quoteMock?.items?.[0] }))
+  }),
+
+  // useDeleteQuoteItem
+  graphql.mutation('deleteQuoteItem', (_req, res, ctx) => {
+    return res(ctx.data({ deleteQuoteItem: true }))
   }),
 
   graphql.query('quotes', (_req, res, ctx) => {

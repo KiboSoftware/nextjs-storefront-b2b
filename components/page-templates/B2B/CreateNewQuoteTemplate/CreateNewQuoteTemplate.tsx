@@ -31,7 +31,7 @@ import { useCreateQuoteItem } from '@/hooks/mutations/quotes/useCreateQuoteItem/
 import { FulfillmentOptions as FulfillmentOptionsConstant } from '@/lib/constants'
 import { orderGetters, productGetters, quoteGetters } from '@/lib/getters'
 
-import { Location, Quote } from '@/lib/gql/types'
+import { CrOrderItem, Location, Quote } from '@/lib/gql/types'
 
 export interface CreateNewQuoteTemplateProps {
   quote: Quote
@@ -220,7 +220,7 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
           <Stack gap={3}>
             {mdScreen ? (
               <B2BProductDetailsTable
-                items={quoteItems as any[]}
+                items={quoteItems as CrOrderItem[]}
                 fulfillmentLocations={fulfillmentLocations}
                 purchaseLocation={purchaseLocation}
                 onFulfillmentOptionChange={() => null}
@@ -232,7 +232,7 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
               <Stack spacing={2}>
                 {quoteItems && quoteItems?.length > 0 ? (
                   <CartItemList
-                    cartItems={quoteItems}
+                    cartItems={quoteItems as CrOrderItem[]}
                     fulfillmentLocations={fulfillmentLocations as Location[]}
                     purchaseLocation={purchaseLocation}
                     onCartItemDelete={handleDeleteItem}

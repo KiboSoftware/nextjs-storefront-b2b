@@ -1,9 +1,11 @@
+import { MutationCreateQuoteItemArgs } from '../gql/types'
+
 export const buildCreateQuoteItemParams = (
   quoteId: string,
   updateMode: string,
   product: any,
   quantity: number
-): any => {
+): MutationCreateQuoteItemArgs => {
   return {
     quoteId,
     updateMode,

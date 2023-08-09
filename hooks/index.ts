@@ -158,3 +158,4 @@ export * from './mutations/b2b/useCreateCustomerB2bAccount/useCreateCustomerB2bA
 //quotes
 export * from './mutations/quotes/useDeleteQuoteItem/useDeleteQuoteItem'
 export * from './mutations/quotes/useCreateQuoteItem/useCreateQuoteItem'
+export * from './mutations/quotes/useCreateQuote/useCreateQuote'

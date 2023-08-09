@@ -16,13 +16,11 @@ interface DeleteQuoteItemParams {
 const deleteQuoteItem = async (params: DeleteQuoteItemParams) => {
   const client = makeGraphQLClient()
   const { quoteItemId, quoteId, updateMode } = params
-  console.log('params detelquoteitems', params)
   const variables = {
     quoteId: quoteId,
     quoteItemId: quoteItemId,
     updateMode: updateMode,
   }
-  console.log('variables', variables)
   const response = await client.request({
     document: deleteQuoteItemMutation,
     variables,
@@ -52,7 +50,6 @@ export const useDeleteQuoteItem = () => {
       onMutate: async (deleteQuoteItem) => {
         await queryClient.cancelQueries({ queryKey: quoteKeys.all })
         const previousQuote: any = queryClient.getQueryData(quoteKeys.all)
-        console.log('preview quote', previousQuote)
         const newQuote = {
           ...previousQuote,
           items: previousQuote?.items?.filter(

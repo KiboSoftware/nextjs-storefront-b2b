@@ -44,7 +44,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
 const QuotePage: NextPage<QuotePageProps> = (props) => {
   const { t } = useTranslation('common')
-  const { quoteId, quote: initialQuote, ...rest } = props
+  const { quoteId, quote: initialQuote } = props
   const draft = true
   const { data: quoteResult } = useGetQuoteByID({ quoteId, draft, initialQuote })
   return (
