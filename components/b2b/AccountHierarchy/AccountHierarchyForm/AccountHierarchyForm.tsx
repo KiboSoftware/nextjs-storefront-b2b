@@ -78,7 +78,6 @@ const AccountHierarchyForm = (props: AccountHierarchyFormProps) => {
       ...formValues,
       parentAccount: selectedParentAccount,
     })
-    setLoading(false)
   }
 
   const handleParentAccountChange = (name: string, value: string) => {

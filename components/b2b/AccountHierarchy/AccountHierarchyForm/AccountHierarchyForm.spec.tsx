@@ -47,7 +47,21 @@ describe('[component] User Form', () => {
     expect(cancelButton).toBeVisible()
   })
 
-  it('should show values entered by user', async () => {
+  it('should show normal textbox when account added to child account', async () => {
+    render(<Common {...AddAccountToChild.args} onSave={onSave} onClose={onClose} />)
+
+    const companyNameField: HTMLInputElement = screen.getByRole('textbox', {
+      name: 'parent-account',
+    })
+
+    await waitFor(() =>
+      expect(companyNameField.value).toBe(
+        AddAccountToChild?.args?.accounts?.[0]?.companyOrOrganization
+      )
+    )
+  })
+
+  it('should call onSave callback function when user clicks on Create Account button', async () => {
     const user = userEvent.setup()
 
     render(<Common {...Common.args} onSave={onSave} onClose={onClose} />)
@@ -74,17 +88,13 @@ describe('[component] User Form', () => {
     await waitFor(() => expect(onSave).toHaveBeenCalledTimes(1))
   })
 
-  it('should show normal textbox when account added to child account', async () => {
-    render(<Common {...AddAccountToChild.args} onSave={onSave} onClose={onClose} />)
+  it('should call onClose callback function when user clicks on Cancel button', async () => {
+    const user = userEvent.setup()
 
-    const companyNameField: HTMLInputElement = screen.getByRole('textbox', {
-      name: 'parent-account',
-    })
+    render(<Common {...Common.args} onSave={onSave} onClose={onClose} />)
 
-    await waitFor(() =>
-      expect(companyNameField.value).toBe(
-        AddAccountToChild?.args?.accounts?.[0]?.companyOrOrganization
-      )
-    )
+    const cancelButton = await screen.findByTestId('cancel-button')
+    user.click(cancelButton)
+    await waitFor(() => expect(onClose).toHaveBeenCalledTimes(1))
   })
 })

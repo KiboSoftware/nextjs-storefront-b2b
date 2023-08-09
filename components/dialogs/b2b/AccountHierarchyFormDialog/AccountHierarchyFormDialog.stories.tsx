@@ -8,7 +8,7 @@ import { userResponseMock } from '@/__mocks__/stories'
 import { B2BAccount } from '@/lib/gql/types'
 
 export default {
-  title: 'Dialogs/AccountHierarchyFormDialog/Dialog',
+  title: 'Dialogs/B2B/AccountHierarchyFormDialog',
   component: AccountHierarchyFormDialog,
   argTypes: {
     onClose: { action: 'onClose' },
