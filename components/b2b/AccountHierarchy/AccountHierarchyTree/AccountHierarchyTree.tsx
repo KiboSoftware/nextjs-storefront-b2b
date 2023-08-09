@@ -7,10 +7,7 @@ import {
   Box,
   Button,
   IconButton,
-  List,
-  ListItem,
   ListItemIcon,
-  ListItemText,
   Typography,
   useMediaQuery,
   useTheme,
@@ -19,21 +16,10 @@ import { useTranslation } from 'next-i18next'
 import Nestable from 'react-nestable'
 
 import { AccountHierarchyStyles } from './AccountHierarchyTree.styles'
-import { AccountHierarchyActions } from '@/components/b2b'
-import { B2BRoles } from '@/lib/constants'
+import { AccountHierarchyTreeLabel } from '@/components/b2b'
 import { AddChildAccountProps } from '@/lib/types/AccountHierarchy'
 
 import { B2BAccount } from '@/lib/gql/types'
-
-interface TreeLabelProps {
-  label: string
-  icons?: any
-  onViewAccountClick: () => void
-  onAddAccountClick: () => void
-  onEditAccountClick: () => void
-  onDeleteAccountClick: () => void
-  onAccountSwap: () => void
-}
 
 interface Hierarchy {
   id: string | number
@@ -53,60 +39,11 @@ interface AccountHierarchyTreeProps extends TreeItemListProps {
   role: string
 }
 
-const RoleContext = React.createContext(B2BRoles.PURCHASER)
-
 const CollapseStateIndicator = ({ isCollapsed }: { isCollapsed: boolean }) => {
   return (
     <Box display="flex" justifyContent="center" alignItems="center">
       {isCollapsed ? <ChevronRightIcon /> : <ExpandMoreIcon />}
     </Box>
-  )
-}
-
-const Handler = () => {
-  return (
-    <Box display="flex" justifyContent="center" alignItems="center">
-      <DragIndicator />
-    </Box>
-  )
-}
-
-const TreeLabel = (props: TreeLabelProps) => {
-  const {
-    label,
-    icons,
-    onViewAccountClick,
-    onAddAccountClick,
-    onDeleteAccountClick,
-    onEditAccountClick,
-  } = props
-
-  const theme = useTheme()
-  const role = React.useContext(RoleContext) // need to fetch using useAuthContext
-  console.log('role', role)
-  const mdScreen = useMediaQuery(theme.breakpoints.up('md'))
-
-  return (
-    <List dense={true}>
-      <ListItem
-        data-testid="tree-label"
-        secondaryAction={
-          <AccountHierarchyActions
-            role={B2BRoles.ADMIN}
-            mdScreen={mdScreen}
-            onBuyersClick={() => null}
-            onQuotesClick={() => null}
-            onAdd={() => onAddAccountClick()}
-            onView={() => onViewAccountClick()}
-            onEdit={() => onEditAccountClick()}
-            onDelete={() => onDeleteAccountClick()}
-          />
-        }
-      >
-        {icons ? <ListItemIcon>{icons}</ListItemIcon> : null}
-        <ListItemText primary={label} />
-      </ListItem>
-    </List>
   )
 }
 
@@ -120,6 +57,10 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
     handleDeleteAccount,
     handleSwapAccount,
   } = props
+
+  const theme = useTheme()
+  const mdScreen = useMediaQuery(theme.breakpoints.up('md'))
+  const RoleContext = React.createContext(role)
 
   const { t } = useTranslation('common')
 
@@ -150,7 +91,9 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
     const onAccountSwap = () => handleSwapAccount(currentAccount)
 
     return (
-      <TreeLabel
+      <AccountHierarchyTreeLabel
+        role={role}
+        mdScreen={mdScreen}
         label={currentAccount?.companyOrOrganization}
         onViewAccountClick={onViewAccountClick}
         onAddAccountClick={onAddAccountClick}
@@ -171,9 +114,6 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
     const instance = refNestable.current as any
     instance?.collapse(collapseCase)
   }
-
-  // Use Confirmation Dialog
-  const confirmChange = () => null
 
   const refNestable = React.useRef<Nestable | null>(null)
 
@@ -196,16 +136,20 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
       <Box sx={{ backgroundColor: '#F7F7F7', padding: '15px' }}>
         <Typography fontWeight="bold">{t('org-name')}</Typography>
       </Box>
+
       <Nestable
         ref={(el) => (refNestable.current = el)}
         items={[hierarchy]}
         renderItem={renderItem}
-        handler={<Handler />}
         renderCollapseIcon={({ isCollapsed }) => (
           <CollapseStateIndicator isCollapsed={isCollapsed} />
         )}
         onChange={() => handleSwapAccount(accounts[0])}
-        // onChange={(items) => console.log(items)}
+        handler={
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <DragIndicator />
+          </Box>
+        }
       />
     </RoleContext.Provider>
   )

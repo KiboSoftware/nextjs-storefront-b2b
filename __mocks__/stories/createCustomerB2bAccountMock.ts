@@ -1,4 +1,4 @@
-import { B2BAccount, MutationCreateCustomerB2bAccountArgs } from '@/lib/gql/types'
+import { MutationCreateCustomerB2bAccountArgs } from '@/lib/gql/types'
 
 export const b2BAccountInputMock: MutationCreateCustomerB2bAccountArgs = {
   b2BAccountInput: {
@@ -16,11 +16,4 @@ export const b2BAccountInputMock: MutationCreateCustomerB2bAccountArgs = {
       },
     ],
   },
-}
-
-export const b2BAccountResponseMock: B2BAccount = {
-  id: 0,
-  parentAccountId: 1023,
-  taxId: '123234',
-  companyOrOrganization: 'Ignitiv Corp',
 }

@@ -10,6 +10,8 @@ import {
   checkoutGroupRatesMock,
   orderSubscriptionNowMock,
   customerB2BUserForPage0Mock,
+  customerPurchaseOrderMock,
+  customerPurchaseOrderAccountMock,
 } from '../stories'
 import { cartItemMock } from '../stories/cartItemMock'
 import { cartCouponMock, cartMock } from '../stories/cartMock'
@@ -34,7 +36,7 @@ import { userMock, loginUserMock, registerUserMock } from '../stories/userMock'
 import { wishlistMock } from '../stories/wishlistMock'
 import { subscriptionMock } from '@/__mocks__/stories/subscriptionMock'
 import { LOGOUT_ENDPOINT } from '@/lib/gql/client'
-import { b2BAccountResponseMock } from '../stories/createCustomerB2bAccountMock'
+import { b2BAccountResponseMock } from '../stories/b2BAccountResponseMock'
 
 const baseUrl = 'http://localhost:3000'
 const mockCreateCustomerAccount = {
@@ -79,6 +81,10 @@ export const checkoutHandlers = [
 
   graphql.query('getShippingRates', (_req, res, ctx) => {
     return res(ctx.data(shippingRateMock))
+  }),
+  // Purchase order
+  graphql.query('customerPurchaseOrderAccount', (_req, res, ctx) => {
+    return res(ctx.data(customerPurchaseOrderMock))
   }),
 
   // Payment Step
@@ -156,6 +162,10 @@ export const checkoutHandlers = [
 ]
 
 export const accountHandlers = [
+  graphql.query('customerPurchaseOrderAccount', (_req, res, ctx) => {
+    return res(ctx.data(customerPurchaseOrderAccountMock))
+  }),
+
   graphql.query('customerAccountCards', (_req, res, ctx) => {
     return res(ctx.data(customerAccountCardsMock))
   }),

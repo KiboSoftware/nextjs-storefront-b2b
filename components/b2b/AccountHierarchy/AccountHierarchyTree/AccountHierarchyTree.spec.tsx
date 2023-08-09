@@ -2,13 +2,13 @@ import { composeStories } from '@storybook/testing-react'
 import { render, screen } from '@testing-library/react'
 
 import * as stories from './AccountHierarchyTree.stories'
-import { accountHierarchy } from '@/__mocks__/stories/accountHierarchy'
+import { b2BAccountHierarchyResult } from '@/__mocks__/stories'
 import { B2BRoles } from '@/lib/constants'
 
 const { Admin } = composeStories(stories)
 
-const accounts = accountHierarchy.accounts
-const hierarchy = accountHierarchy.hierarchy
+const accounts = b2BAccountHierarchyResult.accounts
+const hierarchy = b2BAccountHierarchyResult.hierarchy
 
 describe('AccountHierarchyTree', () => {
   it('should render the tree label with icons and account actions for the admin role', async () => {
@@ -51,16 +51,5 @@ describe('AccountHierarchyTree', () => {
 
     expect(collapseAllButton).toBeVisible()
     expect(expandAllButton).toBeVisible()
-    // Click the Collapse All button and verify that all items are collapsed
-    // fireEvent.click(collapseAllButton)
-    // const collapsedItems = screen.getAllByTestId('collapse-state-icon')
-    // expect(collapsedItems).toHaveLength(2) // Both items should be collapsed
-
-    // Click the Expand All button and verify that all items are expanded
-    // fireEvent.click(expandAllButton)
-    // const expandedItems = screen.getAllByTestId('expand-more-icon')
-    // expect(expandedItems).toHaveLength(2) // Both items should be expanded
   })
-
-  // You can write more test cases to cover other scenarios as well
 })

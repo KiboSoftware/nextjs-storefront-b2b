@@ -14,7 +14,7 @@ import { CreateCustomerB2bAccountParams } from '@/lib/types'
 import { B2BAccount, CustomerAccount } from '@/lib/gql/types'
 
 interface AccountHierarchyFormProps {
-  accounts?: CustomerAccount[]
+  accounts?: B2BAccount[]
   isAddingAccountToChild: boolean
   accountToEdit?: B2BAccount
   onSave: (data: CreateCustomerB2bAccountParams) => void
@@ -36,7 +36,7 @@ const AccountHierarchyForm = (props: AccountHierarchyFormProps) => {
   const { accounts, isAddingAccountToChild, accountToEdit, onSave, onClose } = props
   console.log('accounts', accounts)
   const [isLoading, setLoading] = useState<boolean>(false)
-  const [selectedParentAccount, setSelectedParentAccount] = useState<CustomerAccount>()
+  const [selectedParentAccount, setSelectedParentAccount] = useState<B2BAccount>()
 
   const { t } = useTranslation()
   const accountHierarchySchema = useAccountHierarchySchema()
@@ -91,8 +91,8 @@ const AccountHierarchyForm = (props: AccountHierarchyFormProps) => {
   }
 
   const handleParentAccountChange = (name: string, value: string) => {
-    const account: CustomerAccount | undefined = accounts?.find(
-      (account: CustomerAccount) => account.id === parseInt(value)
+    const account: B2BAccount | undefined = accounts?.find(
+      (account: B2BAccount) => account.id === parseInt(value)
     )
     setValue('parentAccount', account?.companyOrOrganization as string)
     setSelectedParentAccount(account)
@@ -132,7 +132,7 @@ const AccountHierarchyForm = (props: AccountHierarchyFormProps) => {
                 helperText={errors?.parentAccount?.message as string}
                 value={selectedParentAccount?.id?.toString() ?? ''}
               >
-                {accounts?.map((account: CustomerAccount) => {
+                {accounts?.map((account: B2BAccount) => {
                   return (
                     <MenuItem key={account?.id} value={`${account?.id}`}>
                       {account?.companyOrOrganization}

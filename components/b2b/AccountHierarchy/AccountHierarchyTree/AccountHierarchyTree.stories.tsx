@@ -3,20 +3,20 @@ import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
 import AccountHierarchyTree from './AccountHierarchyTree'
-import { accountHierarchy } from '@/__mocks__/stories/accountHierarchy'
+import { b2BAccountHierarchyResult } from '@/__mocks__/stories'
 import { B2BRoles } from '@/lib/constants'
 
 // Common
 export default {
-  title: 'B2B/AccountHierarchyTree',
+  title: 'B2B/AccountHierarchy/AccountHierarchyTree',
   component: AccountHierarchyTree,
 } as ComponentMeta<typeof AccountHierarchyTree>
 
 const Template: ComponentStory<typeof AccountHierarchyTree> = (args) => (
   <AccountHierarchyTree
     {...args}
-    accounts={accountHierarchy.accounts as []}
-    hierarchy={accountHierarchy.hierarchy}
+    accounts={b2BAccountHierarchyResult.accounts as []}
+    hierarchy={b2BAccountHierarchyResult.hierarchy}
   />
 )
 

@@ -5,12 +5,14 @@ import { useMutation } from '@tanstack/react-query'
 
 import { makeGraphQLClient } from '@/lib/gql/client'
 
-import { MutationCreateCustomerB2bAccountArgs } from '@/lib/gql/types'
+import { B2BAccount, MutationCreateCustomerB2bAccountArgs } from '@/lib/gql/types'
 import { createCustomerB2bAccountMutation } from '@/lib/gql/mutations'
 
 const client = makeGraphQLClient()
 
-const createCustomerB2bAccount = async (b2BAccountInput: MutationCreateCustomerB2bAccountArgs) => {
+const createCustomerB2bAccount = async (
+  b2BAccountInput: MutationCreateCustomerB2bAccountArgs
+): Promise<B2BAccount> => {
   const response = await client.request({
     document: createCustomerB2bAccountMutation,
     variables: b2BAccountInput,

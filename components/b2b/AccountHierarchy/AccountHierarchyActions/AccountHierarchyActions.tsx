@@ -1,6 +1,10 @@
 import React from 'react'
 
-import { AddCircle, Delete, Edit } from '@mui/icons-material'
+import {
+  AddCircle as AddCircleIcon,
+  Delete as DeleteIcon,
+  Edit as EditIcon,
+} from '@mui/icons-material'
 import { Box, IconButton, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 
@@ -47,7 +51,19 @@ const AccountHierarchyActions = (props: AccountHierarchyActionsProps) => {
   }
 
   return mdScreen ? (
-    <Box display={'flex'} gap={2} alignItems={'center'} onClick={(e) => e.stopPropagation()}>
+    <Box
+      data-testid="account-actions"
+      display={'flex'}
+      gap={2}
+      alignItems={'center'}
+      onClick={(e) => e.stopPropagation()}
+    >
+      <Typography variant="caption" onClick={onBuyersClick}>
+        {t('buyers')}
+      </Typography>
+      <Typography variant="caption" onClick={onQuotesClick}>
+        {t('quotes')}
+      </Typography>
       {role === B2BRoles.ADMIN && (
         <Box display={'flex'} gap={2}>
           <IconButton
@@ -57,7 +73,7 @@ const AccountHierarchyActions = (props: AccountHierarchyActionsProps) => {
             name="item-add"
             onClick={onAdd}
           >
-            <AddCircle />
+            <AddCircleIcon />
           </IconButton>
           <IconButton
             size="small"
@@ -66,7 +82,7 @@ const AccountHierarchyActions = (props: AccountHierarchyActionsProps) => {
             name="item-edit"
             onClick={onEdit}
           >
-            <Edit />
+            <EditIcon />
           </IconButton>
           <IconButton
             size="small"
@@ -75,7 +91,7 @@ const AccountHierarchyActions = (props: AccountHierarchyActionsProps) => {
             name="item-delete"
             onClick={onDelete}
           >
-            <Delete />
+            <DeleteIcon />
           </IconButton>
         </Box>
       )}

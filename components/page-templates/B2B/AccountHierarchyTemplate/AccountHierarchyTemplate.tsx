@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 
 import { accountHierarchyTemplateStyles } from './AccountHierarchyTemplate.styles'
-import { accountHierarchy } from '@/__mocks__/stories/accountHierarchy'
+import { b2BAccountHierarchyResult } from '@/__mocks__/stories'
 import { AccountHierarchyTree } from '@/components/b2b'
 import {
   AccountHierarchyFormDialog,
@@ -18,7 +18,7 @@ import { buildCreateCustomerB2bAccountParams } from '@/lib/helpers'
 import { CreateCustomerB2bAccountParams } from '@/lib/types'
 import { AddChildAccountProps } from '@/lib/types/AccountHierarchy'
 
-import { B2BAccount, B2BAccountInput, CustomerAccount } from '@/lib/gql/types'
+import { B2BAccount } from '@/lib/gql/types'
 
 const AccountHierarchyTemplate = () => {
   const theme = useTheme()
@@ -39,7 +39,10 @@ const AccountHierarchyTemplate = () => {
     formValues: CreateCustomerB2bAccountParams,
     accountId?: number
   ) => {
-    const variables = buildCreateCustomerB2bAccountParams({ ...formValues, parentAccount: user })
+    const variables = buildCreateCustomerB2bAccountParams({
+      ...formValues,
+      parentAccount: user as B2BAccount,
+    })
     if (accountId) {
       // const updateCustomerB2BAccount = await updateCustomerB2bAccount.mutateAsync({
       //   ...variables,
@@ -108,6 +111,30 @@ const AccountHierarchyTemplate = () => {
       },
     })
   }
+  // const handleFormSubmit = async (formValues: CreateCustomerB2bAccountParams) => {
+  //   const variables = buildCreateCustomerB2bAccountParams({
+  //     ...formValues,
+  //     parentAccount: user as B2BAccount,
+  //   })
+  //   const createCustomerB2BAccount = await createCustomerB2bAccount.mutateAsync({
+  //     ...variables,
+  //   })
+  //   if (createCustomerB2BAccount) closeModal()
+  // }
+
+  const handleAddChildAccount = () => {
+    showModal({
+      Component: AccountHierarchyFormDialog,
+      props: {
+        accounts: [user],
+        isAddingAccountToChild: false,
+        primaryButtonText: t('create-account'),
+        title: t('confirmation'),
+        onSave: handleFormSubmit,
+        onClose: () => closeModal(),
+      },
+    })
+  }
 
   return (
     <>
@@ -138,12 +165,7 @@ const AccountHierarchyTemplate = () => {
           <Button
             variant="contained"
             color="inherit"
-            onClick={() =>
-              handleChildAccountFormSubmit({
-                isAddingAccountToChild: false,
-                accounts: [user],
-              })
-            }
+            onClick={handleAddChildAccount}
             disableElevation
             id="formOpenButton"
             startIcon={<AddCircleOutlineIcon />}
@@ -154,9 +176,9 @@ const AccountHierarchyTemplate = () => {
         </Grid>
       </Grid>
       <AccountHierarchyTree
-        accounts={accountHierarchy.accounts}
-        hierarchy={accountHierarchy.hierarchy}
         role={B2BRoles.ADMIN}
+        accounts={b2BAccountHierarchyResult.accounts}
+        hierarchy={b2BAccountHierarchyResult.hierarchy}
         handleViewAccount={handleViewAccount}
         handleChildAccountFormSubmit={handleChildAccountFormSubmit}
         handleSwapAccount={handleSwapAccount}
