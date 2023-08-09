@@ -11,10 +11,10 @@ import { AccountHierarchyFormStyles } from './AccountHierarchyForm.styles'
 import { KiboSelect, KiboTextBox } from '@/components/common'
 import { CreateCustomerB2bAccountParams } from '@/lib/types'
 
-import { CustomerAccount } from '@/lib/gql/types'
+import { B2BAccount } from '@/lib/gql/types'
 
 interface AccountHierarchyFormProps {
-  accounts?: CustomerAccount[]
+  accounts?: B2BAccount[]
   isAddingAccountToChild: boolean
   onSave: (data: CreateCustomerB2bAccountParams) => void
   onClose: () => void
@@ -35,7 +35,7 @@ const AccountHierarchyForm = (props: AccountHierarchyFormProps) => {
   const { accounts, isAddingAccountToChild, onSave, onClose } = props
 
   const [isLoading, setLoading] = useState<boolean>(false)
-  const [selectedParentAccount, setSelectedParentAccount] = useState<CustomerAccount>()
+  const [selectedParentAccount, setSelectedParentAccount] = useState<B2BAccount>()
 
   const { t } = useTranslation()
   const accountHierarchySchema = useAccountHierarchySchema()
@@ -78,11 +78,12 @@ const AccountHierarchyForm = (props: AccountHierarchyFormProps) => {
       ...formValues,
       parentAccount: selectedParentAccount,
     })
+    setLoading(false)
   }
 
   const handleParentAccountChange = (name: string, value: string) => {
-    const account: CustomerAccount | undefined = accounts?.find(
-      (account: CustomerAccount) => account.id === parseInt(value)
+    const account: B2BAccount | undefined = accounts?.find(
+      (account: B2BAccount) => account.id === parseInt(value)
     )
     setValue('parentAccount', account?.companyOrOrganization as string)
     setSelectedParentAccount(account)
@@ -122,7 +123,7 @@ const AccountHierarchyForm = (props: AccountHierarchyFormProps) => {
                 helperText={errors?.parentAccount?.message as string}
                 value={selectedParentAccount?.id?.toString() ?? ''}
               >
-                {accounts?.map((account: CustomerAccount) => {
+                {accounts?.map((account: B2BAccount) => {
                   return (
                     <MenuItem key={account?.id} value={`${account?.id}`}>
                       {account?.companyOrOrganization}

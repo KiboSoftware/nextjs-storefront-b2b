@@ -5,6 +5,8 @@ import { ComponentStory, ComponentMeta } from '@storybook/react'
 import AccountHierarchyFormDialog from './AccountHierarchyFormDialog'
 import { userResponseMock } from '@/__mocks__/stories'
 
+import { B2BAccount } from '@/lib/gql/types'
+
 export default {
   title: 'Dialogs/AccountHierarchyFormDialog/Dialog',
   component: AccountHierarchyFormDialog,
@@ -14,7 +16,7 @@ export default {
   },
 } as ComponentMeta<typeof AccountHierarchyFormDialog>
 
-const mockUser = userResponseMock
+const mockUser = userResponseMock as B2BAccount
 const Template: ComponentStory<typeof AccountHierarchyFormDialog> = ({ ...args }) => (
   <AccountHierarchyFormDialog {...args} />
 )

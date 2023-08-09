@@ -4,10 +4,10 @@ import { AccountHierarchyForm } from '@/components/b2b'
 import { KiboDialog } from '@/components/common'
 import { CreateCustomerB2bAccountParams } from '@/lib/types'
 
-import { CustomerAccount } from '@/lib/gql/types'
+import { B2BAccount } from '@/lib/gql/types'
 
 interface AccountHierarchyFormDialogProps {
-  accounts?: CustomerAccount[]
+  accounts?: B2BAccount[]
   isAddingAccountToChild: boolean
   formTitle?: string
   onSave: (data: CreateCustomerB2bAccountParams) => void

@@ -51,12 +51,3 @@ export interface B2bUserRoleParams {
   values: B2BUserInput
   roles: CustomerB2BUserRole[]
 }
-
-export interface CreateCustomerB2bAccountParams {
-  parentAccount?: CustomerAccount
-  companyOrOrganization: string
-  taxId?: string
-  firstName: string
-  lastName: string
-  emailAddress: string
-}

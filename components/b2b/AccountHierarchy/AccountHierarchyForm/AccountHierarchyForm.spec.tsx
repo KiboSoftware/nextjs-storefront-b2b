@@ -20,6 +20,7 @@ const setup = () => {
     user,
   }
 }
+
 describe('[component] User Form', () => {
   it('should render user form', async () => {
     setup()

@@ -2,13 +2,13 @@ import { composeStories } from '@storybook/testing-react'
 import { render, screen } from '@testing-library/react'
 
 import * as stories from './AccountHierarchyTree.stories'
-import { accountHierarchy } from '@/__mocks__/stories/accountHierarchy'
+import { b2BAccountHierarchyResult } from '@/__mocks__/stories'
 import { B2BRoles } from '@/lib/constants'
 
 const { Admin } = composeStories(stories)
 
-const accounts = accountHierarchy.accounts
-const hierarchy = accountHierarchy.hierarchy
+const accounts = b2BAccountHierarchyResult.accounts
+const hierarchy = b2BAccountHierarchyResult.hierarchy
 
 describe('AccountHierarchyTree', () => {
   it('should render the tree label with icons and account actions for the admin role', async () => {

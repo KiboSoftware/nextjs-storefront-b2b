@@ -1,5 +1,5 @@
 import { MutationCreateCustomerB2bAccountArgs } from '../gql/types'
-import { CreateCustomerB2bAccountParams } from '../types/CustomerB2BUser'
+import { CreateCustomerB2bAccountParams } from '../types/CustomerB2BAccount'
 
 export const buildCreateCustomerB2bAccountParams = (
   params: CreateCustomerB2bAccountParams
