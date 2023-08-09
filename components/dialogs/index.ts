@@ -12,5 +12,6 @@ export { default as EditOrderDateDialog } from './EditOrderDateDialog/EditOrderD
 export { default as EditBillingAddress } from './EditBillingAddress/EditBillingAddress'
 export { default as UserFormDialog } from './b2b/UserFormDialog/UserFormDialog'
 export { default as AccountHierarchyFormDialog } from './b2b/AccountHierarchyFormDialog/AccountHierarchyFormDialog'
+export { default as ViewAccountDetailsDialog } from './b2b/ViewAccountDetailsDialog/ViewAccountDetailsDialog'
 export { default as QuotesFilterDialog } from './b2b/QuotesFilterDialog/QuotesFilterDialog'
 export { default as QuoteCommentThreadDialog } from './b2b/QuotesCommentThreadDialog/QuotesCommentThreadDialog'

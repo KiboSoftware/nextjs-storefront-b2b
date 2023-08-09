@@ -8,23 +8,49 @@ import {
 import { Box, IconButton, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 
-import { B2BRoles } from '@/lib/constants'
+import { CartItemActionsMobile } from '@/components/cart'
+import { AccountActions, AllAccountActions, B2BRoles } from '@/lib/constants'
 
 interface AccountHierarchyActionsProps {
   role?: string
+  mdScreen?: boolean
   onBuyersClick: () => void
   onQuotesClick: () => void
   onAdd: () => void
+  onView: () => void
   onEdit: () => void
   onDelete: () => void
 }
 
 const AccountHierarchyActions = (props: AccountHierarchyActionsProps) => {
-  const { role, onAdd, onEdit, onDelete, onBuyersClick, onQuotesClick } = props
-
+  const { role, mdScreen, onAdd, onView, onEdit, onDelete, onBuyersClick, onQuotesClick } = props
   const { t } = useTranslation('common')
 
-  return (
+  const onMenuItemSelection = (option: string) => {
+    switch (option) {
+      case AllAccountActions.ADD_ACCOUNT: {
+        onAdd()
+        break
+      }
+      case AllAccountActions.VIEW_ACCOUNT: {
+        onView()
+        break
+      }
+      case AllAccountActions.EDIT_ACCOUNT: {
+        onEdit()
+        break
+      }
+      case AllAccountActions.DELETE_ACCOUNT: {
+        onDelete()
+        break
+      }
+      case AllAccountActions.VIEW_BUYER_ACCOUNT: {
+        onBuyersClick()
+      }
+    }
+  }
+
+  return mdScreen ? (
     <Box
       data-testid="account-actions"
       display={'flex'}
@@ -69,7 +95,19 @@ const AccountHierarchyActions = (props: AccountHierarchyActionsProps) => {
           </IconButton>
         </Box>
       )}
+      <Typography variant="caption" sx={{ textDecoration: 'underline' }} onClick={onBuyersClick}>
+        {t('buyers')}
+      </Typography>
+      <Typography variant="caption" sx={{ textDecoration: 'underline' }} onClick={onQuotesClick}>
+        {t('quotes')}
+      </Typography>
     </Box>
+  ) : (
+    <CartItemActionsMobile
+      actions={AccountActions[role as string]}
+      width="15.5rem"
+      onMenuItemSelection={onMenuItemSelection}
+    />
   )
 }
 

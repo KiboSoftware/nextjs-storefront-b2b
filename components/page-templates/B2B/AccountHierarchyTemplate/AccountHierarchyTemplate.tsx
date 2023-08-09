@@ -6,12 +6,17 @@ import { useTranslation } from 'next-i18next'
 import { accountHierarchyTemplateStyles } from './AccountHierarchyTemplate.styles'
 import { b2BAccountHierarchyResult } from '@/__mocks__/stories'
 import { AccountHierarchyTree } from '@/components/b2b'
-import { AccountHierarchyFormDialog } from '@/components/dialogs'
+import {
+  AccountHierarchyFormDialog,
+  ConfirmationDialog,
+  ViewAccountDetailsDialog,
+} from '@/components/dialogs'
 import { useAuthContext, useModalContext } from '@/context'
-import { useCreateCustomerB2bAccountMutation } from '@/hooks'
+import { useCreateCustomerB2bAccountMutation, useUpdateCustomerB2bAccountMutation } from '@/hooks'
 import { B2BRoles } from '@/lib/constants'
 import { buildCreateCustomerB2bAccountParams } from '@/lib/helpers'
 import { CreateCustomerB2bAccountParams } from '@/lib/types'
+import { AddChildAccountProps } from '@/lib/types/AccountHierarchy'
 
 import { B2BAccount } from '@/lib/gql/types'
 
@@ -24,21 +29,98 @@ const AccountHierarchyTemplate = () => {
   const mdScreen = useMediaQuery(theme.breakpoints.up('md'))
 
   const { createCustomerB2bAccount } = useCreateCustomerB2bAccountMutation()
+  const { updateCustomerB2bAccount } = useUpdateCustomerB2bAccountMutation()
 
   const onAccountTitleClick = () => {
     router.push('/my-account')
   }
 
-  const handleFormSubmit = async (formValues: CreateCustomerB2bAccountParams) => {
+  const handleFormSubmit = async (
+    formValues: CreateCustomerB2bAccountParams,
+    accountId?: number
+  ) => {
     const variables = buildCreateCustomerB2bAccountParams({
       ...formValues,
       parentAccount: user as B2BAccount,
     })
-    const createCustomerB2BAccount = await createCustomerB2bAccount.mutateAsync({
-      ...variables,
-    })
-    if (createCustomerB2BAccount) closeModal()
+    if (accountId) {
+      // const updateCustomerB2BAccount = await updateCustomerB2bAccount.mutateAsync({
+      //   ...variables,
+      //   accountId: accountId as number
+      // })
+      // if (updateCustomerB2BAccount) closeModal()
+    } else {
+      const createCustomerB2BAccount = await createCustomerB2bAccount.mutateAsync({
+        ...variables,
+      })
+      if (createCustomerB2BAccount) closeModal()
+    }
   }
+
+  const handleChildAccountFormSubmit = ({
+    isAddingAccountToChild,
+    accounts,
+    accountToEdit,
+  }: AddChildAccountProps) => {
+    showModal({
+      Component: AccountHierarchyFormDialog,
+      props: {
+        accounts,
+        isAddingAccountToChild,
+        accountToEdit,
+        primaryButtonText: accountToEdit ? t('save') : t('create-account'),
+        formTitle: accountToEdit && t('edit-account'),
+        title: t('confirmation'),
+        onSave: (formValues: CreateCustomerB2bAccountParams) =>
+          handleFormSubmit(formValues, accountToEdit?.id),
+        onClose: () => closeModal(),
+      },
+    })
+  }
+
+  const handleViewAccount = (b2BAccount: B2BAccount) => {
+    showModal({
+      Component: ViewAccountDetailsDialog,
+      props: {
+        b2BAccount,
+        onClose: () => closeModal(),
+      },
+    })
+  }
+
+  const handleSwapAccount = (b2BAccount: B2BAccount) => {
+    showModal({
+      Component: ConfirmationDialog,
+      props: {
+        contentText: t('swap-account-hierarchy-text'),
+        primaryButtonText: t('yes-move-anyway'),
+        title: t('swap-account-hierarchy'),
+        onConfirm: () => console.log('account swapped'),
+      },
+    })
+  }
+
+  const handleDeleteAccount = (b2BAccount: B2BAccount) => {
+    showModal({
+      Component: ConfirmationDialog,
+      props: {
+        contentText: t('delete-account-confirm-message'),
+        primaryButtonText: t('yes-remove'),
+        title: t('confirmation'),
+        onConfirm: () => console.log('account deleted'),
+      },
+    })
+  }
+  // const handleFormSubmit = async (formValues: CreateCustomerB2bAccountParams) => {
+  //   const variables = buildCreateCustomerB2bAccountParams({
+  //     ...formValues,
+  //     parentAccount: user as B2BAccount,
+  //   })
+  //   const createCustomerB2BAccount = await createCustomerB2bAccount.mutateAsync({
+  //     ...variables,
+  //   })
+  //   if (createCustomerB2BAccount) closeModal()
+  // }
 
   const handleAddChildAccount = () => {
     showModal({
@@ -79,7 +161,7 @@ const AccountHierarchyTemplate = () => {
         </Grid>
       )}
       <Grid container>
-        <Grid item xs={12} md={12} marginTop={3}>
+        <Grid item xs={12} md={12} sx={{ ...accountHierarchyTemplateStyles.buttonGroupGridStyle }}>
           <Button
             variant="contained"
             color="inherit"
@@ -94,9 +176,13 @@ const AccountHierarchyTemplate = () => {
         </Grid>
       </Grid>
       <AccountHierarchyTree
+        role={B2BRoles.ADMIN}
         accounts={b2BAccountHierarchyResult.accounts}
         hierarchy={b2BAccountHierarchyResult.hierarchy}
-        role={B2BRoles.ADMIN}
+        handleViewAccount={handleViewAccount}
+        handleChildAccountFormSubmit={handleChildAccountFormSubmit}
+        handleSwapAccount={handleSwapAccount}
+        handleDeleteAccount={handleDeleteAccount}
       />
     </>
   )

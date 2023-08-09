@@ -51,16 +51,5 @@ describe('AccountHierarchyTree', () => {
 
     expect(collapseAllButton).toBeVisible()
     expect(expandAllButton).toBeVisible()
-    // Click the Collapse All button and verify that all items are collapsed
-    // fireEvent.click(collapseAllButton)
-    // const collapsedItems = screen.getAllByTestId('collapse-state-icon')
-    // expect(collapsedItems).toHaveLength(2) // Both items should be collapsed
-
-    // Click the Expand All button and verify that all items are expanded
-    // fireEvent.click(expandAllButton)
-    // const expandedItems = screen.getAllByTestId('expand-more-icon')
-    // expect(expandedItems).toHaveLength(2) // Both items should be expanded
   })
-
-  // You can write more test cases to cover other scenarios as well
 })

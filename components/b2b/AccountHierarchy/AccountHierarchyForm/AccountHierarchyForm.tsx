@@ -11,11 +11,12 @@ import { AccountHierarchyFormStyles } from './AccountHierarchyForm.styles'
 import { KiboSelect, KiboTextBox } from '@/components/common'
 import { CreateCustomerB2bAccountParams } from '@/lib/types'
 
-import { B2BAccount } from '@/lib/gql/types'
+import { B2BAccount, CustomerAccount } from '@/lib/gql/types'
 
 interface AccountHierarchyFormProps {
   accounts?: B2BAccount[]
   isAddingAccountToChild: boolean
+  accountToEdit?: B2BAccount
   onSave: (data: CreateCustomerB2bAccountParams) => void
   onClose: () => void
 }
@@ -32,8 +33,8 @@ const useAccountHierarchySchema = () => {
 }
 
 const AccountHierarchyForm = (props: AccountHierarchyFormProps) => {
-  const { accounts, isAddingAccountToChild, onSave, onClose } = props
-
+  const { accounts, isAddingAccountToChild, accountToEdit, onSave, onClose } = props
+  console.log('accounts', accounts)
   const [isLoading, setLoading] = useState<boolean>(false)
   const [selectedParentAccount, setSelectedParentAccount] = useState<B2BAccount>()
 
@@ -64,11 +65,20 @@ const AccountHierarchyForm = (props: AccountHierarchyFormProps) => {
 
   useEffect(() => {
     const hasMultipleAccounts = accounts?.length && accounts.length > 1
-    if (!hasMultipleAccounts) {
+    if (!hasMultipleAccounts && !accountToEdit) {
       setValue('parentAccount', accounts?.[0]?.companyOrOrganization as string)
       setSelectedParentAccount(accounts?.[0])
     }
-  }, [accounts])
+
+    if (accountToEdit) {
+      const { parentAccountId, companyOrOrganization, taxId } = accountToEdit
+      const parentAccount = accounts?.find((account) => account.id === parentAccountId)
+      setValue('parentAccount', parentAccount?.companyOrOrganization as string)
+      setValue('companyOrOrganization', companyOrOrganization as string)
+      setValue('taxId', taxId as string)
+      setSelectedParentAccount(parentAccount)
+    }
+  }, [accounts, accountToEdit])
 
   const onSubmit = () => {
     if (isLoading || !isValid) return

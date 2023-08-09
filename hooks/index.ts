@@ -153,3 +153,4 @@ export * from './mutations/b2b/useUpdateCustomerB2bUser/useUpdateCustomerB2bUser
 export * from './mutations/b2b/useAddRoleToCustomerB2bAccount/useAddRoleToCustomerB2bAccount'
 export * from './mutations/b2b/useDeleteB2bAccountRole/useDeleteB2bAccountRole'
 export * from './mutations/b2b/useCreateCustomerB2bAccount/useCreateCustomerB2bAccount'
+export * from './mutations/b2b/useUpdateCustomerB2bAccount/useUpdateCustomerB2bAccount'
