@@ -1,6 +1,7 @@
 import { renderHook, act } from '@testing-library/react-hooks'
 
 import { useProductCardActions } from './useProductCardActions'
+import { quoteMock } from '@/__mocks__/stories'
 import { AddToCartDialog } from '@/components/dialogs'
 import { ProductQuickViewDialog } from '@/components/product'
 import { useModalContext } from '@/context'
@@ -15,6 +16,9 @@ jest.mock('@/context', () => ({
 const cartResponse = { id: 'mock-cart-response-id' }
 const addToCartMutateAsyncMock = jest.fn(() => Promise.resolve(cartResponse))
 
+const quoteItemResponse = { id: 'mock-create-quote-item-response-id' }
+const createQuoteItemMutateAsyncMock = jest.fn(() => Promise.resolve(quoteItemResponse))
+
 const addOrRemoveWishlistItemMock = jest.fn()
 jest.mock('@/hooks', () => ({
   useAddCartItem: jest.fn(() => ({
@@ -23,6 +27,9 @@ jest.mock('@/hooks', () => ({
   useWishlist: jest.fn(() => ({
     addOrRemoveWishlistItem: addOrRemoveWishlistItemMock,
     checkProductInWishlist: jest.fn(),
+  })),
+  useCreateQuoteItem: jest.fn(() => ({
+    createQuoteItem: { mutateAsync: createQuoteItemMutateAsyncMock, isPending: false },
   })),
 }))
 
