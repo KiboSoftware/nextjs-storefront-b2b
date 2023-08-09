@@ -36,7 +36,7 @@ import { userMock, loginUserMock, registerUserMock } from '../stories/userMock'
 import { wishlistMock } from '../stories/wishlistMock'
 import { subscriptionMock } from '@/__mocks__/stories/subscriptionMock'
 import { LOGOUT_ENDPOINT } from '@/lib/gql/client'
-import { b2BAccountResponseMock } from '../stories/createCustomerB2bAccountMock'
+import { b2BAccountResponseMock } from '../stories/b2BAccountResponseMock'
 
 const baseUrl = 'http://localhost:3000'
 const mockCreateCustomerAccount = {
