@@ -1,0 +1,57 @@
+/**
+ * @module useUpdateQuoteItemFulfillment
+ */
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+
+import { makeGraphQLClient } from '@/lib/gql/client'
+import { updateQuoteItemQuantityMutation } from '@/lib/gql/mutations'
+import { quoteKeys } from '@/lib/react-query/queryKeys'
+
+/**
+ * @hidden
+ */
+
+interface UpdateQuoteItemQuantityProps {
+  quoteId: string
+  updateMode: string
+  quoteItemId: string
+  quantity: number
+}
+
+const updateQuoteItemQuantity = async (props: UpdateQuoteItemQuantityProps) => {
+  const client = makeGraphQLClient()
+  const { quoteId, updateMode, quoteItemId, quantity } = props
+
+  const variables = { quoteId, quoteItemId, quantity, updateMode }
+
+  const response = await client.request({
+    document: updateQuoteItemQuantityMutation,
+    variables,
+  })
+
+  return response?.updateQuoteItemQuantity
+}
+/**
+ * [Mutation hook] updateQuoteItemQuantity uses the graphQL mutation
+ *
+ * <b>updateQuoteItemQuantity(quoteId: $quoteId, quoteItemId: $quoteItemId, quantity: $quantity, updateMode: $updateMode): Quote</b>
+ *
+ * Description : update the product quantity in the quote
+ *
+ * Parameters passed to function updateQuoteItemQuantity(props: UpdateQuoteItemQuantityProps) => expects object of type quoteId, updateMode, quoteItemId, quantity
+ *
+ * On success, calls invalidateQueries on quoteKeys and fetches the updated result.
+ *
+ * @returns 'response?.updateQuoteItemQuantity' which contains object of product items added to quote and it's quantity
+ */
+export const useUpdateQuoteItemQuantity = () => {
+  const queryClient = useQueryClient()
+  return {
+    updateQuoteItemQuantity: useMutation({
+      mutationFn: updateQuoteItemQuantity,
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: quoteKeys.all })
+      },
+    }),
+  }
+}

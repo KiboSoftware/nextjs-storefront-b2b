@@ -17,6 +17,7 @@ import {
   useGetB2BUserQueries,
   useDeleteQuoteItem,
 } from '@/hooks'
+import { useQuoteActions } from '@/hooks/custom/useQuoteActions/useQuoteActions'
 import { FulfillmentOptions as FulfillmentOptionsConstant } from '@/lib/constants'
 import { orderGetters, productGetters, quoteGetters } from '@/lib/getters'
 
@@ -43,7 +44,7 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
   const expirationDate = quoteGetters.getQuoteExpirationData(quote) ?? '-'
   const accountName = user?.companyOrOrganization
   const createdBy = (data?.items?.[0]?.firstName + ' ' + data?.items?.[0]?.lastName) as string
-  const quoteItems = quote?.items
+  const quoteItems = quote?.items as CrOrderItem[]
   const quoteId = quoteGetters.getQuoteId(quote)
 
   const locationCodes = orderGetters.getFulfillmentLocationCodes(quoteItems as any)
@@ -55,6 +56,13 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
 
   const { data: purchaseLocation } = useGetPurchaseLocation()
   const { openProductQuickViewModal, handleAddToQuote } = useProductCardActions()
+  const { handleQuantityUpdate, handleProductPickupLocation, onFulfillmentOptionChange } =
+    useQuoteActions({
+      quoteId,
+      updateMode,
+      quoteItems,
+      purchaseLocation,
+    })
 
   const addItemToQuote = async (
     quoteId: string,
@@ -203,9 +211,9 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
                 items={quoteItems as CrOrderItem[]}
                 fulfillmentLocations={fulfillmentLocations}
                 purchaseLocation={purchaseLocation}
-                onFulfillmentOptionChange={() => null}
-                onQuantityUpdate={() => null}
-                onStoreSetOrUpdate={() => null}
+                onFulfillmentOptionChange={onFulfillmentOptionChange}
+                onQuantityUpdate={handleQuantityUpdate}
+                onStoreSetOrUpdate={handleProductPickupLocation}
                 onItemDelete={handleDeleteItem}
               />
             ) : (
@@ -216,9 +224,9 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
                     fulfillmentLocations={fulfillmentLocations as Location[]}
                     purchaseLocation={purchaseLocation}
                     onCartItemDelete={handleDeleteItem}
-                    onCartItemQuantityUpdate={() => null}
-                    onFulfillmentOptionChange={() => null}
-                    onProductPickupLocation={() => null}
+                    onCartItemQuantityUpdate={handleQuantityUpdate}
+                    onFulfillmentOptionChange={onFulfillmentOptionChange}
+                    onProductPickupLocation={handleProductPickupLocation}
                     onCartItemActionSelection={() => null}
                   />
                 ) : (

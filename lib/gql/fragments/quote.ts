@@ -20,6 +20,7 @@ fragment quoteFragment on Quote {
             id
             quantity
             fulfillmentMethod 
+            fulfillmentLocationCode
             unitPrice {
             listAmount
             saleAmount

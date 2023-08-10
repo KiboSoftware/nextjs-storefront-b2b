@@ -66,3 +66,5 @@ export { default as deleteQuoteItemMutation } from './quotes/deleteQuoteItemMuta
 export { default as createQuoteItemMutation } from './quotes/createQuoteItemMutation'
 export { default as createQuoteMutation } from './quotes/createQuoteMutation'
 export { default as updateQuoteMutation } from './quotes/updateQuoteMutation'
+export { default as updateQuoteItemQuantityMutation } from './quotes/updateQuoteItemQuantityMutation'
+export { default as updateQuoteItemFulfillmentMutation } from './quotes/updateQuoteItemFulfillmentMutation'
