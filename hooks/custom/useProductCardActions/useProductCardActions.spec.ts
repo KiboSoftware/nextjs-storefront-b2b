@@ -1,11 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks'
 
 import { useProductCardActions } from './useProductCardActions'
-import { quoteMock } from '@/__mocks__/stories'
 import { AddToCartDialog } from '@/components/dialogs'
 import { ProductQuickViewDialog } from '@/components/product'
 import { useModalContext } from '@/context'
-import { useAddCartItem, useWishlist } from '@/hooks'
+import { useAddCartItem, useWishlist, useCreateQuoteItem } from '@/hooks'
 import { ProductCustom } from '@/lib/types'
 
 const showModalMock = jest.fn()
@@ -106,5 +105,24 @@ describe('useProductCardActions', () => {
     })
 
     expect(addOrRemoveWishlistItem).toHaveBeenCalledWith({ product })
+  })
+
+  it('should handle adding to quote', async () => {
+    const { result } = renderHook(() => useProductCardActions())
+    const { createQuoteItem } = useCreateQuoteItem()
+
+    const quoteId = '123'
+    const updateMode = 'update'
+    const quantity = 1
+    await act(async () => {
+      await result.current.handleAddToQuote(quoteId, updateMode, product, quantity)
+    })
+
+    expect(createQuoteItem.mutateAsync).toHaveBeenCalledWith({
+      product,
+      quantity,
+      quoteId,
+      updateMode,
+    })
   })
 })

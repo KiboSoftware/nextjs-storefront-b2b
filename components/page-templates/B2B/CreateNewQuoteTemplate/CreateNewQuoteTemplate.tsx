@@ -1,16 +1,8 @@
 import React, { useState } from 'react'
 
 import ArrowBackIos from '@mui/icons-material/ArrowBackIos'
-import {
-  Stack,
-  Typography,
-  Box,
-  Button,
-  Grid,
-  useMediaQuery,
-  Theme,
-  InputLabel,
-} from '@mui/material'
+import { LoadingButton } from '@mui/lab'
+import { Stack, Typography, Box, Grid, useMediaQuery, Theme, InputLabel } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 
 import { createNewQuoteTemplateStyles } from './CreateNewQuoteTemplate.style'
@@ -22,12 +14,9 @@ import {
   useGetPurchaseLocation,
   useGetStoreLocations,
   useProductCardActions,
-  useUpdateCartCoupon,
-  useDeleteCartCoupon,
   useGetB2BUserQueries,
   useDeleteQuoteItem,
 } from '@/hooks'
-import { useCreateQuoteItem } from '@/hooks/mutations/quotes/useCreateQuoteItem/useCreateQuoteItem'
 import { FulfillmentOptions as FulfillmentOptionsConstant } from '@/lib/constants'
 import { orderGetters, productGetters, quoteGetters } from '@/lib/getters'
 
@@ -42,14 +31,12 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
   const { quote, onAccountTitleClick } = props
   const { t } = useTranslation('common')
   const mdScreen = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'))
-  const { isAuthenticated, user } = useAuthContext()
+  const { user } = useAuthContext()
 
-  const [promoError, setPromoError] = useState<string>('')
-  const { data, isLoading } = useGetB2BUserQueries({
+  const { data } = useGetB2BUserQueries({
     accountId: user?.id as number,
     filter: `userId eq ${quote?.userId}`,
   })
-  // const { data: cart } = useGetCart(cartData)
   const quoteNumber = quoteGetters.getNumber(quote)
   const quoteStatus = quoteGetters.getStatus(quote)
   const createDate = quoteGetters.getQuoteCreateDate(quote)
@@ -64,9 +51,6 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
   const fulfillmentLocations = locations && Object.keys(locations).length ? locations : []
 
   const { deleteQuoteItem } = useDeleteQuoteItem()
-  const { updateCartCoupon } = useUpdateCartCoupon()
-  const { deleteCartCoupon } = useDeleteCartCoupon()
-  const { createQuoteItem } = useCreateQuoteItem()
   const updateMode = 'ApplyToDraft'
 
   const { data: purchaseLocation } = useGetPurchaseLocation()
@@ -136,15 +120,15 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
         <Grid item sm={6} display={'flex'} justifyContent={'flex-end'}>
           {mdScreen ? (
             <Stack direction="row" gap={2}>
-              <Button variant="contained" color="secondary">
+              <LoadingButton variant="contained" color="secondary">
                 {t('clear-changes')}
-              </Button>
-              <Button variant="contained" color="inherit">
+              </LoadingButton>
+              <LoadingButton variant="contained" color="inherit">
                 {t('save-and-exit')}
-              </Button>
-              <Button variant="contained" color="primary">
+              </LoadingButton>
+              <LoadingButton variant="contained" color="primary">
                 {t('submit-for-approval')}
-              </Button>
+              </LoadingButton>
             </Stack>
           ) : null}
         </Grid>
@@ -152,11 +136,11 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
           <Typography variant="h2" mb={2}>
             {t('quote-details')}
           </Typography>
-          <Button variant="contained" color="secondary">
+          <LoadingButton variant="contained" color="secondary">
             {t('print-quote')}
-          </Button>
+          </LoadingButton>
         </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={5}>
           <KiboTextBox
             label={t('quote-name')}
             value=""
@@ -166,49 +150,45 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
             required
           />
         </Grid>
-        <Grid item xs={12} md={12} sx={{ display: { md: 'flex', xs: 'block' } }}>
-          <Box sx={{ display: 'flex' }}>
-            <Box sx={{ margin: '0 1rem 1rem 0' }}>
+        <Grid item xs={12} md={8} sx={{ display: { md: 'flex', xs: 'block' } }}>
+          <Grid container rowSpacing={1} columnSpacing={{ md: 1 }}>
+            <Grid item xs={6} md={2}>
               <InputLabel shrink={true} sx={{ position: 'relative' }}>
                 {t('quote-number')}
               </InputLabel>
               <Typography>{quoteNumber}</Typography>
-            </Box>
-            <Box sx={{ margin: '0 1rem 1rem 0' }}>
+            </Grid>
+            <Grid item xs={6} md={2}>
               <InputLabel shrink={true} sx={{ position: 'relative' }}>
                 {t('status')}
               </InputLabel>
               <Typography>{quoteStatus}</Typography>
-            </Box>
-          </Box>
-          <Box sx={{ display: 'flex' }}>
-            <Box sx={{ margin: '0 1rem 1rem 0' }}>
+            </Grid>
+            <Grid item xs={6} md={2}>
               <InputLabel shrink={true} sx={{ position: 'relative' }}>
                 {t('account-name')}
               </InputLabel>
               <Typography>{accountName}</Typography>
-            </Box>
-            <Box sx={{ margin: '0 1rem 1rem 0' }}>
+            </Grid>
+            <Grid item xs={6} md={2}>
               <InputLabel shrink={true} sx={{ position: 'relative' }}>
                 {t('created-by')}
               </InputLabel>
               <Typography>{createdBy}</Typography>
-            </Box>
-          </Box>
-          <Box sx={{ display: 'flex' }}>
-            <Box sx={{ margin: '0 1rem 1rem 0' }}>
+            </Grid>
+            <Grid item xs={6} md={2}>
               <InputLabel shrink={true} sx={{ position: 'relative' }}>
                 {t('date-created')}
               </InputLabel>
               <Typography>{createDate}</Typography>
-            </Box>
-            <Box sx={{ margin: '0 1rem 1rem 0' }}>
+            </Grid>
+            <Grid item xs={6} md={2}>
               <InputLabel shrink={true} sx={{ position: 'relative' }}>
                 {t('expiration-date')}
               </InputLabel>
               <Typography>{expirationDate}</Typography>
-            </Box>
-          </Box>
+            </Grid>
+          </Grid>
         </Grid>
         <Grid item xs={12} md={6}>
           <Typography variant="h2" mb={2}>
@@ -251,21 +231,21 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
 
             {!mdScreen && quoteItems?.length ? (
               <Box paddingY={1} display="flex" flexDirection={'column'} gap={2}>
-                <Button variant="contained" color="primary" fullWidth>
+                <LoadingButton variant="contained" color="primary" fullWidth>
                   {t('submit-for-approval')}
-                </Button>
+                </LoadingButton>
                 <Box display="flex" gap={3}>
-                  <Button
+                  <LoadingButton
                     variant="contained"
                     color="secondary"
                     fullWidth
                     sx={{ padding: '0.375rem 0.5rem' }}
                   >
                     {t('clear-changes')}
-                  </Button>
-                  <Button variant="contained" color="inherit" fullWidth>
+                  </LoadingButton>
+                  <LoadingButton variant="contained" color="inherit" fullWidth>
                     {t('save-and-exit')}
-                  </Button>
+                  </LoadingButton>
                 </Box>
               </Box>
             ) : null}
