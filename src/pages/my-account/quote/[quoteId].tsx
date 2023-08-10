@@ -3,18 +3,11 @@ import Head from 'next/head'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
-import {
-  StandardShipCheckoutTemplate,
-  MultiShipCheckoutTemplate,
-  MyAccountTemplate,
-} from '@/components/page-templates'
-import CreateNewQuoteTemplate from '@/components/page-templates/B2B/CreateNewQuoteTemplate/CreateNewQuoteTemplate'
-import { useAuthContext } from '@/context'
-import { CheckoutStepProvider } from '@/context/CheckoutStepContext/CheckoutStepContext'
+import { CreateNewQuoteTemplate } from '@/components/page-templates'
 import { useGetQuoteByID } from '@/hooks/queries/quotes/useGetQuoteById/useGetQuoteById'
-import { getCheckout, getMultiShipCheckout, getQuote, updateOrder } from '@/lib/api/operations'
+import { getQuote } from '@/lib/api/operations'
 
-import type { Checkout, CrOrder, CrOrderInput, Quote } from '@/lib/gql/types'
+import type { Quote } from '@/lib/gql/types'
 import type { NextPage, GetServerSidePropsContext, NextApiRequest, NextApiResponse } from 'next'
 
 interface QuotePageProps {

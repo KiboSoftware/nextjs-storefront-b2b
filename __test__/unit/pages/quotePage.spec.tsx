@@ -13,7 +13,12 @@ const context = {
   params: {
     quoteId: 'quote-id',
   },
-  req: {} as NextApiRequest,
+  req: {
+    headers: { 'x-forwarded-for': '127.0.0.0' },
+    cookies: {
+      kibo_at: '',
+    },
+  },
   locale: 'mock-locale',
 }
 

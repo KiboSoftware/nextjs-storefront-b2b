@@ -53,7 +53,7 @@ B2BQuickViewDialogWithQuote.args = {
   dialogProps: {
     title: 'Product Quick View',
     cancel: 'Cancel',
-    addItemToList: 'Add to Quote',
+    addItemToQuote: 'Add to Quote',
     isB2B: true,
   },
 }
