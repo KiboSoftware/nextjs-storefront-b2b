@@ -9,7 +9,7 @@ describe('[hooks] useGetQuoteByID', () => {
     const { result } = renderHook(() => useGetQuoteByID({ quoteId: 'quote-id', draft: true }), {
       wrapper: createQueryClientWrapper(),
     })
-
+    await waitFor(() => expect(result.current.isSuccess).toBe(true))
     await waitFor(() => expect(result.current.data).toStrictEqual(quoteMock?.items?.[0]))
   })
 })

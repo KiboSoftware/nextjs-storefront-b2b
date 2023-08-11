@@ -124,94 +124,31 @@ export const quoteMock = {
       orderLevelShippingDiscountTotal: 0,
     },
     {
-      id: '0860acf067ab47a5a31db04a00b2d3d2',
-      fulfillmentLocationCode: '12346',
-      fulfillmentMethod: 'Ship',
-      isReservationEnabled: false,
-      lineId: 2,
-      product: {
-        fulfillmentTypesSupported: ['DirectShip'],
-        imageAlternateText: '',
-        imageUrl:
-          '//cdn-sb.mozu.com/37691-59868/cms/59868/files/b99729b9-ec00-4ca0-837e-3282a7ea1f3b',
-        options: [],
-        properties: [],
-        categories: [
-          {
-            id: 3,
-            parent: {
-              id: 2,
-            },
-          },
-          {
-            id: 5,
-            parent: {
-              id: 2,
-            },
-          },
-        ],
-        price: {
-          price: 520.99,
-        },
-        discountsRestricted: false,
-        isRecurring: false,
-        isTaxable: true,
-        productType: 'Default',
-        productUsage: 'Standard',
-        bundledProducts: [],
-        productCode: '12345',
-        name: 'Double Door Refrigerator',
-        description: 'Digital Inverter Frost Free',
-        goodsType: 'Physical',
-        isPackagedStandAlone: false,
-        stock: {
-          manageStock: true,
-          isOnBackOrder: false,
-          isSubstitutable: false,
-        },
-        measurements: {
-          height: {
-            unit: 'in',
-            value: 1,
-          },
-          width: {
-            unit: 'in',
-            value: 1,
-          },
-          length: {
-            unit: 'in',
-            value: 1,
-          },
-          weight: {
-            unit: 'lbs',
-            value: 1,
-          },
-        },
-        fulfillmentStatus: 'Pending',
-      },
-      quantity: 1,
-      subtotal: 520.99,
-      extendedTotal: 520.99,
-      taxableTotal: 520.99,
-      discountTotal: 0,
-      discountedTotal: 520.99,
-      itemTaxTotal: 0,
-      shippingTaxTotal: 0,
-      shippingTotal: 0,
+      userId: 'ce2ebc17ecf045539942794bacaa3c03',
+      id: '15c430da6a08a7000119f5db0000678b',
+      handlingSubTotal: 0,
+      dutyTotal: 0,
       feeTotal: 0,
-      total: 520.99,
-      unitPrice: {
-        extendedAmount: 520.99,
-        listAmount: 520.99,
-      },
-      productDiscounts: [],
-      shippingDiscounts: [],
-      auditInfo: {},
-      shippingAmountBeforeDiscountsAndAdjustments: 0,
-      weightedOrderDiscount: 0,
-      weightedOrderShippingDiscount: 0,
-      weightedOrderHandlingFeeDiscount: 0,
-      isAssemblyRequired: false,
+      handlingTotal: 0,
+      itemLevelHandlingDiscountTotal: 0,
+      itemLevelProductDiscountTotal: 0,
+      itemLevelShippingDiscountTotal: 0,
+      number: 107,
+      items: [
+        {
+          fulfillmentMethod: 'Ship',
+          fulfillmentLocationCode: 'SACRAMENTO',
+          id: 'e66bbd4fcf874cf0afcdb05800c10295',
+          product: {
+            productCode: 'BackP_003',
+          },
+        },
+      ],
+      itemTotal: 0,
+      orderLevelHandlingDiscountTotal: 0,
+      orderLevelProductDiscountTotal: 0,
+      shippingAmount: 0,
+      orderLevelShippingDiscountTotal: 0,
     },
   ],
   comments: [
@@ -409,4 +346,8 @@ export const quoteMock = {
       },
     },
   ],
+}
+
+export const singleQuoteItemMock = {
+  quote: quoteMock?.items?.[0],
 }
