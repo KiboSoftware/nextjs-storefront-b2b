@@ -1,14 +1,17 @@
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
-import { NextApiRequest } from 'next'
 
 import { quoteMock } from '@/__mocks__/stories'
 import { createQueryClientWrapper } from '@/__test__/utils'
+import * as operations from '@/lib/api/operations'
 import QuotePage, { getServerSideProps } from '@/src/pages/my-account/quote/[quoteId]'
 
 import { Quote } from '@/lib/gql/types'
 
-const mockQuote = quoteMock?.items?.[0]
+const mockOperations = operations as {
+  getQuote(quoteId: string, draft: boolean, req: any, res: any): Promise<Quote>
+}
+
 const context = {
   params: {
     quoteId: 'quote-id',
@@ -22,12 +25,9 @@ const context = {
   locale: 'mock-locale',
 }
 
-jest.mock('@/lib/api/util', () => ({
-  fetcher: jest.fn(() => {
-    return Promise.resolve({
-      data: { quote: mockQuote },
-    })
-  }),
+jest.mock('@/lib/api/operations', () => ({
+  __esModule: true,
+  getQuote: jest.fn(),
 }))
 
 jest.mock('next-i18next/serverSideTranslations', () => ({
@@ -74,11 +74,14 @@ jest.mock('next/config', () => {
 })
 
 describe('[page] Quote Page', () => {
-  xit('should run getServerSideProps method', async () => {
+  it('should run getServerSideProps method', async () => {
+    const mockQuote = { quoteId: 'quote-id' }
+    mockOperations.getQuote = jest.fn().mockImplementationOnce(async () => mockQuote)
     const response = await getServerSideProps(context as any)
     expect(response).toStrictEqual({
       props: {
         quote: mockQuote,
+        quoteId: 'quote-id',
         _nextI18Next: {
           initialI18nStore: { 'mock-locale': [{}], en: [{}] },
           initialLocale: 'mock-locale',

@@ -4,124 +4,115 @@ export const quoteMock = {
   ...quotesMock.items?.[1],
   items: [
     {
-      id: 'd808b2bdb3ca46efae81b04a00a2fad4',
-      fulfillmentLocationCode: '12346',
-      fulfillmentMethod: 'Ship',
-      isReservationEnabled: false,
-      lineId: 1,
-      product: {
-        fulfillmentTypesSupported: ['DirectShip', 'InStorePickup'],
-        imageAlternateText: '',
-        imageUrl:
-          '//cdn-sb.mozu.com/37691-59868/cms/59868/files/79ca4ec6-e2ce-46d3-9908-79fab8b7d451',
-        options: [],
-        properties: [
-          {
-            attributeFQN: 'tenant~availability',
-            name: 'Availability',
-            dataType: 'String',
-            isMultiValue: false,
-            values: [
-              {
-                stringValue: 'Usually Ships in 1 to 2 Days',
-                value: '1-2days',
-              },
-            ],
-          },
-          {
-            attributeFQN: 'tenant~rating',
-            name: 'Rating',
-            dataType: 'Number',
-            isMultiValue: true,
-            values: [
-              {
-                value: 2,
-              },
-            ],
-          },
-        ],
-        categories: [
-          {
-            id: 3,
-            parent: {
-              id: 2,
-            },
-          },
-          {
-            id: 5,
-            parent: {
-              id: 2,
-            },
-          },
-        ],
-        price: {
-          price: 50.99,
-          salePrice: 45.99,
-        },
-        discountsRestricted: false,
-        isTaxable: true,
-        productType: 'Default',
-        productUsage: 'Standard',
-        bundledProducts: [],
-        productCode: '00011',
-        name: 'Sneaker',
-        description: 'Good sneakers',
-        goodsType: 'Physical',
-        isPackagedStandAlone: false,
-        stock: {
-          manageStock: true,
-          isOnBackOrder: false,
-          isSubstitutable: false,
-        },
-        measurements: {
-          height: {
-            unit: 'in',
-            value: 1,
-          },
-          width: {
-            unit: 'in',
-            value: 1,
-          },
-          length: {
-            unit: 'in',
-            value: 1,
-          },
-          weight: {
-            unit: 'lbs',
-            value: 1,
-          },
-        },
-        fulfillmentStatus: 'Pending',
-      },
-      quantity: 1,
-      isRecurring: false,
-      isTaxable: false,
-      subtotal: 45.99,
-      extendedTotal: 45.99,
-      taxableTotal: 45.99,
-      discountTotal: 0,
-      discountedTotal: 45.99,
+      id: '15d502b13a79220001b6ed1b000045a4',
+      name: null,
+      siteId: 22116,
+      tenantId: 17828,
+      feeTotal: 0,
+      shippingTotal: 0,
+      number: 3,
+      submittedDate: null,
+      expirationDate: null,
+      total: 200,
+      status: 'Pending',
+      subTotal: 200,
+      shippingSubTotal: 0,
+      handlingSubTotal: 0,
       itemTaxTotal: 0,
       shippingTaxTotal: 0,
-      shippingTotal: 0,
-      feeTotal: 0,
-      total: 45.99,
-      unitPrice: {
-        extendedAmount: 45.99,
-        listAmount: 50.99,
-        saleAmount: 45.99,
-      },
-      productDiscounts: [],
-      shippingDiscounts: [],
-      auditInfo: {},
-      shippingAmountBeforeDiscountsAndAdjustments: 0,
-      weightedOrderDiscount: 0,
-      weightedOrderShippingDiscount: 0,
-      weightedOrderHandlingFeeDiscount: 0,
-      isAssemblyRequired: false,
-      handlingSubTotal: 0,
       handlingTaxTotal: 0,
       dutyTotal: 0,
+      items: [
+        {
+          id: 'a2dc8f0975294da4bc2cb05a0093fb6c',
+          quantity: 2,
+          fulfillmentMethod: 'Pickup',
+          fulfillmentLocationCode: 'TriptiShop',
+          unitPrice: {
+            listAmount: 100,
+            saleAmount: null,
+          },
+          discountTotal: 0,
+          discountedTotal: 200,
+          total: 200,
+          shippingTotal: 0,
+          dutyAmount: null,
+          product: {
+            productCode: 'MS-CAM-004',
+            name: 'GoPro Hero3 Mount',
+            description:
+              '<font face="arial, sans-sarif" size="4"><span style="line-height: 18px;">Mount your GoPro Camera to capture the action during all sports.</span></font>',
+            imageUrl:
+              '//d1slj7rdbjyb5l.cloudfront.net/17194-21127/cms/21127/files/0920dfa6-8e42-4e31-8b07-322c331bf5a4',
+            options: [],
+            properties: [
+              {
+                attributeFQN: 'tenant~availability',
+                name: 'Availability',
+                values: [
+                  {
+                    value: '24-48hrs',
+                  },
+                ],
+              },
+              {
+                attributeFQN: 'tenant~rating',
+                name: 'Rating',
+                values: [
+                  {
+                    value: 2,
+                  },
+                ],
+              },
+              {
+                attributeFQN: 'tenant~popularity',
+                name: 'Popularity',
+                values: [
+                  {
+                    value: 2,
+                  },
+                ],
+              },
+              {
+                attributeFQN: 'Tenant~brand',
+                name: 'Brand',
+                values: [
+                  {
+                    value: 'GoPro',
+                  },
+                ],
+              },
+            ],
+            sku: null,
+            price: {
+              price: 100,
+              salePrice: null,
+            },
+            categories: [
+              {
+                id: 2,
+              },
+              {
+                id: 4,
+              },
+              {
+                id: 19,
+              },
+            ],
+          },
+        },
+      ],
+      auditInfo: {
+        updateDate: 1691690035699,
+        createDate: 1691657393546,
+        updateBy: 'c43fd8c426a34e5bae5a7445dee2fa86',
+        createBy: 'c43fd8c426a34e5bae5a7445dee2fa86',
+      },
+      auditHistory: [],
+      comments: [],
+      fulfillmentInfo: null,
+      userId: 'c43fd8c426a34e5bae5a7445dee2fa86',
+      customerAccountId: 1174,
       itemLevelHandlingDiscountTotal: 0,
       itemLevelShippingDiscountTotal: 0,
       itemLevelProductDiscountTotal: 0,
@@ -130,11 +121,7 @@ export const quoteMock = {
       orderLevelHandlingDiscountTotal: 0,
       orderLevelProductDiscountTotal: 0,
       shippingAmount: 0,
-      shippingSubTotal: 0,
-      siteId: 123,
       orderLevelShippingDiscountTotal: 0,
-      subTotal: 0,
-      tenantId: 123,
     },
     {
       id: '0860acf067ab47a5a31db04a00b2d3d2',
