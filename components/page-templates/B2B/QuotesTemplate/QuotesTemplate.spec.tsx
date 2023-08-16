@@ -21,22 +21,17 @@ jest.mock('@/components/b2b/QuotesTable/QuotesTable', () => ({
 }))
 
 describe('[Templates]  QuotesTemplate', () => {
-  it('should render Quotes title', () => {
-    renderWithQueryClient(<Common {...Common.args} />)
-    expect(screen.getByRole('heading', { name: 'quotes', level: 1 })).toBeVisible()
-  })
-
-  it('should render Create Quote button', () => {
-    renderWithQueryClient(<Common {...Common.args} />)
-    expect(screen.getByRole('button', { name: 'create-a-quote' })).toBeVisible()
-  })
-
-  it('should render Quote Table component', async () => {
+  it('should render component', async () => {
     const setQuotesSearchParamMock = jest.fn()
 
     renderWithQueryClient(
       <Common {...Common.args} setQuotesSearchParam={setQuotesSearchParamMock} />
     )
+
+    expect(screen.getByRole('heading', { name: 'quotes', level: 1 })).toBeVisible()
+
+    expect(screen.getByRole('button', { name: 'create-a-quote' })).toBeVisible()
+
     expect(screen.getByTestId('quote-table-component')).toBeVisible()
 
     await user.click(screen.getByRole('button', { name: 'setQuotesSearchParam' }))

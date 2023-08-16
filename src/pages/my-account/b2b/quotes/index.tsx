@@ -8,7 +8,7 @@ import { QuotesTemplate } from '@/components/page-templates'
 import { useGetQuotes } from '@/hooks'
 import { parseFilterParamToObject } from '@/lib/helpers'
 
-import { QueryQuotesArgs } from '@/lib/gql/types'
+import { QueryQuotesArgs, QuoteCollection } from '@/lib/gql/types'
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { locale } = context
@@ -49,7 +49,7 @@ const QuotesPage: NextPage = (props) => {
     <>
       <QuotesTemplate
         {...props}
-        quoteCollection={quoteCollection}
+        quoteCollection={quoteCollection as QuoteCollection}
         sortingValues={sortingValues}
         filters={parseFilterParamToObject(quotesSearchParam.filter as string)}
         setQuotesSearchParam={handleQuotesSearchParam}

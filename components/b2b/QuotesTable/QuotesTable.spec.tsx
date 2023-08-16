@@ -28,10 +28,6 @@ jest.mock('@mui/material', () => ({
   useMediaQuery: jest.fn(),
 }))
 
-afterEach(() => {
-  cleanup()
-})
-
 const setQuotesSearchParamMock = jest.fn()
 
 describe('[components] - QuotesTable', () => {
