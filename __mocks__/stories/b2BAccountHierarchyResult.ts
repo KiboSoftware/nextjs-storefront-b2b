@@ -74,7 +74,8 @@ export const b2BAccountHierarchyResult: B2BAccountHierarchyResult = {
         {
           emailAddress: 'sushant2006@gmail.com',
           userName: 'sushant2006@gmail.com',
-          firstName: 'Jadhav',
+          firstName: 'Sushant2',
+          lastName: '006',
           localeCode: 'en-IN',
           userId: 'd05881f3aa3e4fe8b16fd335fac1515d',
           ...userFlags,
@@ -94,9 +95,10 @@ export const b2BAccountHierarchyResult: B2BAccountHierarchyResult = {
     {
       users: [
         {
-          emailAddress: 'sushant2005@gmail.com',
-          userName: 'sushant2005@gmail.com',
-          firstName: 'Jadhav',
+          emailAddress: 'ayush.p@gmail.com',
+          userName: 'ayush.p@gmail.com',
+          firstName: 'Ayush',
+          lastName: 'Porwal',
           localeCode: 'en-IN',
           userId: 'acb5518aa25f469b945eff274561f2df',
           ...userFlags,
@@ -116,9 +118,10 @@ export const b2BAccountHierarchyResult: B2BAccountHierarchyResult = {
     {
       users: [
         {
-          emailAddress: 'sushant2007@gmail.com',
-          userName: 'sushant2007@gmail.com',
-          firstName: 'Jadhav',
+          emailAddress: 'saurabh.m@gmail.com',
+          userName: 'saurabh.m@gmail.com',
+          firstName: 'Saurabh',
+          lastName: 'Mishra',
           localeCode: 'en-IN',
           userId: 'accb4762028b4622af0d5ae99f29bc0c',
           ...userFlags,

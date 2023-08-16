@@ -14,6 +14,7 @@ export default {
     onQuotesClick: { action: 'onQuotesClick' },
     onAdd: { action: 'onAdd' },
     onEdit: { action: 'onEdit' },
+    onView: { action: 'onView' },
     onDelete: { action: 'onDelete' },
   },
   component: AccountHierarchyActions,
@@ -28,4 +29,5 @@ const Template: ComponentStory<typeof AccountHierarchyActions> = (args) => (
 export const Common = Template.bind({})
 Common.args = {
   role: B2BRoles.ADMIN,
+  mdScreen: true,
 }

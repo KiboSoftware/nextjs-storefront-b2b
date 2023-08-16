@@ -52,7 +52,7 @@ const ViewAccountDetails = (props: ViewAccountDetailsProps) => {
             {t('user-first-name')}
           </Typography>
           <Typography component="p" sx={{ marginTop: 1 }}>
-            2559
+            {b2BAccount?.users?.[0]?.firstName}
           </Typography>
         </Box>
         <Box sx={{ width: '50%' }}>
@@ -60,7 +60,7 @@ const ViewAccountDetails = (props: ViewAccountDetailsProps) => {
             {t('user-last-name')}
           </Typography>
           <Typography component="p" sx={{ marginTop: 1 }}>
-            2559
+            {b2BAccount?.users?.[0]?.lastName}
           </Typography>
         </Box>
       </Box>
@@ -68,7 +68,9 @@ const ViewAccountDetails = (props: ViewAccountDetailsProps) => {
       <Typography component="h2" sx={{ ...ViewAccountStyles.heading }}>
         {t('email')}
       </Typography>
-      <Typography component="p" sx={{ marginTop: 1 }}></Typography>
+      <Typography component="p" sx={{ marginTop: 1 }}>
+        {b2BAccount?.users?.[0]?.emailAddress}
+      </Typography>
     </Box>
   )
 }

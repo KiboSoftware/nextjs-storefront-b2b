@@ -1,12 +1,13 @@
 /**
  * @module useCreateCustomerB2bAccountMutation
  */
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { makeGraphQLClient } from '@/lib/gql/client'
 
 import { B2BAccount, MutationCreateCustomerB2bAccountArgs } from '@/lib/gql/types'
 import { createCustomerB2bAccountMutation } from '@/lib/gql/mutations'
+import { accountHierarchyKeys } from '@/lib/react-query/queryKeys'
 
 const client = makeGraphQLClient()
 
@@ -35,9 +36,11 @@ const createCustomerB2bAccount = async (
  */
 
 export const useCreateCustomerB2bAccountMutation = () => {
+  const queryClient = useQueryClient()
   return {
     createCustomerB2bAccount: useMutation({
       mutationFn: createCustomerB2bAccount,
+      onSuccess: () => queryClient.invalidateQueries(accountHierarchyKeys.accountHierarchy),
     }),
   }
 }

@@ -18,7 +18,7 @@ interface UpdateCustomerB2bAccountArgs {
 const updateCustomerB2bAccount = async ({
   accountId,
   b2BAccountInput,
-}: UpdateCustomerB2bAccountArgs) => {
+}: MutationUpdateCustomerB2bAccountArgs) => {
   const response = await client.request({
     document: updateCustomerB2bAccountMutation,
     variables: { accountId, b2BAccountInput },

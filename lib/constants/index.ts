@@ -165,9 +165,9 @@ export enum ProductAvailabilityStatus {
 }
 
 export const B2BRoles = {
-  ADMIN: 'administrators',
-  PURCHASER: 'purchaser',
-  NON_PURCHASER: 'non-purchasers',
+  ADMIN: 'Admin',
+  PURCHASER: 'Purchaser',
+  NON_PURCHASER: 'Nonpurchaser',
   BUYER: 'buyer',
 }
 
@@ -182,6 +182,7 @@ export const AllAccountActions = {
 
 export const AccountActions = {
   [B2BRoles.ADMIN]: [
+    AllAccountActions.VIEW_ACCOUNT,
     AllAccountActions.EDIT_ACCOUNT,
     AllAccountActions.ADD_ACCOUNT,
     AllAccountActions.VIEW_BUYER_ACCOUNT,

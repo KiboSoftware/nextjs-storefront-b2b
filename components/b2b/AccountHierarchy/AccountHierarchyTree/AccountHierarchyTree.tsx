@@ -17,26 +17,19 @@ import Nestable from 'react-nestable'
 
 import { AccountHierarchyStyles } from './AccountHierarchyTree.styles'
 import { AccountHierarchyTreeLabel } from '@/components/b2b'
-import { AddChildAccountProps } from '@/lib/types/AccountHierarchy'
+import { AddChildAccountProps, EditChildAccountProps, HierarchyNode } from '@/lib/types'
 
 import { B2BAccount } from '@/lib/gql/types'
 
-interface Hierarchy {
-  id: string | number
-  children: Hierarchy[]
-}
-
-interface TreeItemListProps {
+interface AccountHierarchyTreeProps {
+  role: string
   accounts: any[]
-  hierarchy: Hierarchy
-}
-
-interface AccountHierarchyTreeProps extends TreeItemListProps {
+  hierarchy: HierarchyNode[] | undefined
   handleViewAccount: (item: B2BAccount) => void
-  handleChildAccountFormSubmit: ({ isAddingAccountToChild, accounts }: AddChildAccountProps) => void
+  handleAddAccount: ({ isAddingAccountToChild, accounts }: AddChildAccountProps) => void
+  handleEditAccount: ({ accounts }: EditChildAccountProps) => void
   handleSwapAccount: (b2BAccount: B2BAccount) => void
   handleDeleteAccount: (b2BAccount: B2BAccount) => void
-  role: string
 }
 
 const CollapseStateIndicator = ({ isCollapsed }: { isCollapsed: boolean }) => {
@@ -53,35 +46,34 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
     hierarchy,
     role,
     handleViewAccount,
-    handleChildAccountFormSubmit,
+    handleAddAccount,
+    handleEditAccount,
     handleDeleteAccount,
     handleSwapAccount,
   } = props
 
   const theme = useTheme()
   const mdScreen = useMediaQuery(theme.breakpoints.up('md'))
-  const RoleContext = React.createContext(role)
 
   const { t } = useTranslation('common')
 
   const renderItem = (props: any) => {
     const { item, collapseIcon, handler } = props
 
-    const currentAccount = accounts?.find((account: any) => account.id === item.id)
+    const currentAccount = accounts?.find((account: B2BAccount) => account.id === item.id)
 
     const onViewAccountClick = () => {
       handleViewAccount(currentAccount)
     }
 
     const onAddAccountClick = () =>
-      handleChildAccountFormSubmit({
+      handleAddAccount({
         isAddingAccountToChild: true,
         accounts: [currentAccount],
       })
 
     const onEditAccountClick = () =>
-      handleChildAccountFormSubmit({
-        isAddingAccountToChild: false,
+      handleEditAccount({
         accounts,
         accountToEdit: currentAccount,
       })
@@ -118,7 +110,7 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
   const refNestable = React.useRef<Nestable | null>(null)
 
   return (
-    <RoleContext.Provider value={role}>
+    <>
       <Box sx={{ ...AccountHierarchyStyles.expandCollapseButtonBox }} gap={1}>
         <Button
           sx={{ ...AccountHierarchyStyles.expandCollapseButtonStyle }}
@@ -133,13 +125,13 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
           {t('collapse-all')}
         </Button>
       </Box>
-      <Box sx={{ backgroundColor: '#F7F7F7', padding: '15px' }}>
+      <Box sx={{ backgroundColor: theme.palette.grey[100], padding: '15px' }}>
         <Typography fontWeight="bold">{t('org-name')}</Typography>
       </Box>
 
       <Nestable
         ref={(el) => (refNestable.current = el)}
-        items={[hierarchy]}
+        items={hierarchy as HierarchyNode[]}
         renderItem={renderItem}
         renderCollapseIcon={({ isCollapsed }) => (
           <CollapseStateIndicator isCollapsed={isCollapsed} />
@@ -151,6 +143,6 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
           </Box>
         }
       />
-    </RoleContext.Provider>
+    </>
   )
 }

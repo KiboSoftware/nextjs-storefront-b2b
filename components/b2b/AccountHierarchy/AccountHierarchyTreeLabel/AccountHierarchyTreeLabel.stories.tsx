@@ -21,20 +21,20 @@ const Template: ComponentStory<typeof AccountHierarchyTreeLabel> = (args) => (
 export const Admin = Template.bind({})
 Admin.args = {
   label: mockUser.companyOrOrganization as string,
-  // icons?: any
   role: B2BRoles.ADMIN,
+  mdScreen: true,
 }
 
 export const Purchaser = Template.bind({})
 Purchaser.args = {
   label: mockUser.companyOrOrganization as string,
-  // icons?: any
   role: B2BRoles.PURCHASER,
+  mdScreen: true,
 }
 
 export const NonPurchaser = Template.bind({})
 NonPurchaser.args = {
   label: mockUser.companyOrOrganization as string,
-  // icons?: any
   role: B2BRoles.NON_PURCHASER,
+  mdScreen: true,
 }

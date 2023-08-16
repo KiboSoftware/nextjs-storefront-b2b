@@ -15,6 +15,7 @@
     "build-storybook": "build-storybook -s ./public",
     "validate-types": "tsc --noEmit --declaration",
     "test": "jest",
+    "test:single": "jest components/dialogs/b2b/AccountHierarchyEditFormDialog/AccountHierarchyEditFormDialog.spec.tsx",
     "test-report-coverage": "jest --silent --coverage --testResultsProcessor=jest-sonar-reporter",
     "test-watch": "jest --watch",
     "prettier:format": "prettier --write .",

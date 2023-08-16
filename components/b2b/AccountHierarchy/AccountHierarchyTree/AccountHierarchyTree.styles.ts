@@ -11,5 +11,10 @@ export const AccountHierarchyStyles = {
     color: theme.palette.grey[900],
     textDecoration: 'underline',
     fontSize: '1rem',
+    '&:hover': {
+      color: theme.palette.grey[900],
+      textDecoration: 'underline',
+      backgroundColor: 'transparent',
+    },
   },
 }
