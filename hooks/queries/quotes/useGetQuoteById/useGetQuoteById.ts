@@ -23,7 +23,7 @@ export interface UseGetQuoteByIdResponse {
   isSuccess: boolean
 }
 
-const getQuoteById = async (quoteId: string, draft: boolean) => {
+const getQuoteById = async (quoteId: string, draft: boolean): Promise<Quote> => {
   const client = makeGraphQLClient()
 
   const response = await client.request({
@@ -52,11 +52,7 @@ export const useGetQuoteByID = ({
 }: UseGetQuoteById): UseGetQuoteByIdResponse => {
   const id = quoteId
 
-  const {
-    data = [],
-    isLoading,
-    isSuccess,
-  } = useQuery({
+  const { data, isLoading, isSuccess } = useQuery({
     queryKey: quoteKeys.detail(id),
     queryFn: () => getQuoteById(quoteId, draft),
     initialData: initialQuote,

@@ -8,6 +8,8 @@ import { createQuoteMutation } from '@/lib/gql/mutations'
 import { buildCreateQuoteParams } from '@/lib/helpers'
 import { quoteKeys } from '@/lib/react-query/queryKeys'
 
+import { Quote } from '@/lib/gql/types'
+
 /**
  * @hidden
  */
@@ -17,7 +19,7 @@ interface CreateQuoteProps {
   tenantId: number
   customerAccountId: number
 }
-const createQuote = async (props: CreateQuoteProps) => {
+const createQuote = async (props: CreateQuoteProps): Promise<Quote> => {
   const client = makeGraphQLClient()
   const { siteId, tenantId, customerAccountId } = props
 

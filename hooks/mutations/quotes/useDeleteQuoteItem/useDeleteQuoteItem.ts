@@ -13,7 +13,7 @@ interface DeleteQuoteItemParams {
   updateMode?: string
 }
 
-const deleteQuoteItem = async (params: DeleteQuoteItemParams) => {
+const deleteQuoteItem = async (params: DeleteQuoteItemParams): Promise<boolean> => {
   const client = makeGraphQLClient()
   const { quoteItemId, quoteId, updateMode } = params
   const variables = {

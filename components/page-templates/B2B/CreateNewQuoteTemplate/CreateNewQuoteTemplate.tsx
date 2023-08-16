@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import ArrowBackIos from '@mui/icons-material/ArrowBackIos'
 import { LoadingButton } from '@mui/lab'
@@ -31,28 +31,30 @@ export interface CreateNewQuoteTemplateProps {
 const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
   const { quote, onAccountTitleClick } = props
   const { t } = useTranslation('common')
+  const updateMode = 'ApplyToDraft'
   const mdScreen = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'))
   const { user } = useAuthContext()
+
+  const accountName = user?.companyOrOrganization
+  const { number, quoteId, status, createdDate, expirationDate } =
+    quoteGetters.getQuoteDetails(quote)
+  const quoteItems = quote?.items as CrOrderItem[]
+  // console.log('quote items', quoteItems)
 
   const { data } = useGetB2BUserQueries({
     accountId: user?.id as number,
     filter: `userId eq ${quote?.userId}`,
   })
-  const quoteNumber = quoteGetters.getNumber(quote)
-  const quoteStatus = quoteGetters.getStatus(quote)
-  const createDate = quoteGetters.getQuoteCreateDate(quote)
-  const expirationDate = quoteGetters.getQuoteExpirationData(quote) ?? '-'
-  const accountName = user?.companyOrOrganization
-  const createdBy = (data?.items?.[0]?.firstName + ' ' + data?.items?.[0]?.lastName) as string
-  const quoteItems = quote?.items as CrOrderItem[]
-  const quoteId = quoteGetters.getQuoteId(quote)
+  const createdBy =
+    data?.items?.[0]?.firstName || data?.items?.[0]?.lastName
+      ? data?.items?.[0]?.firstName + ' ' + data?.items?.[0]?.lastName
+      : '-'
 
   const locationCodes = orderGetters.getFulfillmentLocationCodes(quoteItems as any)
   const { data: locations } = useGetStoreLocations({ filter: locationCodes })
   const fulfillmentLocations = locations && Object.keys(locations).length ? locations : []
 
   const { deleteQuoteItem } = useDeleteQuoteItem()
-  const updateMode = 'ApplyToDraft'
 
   const { data: purchaseLocation } = useGetPurchaseLocation()
   const { openProductQuickViewModal, handleAddToQuote } = useProductCardActions()
@@ -140,7 +142,13 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
             </Stack>
           ) : null}
         </Grid>
-        <Grid item xs={12} md={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Grid
+          item
+          xs={12}
+          md={12}
+          style={{ paddingTop: !mdScreen ? '0px' : '24px' }}
+          sx={{ display: 'flex', justifyContent: 'space-between' }}
+        >
           <Typography variant="h2" mb={2}>
             {t('quote-details')}
           </Typography>
@@ -148,7 +156,7 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
             {t('print-quote')}
           </LoadingButton>
         </Grid>
-        <Grid item xs={12} md={5}>
+        <Grid item xs={12} md={5} style={{ paddingTop: !mdScreen ? '1rem' : '24px' }}>
           <KiboTextBox
             label={t('quote-name')}
             value=""
@@ -158,19 +166,25 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
             required
           />
         </Grid>
-        <Grid item xs={12} md={8} sx={{ display: { md: 'flex', xs: 'block' } }}>
+        <Grid
+          item
+          xs={12}
+          md={8}
+          sx={{ display: { md: 'flex', xs: 'block' } }}
+          style={{ paddingTop: !mdScreen ? '0px' : '24px' }}
+        >
           <Grid container rowSpacing={1} columnSpacing={{ md: 1 }}>
             <Grid item xs={6} md={2}>
               <InputLabel shrink={true} sx={{ position: 'relative' }}>
                 {t('quote-number')}
               </InputLabel>
-              <Typography>{quoteNumber}</Typography>
+              <Typography>{number}</Typography>
             </Grid>
             <Grid item xs={6} md={2}>
               <InputLabel shrink={true} sx={{ position: 'relative' }}>
                 {t('status')}
               </InputLabel>
-              <Typography>{quoteStatus}</Typography>
+              <Typography>{status}</Typography>
             </Grid>
             <Grid item xs={6} md={2}>
               <InputLabel shrink={true} sx={{ position: 'relative' }}>
@@ -188,7 +202,7 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
               <InputLabel shrink={true} sx={{ position: 'relative' }}>
                 {t('date-created')}
               </InputLabel>
-              <Typography>{createDate}</Typography>
+              <Typography>{createdDate}</Typography>
             </Grid>
             <Grid item xs={6} md={2}>
               <InputLabel shrink={true} sx={{ position: 'relative' }}>
@@ -208,7 +222,7 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
           <Stack gap={3}>
             {mdScreen ? (
               <B2BProductDetailsTable
-                items={quoteItems as CrOrderItem[]}
+                items={quoteItems}
                 fulfillmentLocations={fulfillmentLocations}
                 purchaseLocation={purchaseLocation}
                 onFulfillmentOptionChange={onFulfillmentOptionChange}
@@ -220,7 +234,7 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
               <Stack spacing={2}>
                 {quoteItems && quoteItems?.length > 0 ? (
                   <CartItemList
-                    cartItems={quoteItems as CrOrderItem[]}
+                    cartItems={quoteItems}
                     fulfillmentLocations={fulfillmentLocations as Location[]}
                     purchaseLocation={purchaseLocation}
                     onCartItemDelete={handleDeleteItem}

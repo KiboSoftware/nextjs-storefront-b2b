@@ -1,6 +1,4 @@
-import getConfig from 'next/config'
 import Head from 'next/head'
-import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 import { CreateNewQuoteTemplate } from '@/components/page-templates'
@@ -18,7 +16,6 @@ interface QuotePageProps {
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { locale, params, req, res } = context
   const { quoteId } = params as any
-  const { publicRuntimeConfig } = getConfig()
   const draft = true
   const quote = await getQuote(quoteId, draft, req as NextApiRequest, res as NextApiResponse)
 
@@ -36,7 +33,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 
 const QuotePage: NextPage<QuotePageProps> = (props) => {
-  const { t } = useTranslation('common')
   const { quoteId, quote: initialQuote } = props
   const draft = true
   const { data: quoteResult } = useGetQuoteByID({ quoteId, draft, initialQuote })

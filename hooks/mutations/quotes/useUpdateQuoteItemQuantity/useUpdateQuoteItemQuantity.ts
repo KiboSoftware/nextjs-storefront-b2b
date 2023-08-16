@@ -7,6 +7,8 @@ import { makeGraphQLClient } from '@/lib/gql/client'
 import { updateQuoteItemQuantityMutation } from '@/lib/gql/mutations'
 import { quoteKeys } from '@/lib/react-query/queryKeys'
 
+import { Quote } from '@/lib/gql/types'
+
 /**
  * @hidden
  */
@@ -18,7 +20,7 @@ interface UpdateQuoteItemQuantityProps {
   quantity: number
 }
 
-const updateQuoteItemQuantity = async (props: UpdateQuoteItemQuantityProps) => {
+const updateQuoteItemQuantity = async (props: UpdateQuoteItemQuantityProps): Promise<Quote> => {
   const client = makeGraphQLClient()
   const { quoteId, updateMode, quoteItemId, quantity } = props
 

@@ -8,6 +8,8 @@ import createQuoteItemMutation from '@/lib/gql/mutations/quotes/createQuoteItemM
 import { buildCreateQuoteItemParams } from '@/lib/helpers'
 import { quoteKeys } from '@/lib/react-query/queryKeys'
 
+import { Quote } from '@/lib/gql/types'
+
 /**
  * @hidden
  */
@@ -19,7 +21,7 @@ interface CreateQuoteItemProps {
   quantity: number
 }
 
-const createQuoteItem = async (props: CreateQuoteItemProps) => {
+const createQuoteItem = async (props: CreateQuoteItemProps): Promise<Quote> => {
   const client = makeGraphQLClient()
   const { quoteId, updateMode, product, quantity } = props
 

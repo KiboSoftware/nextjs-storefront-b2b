@@ -348,6 +348,85 @@ export const quoteMock = {
   ],
 }
 
-export const singleQuoteItemMock = {
+export const singleQuoteMock = {
   quote: quoteMock?.items?.[0],
+}
+
+export const singleQuoteItemMock = {
+  id: '49a11cf0a42f459ba90fb060009595b8',
+  quantity: 1,
+  fulfillmentMethod: 'Ship',
+  fulfillmentLocationCode: 'aus',
+  unitPrice: {
+    listAmount: 275,
+    saleAmount: null,
+  },
+  discountTotal: 0,
+  discountedTotal: 275,
+  total: 275,
+  shippingTotal: 0,
+  dutyAmount: null,
+  product: {
+    productCode: 'MS-CAM-003',
+    name: 'JVC ADIXXION Cam 2 Action Camera',
+    description:
+      '<font size="4"><span style="font-family: arial, sans-sarif; line-height: 18px; text-align: left; ">The </span><b style="border: 0px; vertical-align: baseline; margin: 0px; padding: 0px; font: inherit; font-family: arial, sans-sarif; line-height: 18px; text-align: left; ">JVC GC-XA2 ADIXXION Action Camera</b><span style="font-family: arial, sans-sarif; line-height: 18px; text-align: left; "> is a lightweight and rugged action camera that is compatible with a variety of optional mounts for use in a variety of conditions, environments, and activities.</span></font>',
+    imageUrl:
+      '//d1slj7rdbjyb5l.cloudfront.net/17194-21127/cms/21127/files/dc5eccf9-a439-4ba9-aa5e-71d24dc876bb',
+    options: [],
+    properties: [
+      {
+        attributeFQN: 'tenant~availability',
+        name: 'Availability',
+        values: [
+          {
+            value: '24-48hrs',
+          },
+        ],
+      },
+      {
+        attributeFQN: 'tenant~rating',
+        name: 'Rating',
+        values: [
+          {
+            value: 2,
+          },
+        ],
+      },
+      {
+        attributeFQN: 'tenant~popularity',
+        name: 'Popularity',
+        values: [
+          {
+            value: 2,
+          },
+        ],
+      },
+      {
+        attributeFQN: 'Tenant~brand',
+        name: 'Brand',
+        values: [
+          {
+            value: 'JVC',
+          },
+        ],
+      },
+    ],
+    sku: null,
+    price: {
+      price: 275,
+      salePrice: null,
+    },
+    categories: [
+      {
+        id: 2,
+      },
+      {
+        id: 4,
+      },
+      {
+        id: 19,
+      },
+    ],
+  },
 }

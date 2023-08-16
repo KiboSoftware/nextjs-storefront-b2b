@@ -5,15 +5,14 @@ import { composeStories } from '@storybook/testing-react'
 import { screen, waitFor, cleanup } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { graphql } from 'msw'
-import mockRouter from 'next-router-mock'
 
 import * as stories from './CreateNewQuoteTemplate.stories'
 import { server } from '@/__mocks__/msw/server'
-import { cartMock, newCartItem, quoteMock, singleQuoteItemMock } from '@/__mocks__/stories'
+import { quoteMock, singleQuoteItemMock, singleQuoteMock } from '@/__mocks__/stories'
 import { renderWithQueryClient } from '@/__test__/utils'
 import { DialogRoot, ModalContextProvider } from '@/context'
 
-import { CrCartItem, CrOrderItem } from '@/lib/gql/types'
+import { CrOrderItem } from '@/lib/gql/types'
 const { Common, CreateNewQuoteTemplateMobile } = composeStories(stories)
 
 const user = userEvent.setup()
@@ -39,12 +38,6 @@ jest.mock('@mui/material', () => ({
   useMediaQuery: jest.fn(),
 }))
 
-const KeyValueDisplayMock = () => <div data-testid="key-value-display-component" />
-// const PromoCodeBadgeMock = () => <div data-testid="promo-code-badge-component" />
-
-jest.mock('@/components/common/KeyValueDisplay/KeyValueDisplay', () => () => KeyValueDisplayMock())
-// jest.mock('@/components/common/PromoCodeBadge/PromoCodeBadge', () => () => PromoCodeBadgeMock())
-
 jest.mock('@/components/common/PromoCodeBadge/PromoCodeBadge', () => ({
   __esModule: true,
   default: ({ promoList, onApplyCouponCode, onRemoveCouponCode }: any) => (
@@ -68,18 +61,18 @@ jest.mock('@/components/common/PromoCodeBadge/PromoCodeBadge', () => ({
 
 jest.mock('@/components/b2b/B2BProductDetailsTable/B2BProductDetailsTable', () => ({
   __esModule: true,
-  default: ({ quoteItems }: any) => (
+  default: ({ items }: any) => (
     <div data-testid="b2b-product-details-table-component">
-      <div data-testid="quoteItems-length">{quoteItems?.length}</div>
+      <div data-testid="quoteItems-length">{items?.length}</div>
     </div>
   ),
 }))
 
 jest.mock('@/components/cart/CartItemList/CartItemList', () => ({
   __esModule: true,
-  default: ({ quoteItems }: any) => (
+  default: ({ cartItems }: any) => (
     <div data-testid="cart-item-list-component">
-      <div data-testid="quoteItems-length">{quoteItems?.length}</div>
+      <div data-testid="quoteItems-length">{cartItems?.length}</div>
     </div>
   ),
 }))
@@ -115,12 +108,9 @@ const addToQuoteTest = async () => {
     graphql.query('getQuoteByID', (_req, res, ctx) => {
       return res(
         ctx.data({
-          ...singleQuoteItemMock,
+          ...singleQuoteMock,
           quote: {
-            items: [
-              ...(singleQuoteItemMock.quote?.items as CrOrderItem[]),
-              ...quoteMock?.items?.[1]?.items,
-            ],
+            items: [...(singleQuoteMock.quote?.items as CrOrderItem[]), singleQuoteItemMock],
           },
         })
       )
@@ -159,8 +149,6 @@ describe('[components] CreateNewQuoteTemplate', () => {
       const submitForApprovalButton = screen.getByRole('button', { name: 'submit-for-approval' })
       const printQuoteButton = screen.getByRole('button', { name: 'print-quote' })
       const b2bProductComponent = screen.getByTestId('b2b-product-search-component')
-      //   const promoCodeComponent = screen.getByTestId('promo-code-badge-component')
-      //   const orderTotalComponent = screen.getByTestId('key-value-display-component')
 
       expect(quotesText).toBeVisible()
       expect(createQuote).toBeVisible()
@@ -176,9 +164,6 @@ describe('[components] CreateNewQuoteTemplate', () => {
         const quickOrderTableComponent = screen.queryByTestId('b2b-product-details-table-component')
         expect(quickOrderTableComponent).toBeVisible()
       })
-
-      //   expect(promoCodeComponent).toBeVisible()
-      //   expect(orderTotalComponent).toBeVisible()
     })
 
     xit('should add product in list when user clicks on non configurable product', async () => {

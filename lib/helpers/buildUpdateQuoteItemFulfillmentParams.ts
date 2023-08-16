@@ -1,6 +1,6 @@
 import { MutationUpdateQuoteItemFulfillmentArgs } from '../gql/types'
 
-export const buildUpdateQuoteItemFulfillmetParams = (
+export const buildUpdateQuoteItemFulfillmentParams = (
   quoteId: string,
   quoteItemId: string,
   updateMode: string,

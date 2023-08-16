@@ -5,8 +5,10 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { makeGraphQLClient } from '@/lib/gql/client'
 import { updateQuoteItemFulfillmentMutation } from '@/lib/gql/mutations'
-import { buildUpdateQuoteItemFulfillmetParams } from '@/lib/helpers'
+import { buildUpdateQuoteItemFulfillmentParams } from '@/lib/helpers'
 import { quoteKeys } from '@/lib/react-query/queryKeys'
+
+import { Quote } from '@/lib/gql/types'
 
 /**
  * @hidden
@@ -22,12 +24,14 @@ interface UpdateQuoteItemFulfillmentProps {
   locationCode: string
 }
 
-const updateQuoteItemFulfillment = async (props: UpdateQuoteItemFulfillmentProps) => {
+const updateQuoteItemFulfillment = async (
+  props: UpdateQuoteItemFulfillmentProps
+): Promise<Quote> => {
   const client = makeGraphQLClient()
   const { quoteId, quoteItemId, quantity, updateMode, product, fulfillmentMethod, locationCode } =
     props
 
-  const variables = buildUpdateQuoteItemFulfillmetParams(
+  const variables = buildUpdateQuoteItemFulfillmentParams(
     quoteId,
     quoteItemId,
     updateMode,
