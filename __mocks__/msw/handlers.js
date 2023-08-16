@@ -14,6 +14,7 @@ import {
   customerPurchaseOrderAccountMock,
   b2BAccountHierarchyResult,
 } from '../stories'
+import { b2BAccountResponseMock } from '../stories/b2BAccountResponseMock'
 import { cartItemMock } from '../stories/cartItemMock'
 import { cartCouponMock, cartMock } from '../stories/cartMock'
 import { categoryTreeDataMock } from '../stories/categoryTreeDataMock'
@@ -27,6 +28,8 @@ import { orderCollection } from '../stories/orderCollection'
 import { orderCouponMock } from '../stories/orderMock'
 import { productPriceMock } from '../stories/productPriceMock'
 import { productSearchResultMock } from '../stories/productSearchResultMock'
+import { quoteMock } from '../stories/quoteMock'
+import { quotesMock } from '../stories/quotesMock'
 import { searchSuggestionMock } from '../stories/searchSuggestionResultMock'
 import { subscriptionCollectionMock } from '../stories/subscriptionCollectionMock'
 // import { updateCustomerAccountCardMock } from '../stories/updateCustomerAccountCardMock'
@@ -37,7 +40,6 @@ import { userMock, loginUserMock, registerUserMock } from '../stories/userMock'
 import { wishlistMock } from '../stories/wishlistMock'
 import { subscriptionMock } from '@/__mocks__/stories/subscriptionMock'
 import { LOGOUT_ENDPOINT } from '@/lib/gql/client'
-import { b2BAccountResponseMock } from '../stories/b2BAccountResponseMock'
 
 const baseUrl = 'http://localhost:3000'
 const mockCreateCustomerAccount = {
@@ -460,11 +462,13 @@ export const subscriptionHandlers = [
   }),
 ]
 
-export const b2bAccountUsersHandlers = [
+export const b2bHandlers = [
+  // useGetB2BUserQuery
   graphql.query('b2bAccountUsers', (_req, res, ctx) => {
     return res(ctx.data({ b2bAccountUsers: customerB2BUserForPage0Mock }))
   }),
 
+  // useCreateCustomerB2bUser
   graphql.mutation('createCustomerB2bAccountUser', (_req, res, ctx) => {
     return res(
       ctx.data({
@@ -473,6 +477,7 @@ export const b2bAccountUsersHandlers = [
     )
   }),
 
+  // useUpdateCustomerB2bUser
   graphql.mutation('updateCustomerB2bAccountUser', (_req, res, ctx) => {
     return res(
       ctx.data({
@@ -481,28 +486,67 @@ export const b2bAccountUsersHandlers = [
     )
   }),
 
+  // useDeleteB2bAccountRole
   graphql.mutation('deleteB2bAccountRole', (_req, res, ctx) => {
     return res(ctx.data({ deleteB2bAccountRole: true }))
   }),
 
+  // useAddRoleToCustomerB2bAccount
   graphql.mutation('addRoleToCustomerB2bAccount', (_req, res, ctx) => {
     return res(ctx.data({ addRoleToCustomerB2bAccount: true }))
   }),
 
+  // useRemoveCustomerB2bUser
   graphql.mutation('removeCustomerB2bAccountUser', (_req, res, ctx) => {
     return res(ctx.data({ removeCustomerB2bAccountUser: true }))
   }),
 
+  // useGetB2BAccountHierarchy
   graphql.query('getB2BAccountHierarchy', (_req, res, ctx) => {
     return res(ctx.data({ getB2BAccountHierarchy: b2BAccountHierarchyResult }))
   }),
 
+  // useCreateCustomerB2bAccount
   graphql.mutation('createCustomerB2bAccount', (_req, res, ctx) => {
     return res(ctx.data({ createCustomerB2bAccount: b2BAccountResponseMock }))
   }),
 
+  // useUpdateCustomerB2bAccount
   graphql.mutation('updateCustomerB2bAccount', (_req, res, ctx) => {
     return res(ctx.data({ updateCustomerB2bAccount: b2BAccountResponseMock }))
+  }),
+
+  // useGetQuoteById
+  graphql.query('getQuoteByID', (_req, res, ctx) => {
+    return res(ctx.data({ quote: quoteMock?.items?.[0] }))
+  }),
+
+  //useCreateQuote
+  graphql.mutation('createQuote', (_req, res, ctx) => {
+    return res(ctx.data({ createQuote: quoteMock?.items?.[0] }))
+  }),
+
+  // useCreateQuoteItem
+  graphql.mutation('createQuoteItem', (_req, res, ctx) => {
+    return res(ctx.data({ createQuoteItem: quoteMock?.items?.[0] }))
+  }),
+
+  // useDeleteQuoteItem
+  graphql.mutation('deleteQuoteItem', (_req, res, ctx) => {
+    return res(ctx.data({ deleteQuoteItem: true }))
+  }),
+
+  graphql.query('quotes', (_req, res, ctx) => {
+    return res(ctx.data({ quotes: quotesMock }))
+  }),
+  //useUpdateQuoteItemQuantity
+  graphql.mutation('updateQuoteItemQuantity', (_req, res, ctx) => {
+    return res(ctx.data({ updateQuoteItemQuantity: quoteMock?.items?.[0] }))
+  }),
+
+  //useUpdateQuoteItemFulfillment
+  graphql.mutation('updateQuoteItemFulfillment', (_req, res, ctx) => {
+    return res(ctx.data({ updateQuoteItemFulfillment: quoteMock?.items?.[0] }))
   }),
 ]
 
@@ -520,5 +564,5 @@ export const handlers = [
   ...orderHandlers,
   ...inventoryHandlers,
   ...subscriptionHandlers,
-  ...b2bAccountUsersHandlers,
+  ...b2bHandlers,
 ]
