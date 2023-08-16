@@ -7,16 +7,15 @@ import { useTranslation } from 'next-i18next'
 import { useForm, Controller } from 'react-hook-form'
 import * as yup from 'yup'
 
-import { AccountHierarchyFormStyles } from './AccountHierarchyForm.styles'
+import { AccountHierarchyFormStyles } from './AccountHierarchyAddForm.styles'
 import { KiboSelect, KiboTextBox } from '@/components/common'
 import { CreateCustomerB2bAccountParams } from '@/lib/types'
 
-import { B2BAccount, CustomerAccount } from '@/lib/gql/types'
+import { B2BAccount } from '@/lib/gql/types'
 
-interface AccountHierarchyFormProps {
+interface AccountHierarchyAddFormProps {
   accounts?: B2BAccount[]
   isAddingAccountToChild: boolean
-  accountToEdit?: B2BAccount
   onSave: (data: CreateCustomerB2bAccountParams) => void
   onClose: () => void
 }
@@ -32,8 +31,8 @@ const useAccountHierarchySchema = () => {
   })
 }
 
-const AccountHierarchyForm = (props: AccountHierarchyFormProps) => {
-  const { accounts, isAddingAccountToChild, accountToEdit, onSave, onClose } = props
+const AccountHierarchyAddForm = (props: AccountHierarchyAddFormProps) => {
+  const { accounts, isAddingAccountToChild, onSave, onClose } = props
   console.log('accounts', accounts)
   const [isLoading, setLoading] = useState<boolean>(false)
   const [selectedParentAccount, setSelectedParentAccount] = useState<B2BAccount>()
@@ -65,20 +64,11 @@ const AccountHierarchyForm = (props: AccountHierarchyFormProps) => {
 
   useEffect(() => {
     const hasMultipleAccounts = accounts?.length && accounts.length > 1
-    if (!hasMultipleAccounts && !accountToEdit) {
+    if (!hasMultipleAccounts) {
       setValue('parentAccount', accounts?.[0]?.companyOrOrganization as string)
       setSelectedParentAccount(accounts?.[0])
     }
-
-    if (accountToEdit) {
-      const { parentAccountId, companyOrOrganization, taxId } = accountToEdit
-      const parentAccount = accounts?.find((account) => account.id === parentAccountId)
-      setValue('parentAccount', parentAccount?.companyOrOrganization as string)
-      setValue('companyOrOrganization', companyOrOrganization as string)
-      setValue('taxId', taxId as string)
-      setSelectedParentAccount(parentAccount)
-    }
-  }, [accounts, accountToEdit])
+  }, [accounts])
 
   const onSubmit = () => {
     if (isLoading || !isValid) return
@@ -245,4 +235,4 @@ const AccountHierarchyForm = (props: AccountHierarchyFormProps) => {
   )
 }
 
-export default AccountHierarchyForm
+export default AccountHierarchyAddForm

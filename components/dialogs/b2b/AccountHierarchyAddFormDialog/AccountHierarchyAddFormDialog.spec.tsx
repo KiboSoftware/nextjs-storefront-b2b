@@ -1,7 +1,7 @@
 import { composeStories } from '@storybook/testing-react'
 import { render, screen } from '@testing-library/react'
 
-import * as stories from './AccountHierarchyFormDialog.stories'
+import * as stories from './AccountHierarchyAddFormDialog.stories'
 import { b2BAccountHierarchyResult } from '@/__mocks__/stories'
 import { ModalContextProvider } from '@/context'
 

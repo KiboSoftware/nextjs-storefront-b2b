@@ -12,7 +12,7 @@ const hierarchy = b2BAccountHierarchyResult.hierarchy
 
 describe('AccountHierarchyTree', () => {
   it('should render the tree label with icons and account actions for the admin role', async () => {
-    render(<Admin accounts={accounts} hierarchy={hierarchy} role={B2BRoles.ADMIN} />)
+    render(<Admin accounts={accounts} hierarchy={[hierarchy]} role={B2BRoles.ADMIN} />)
     // Find the tree labels with icons
     const treeLabels = screen.getAllByTestId('tree-label')
     expect(treeLabels).toHaveLength(4)
@@ -32,7 +32,7 @@ describe('AccountHierarchyTree', () => {
   })
 
   it('should not render account actions buttons for non-admin roles', () => {
-    render(<Admin accounts={accounts} hierarchy={hierarchy} role={B2BRoles.PURCHASER} />)
+    render(<Admin accounts={accounts} hierarchy={[hierarchy]} role={B2BRoles.PURCHASER} />)
 
     // Find the account actions buttons (should not be rendered)
     const accountActionButtons = screen.queryAllByRole('button', { name: 'item-add' })
@@ -43,7 +43,7 @@ describe('AccountHierarchyTree', () => {
   })
 
   it('should collapse and expand all items when clicking the Collapse All and Expand All buttons', () => {
-    render(<Admin accounts={accounts} hierarchy={hierarchy} role={B2BRoles.ADMIN} />)
+    render(<Admin accounts={accounts} hierarchy={[hierarchy]} role={B2BRoles.ADMIN} />)
 
     // Find the Collapse All and Expand All buttons
     const collapseAllButton = screen.getByText('collapse-all')

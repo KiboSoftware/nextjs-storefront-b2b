@@ -1,26 +1,24 @@
 import { useTranslation } from 'next-i18next'
 
-import { AccountHierarchyForm } from '@/components/b2b'
+import { AccountHierarchyAddForm } from '@/components/b2b'
 import { KiboDialog } from '@/components/common'
 import { CreateCustomerB2bAccountParams } from '@/lib/types'
 
 import { B2BAccount } from '@/lib/gql/types'
 
-interface AccountHierarchyFormDialogProps {
+interface AccountHierarchyAddFormDialogProps {
   accounts?: B2BAccount[]
   isAddingAccountToChild: boolean
-  accountToEdit?: B2BAccount
   formTitle?: string
   onSave: (data: CreateCustomerB2bAccountParams) => void
   onClose: () => void
 }
 
-const AccountHierarchyFormDialog = (props: AccountHierarchyFormDialogProps) => {
+const AccountHierarchyAddFormDialog = (props: AccountHierarchyAddFormDialogProps) => {
   const { t } = useTranslation('common')
   const {
     accounts,
     isAddingAccountToChild,
-    accountToEdit,
     formTitle = t('add-child-account'),
     onSave,
     onClose,
@@ -34,10 +32,9 @@ const AccountHierarchyFormDialog = (props: AccountHierarchyFormDialogProps) => {
       showContentBottomDivider={false}
       Actions={''}
       Content={
-        <AccountHierarchyForm
+        <AccountHierarchyAddForm
           accounts={accounts}
           isAddingAccountToChild={isAddingAccountToChild}
-          accountToEdit={accountToEdit}
           onSave={onSave}
           onClose={onClose}
         />
@@ -48,4 +45,4 @@ const AccountHierarchyFormDialog = (props: AccountHierarchyFormDialogProps) => {
   )
 }
 
-export default AccountHierarchyFormDialog
+export default AccountHierarchyAddFormDialog

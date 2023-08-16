@@ -17,23 +17,19 @@ import Nestable from 'react-nestable'
 
 import { AccountHierarchyStyles } from './AccountHierarchyTree.styles'
 import { AccountHierarchyTreeLabel } from '@/components/b2b'
-import { AddChildAccountProps } from '@/lib/types/AccountHierarchy'
+import { AddChildAccountProps, EditChildAccountProps, HierarchyNode } from '@/lib/types'
 
 import { B2BAccount } from '@/lib/gql/types'
 
-interface Hierarchy {
-  id: string | number
-  children: Hierarchy[]
-}
-
 interface TreeItemListProps {
   accounts: any[]
-  hierarchy: Hierarchy
+  hierarchy: HierarchyNode[] | undefined
 }
 
 interface AccountHierarchyTreeProps extends TreeItemListProps {
   handleViewAccount: (item: B2BAccount) => void
-  handleChildAccountFormSubmit: ({ isAddingAccountToChild, accounts }: AddChildAccountProps) => void
+  handleAddAccount: ({ isAddingAccountToChild, accounts }: AddChildAccountProps) => void
+  handleEditAccount: ({ accounts }: EditChildAccountProps) => void
   handleSwapAccount: (b2BAccount: B2BAccount) => void
   handleDeleteAccount: (b2BAccount: B2BAccount) => void
   role: string
@@ -53,7 +49,8 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
     hierarchy,
     role,
     handleViewAccount,
-    handleChildAccountFormSubmit,
+    handleAddAccount,
+    handleEditAccount,
     handleDeleteAccount,
     handleSwapAccount,
   } = props
@@ -74,14 +71,13 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
     }
 
     const onAddAccountClick = () =>
-      handleChildAccountFormSubmit({
+      handleAddAccount({
         isAddingAccountToChild: true,
         accounts: [currentAccount],
       })
 
     const onEditAccountClick = () =>
-      handleChildAccountFormSubmit({
-        isAddingAccountToChild: false,
+      handleEditAccount({
         accounts,
         accountToEdit: currentAccount,
       })
@@ -139,7 +135,7 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
 
       <Nestable
         ref={(el) => (refNestable.current = el)}
-        items={[hierarchy]}
+        items={hierarchy as HierarchyNode[]}
         renderItem={renderItem}
         renderCollapseIcon={({ isCollapsed }) => (
           <CollapseStateIndicator isCollapsed={isCollapsed} />

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
-import AccountHierarchyFormDialog from './AccountHierarchyFormDialog'
+import AccountHierarchyFormDialog from './AccountHierarchyEditFormDialog'
 import { userResponseMock } from '@/__mocks__/stories'
 
 import { B2BAccount } from '@/lib/gql/types'
@@ -25,5 +25,4 @@ const Template: ComponentStory<typeof AccountHierarchyFormDialog> = ({ ...args }
 export const Common = Template.bind({})
 Common.args = {
   accounts: [mockUser],
-  isAddingAccountToChild: false,
 }

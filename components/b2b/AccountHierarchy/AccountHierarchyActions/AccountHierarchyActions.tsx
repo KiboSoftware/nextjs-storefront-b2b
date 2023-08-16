@@ -58,10 +58,10 @@ const AccountHierarchyActions = (props: AccountHierarchyActionsProps) => {
       alignItems={'center'}
       onClick={(e) => e.stopPropagation()}
     >
-      <Typography variant="caption" onClick={onBuyersClick}>
+      <Typography variant="caption" sx={{ textDecoration: 'underline' }} onClick={onBuyersClick}>
         {t('buyers')}
       </Typography>
-      <Typography variant="caption" onClick={onQuotesClick}>
+      <Typography variant="caption" sx={{ textDecoration: 'underline' }} onClick={onQuotesClick}>
         {t('quotes')}
       </Typography>
       {role === B2BRoles.ADMIN && (
@@ -95,12 +95,6 @@ const AccountHierarchyActions = (props: AccountHierarchyActionsProps) => {
           </IconButton>
         </Box>
       )}
-      <Typography variant="caption" sx={{ textDecoration: 'underline' }} onClick={onBuyersClick}>
-        {t('buyers')}
-      </Typography>
-      <Typography variant="caption" sx={{ textDecoration: 'underline' }} onClick={onQuotesClick}>
-        {t('quotes')}
-      </Typography>
     </Box>
   ) : (
     <CartItemActionsMobile

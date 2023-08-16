@@ -182,6 +182,7 @@ export const AllAccountActions = {
 
 export const AccountActions = {
   [B2BRoles.ADMIN]: [
+    AllAccountActions.VIEW_ACCOUNT,
     AllAccountActions.EDIT_ACCOUNT,
     AllAccountActions.ADD_ACCOUNT,
     AllAccountActions.VIEW_BUYER_ACCOUNT,

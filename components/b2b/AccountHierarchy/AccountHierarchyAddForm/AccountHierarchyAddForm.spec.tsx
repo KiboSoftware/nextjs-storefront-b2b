@@ -3,7 +3,7 @@ import { composeStories } from '@storybook/testing-react'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import * as stories from './AccountHierarchyForm.stories' // import all stories from the stories file
+import * as stories from './AccountHierarchyAddForm.stories' // import all stories from the stories file
 import { createQueryClientWrapper } from '@/__test__/utils'
 
 const { Common, AddAccountToChild } = composeStories(stories)
