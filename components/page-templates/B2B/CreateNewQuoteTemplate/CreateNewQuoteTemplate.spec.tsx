@@ -140,7 +140,7 @@ describe('[components] CreateNewQuoteTemplate', () => {
       renderWithQueryClient(<Common {...Common.args} />)
 
       const quotesText = screen.getByText(/quotes/i)
-      const createQuote = screen.getByText(/create-quote/i)
+      const createQuote = screen.getByText(/create-a-quote/i)
       const quoteDetails = screen.getByText(/quote-details/i)
       const quoteSummary = screen.getByText(/quote-summary/i)
 
@@ -188,6 +188,19 @@ describe('[components] CreateNewQuoteTemplate', () => {
 
       await waitFor(() => {
         expect(screen.queryByText('product-configuration-options')).toBeVisible()
+      })
+    })
+
+    it('should redirect to quotes pages when users click on Quotes back button', async () => {
+      const handleAccountTitleClickMock = jest.fn()
+      renderWithQueryClient(
+        <Common {...Common.args} onAccountTitleClick={handleAccountTitleClickMock} />
+      )
+      const quotesText = screen.getByText(/quotes/i)
+      user.click(quotesText)
+
+      await waitFor(() => {
+        expect(handleAccountTitleClickMock).toHaveBeenCalled()
       })
     })
   })

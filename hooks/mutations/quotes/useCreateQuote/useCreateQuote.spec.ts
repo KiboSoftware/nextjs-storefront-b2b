@@ -12,8 +12,6 @@ describe('[hooks] useCreateQuote', () => {
 
     result.current.createQuote.mutateAsync({
       customerAccountId: 123,
-      siteId: 123,
-      tenantId: 123,
     })
 
     await waitFor(() =>

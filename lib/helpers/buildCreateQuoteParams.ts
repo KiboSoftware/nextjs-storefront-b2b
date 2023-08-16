@@ -1,14 +1,10 @@
 import { MutationCreateQuoteArgs } from '../gql/types'
 
-export const buildCreateQuoteParams = (
-  siteId: number,
-  tenantId: number,
-  customerAccountId: number
-): MutationCreateQuoteArgs => {
+export const buildCreateQuoteParams = (customerAccountId: number): MutationCreateQuoteArgs => {
   return {
     quoteInput: {
-      siteId,
-      tenantId,
+      siteId: 0,
+      tenantId: 0,
       subTotal: 0,
       customerAccountId,
       itemLevelProductDiscountTotal: 0,

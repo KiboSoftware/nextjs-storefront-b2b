@@ -35,11 +35,10 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
   const mdScreen = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'))
   const { user } = useAuthContext()
 
-  const accountName = user?.companyOrOrganization
+  const accountName = user?.companyOrOrganization ?? '-'
   const { number, quoteId, status, createdDate, expirationDate } =
     quoteGetters.getQuoteDetails(quote)
   const quoteItems = quote?.items as CrOrderItem[]
-  // console.log('quote items', quoteItems)
 
   const { data } = useGetB2BUserQueries({
     accountId: user?.id as number,
@@ -114,7 +113,7 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
             {!mdScreen && (
               <Box sx={createNewQuoteTemplateStyles.createNewQuoteTextBox}>
                 <Typography variant="h2" sx={createNewQuoteTemplateStyles.createNewQuoteText}>
-                  {t('create-quote')}
+                  {t('create-a-quote')}
                 </Typography>
               </Box>
             )}
@@ -123,7 +122,7 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
         {mdScreen && (
           <Grid item xs={12} sm={6}>
             <Box>
-              <Typography variant="h1">{t('create-quote')}</Typography>
+              <Typography variant="h1">{t('create-a-quote')}</Typography>
             </Box>
           </Grid>
         )}
@@ -218,7 +217,7 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
           </Typography>
           <B2BProductSearch onAddProduct={handleAddProduct} />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} style={{ paddingTop: !mdScreen ? '0px' : '24px' }}>
           <Stack gap={3}>
             {mdScreen ? (
               <B2BProductDetailsTable

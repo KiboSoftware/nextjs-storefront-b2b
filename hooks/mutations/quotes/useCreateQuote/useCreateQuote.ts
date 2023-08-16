@@ -15,15 +15,13 @@ import { Quote } from '@/lib/gql/types'
  */
 
 interface CreateQuoteProps {
-  siteId: number
-  tenantId: number
   customerAccountId: number
 }
 const createQuote = async (props: CreateQuoteProps): Promise<Quote> => {
   const client = makeGraphQLClient()
-  const { siteId, tenantId, customerAccountId } = props
+  // const { customerAccountId } = props
 
-  const variables = buildCreateQuoteParams(siteId, tenantId, customerAccountId)
+  const variables = buildCreateQuoteParams(props?.customerAccountId)
 
   const response = await client.request({
     document: createQuoteMutation,

@@ -2,7 +2,7 @@ import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
 
 import { quoteMock } from '@/__mocks__/stories'
-import { createQueryClientWrapper } from '@/__test__/utils'
+import { RQNotificationContextProvider } from '@/context'
 import * as operations from '@/lib/api/operations'
 import QuotePage, { getServerSideProps } from '@/src/pages/my-account/quote/[quoteId]'
 
@@ -96,9 +96,11 @@ describe('[page] Quote Page', () => {
       quoteId: 'quote-id',
       quote: quoteMock?.items?.[0] as Quote,
     }
-    render(<QuotePage {...props} />, {
-      wrapper: createQueryClientWrapper(),
-    })
+    render(
+      <RQNotificationContextProvider>
+        <QuotePage {...props} />
+      </RQNotificationContextProvider>
+    )
 
     const createNewQuote = screen.getByTestId('create-new-quote-template-mock')
     expect(createNewQuote).toBeVisible()
