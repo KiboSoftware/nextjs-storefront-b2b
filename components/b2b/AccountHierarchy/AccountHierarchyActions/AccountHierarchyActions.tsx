@@ -4,6 +4,7 @@ import {
   AddCircle as AddCircleIcon,
   Delete as DeleteIcon,
   Edit as EditIcon,
+  Visibility as VisibilitiyIcon,
 } from '@mui/icons-material'
 import { Box, IconButton, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
@@ -69,6 +70,15 @@ const AccountHierarchyActions = (props: AccountHierarchyActionsProps) => {
           <IconButton
             size="small"
             sx={{ p: 0.5 }}
+            aria-label="item-view"
+            name="item-view"
+            onClick={onView}
+          >
+            <VisibilitiyIcon />
+          </IconButton>
+          <IconButton
+            size="small"
+            sx={{ p: 0.5 }}
             aria-label="item-add"
             name="item-add"
             onClick={onAdd}
@@ -98,6 +108,7 @@ const AccountHierarchyActions = (props: AccountHierarchyActionsProps) => {
     </Box>
   ) : (
     <CartItemActionsMobile
+      data-testid="mobile-account-actions"
       actions={AccountActions[role as string]}
       width="15.5rem"
       onMenuItemSelection={onMenuItemSelection}

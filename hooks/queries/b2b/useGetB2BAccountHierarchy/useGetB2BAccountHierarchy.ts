@@ -44,7 +44,7 @@ export const useGetB2BAccountHierachyQueries = (accountId: number): AccountHiera
   })
 
   return {
-    data,
+    b2BAccountHierarchy: data,
     isLoading,
     isError,
     isSuccess,

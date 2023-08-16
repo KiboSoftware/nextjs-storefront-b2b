@@ -17,9 +17,10 @@ import { useAuthContext, useModalContext } from '@/context'
 import {
   useCreateCustomerB2bAccountMutation,
   useGetB2BAccountHierachyQueries,
+  useGetB2BUserQueries,
   useUpdateCustomerB2bAccountMutation,
 } from '@/hooks'
-import { B2BRoles } from '@/lib/constants'
+import { userGetters } from '@/lib/getters'
 import {
   buildAccountHierarchy,
   buildCreateCustomerB2bAccountParams,
@@ -32,7 +33,7 @@ import {
   HierarchyNode,
 } from '@/lib/types'
 
-import { B2BAccount } from '@/lib/gql/types'
+import { B2BAccount, B2BUser } from '@/lib/gql/types'
 
 const AccountHierarchyTemplate = () => {
   const theme = useTheme()
@@ -42,9 +43,16 @@ const AccountHierarchyTemplate = () => {
   const { showModal, closeModal } = useModalContext()
   const mdScreen = useMediaQuery(theme.breakpoints.up('md'))
 
-  const { data } = useGetB2BAccountHierachyQueries(user?.id as number)
+  const { b2BAccountHierarchy } = useGetB2BAccountHierachyQueries(user?.id as number)
   const { createCustomerB2bAccount } = useCreateCustomerB2bAccountMutation()
   const { updateCustomerB2bAccount } = useUpdateCustomerB2bAccountMutation()
+  const { data } = useGetB2BUserQueries({
+    accountId: user?.id as number,
+    filter: '',
+    pageSize: 5,
+    startIndex: 0,
+    q: user?.userName as string,
+  })
 
   const [accountHierarchy, setAccountHierarchy] = useState<{
     accounts: B2BAccount[]
@@ -54,14 +62,14 @@ const AccountHierarchyTemplate = () => {
     hierarchy: undefined,
   })
   useEffect(() => {
-    if (!data) return
-    const hierarchy = buildAccountHierarchy(data?.accounts)
-    console.log('hierarchy', hierarchy)
+    console.log(data)
+    if (!b2BAccountHierarchy) return
+    const hierarchy = buildAccountHierarchy(b2BAccountHierarchy?.accounts)
     setAccountHierarchy({
-      accounts: data?.accounts,
+      accounts: b2BAccountHierarchy?.accounts,
       hierarchy,
     })
-  }, [data])
+  }, [b2BAccountHierarchy, data])
 
   const onAccountTitleClick = () => {
     router.push('/my-account')
@@ -206,7 +214,7 @@ const AccountHierarchyTemplate = () => {
         </Grid>
       </Grid>
       <AccountHierarchyTree
-        role={B2BRoles.ADMIN}
+        role={userGetters.getRole(data?.items?.[0] as B2BUser)}
         accounts={accountHierarchy.accounts}
         hierarchy={accountHierarchy.hierarchy}
         handleViewAccount={handleViewAccount}

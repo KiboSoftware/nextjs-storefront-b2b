@@ -21,18 +21,15 @@ import { AddChildAccountProps, EditChildAccountProps, HierarchyNode } from '@/li
 
 import { B2BAccount } from '@/lib/gql/types'
 
-interface TreeItemListProps {
+interface AccountHierarchyTreeProps {
+  role: string
   accounts: any[]
   hierarchy: HierarchyNode[] | undefined
-}
-
-interface AccountHierarchyTreeProps extends TreeItemListProps {
   handleViewAccount: (item: B2BAccount) => void
   handleAddAccount: ({ isAddingAccountToChild, accounts }: AddChildAccountProps) => void
   handleEditAccount: ({ accounts }: EditChildAccountProps) => void
   handleSwapAccount: (b2BAccount: B2BAccount) => void
   handleDeleteAccount: (b2BAccount: B2BAccount) => void
-  role: string
 }
 
 const CollapseStateIndicator = ({ isCollapsed }: { isCollapsed: boolean }) => {
@@ -57,14 +54,13 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
 
   const theme = useTheme()
   const mdScreen = useMediaQuery(theme.breakpoints.up('md'))
-  const RoleContext = React.createContext(role)
 
   const { t } = useTranslation('common')
 
   const renderItem = (props: any) => {
     const { item, collapseIcon, handler } = props
 
-    const currentAccount = accounts?.find((account: any) => account.id === item.id)
+    const currentAccount = accounts?.find((account: B2BAccount) => account.id === item.id)
 
     const onViewAccountClick = () => {
       handleViewAccount(currentAccount)
@@ -114,7 +110,7 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
   const refNestable = React.useRef<Nestable | null>(null)
 
   return (
-    <RoleContext.Provider value={role}>
+    <>
       <Box sx={{ ...AccountHierarchyStyles.expandCollapseButtonBox }} gap={1}>
         <Button
           sx={{ ...AccountHierarchyStyles.expandCollapseButtonStyle }}
@@ -129,7 +125,7 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
           {t('collapse-all')}
         </Button>
       </Box>
-      <Box sx={{ backgroundColor: '#F7F7F7', padding: '15px' }}>
+      <Box sx={{ backgroundColor: theme.palette.grey[100], padding: '15px' }}>
         <Typography fontWeight="bold">{t('org-name')}</Typography>
       </Box>
 
@@ -147,6 +143,6 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
           </Box>
         }
       />
-    </RoleContext.Provider>
+    </>
   )
 }

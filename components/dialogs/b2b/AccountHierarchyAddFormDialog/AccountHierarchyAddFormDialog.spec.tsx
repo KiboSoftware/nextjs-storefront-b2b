@@ -10,14 +10,14 @@ const { Common } = composeStories(stories)
 const onSaveMock = jest.fn()
 const onCloseMock = jest.fn()
 
-const AccountHierarchyFormMock = ({
+const AccountHierarchyAddFormMock = ({
   onClose,
   onSave,
 }: {
   onClose: () => void
   onSave: () => void
 }) => (
-  <div data-testid="account-hierarchy-form-mock">
+  <div data-testid="account-hierarchy-add-form-mock">
     <button data-testid="create-account-hierarchy-mock-button" onClick={onSave}>
       Create Account
     </button>
@@ -28,11 +28,11 @@ const AccountHierarchyFormMock = ({
 )
 
 jest.mock(
-  '@/components/b2b/AccountHierarchy/AccountHierarchyForm/AccountHierarchyForm',
-  () => () => AccountHierarchyFormMock({ onClose: onCloseMock, onSave: onSaveMock })
+  '@/components/b2b/AccountHierarchy/AccountHierarchyAddForm/AccountHierarchyAddForm',
+  () => () => AccountHierarchyAddFormMock({ onClose: onCloseMock, onSave: onSaveMock })
 )
 
-describe('[components]  AccountHierarchyFormDialog Dialog', () => {
+describe('[components]  AccountHierarchyAddFormDialog Dialog', () => {
   const setup = () => {
     render(
       <Common
@@ -56,14 +56,14 @@ describe('[components]  AccountHierarchyFormDialog Dialog', () => {
   it('should render component', async () => {
     render(<Common {...Common.args} formTitle="Add child account" />)
 
-    const accountHierarchyFromDialog = screen.getByTestId('account-hierarchy-form-mock')
+    const accountHierarchyFromDialog = screen.getByTestId('account-hierarchy-add-form-mock')
     expect(accountHierarchyFromDialog).toBeVisible()
 
     const titleElement = screen.getByText('Add child account')
     expect(titleElement).toBeVisible()
 
-    const accountHierarchyForm = screen.getByTestId('account-hierarchy-form-mock')
-    expect(accountHierarchyForm).toBeVisible()
+    const accountHierarchyAddForm = screen.getByTestId('account-hierarchy-add-form-mock')
+    expect(accountHierarchyAddForm).toBeVisible()
   })
 
   it('should call callback function when user clicks on Create Account button', async () => {

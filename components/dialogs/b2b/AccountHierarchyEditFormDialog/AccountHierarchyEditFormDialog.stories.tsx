@@ -2,27 +2,25 @@ import React from 'react'
 
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
-import AccountHierarchyFormDialog from './AccountHierarchyEditFormDialog'
-import { userResponseMock } from '@/__mocks__/stories'
-
-import { B2BAccount } from '@/lib/gql/types'
+import AccountHierarchyEditFormDialog from './AccountHierarchyEditFormDialog'
+import { b2BAccountHierarchyResult } from '@/__mocks__/stories'
 
 export default {
-  title: 'Dialogs/B2B/AccountHierarchyFormDialog',
-  component: AccountHierarchyFormDialog,
+  title: 'Dialogs/B2B/AccountHierarchyEditFormDialog',
+  component: AccountHierarchyEditFormDialog,
   argTypes: {
     onClose: { action: 'onClose' },
     onSave: { action: 'onSave' },
   },
-} as ComponentMeta<typeof AccountHierarchyFormDialog>
+} as ComponentMeta<typeof AccountHierarchyEditFormDialog>
 
-const mockUser = userResponseMock as B2BAccount
-const Template: ComponentStory<typeof AccountHierarchyFormDialog> = ({ ...args }) => (
-  <AccountHierarchyFormDialog {...args} />
+const Template: ComponentStory<typeof AccountHierarchyEditFormDialog> = ({ ...args }) => (
+  <AccountHierarchyEditFormDialog {...args} />
 )
 
 // Common
 export const Common = Template.bind({})
 Common.args = {
-  accounts: [mockUser],
+  accounts: b2BAccountHierarchyResult?.accounts,
+  accountToEdit: b2BAccountHierarchyResult?.accounts?.[1],
 }

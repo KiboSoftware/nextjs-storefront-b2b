@@ -33,7 +33,6 @@ const useAccountHierarchySchema = () => {
 
 const AccountHierarchyAddForm = (props: AccountHierarchyAddFormProps) => {
   const { accounts, isAddingAccountToChild, onSave, onClose } = props
-  console.log('accounts', accounts)
   const [isLoading, setLoading] = useState<boolean>(false)
   const [selectedParentAccount, setSelectedParentAccount] = useState<B2BAccount>()
 

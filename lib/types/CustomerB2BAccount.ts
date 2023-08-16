@@ -33,7 +33,7 @@ export interface UpdateCustomerB2bAccountParams {
 }
 
 export interface AccountHierarchyResultType {
-  data?: B2BAccountHierarchyResult
+  b2BAccountHierarchy?: B2BAccountHierarchyResult
   isLoading: boolean
   isSuccess: boolean
   isError: boolean

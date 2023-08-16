@@ -62,11 +62,9 @@ const AccountHierarchyEditForm = (props: AccountHierarchyEditFormProps) => {
   }, [accounts])
 
   const onSubmit = () => {
-    console.log(getValues(), isLoading, selectedParentAccount)
     if (isLoading || !selectedParentAccount) return
     setLoading(true)
     const formValues = getValues()
-    console.log(selectedParentAccount)
     onSave({ parentAccount: selectedParentAccount })
   }
 

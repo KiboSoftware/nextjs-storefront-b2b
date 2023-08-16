@@ -3,7 +3,7 @@ import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
 import AccountHierarchyEditForm from './AccountHierarchyEditForm'
-import { userResponseMock } from '@/__mocks__/stories'
+import { b2BAccountHierarchyResult, userResponseMock } from '@/__mocks__/stories'
 
 import { B2BAccount } from '@/lib/gql/types'
 
@@ -16,8 +16,6 @@ export default {
   },
 } as ComponentMeta<typeof AccountHierarchyEditForm>
 
-const mockUser = userResponseMock as B2BAccount
-
 const Template: ComponentStory<typeof AccountHierarchyEditForm> = (args) => (
   <AccountHierarchyEditForm {...args} />
 )
@@ -25,5 +23,6 @@ const Template: ComponentStory<typeof AccountHierarchyEditForm> = (args) => (
 // Account Hierarchy
 export const Common = Template.bind({})
 Common.args = {
-  accounts: [mockUser],
+  accounts: b2BAccountHierarchyResult?.accounts,
+  accountToEdit: b2BAccountHierarchyResult?.accounts?.[1],
 }

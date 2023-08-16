@@ -9,6 +9,7 @@ const onBuyersClickMock = jest.fn()
 const onQuotesClickMock = jest.fn()
 const onAddMock = jest.fn()
 const onEditMock = jest.fn()
+const onViewMock = jest.fn()
 const onDeleteMock = jest.fn()
 
 describe('AccountHierarchyActions', () => {
@@ -19,6 +20,8 @@ describe('AccountHierarchyActions', () => {
         onQuotesClick={onQuotesClickMock}
         onAdd={onAddMock}
         onEdit={onEditMock}
+        onView={onViewMock}
+        mdScreen={true}
         onDelete={onDeleteMock}
       />
     )
@@ -34,6 +37,10 @@ describe('AccountHierarchyActions', () => {
     accountEditButton.click()
     expect(onEditMock).toHaveBeenCalled()
 
+    const accountViewButton = screen.getByRole('button', { name: 'item-view' })
+    accountViewButton.click()
+    expect(onViewMock).toHaveBeenCalled()
+
     const accountDeleteButton = screen.getByRole('button', { name: 'item-delete' })
     accountDeleteButton.click()
     expect(onDeleteMock).toHaveBeenCalled()
@@ -45,5 +52,12 @@ describe('AccountHierarchyActions', () => {
     const quoteButton = screen.getByText('quotes')
     quoteButton.click()
     expect(onQuotesClickMock).toHaveBeenCalled()
+  })
+
+  it('should render AccountHierarchyActions on mobile screen', async () => {
+    render(<Common mdScreen={false} />)
+
+    const treeLabel = screen.getByLabelText('more')
+    expect(treeLabel).toBeVisible()
   })
 })
