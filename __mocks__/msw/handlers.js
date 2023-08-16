@@ -524,7 +524,7 @@ export const b2bHandlers = [
 
   graphql.query('quotes', (_req, res, ctx) => {
     return res(ctx.data({ quotes: quotesMock }))
-  })
+  }),
   //useUpdateQuoteItemQuantity
   graphql.mutation('updateQuoteItemQuantity', (_req, res, ctx) => {
     return res(ctx.data({ updateQuoteItemQuantity: quoteMock?.items?.[0] }))
