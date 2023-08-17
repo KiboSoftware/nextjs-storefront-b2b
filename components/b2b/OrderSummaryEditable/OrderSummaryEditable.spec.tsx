@@ -29,8 +29,31 @@ const ProductItemMock = () => (
 )
 jest.mock('@/components/common/ProductItem/ProductItem', () => () => ProductItemMock())
 
-const onChangeMock = jest.fn()
-const { publicRuntimeConfig } = getConfig()
+jest.mock('@/components/b2b/OrderSummaryEditable/OrderSummarySection/OrderSummarySection', () => ({
+  __esModule: true,
+  default: ({ setAdjustmentValue }: any) => (
+    <div data-testid="OrderSummarySection-component">
+      <button
+        data-testid="setAdjustmentValue-button"
+        onClick={() => setAdjustmentValue(100, 'adjustment')}
+      >
+        adjustment
+      </button>
+      <button
+        data-testid="setShippingAdjustmentValue-button"
+        onClick={() => setAdjustmentValue(200, 'shippingAdjustment')}
+      >
+        shippingAdjustment
+      </button>
+      <button
+        data-testid="setHandlingAdjustmentValue-button"
+        onClick={() => setAdjustmentValue(300, 'handlingAdjustment')}
+      >
+        handlingAdjustment
+      </button>
+    </div>
+  ),
+}))
 
 jest.mock('next-i18next', () => ({
   useTranslation: () => ({
@@ -46,32 +69,8 @@ describe('[components] - OrderSummaryEditable', () => {
 
     expect(screen.getByText('summary')).toBeVisible()
 
-    expect(
-      screen.getByRole('button', { name: `titleTotal $${Common?.args?.itemTotal?.toString()}` })
-    ).toBeVisible()
-
-    expect(
-      screen.getByRole('button', {
-        name: `titleTotal $${Common?.args?.shippingTotal?.toString()}`,
-      })
-    ).toBeVisible()
-
-    expect(
-      screen.getByRole('button', {
-        name: `titleTotal $${Common?.args?.handlingTotal?.toString()}`,
-      })
-    ).toBeVisible()
-
     expect(screen.getByRole('listitem', { name: 'duty-total' })).toBeVisible()
-
-    await user.click(screen.getByRole('button', { name: 'edit' }))
-
-    expect(screen.getAllByRole('listitem', { name: 'subtotal' }).length).toBe(3)
-    expect(screen.getAllByRole('listitem', { name: 'adjustment' }).length).toBe(3)
-    expect(screen.getAllByRole('listitem', { name: 'tax' }).length).toBe(3)
-
-    expect(screen.getAllByRole('textbox', { name: 'adjustment-input' }).length).toBe(3)
-    expect(screen.getAllByRole('radiogroup', { name: 'adjustment-type' }).length).toBe(3)
+    expect(screen.getAllByTestId('OrderSummarySection-component').length).toBe(3)
   })
 
   it('should call onSave callback on saving adjustment changes', async () => {
@@ -80,56 +79,17 @@ describe('[components] - OrderSummaryEditable', () => {
 
     await user.click(screen.getByRole('button', { name: 'edit' }))
 
-    const itemAdjustmentTextBox = screen.getAllByRole('textbox', { name: 'adjustment-input' })[0]
-    const itemAmountAdjustmentRadio = screen.getAllByRole('radio', { name: 'amount' })[0]
-    const itemPercentageAdjustmentRadio = screen.getAllByRole('radio', { name: 'percentage' })[0]
-
-    const adjustMentSelect = screen.getAllByRole('button', { name: 'adjustment' })[0]
-
-    expect(itemAmountAdjustmentRadio).toBeChecked()
-    expect(itemPercentageAdjustmentRadio).not.toBeChecked()
-    expect(adjustMentSelect).toBeVisible()
-
-    const adjustmentProp = Common.args?.adjustment?.toString() as string
-    const subtotalProp = Common.args?.subTotal?.toString() as string
-
-    expect(screen.getAllByRole('listitem', { name: 'adjustment' })[0]).toHaveTextContent(
-      adjustmentProp
-    )
-
-    await user.type(itemAdjustmentTextBox, '50')
-
-    expect(screen.getAllByRole('listitem', { name: 'adjustment' })[0]).toHaveTextContent(
-      'adjustment-text$-50'
-    )
-
-    await user.click(itemPercentageAdjustmentRadio)
-
-    expect(screen.getAllByRole('listitem', { name: 'adjustment' })[0]).toHaveTextContent(
-      `adjustment-text$-${parseInt(subtotalProp) * (50 / 100)}` // considering percentage adjustment
-    )
-
-    fireEvent.mouseDown(adjustMentSelect)
-
-    const listbox = within(screen.getByRole('listbox'))
-
-    fireEvent.click(listbox.getByText(/Add to Item Subtotal/i))
-
-    expect(itemAdjustmentTextBox).toHaveValue('')
-
-    await user.type(itemAdjustmentTextBox, '200')
-
-    expect(screen.getAllByRole('listitem', { name: 'adjustment' })[0]).toHaveTextContent(
-      `adjustment-text$${parseInt(subtotalProp) * (200 / 100)}` // considering percentage adjustment
-    )
+    user.click(screen.getAllByTestId('setAdjustmentValue-button')[0])
+    user.click(screen.getAllByTestId('setShippingAdjustmentValue-button')[1])
+    user.click(screen.getAllByTestId('setHandlingAdjustmentValue-button')[2])
 
     await user.click(screen.getByRole('button', { name: 'save' }))
 
     await waitFor(() => {
       expect(onSaveMock).toBeCalledWith({
-        adjustment: parseInt(subtotalProp) * (200 / 100),
-        shippingAdjustment: Common.args?.shippingAdjustment,
-        handlingAdjustment: Common.args?.handlingAdjustment,
+        adjustment: 100,
+        shippingAdjustment: 200,
+        handlingAdjustment: 300,
       })
     })
   })

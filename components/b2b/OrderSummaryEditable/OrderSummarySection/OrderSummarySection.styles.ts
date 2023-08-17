@@ -1,4 +1,4 @@
-export const OrderSummaryEditableStyles = {
+export const OrderSummarySectionStyles = {
   adjustMentEditContainer: {
     pl: { xs: 2, md: 6 },
     width: { xs: '90%', md: '80%' },
