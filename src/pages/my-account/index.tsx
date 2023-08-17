@@ -34,9 +34,8 @@ const MyAccountPage: NextPage = (props: any) => {
 
   if (!serverSideIsAuthenticated && !customerAccount) return null
 
-  const isB2bTemplate = true
-
-  const template = isB2bTemplate ? <B2BTemplate /> : <MyAccountTemplate user={customerAccount} />
+  const isB2BUser = customerAccount?.accountType === 'B2B' ? true : false
+  const template = isB2BUser ? <B2BTemplate /> : <MyAccountTemplate user={customerAccount} />
 
   return reCaptchaKey ? (
     <ReCaptchaProvider reCaptchaKey={reCaptchaKey}>{template}</ReCaptchaProvider>
