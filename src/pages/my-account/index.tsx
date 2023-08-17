@@ -34,9 +34,12 @@ const MyAccountPage: NextPage = (props: any) => {
   const { reCaptchaKey } = publicRuntimeConfig.recaptcha
 
   if (!serverSideIsAuthenticated && !customerAccount) return null
-
-  const isB2BUser = customerAccount?.accountType === AccountType.B2B ? true : false
-  const template = isB2BUser ? <B2BTemplate /> : <MyAccountTemplate user={customerAccount} />
+  const isB2BUser = customerAccount?.accountType?.toLowerCase() === AccountType.B2B.toLowerCase()
+  const template = isB2BUser ? (
+    <B2BTemplate user={customerAccount} />
+  ) : (
+    <MyAccountTemplate user={customerAccount} />
+  )
 
   return reCaptchaKey ? (
     <ReCaptchaProvider reCaptchaKey={reCaptchaKey}>{template}</ReCaptchaProvider>
