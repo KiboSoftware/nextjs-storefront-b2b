@@ -48,6 +48,7 @@ const OrderSummarySection = (props: OrderSummarySectionProps) => {
 
   const adjustmentType = adjustment > 0 ? AdjustmentType.ADDED : AdjustmentType.SUBTRACTED
 
+  const [adjustmentInputValue, setAdjustmentInputValue] = useState('')
   const [selectValue, setSelectValue] = useState(adjustmentType)
   const [selectedRadio, setSelectedRadio] = useState('amount')
   const [open, setOpen] = useState(false)
@@ -73,8 +74,6 @@ const OrderSummarySection = (props: OrderSummarySectionProps) => {
       name: 'percentage',
     },
   ]
-
-  const [adjustmentInputValue, setAdjustmentInputValue] = useState('')
 
   const handleAdjustmentInput = (val: string) => {
     if (!val || !new RegExp(/^(?:\d+(\.\d*)?|\.\d+)$/).test(val)) {
