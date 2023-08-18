@@ -108,7 +108,9 @@ const QuotesTable = (props: QuotesTableProps) => {
   const statusColorCode: any = {
     Pending: theme.palette.action.disabled,
     InReview: theme.palette.warning.main,
-    ReadyForCheckout: theme.palette.success.main,
+    ReadyForCheckout: theme.palette.info.main,
+    Completed: theme.palette.success.main,
+    Expired: theme.palette.error.main,
   }
 
   const getStatusColorCode = (status: string) => {
