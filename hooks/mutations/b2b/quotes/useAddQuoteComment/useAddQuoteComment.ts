@@ -7,7 +7,7 @@ import { makeGraphQLClient } from '@/lib/gql/client'
 import { updateQuoteCommentsMutation } from '@/lib/gql/mutations'
 import { quoteKeys } from '@/lib/react-query/queryKeys'
 
-import { QuoteCommentInput } from '@/lib/gql/types'
+import { QuoteComment, QuoteCommentInput } from '@/lib/gql/types'
 
 const client = makeGraphQLClient()
 
@@ -17,7 +17,7 @@ interface AddQuoteCommentProps {
   quoteCommentInput: QuoteCommentInput
 }
 
-const addQuoteComment = async (params: AddQuoteCommentProps) => {
+const addQuoteComment = async (params: AddQuoteCommentProps): Promise<QuoteComment> => {
   const response = await client.request({
     document: updateQuoteCommentsMutation,
     variables: params,
