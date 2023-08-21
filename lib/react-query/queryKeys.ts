@@ -46,7 +46,8 @@ export const customerB2BUserKeys = {
 }
 
 export const accountHierarchyKeys = {
-  accountHierarchy: ['accountHierarchy'] as any,
+  all: ['accountHierarchy'] as any,
+  accountHierarchy: (accountId: number) => [...accountHierarchyKeys.all, accountId] as const,
 }
 
 export const productSearchResultKeys = {

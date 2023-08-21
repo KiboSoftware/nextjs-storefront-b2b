@@ -13,8 +13,10 @@ interface AccountHierarchyTreeLabelProps {
   onViewAccountClick: () => void
   onAddAccountClick: () => void
   onEditAccountClick: () => void
-  onDeleteAccountClick: () => void
+  onDisableAccountClick: () => void
   onAccountSwap: () => void
+  onBuyersBtnClick: () => void
+  onQuotesBtnClick: () => void
 }
 
 const AccountHierarchyTreeLabel = (props: AccountHierarchyTreeLabelProps) => {
@@ -26,25 +28,26 @@ const AccountHierarchyTreeLabel = (props: AccountHierarchyTreeLabelProps) => {
     onViewAccountClick,
     onAddAccountClick,
     onEditAccountClick,
-    onDeleteAccountClick,
+    onDisableAccountClick,
+    onBuyersBtnClick,
+    onQuotesBtnClick,
   } = props
 
   return (
     <List dense={true}>
       <ListItem
         data-testid="tree-label"
-        // onClick={() => onViewAccountClick()}
         secondaryAction={
           role !== B2BRoles.NON_PURCHASER ? (
             <AccountHierarchyActions
               role={role}
               mdScreen={mdScreen}
-              onBuyersClick={() => null}
-              onQuotesClick={() => null}
+              onBuyersClick={() => onBuyersBtnClick()}
+              onQuotesClick={() => onQuotesBtnClick()}
               onAdd={() => onAddAccountClick()}
               onView={() => onViewAccountClick()}
               onEdit={() => onEditAccountClick()}
-              onDelete={() => onDeleteAccountClick()}
+              onDisable={() => onDisableAccountClick()}
             />
           ) : null
         }

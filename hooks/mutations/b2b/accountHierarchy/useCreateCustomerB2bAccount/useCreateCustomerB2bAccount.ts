@@ -24,15 +24,15 @@ const createCustomerB2bAccount = async (
 /**
  * [Mutation hook] useCreateCustomerB2bAccountMutation uses the graphQL mutation
  *
- * <b>createCustomerB2bAccountUser(b2BAccountInput: b2BAccountInput): B2BUser</b>
+ * <b>createCustomerB2bAccountUser(b2BAccountInput: b2BAccountInput): B2BAccount</b>
  *
  * Description : Adds account in hierarchy
  *
  * Parameters passed to function createCustomerB2bAccount(b2BAccountInput: B2BAccountInput) => expects object of type 'B2BAccountInput' containing accountId and input
  *
- * On success, calls refetchQueries on customerB2BUserKeys and fetches account hierarchy.
+ * On success, calls invalidateQueries on accountHierarchyKeys and fetches account hierarchy.
  *
- * @returns 'response?.data?.createCustomerB2bAccount' which contains object of account added
+ * @returns 'response?.createCustomerB2bAccount' which contains object of account added
  */
 
 export const useCreateCustomerB2bAccountMutation = () => {
@@ -40,7 +40,7 @@ export const useCreateCustomerB2bAccountMutation = () => {
   return {
     createCustomerB2bAccount: useMutation({
       mutationFn: createCustomerB2bAccount,
-      onSuccess: () => queryClient.invalidateQueries(accountHierarchyKeys.accountHierarchy),
+      onSuccess: () => queryClient.invalidateQueries({ queryKey: accountHierarchyKeys.all }),
     }),
   }
 }

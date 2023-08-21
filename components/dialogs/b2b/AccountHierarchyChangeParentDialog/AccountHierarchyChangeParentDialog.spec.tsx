@@ -1,7 +1,7 @@
 import { composeStories } from '@storybook/testing-react'
 import { render, screen } from '@testing-library/react'
 
-import * as stories from './AccountHierarchyEditFormDialog.stories'
+import * as stories from './AccountHierarchyChangeParentDialog.stories'
 import { b2BAccountHierarchyResult } from '@/__mocks__/stories'
 import { ModalContextProvider } from '@/context'
 
@@ -32,13 +32,13 @@ jest.mock(
   () => () => AccountHierarchyEditFormMock({ onClose: onCloseMock, onSave: onSaveMock })
 )
 
-describe('[components]  AccountHierarchyEditFormDialog Dialog', () => {
+describe('[components]  AccountHierarchyChangeParentDialog Dialog', () => {
   const setup = () => {
     render(
       <Common
         {...Common.args}
         accounts={b2BAccountHierarchyResult.accounts}
-        accountToEdit={b2BAccountHierarchyResult?.accounts?.[1]}
+        b2BAccount={b2BAccountHierarchyResult?.accounts?.[1]}
         onSave={onSaveMock}
         onClose={onCloseMock}
       />,

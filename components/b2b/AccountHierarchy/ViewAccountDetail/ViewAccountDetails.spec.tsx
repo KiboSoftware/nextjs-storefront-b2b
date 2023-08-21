@@ -8,7 +8,7 @@ const { Common } = composeStories(stories)
 
 const b2bAccount = b2BAccountHierarchyResult?.accounts?.[1]
 describe('ViewAccountDetails', () => {
-  it('should render ViewAccountDetails component', async () => {
+  it('should render component', async () => {
     render(<Common />)
 
     const accountIDHeading = screen.getByText('b2b-account-id')

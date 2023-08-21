@@ -1,22 +1,22 @@
 import { useTranslation } from 'next-i18next'
 
-import { AccountHierarchyEditForm } from '@/components/b2b'
+import { AccountHierarchyChangeParent } from '@/components/b2b'
 import { KiboDialog } from '@/components/common'
 import { UpdateCustomerB2bAccountParams } from '@/lib/types'
 
 import { B2BAccount } from '@/lib/gql/types'
 
-interface AccountHierarchyEditFormDialogProps {
+interface AccountHierarchyChangeParentDialogProps {
   accounts: B2BAccount[]
-  accountToEdit: B2BAccount
+  b2BAccount: B2BAccount
   formTitle?: string
   onSave: (data: UpdateCustomerB2bAccountParams) => void
   onClose: () => void
 }
 
-const AccountHierarchyEditFormDialog = (props: AccountHierarchyEditFormDialogProps) => {
+const AccountHierarchyChangeParentDialog = (props: AccountHierarchyChangeParentDialogProps) => {
   const { t } = useTranslation('common')
-  const { accounts, accountToEdit, formTitle = t('edit-child-account'), onSave, onClose } = props
+  const { accounts, b2BAccount, formTitle = t('edit-child-account'), onSave, onClose } = props
 
   return (
     <KiboDialog
@@ -26,9 +26,9 @@ const AccountHierarchyEditFormDialog = (props: AccountHierarchyEditFormDialogPro
       showContentBottomDivider={false}
       Actions={''}
       Content={
-        <AccountHierarchyEditForm
+        <AccountHierarchyChangeParent
           accounts={accounts}
-          accountToEdit={accountToEdit}
+          b2BAccount={b2BAccount}
           onSave={onSave}
           onClose={onClose}
         />
@@ -39,4 +39,4 @@ const AccountHierarchyEditFormDialog = (props: AccountHierarchyEditFormDialogPro
   )
 }
 
-export default AccountHierarchyEditFormDialog
+export default AccountHierarchyChangeParentDialog

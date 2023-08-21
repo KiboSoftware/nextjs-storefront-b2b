@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/testing-react'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import * as stories from './AccountHierarchyTreeLabel.stories'
 import { userResponseMock } from '@/__mocks__/stories'
@@ -9,13 +9,13 @@ const { Admin, Purchaser, NonPurchaser } = composeStories(stories)
 const onAddMock = jest.fn()
 const onEditMock = jest.fn()
 const onViewMock = jest.fn()
-const onDeleteMock = jest.fn()
+const onDisableMock = jest.fn()
 const onBuyerClickMock = jest.fn()
 const onQuotesClickMock = jest.fn()
 interface AccountHierarchyActionsMockProps {
   onAdd: () => void
   onEdit: () => void
-  onDelete: () => void
+  onDisable: () => void
   onView: () => void
   onBuyerClick: () => void
   onQuotesClick: () => void
@@ -26,7 +26,7 @@ const companyOrOrganizationName = userResponseMock?.companyOrOrganization as str
 const AccountHierarchyActionsMock = ({
   onAdd,
   onEdit,
-  onDelete,
+  onDisable,
   onView,
   onBuyerClick,
   onQuotesClick,
@@ -38,8 +38,8 @@ const AccountHierarchyActionsMock = ({
     <button data-testid="item-edit-mock-button" onClick={onEdit}>
       Edit
     </button>
-    <button data-testid="item-delete-mock-button" onClick={onDelete}>
-      Delete
+    <button data-testid="item-disable-mock-button" onClick={onDisable}>
+      Disable
     </button>
     <button data-testid="item-view-mock-button" onClick={onView}>
       View
@@ -59,7 +59,7 @@ jest.mock(
     AccountHierarchyActionsMock({
       onAdd: onAddMock,
       onEdit: onEditMock,
-      onDelete: onDeleteMock,
+      onDisable: onDisableMock,
       onView: onViewMock,
       onBuyerClick: onBuyerClickMock,
       onQuotesClick: onQuotesClickMock,
@@ -67,7 +67,7 @@ jest.mock(
 )
 
 describe('AccountHierarchyTreeLabel', () => {
-  it('should render AccountHierarchyTreeLabel component', async () => {
+  it('should render component', async () => {
     render(<Admin />)
 
     const treeLabel = screen.getByTestId('tree-label')
@@ -82,28 +82,31 @@ describe('AccountHierarchyTreeLabel', () => {
 
     const accountAddButton = screen.getByTestId('item-add-mock-button')
     expect(accountAddButton).toBeVisible()
-    accountAddButton.click()
+    fireEvent.click(accountAddButton)
     expect(onAddMock).toHaveBeenCalled()
 
     const accountEditButton = screen.getByTestId('item-edit-mock-button')
     expect(accountEditButton).toBeVisible()
-    accountEditButton.click()
+    fireEvent.click(accountEditButton)
     expect(onEditMock).toHaveBeenCalled()
 
-    const accountDeleteButton = screen.getByTestId('item-delete-mock-button')
-    expect(accountDeleteButton).toBeVisible()
-    accountDeleteButton.click()
-    expect(onDeleteMock).toHaveBeenCalled()
+    const accountDIsableButton = screen.getByTestId('item-disable-mock-button')
+    expect(accountDIsableButton).toBeVisible()
+    fireEvent.click(accountDIsableButton)
+    expect(onDisableMock).toHaveBeenCalled()
 
     const buyerButton = screen.getByTestId('buyer-mock-button')
     expect(buyerButton).toBeVisible()
-    buyerButton.click()
+    fireEvent.click(buyerButton)
     expect(onBuyerClickMock).toHaveBeenCalled()
 
     const quoteButton = screen.getByTestId('quote-mock-button')
     expect(quoteButton).toBeVisible()
-    quoteButton.click()
+    fireEvent.click(quoteButton)
     expect(onQuotesClickMock).toHaveBeenCalled()
+
+    const listItemIcon = screen.getByRole('listitem')
+    expect(listItemIcon).toBeVisible()
   })
 
   it('Purchaser View - should render only buyer and quotes buttons', async () => {

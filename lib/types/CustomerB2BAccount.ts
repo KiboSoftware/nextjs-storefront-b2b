@@ -26,7 +26,7 @@ export interface CreateCustomerB2bAccountParams {
 
 export interface EditChildAccountProps {
   accounts: any[]
-  accountToEdit: B2BAccount
+  b2BAccount: B2BAccount
 }
 export interface UpdateCustomerB2bAccountParams {
   parentAccount?: B2BAccount

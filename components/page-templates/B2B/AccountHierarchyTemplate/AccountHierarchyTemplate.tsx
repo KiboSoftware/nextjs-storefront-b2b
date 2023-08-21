@@ -9,7 +9,7 @@ import { accountHierarchyTemplateStyles } from './AccountHierarchyTemplate.style
 import { AccountHierarchyTree } from '@/components/b2b'
 import {
   AccountHierarchyAddFormDialog,
-  AccountHierarchyEditFormDialog,
+  AccountHierarchyChangeParentDialog,
   ConfirmationDialog,
   ViewAccountDetailsDialog,
 } from '@/components/dialogs'
@@ -89,7 +89,6 @@ const AccountHierarchyTemplate = () => {
     formValues: CreateCustomerB2bAccountParams,
     account: B2BAccount
   ) => {
-    console.log(formValues, account)
     const variables = buildUpdateCustomerB2bAccountParams(formValues, account)
     const updateCustomerB2BAccount = await updateCustomerB2bAccount.mutateAsync({
       ...variables,
@@ -111,16 +110,16 @@ const AccountHierarchyTemplate = () => {
     })
   }
 
-  const handleEditAccount = ({ accounts, accountToEdit }: EditChildAccountProps) => {
+  const handleEditAccount = ({ accounts, b2BAccount }: EditChildAccountProps) => {
     showModal({
-      Component: AccountHierarchyEditFormDialog,
+      Component: AccountHierarchyChangeParentDialog,
       props: {
         accounts,
-        accountToEdit,
+        b2BAccount,
         primaryButtonText: t('save'),
         formTitle: t('edit-child-account'),
         onSave: (formValues: CreateCustomerB2bAccountParams) =>
-          handleEditAccountFormSubmit(formValues, accountToEdit),
+          handleEditAccountFormSubmit(formValues, b2BAccount),
         onClose: () => closeModal(),
       },
     })
@@ -148,11 +147,11 @@ const AccountHierarchyTemplate = () => {
     })
   }
 
-  const handleDeleteAccount = (b2BAccount: B2BAccount) => {
+  const handleDisableAccount = (b2BAccount: B2BAccount) => {
     showModal({
       Component: ConfirmationDialog,
       props: {
-        contentText: t('delete-account-confirm-message'),
+        contentText: t('disable-account-confirm-message'),
         primaryButtonText: t('yes-remove'),
         title: t('confirmation'),
         onConfirm: () => console.log('account deleted'),
@@ -172,6 +171,14 @@ const AccountHierarchyTemplate = () => {
         onClose: () => closeModal(),
       },
     })
+  }
+
+  const handleBuyersBtnClick = () => {
+    console.log('buyers button clicked')
+  }
+
+  const handleQuotesBtnClick = () => {
+    console.log('quotes button clicked')
   }
 
   return (
@@ -221,7 +228,9 @@ const AccountHierarchyTemplate = () => {
         handleAddAccount={handleAddAccount}
         handleEditAccount={handleEditAccount}
         handleSwapAccount={handleSwapAccount}
-        handleDeleteAccount={handleDeleteAccount}
+        handleDisableAccount={handleDisableAccount}
+        handleBuyersBtnClick={handleBuyersBtnClick}
+        handleQuotesBtnClick={handleQuotesBtnClick}
       />
     </>
   )

@@ -2,7 +2,7 @@ export { default as B2BProductSearch } from '@/components/b2b/B2BProductSearch/B
 export { default as UserTable } from './User/UserTable/UserTable'
 export { default as UserForm } from './User/UserForm/UserForm'
 export { default as AccountHierarchyAddForm } from './AccountHierarchy/AccountHierarchyAddForm/AccountHierarchyAddForm'
-export { default as AccountHierarchyEditForm } from './AccountHierarchy/AccountHierarchyEditForm/AccountHierarchyEditForm'
+export { default as AccountHierarchyChangeParent } from './AccountHierarchy/AccountHierarchyChangeParent/AccountHierarchyChangeParent'
 export { default as AccountHierarchyTree } from './AccountHierarchy/AccountHierarchyTree/AccountHierarchyTree'
 export { default as AccountHierarchyActions } from './AccountHierarchy/AccountHierarchyActions/AccountHierarchyActions'
 export { default as ViewAccountDetails } from './AccountHierarchy/ViewAccountDetail/ViewAccountDetails'

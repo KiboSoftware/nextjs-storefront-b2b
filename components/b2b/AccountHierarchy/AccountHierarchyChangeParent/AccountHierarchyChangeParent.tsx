@@ -13,9 +13,9 @@ import { UpdateCustomerB2bAccountParams } from '@/lib/types'
 
 import { B2BAccount } from '@/lib/gql/types'
 
-interface AccountHierarchyEditFormProps {
+interface AccountHierarchyChangeParentProps {
   accounts: B2BAccount[]
-  accountToEdit: B2BAccount
+  b2BAccount: B2BAccount
   onSave: (data: UpdateCustomerB2bAccountParams) => void
   onClose: () => void
 }
@@ -27,8 +27,8 @@ const useAccountHierarchySchema = () => {
   })
 }
 
-const AccountHierarchyEditForm = (props: AccountHierarchyEditFormProps) => {
-  const { accounts, accountToEdit, onSave, onClose } = props
+const AccountHierarchyChangeParent = (props: AccountHierarchyChangeParentProps) => {
+  const { accounts, b2BAccount, onSave, onClose } = props
 
   const [isLoading, setLoading] = useState<boolean>(false)
   const [selectedParentAccount, setSelectedParentAccount] = useState<B2BAccount>()
@@ -80,7 +80,7 @@ const AccountHierarchyEditForm = (props: AccountHierarchyEditFormProps) => {
     <form data-testid="account-hierarchy-form" onSubmit={handleSubmit(onSubmit)}>
       <Box sx={{ marginBottom: 3 }}>
         <InputLabel shrink>{t('current-parent-account')}</InputLabel>
-        <Typography>{accountToEdit?.companyOrOrganization}</Typography>
+        <Typography>{b2BAccount?.companyOrOrganization}</Typography>
       </Box>
 
       <FormControl sx={{ width: '100%' }}>
@@ -135,4 +135,4 @@ const AccountHierarchyEditForm = (props: AccountHierarchyEditFormProps) => {
   )
 }
 
-export default AccountHierarchyEditForm
+export default AccountHierarchyChangeParent

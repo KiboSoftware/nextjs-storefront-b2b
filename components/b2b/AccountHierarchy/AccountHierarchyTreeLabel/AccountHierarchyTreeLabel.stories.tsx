@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { ListItemIcon } from '@mui/material'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
 import AccountHierarchyTreeLabel from './AccountHierarchyTreeLabel'
@@ -20,6 +21,7 @@ const Template: ComponentStory<typeof AccountHierarchyTreeLabel> = (args) => (
 
 export const Admin = Template.bind({})
 Admin.args = {
+  icons: <ListItemIcon></ListItemIcon>,
   label: mockUser.companyOrOrganization as string,
   role: B2BRoles.ADMIN,
   mdScreen: true,
