@@ -353,6 +353,14 @@ export const wishlistHandlers = [
   graphql.mutation('createWishlistItem', (_req, res, ctx) => {
     return res(ctx.data({ createWishlistItem: wishlistMock?.items[0].items[0] }))
   }),
+  // useDeleteWishlistMutation
+  graphql.mutation('deletewishlist', (_req, res, ctx) => {
+    return res(
+      ctx.data({
+        deleteWishlist: true,
+      })
+    )
+  }),
   // useRemoveWishlistItemMutation
   graphql.mutation('deletewishlistitem', (_req, res, ctx) => {
     return res(
@@ -360,6 +368,13 @@ export const wishlistHandlers = [
         deleteWishlistItem: true,
       })
     )
+  }),
+  graphql.mutation('updateWishlist', (_req, res, ctx) => {
+    const { customerAccountId, id, name } = wishlistMock.items[0]
+    return res(ctx.data({ customerAccountId, id, name, items: [] }))
+  }),
+  graphql.mutation('updateWishlistItemQuantity', (_req, res, ctx) => {
+    return res(ctx.data({ id: '62171e6cd0254c4bafb4b05100df8e1c', quantity: 10 }))
   }),
 ]
 
@@ -524,6 +539,17 @@ export const b2bHandlers = [
   //useCreateQuote
   graphql.mutation('createQuote', (_req, res, ctx) => {
     return res(ctx.data({ createQuote: quoteMock?.items?.[0] }))
+  }),
+
+  graphql.mutation('updateQuotesComments', (_req, res, ctx) => {
+    return res(
+      ctx.data({
+        updateQuotesComments: {
+          id: 'test-id',
+          text: 'test comment',
+        },
+      })
+    )
   }),
 
   // useCreateQuoteItem
