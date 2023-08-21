@@ -28,8 +28,10 @@ interface AccountHierarchyTreeProps {
   handleViewAccount: (item: B2BAccount) => void
   handleAddAccount: ({ isAddingAccountToChild, accounts }: AddChildAccountProps) => void
   handleEditAccount: ({ accounts }: EditChildAccountProps) => void
-  handleSwapAccount: (b2BAccount: B2BAccount) => void
-  handleDeleteAccount: (b2BAccount: B2BAccount) => void
+  handleSwapAccount: (accountId: number, parentAccountId: number) => void
+  handleDisableAccount: (b2BAccount: B2BAccount) => void
+  handleBuyersBtnClick: () => void
+  handleQuotesBtnClick: () => void
 }
 
 const CollapseStateIndicator = ({ isCollapsed }: { isCollapsed: boolean }) => {
@@ -48,8 +50,10 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
     handleViewAccount,
     handleAddAccount,
     handleEditAccount,
-    handleDeleteAccount,
+    handleDisableAccount,
     handleSwapAccount,
+    handleBuyersBtnClick,
+    handleQuotesBtnClick,
   } = props
 
   const theme = useTheme()
@@ -60,7 +64,9 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
   const renderItem = (props: any) => {
     const { item, collapseIcon, handler } = props
 
-    const currentAccount = accounts?.find((account: B2BAccount) => account.id === item.id)
+    const currentAccount: B2BAccount = accounts?.find(
+      (account: B2BAccount) => account.id === item.id
+    )
 
     const onViewAccountClick = () => {
       handleViewAccount(currentAccount)
@@ -75,23 +81,26 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
     const onEditAccountClick = () =>
       handleEditAccount({
         accounts,
-        accountToEdit: currentAccount,
+        b2BAccount: currentAccount,
       })
 
-    const onDeleteAccountClick = () => handleDeleteAccount(currentAccount)
+    const onDisableAccountClick = () => handleDisableAccount(currentAccount)
 
-    const onAccountSwap = () => handleSwapAccount(currentAccount)
+    const onAccountSwap = (parentAccountId: number) =>
+      handleSwapAccount(currentAccount?.id, parentAccountId)
 
     return (
       <AccountHierarchyTreeLabel
         role={role}
         mdScreen={mdScreen}
-        label={currentAccount?.companyOrOrganization}
+        label={currentAccount?.companyOrOrganization as string}
         onViewAccountClick={onViewAccountClick}
         onAddAccountClick={onAddAccountClick}
         onEditAccountClick={onEditAccountClick}
-        onDeleteAccountClick={onDeleteAccountClick}
+        onDisableAccountClick={onDisableAccountClick}
         onAccountSwap={onAccountSwap}
+        onBuyersBtnClick={handleBuyersBtnClick}
+        onQuotesBtnClick={handleQuotesBtnClick}
         icons={
           <ListItemIcon sx={{ display: 'flex' }}>
             <IconButton size="small">{handler}</IconButton>
@@ -108,6 +117,15 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
   }
 
   const refNestable = React.useRef<Nestable | null>(null)
+
+  const getSwapAccountParams = ({ items, targetPath }: any) => {
+    let parent = items
+    targetPath.forEach((h: number) => {
+      parent = parent[h] ?? parent?.children[h]
+    })
+
+    return parent?.id
+  }
 
   return (
     <>
@@ -136,7 +154,9 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
         renderCollapseIcon={({ isCollapsed }) => (
           <CollapseStateIndicator isCollapsed={isCollapsed} />
         )}
-        onChange={() => handleSwapAccount(accounts[0])}
+        onChange={({ dragItem, items, targetPath }) =>
+          handleSwapAccount(dragItem?.id, getSwapAccountParams({ items, targetPath }))
+        }
         handler={
           <Box display="flex" justifyContent="center" alignItems="center">
             <DragIndicator />

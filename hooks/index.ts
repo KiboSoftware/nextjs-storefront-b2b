@@ -137,6 +137,8 @@ export * from './mutations/standardCheckout/useUpdateUserOrder/useUpdateUserOrde
 export * from './mutations/wishlist/useAddToWishlistItem/useAddToWishlistItem'
 export * from './mutations/wishlist/useDeleteWishlistItem/useDeleteWishlistItem'
 export * from './mutations/wishlist/useCreateWishlist/useCreateWishlist'
+export * from './mutations/wishlist/useDeleteWishlist/useDeleteWishlist'
+export * from './mutations/wishlist/useUpdateWishlist/useUpdateWishlist'
 
 //Subscription
 export * from './mutations/subscription/useOrderSubscriptionNow/useOrderSubscriptionNow'
@@ -156,10 +158,12 @@ export * from './mutations/b2b/user/useAddRoleToCustomerB2bAccount/useAddRoleToC
 export * from './mutations/b2b/user/useDeleteB2bAccountRole/useDeleteB2bAccountRole'
 export * from './mutations/b2b/accountHierarchy/useCreateCustomerB2bAccount/useCreateCustomerB2bAccount'
 export * from './mutations/b2b/accountHierarchy/useUpdateCustomerB2bAccount/useUpdateCustomerB2bAccount'
+export * from './mutations/b2b/accountHierarchy/useChangeParentB2bAccount/useChangeB2bAccountParent'
 
 //quotes
-export * from './mutations/quotes/useDeleteQuoteItem/useDeleteQuoteItem'
-export * from './mutations/quotes/useCreateQuoteItem/useCreateQuoteItem'
-export * from './mutations/quotes/useCreateQuote/useCreateQuote'
-export * from './mutations/quotes/useUpdateQuoteItemFulfillment/useUpdateQuoteItemFulfillment'
-export * from './mutations/quotes/useUpdateQuoteItemQuantity/useUpdateQuoteItemQuantity'
+export * from './mutations/b2b/quotes/useDeleteQuoteItem/useDeleteQuoteItem'
+export * from './mutations/b2b/quotes/useCreateQuoteItem/useCreateQuoteItem'
+export * from './mutations/b2b/quotes/useCreateQuote/useCreateQuote'
+export * from './mutations/b2b/quotes/useUpdateQuoteItemFulfillment/useUpdateQuoteItemFulfillment'
+export * from './mutations/b2b/quotes/useUpdateQuoteItemQuantity/useUpdateQuoteItemQuantity'
+export * from './mutations/b2b/quotes/useDeleteQuote/useDeleteQuote'

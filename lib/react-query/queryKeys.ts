@@ -46,7 +46,8 @@ export const customerB2BUserKeys = {
 }
 
 export const accountHierarchyKeys = {
-  accountHierarchy: ['accountHierarchy'] as any,
+  all: ['accountHierarchy'] as any,
+  accountHierarchy: (accountId: number) => [...accountHierarchyKeys.all, accountId] as const,
 }
 
 export const productSearchResultKeys = {
@@ -88,7 +89,7 @@ export const wishlistKeys = {
   all: ['wishlist'] as const,
   page: (key: PageProps) =>
     [
-      wishlistKeys.all,
+      wishlistKeys.all[0],
       { startIndex: key.startIndex },
       { pageSize: key.pageSize },
       { filter: key.filter },

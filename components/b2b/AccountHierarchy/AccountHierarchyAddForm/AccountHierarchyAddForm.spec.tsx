@@ -22,7 +22,7 @@ const setup = () => {
 }
 
 describe('[component] Add Child Account Form', () => {
-  it('should render add child account form', async () => {
+  it('should render component', async () => {
     setup()
 
     const parentAccountField: HTMLInputElement = screen.getByRole('textbox', { name: '' })

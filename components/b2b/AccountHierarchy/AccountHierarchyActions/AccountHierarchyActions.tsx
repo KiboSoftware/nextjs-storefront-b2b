@@ -20,34 +20,26 @@ interface AccountHierarchyActionsProps {
   onAdd: () => void
   onView: () => void
   onEdit: () => void
-  onDelete: () => void
+  onDisable: () => void
 }
 
 const AccountHierarchyActions = (props: AccountHierarchyActionsProps) => {
-  const { role, mdScreen, onAdd, onView, onEdit, onDelete, onBuyersClick, onQuotesClick } = props
+  const { role, mdScreen, onAdd, onView, onEdit, onDisable, onBuyersClick, onQuotesClick } = props
   const { t } = useTranslation('common')
 
   const onMenuItemSelection = (option: string) => {
-    switch (option) {
-      case AllAccountActions.ADD_ACCOUNT: {
-        onAdd()
-        break
-      }
-      case AllAccountActions.VIEW_ACCOUNT: {
-        onView()
-        break
-      }
-      case AllAccountActions.EDIT_ACCOUNT: {
-        onEdit()
-        break
-      }
-      case AllAccountActions.DELETE_ACCOUNT: {
-        onDelete()
-        break
-      }
-      case AllAccountActions.VIEW_BUYER_ACCOUNT: {
-        onBuyersClick()
-      }
+    const menuItemSelectionMap = {
+      [AllAccountActions.ADD_ACCOUNT]: onAdd,
+      [AllAccountActions.VIEW_ACCOUNT]: onView,
+      [AllAccountActions.EDIT_ACCOUNT]: onEdit,
+      [AllAccountActions.DELETE_ACCOUNT]: onDisable,
+      [AllAccountActions.VIEW_BUYER_ACCOUNT]: onBuyersClick,
+      [AllAccountActions.VIEW_QUOTES]: onQuotesClick,
+    }
+
+    const selectedAction = menuItemSelectionMap[option]
+    if (selectedAction) {
+      selectedAction()
     }
   }
 
@@ -97,9 +89,9 @@ const AccountHierarchyActions = (props: AccountHierarchyActionsProps) => {
           <IconButton
             size="small"
             sx={{ p: 0.5 }}
-            aria-label="item-delete"
-            name="item-delete"
-            onClick={onDelete}
+            aria-label="item-disable"
+            name="item-disable"
+            onClick={onDisable}
           >
             <DeleteIcon />
           </IconButton>

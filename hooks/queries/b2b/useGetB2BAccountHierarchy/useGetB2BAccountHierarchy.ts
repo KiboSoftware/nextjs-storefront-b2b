@@ -25,20 +25,20 @@ const getB2BAccountHierarchy = async (accountId: number): Promise<B2BAccountHier
 }
 
 /**
- * [Query hook] useGetB2BUserQueries uses the graphQL query
+ * [Query hook] useGetB2BAccountHierachyQueries uses the graphQL query
  *
- * <b>B2bAccountUsers(accountId: Int): B2BAccountHierarchyResult</b>
+ * <b>getB2BAccountHierarchy(accountId: Int): B2BAccountHierarchyResult</b>
  *
- * Description : Fetches the B2B Users list based on accountId.
+ * Description : Fetches the B2B accounts list based on accountId.
  *
- * Parameters passed to function getB2BAccountHierarchy(accountId: QueryB2bAccountUsersArgs) => expects object of type QueryB2bAccountUsersArgs containing accountId.
+ * Parameters passed to function getB2BAccountHierarchy(accountId: number) => expects accountId of type number.
  *
- * @returns 'response', which contains list of accounts and hierarchy.
+ * @returns 'response?.getB2BAccountHierarchy', which contains list of accounts.
  */
 
 export const useGetB2BAccountHierachyQueries = (accountId: number): AccountHierarchyResultType => {
   const { isLoading, isSuccess, isError, data } = useQuery({
-    queryKey: accountHierarchyKeys.accountHierarchy,
+    queryKey: accountHierarchyKeys.accountHierarchy(accountId),
     queryFn: () => getB2BAccountHierarchy(accountId),
     enabled: !!accountId,
   })
