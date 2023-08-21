@@ -2,7 +2,6 @@ import { useTranslation } from 'next-i18next'
 
 import { AccountHierarchyChangeParent } from '@/components/b2b'
 import { KiboDialog } from '@/components/common'
-import { UpdateCustomerB2bAccountParams } from '@/lib/types'
 
 import { B2BAccount } from '@/lib/gql/types'
 
@@ -10,7 +9,7 @@ interface AccountHierarchyChangeParentDialogProps {
   accounts: B2BAccount[]
   b2BAccount: B2BAccount
   formTitle?: string
-  onSave: (data: UpdateCustomerB2bAccountParams) => void
+  onSave: (accountId: number, parentAccountId: number) => void
   onClose: () => void
 }
 

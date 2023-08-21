@@ -526,6 +526,18 @@ export const b2bHandlers = [
     return res(ctx.data({ createCustomerB2bAccount: b2BAccountResponseMock }))
   }),
 
+  // useChangeB2bAccountParent
+  graphql.mutation('changeB2bAccountParent', (_req, res, ctx) => {
+    return res(
+      ctx.data({
+        changeB2bAccountParent: {
+          ...b2BAccountHierarchyResult?.accounts?.[2],
+          parentAccountId: b2BAccountHierarchyResult?.accounts?.[0]?.id,
+        },
+      })
+    )
+  }),
+
   // useUpdateCustomerB2bAccount
   graphql.mutation('updateCustomerB2bAccount', (_req, res, ctx) => {
     return res(ctx.data({ updateCustomerB2bAccount: b2BAccountResponseMock }))

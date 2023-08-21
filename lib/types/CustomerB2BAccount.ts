@@ -43,3 +43,9 @@ export interface HierarchyNode {
   id: number
   children?: HierarchyNode[]
 }
+
+export interface NestableOnChangeArgs {
+  dragItem: HierarchyNode
+  items: HierarchyNode[]
+  targetPath: number[]
+}

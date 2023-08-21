@@ -15,6 +15,7 @@ import {
 } from '@/components/dialogs'
 import { useAuthContext, useModalContext } from '@/context'
 import {
+  useChangeB2bAccountParentMutation,
   useCreateCustomerB2bAccountMutation,
   useGetB2BAccountHierachyQueries,
   useGetB2BUserQueries,
@@ -46,6 +47,7 @@ const AccountHierarchyTemplate = () => {
   const { b2BAccountHierarchy } = useGetB2BAccountHierachyQueries(user?.id as number)
   const { createCustomerB2bAccount } = useCreateCustomerB2bAccountMutation()
   const { updateCustomerB2bAccount } = useUpdateCustomerB2bAccountMutation()
+  const { changeB2bAccountParent } = useChangeB2bAccountParentMutation()
   const { data } = useGetB2BUserQueries({
     accountId: user?.id as number,
     filter: '',
@@ -62,7 +64,6 @@ const AccountHierarchyTemplate = () => {
     hierarchy: undefined,
   })
   useEffect(() => {
-    console.log(data)
     if (!b2BAccountHierarchy) return
     const hierarchy = buildAccountHierarchy(b2BAccountHierarchy?.accounts)
     setAccountHierarchy({
@@ -96,6 +97,11 @@ const AccountHierarchyTemplate = () => {
     if (updateCustomerB2BAccount) closeModal()
   }
 
+  const handleB2bAccountParentChange = async (accountId: number, parentAccountId: number) => {
+    await changeB2bAccountParent.mutateAsync({ accountId, parentAccountId })
+    closeModal()
+  }
+
   const handleAddAccount = ({ isAddingAccountToChild, accounts }: AddChildAccountProps) => {
     showModal({
       Component: AccountHierarchyAddFormDialog,
@@ -118,8 +124,8 @@ const AccountHierarchyTemplate = () => {
         b2BAccount,
         primaryButtonText: t('save'),
         formTitle: t('edit-child-account'),
-        onSave: (formValues: CreateCustomerB2bAccountParams) =>
-          handleEditAccountFormSubmit(formValues, b2BAccount),
+        onSave: (accountId: number, parentAccountId: number) =>
+          handleB2bAccountParentChange(accountId, parentAccountId),
         onClose: () => closeModal(),
       },
     })
@@ -135,14 +141,15 @@ const AccountHierarchyTemplate = () => {
     })
   }
 
-  const handleSwapAccount = (b2BAccount: B2BAccount) => {
+  const handleSwapAccount = (accountId: number, parentAccountId: number) => {
     showModal({
       Component: ConfirmationDialog,
       props: {
         contentText: t('swap-account-hierarchy-text'),
         primaryButtonText: t('yes-move-anyway'),
         title: t('swap-account-hierarchy'),
-        onConfirm: () => console.log('account swapped'),
+        onConfirm: () => handleB2bAccountParentChange(accountId, parentAccountId),
+        onClose: () => closeModal(),
       },
     })
   }
@@ -154,7 +161,8 @@ const AccountHierarchyTemplate = () => {
         contentText: t('disable-account-confirm-message'),
         primaryButtonText: t('yes-remove'),
         title: t('confirmation'),
-        onConfirm: () => console.log('account deleted'),
+        onConfirm: () => console.log('account disabled'),
+        onClose: () => closeModal(),
       },
     })
   }

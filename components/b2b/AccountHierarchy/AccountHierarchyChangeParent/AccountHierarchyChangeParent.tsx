@@ -9,14 +9,13 @@ import * as yup from 'yup'
 
 import { AccountHierarchyFormStyles } from '../AccountHierarchyAddForm/AccountHierarchyAddForm.styles'
 import { KiboSelect } from '@/components/common'
-import { UpdateCustomerB2bAccountParams } from '@/lib/types'
 
 import { B2BAccount } from '@/lib/gql/types'
 
 interface AccountHierarchyChangeParentProps {
   accounts: B2BAccount[]
   b2BAccount: B2BAccount
-  onSave: (data: UpdateCustomerB2bAccountParams) => void
+  onSave: (accountId: number, parentAccountId: number) => void
   onClose: () => void
 }
 
@@ -39,7 +38,6 @@ const AccountHierarchyChangeParent = (props: AccountHierarchyChangeParentProps) 
   const {
     formState: { errors },
     control,
-    getValues,
     setValue,
     handleSubmit,
   } = useForm({
@@ -64,8 +62,7 @@ const AccountHierarchyChangeParent = (props: AccountHierarchyChangeParentProps) 
   const onSubmit = () => {
     if (isLoading || !selectedParentAccount) return
     setLoading(true)
-    const formValues = getValues()
-    onSave({ parentAccount: selectedParentAccount })
+    onSave(b2BAccount.id, selectedParentAccount.id)
   }
 
   const handleParentAccountChange = (name: string, value: string) => {

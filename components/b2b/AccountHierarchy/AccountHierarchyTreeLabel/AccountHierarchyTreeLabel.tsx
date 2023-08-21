@@ -14,7 +14,7 @@ interface AccountHierarchyTreeLabelProps {
   onAddAccountClick: () => void
   onEditAccountClick: () => void
   onDisableAccountClick: () => void
-  onAccountSwap: () => void
+  onAccountSwap: (accountId: number, parentAccountId: number) => void
   onBuyersBtnClick: () => void
   onQuotesBtnClick: () => void
 }

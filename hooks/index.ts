@@ -158,6 +158,7 @@ export * from './mutations/b2b/user/useAddRoleToCustomerB2bAccount/useAddRoleToC
 export * from './mutations/b2b/user/useDeleteB2bAccountRole/useDeleteB2bAccountRole'
 export * from './mutations/b2b/accountHierarchy/useCreateCustomerB2bAccount/useCreateCustomerB2bAccount'
 export * from './mutations/b2b/accountHierarchy/useUpdateCustomerB2bAccount/useUpdateCustomerB2bAccount'
+export * from './mutations/b2b/accountHierarchy/useChangeParentB2bAccount/useChangeB2bAccountParent'
 
 //quotes
 export * from './mutations/b2b/quotes/useDeleteQuoteItem/useDeleteQuoteItem'
