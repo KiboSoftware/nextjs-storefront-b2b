@@ -197,3 +197,7 @@ export const AccountActions = {
   ],
   [B2BRoles.NON_PURCHASER]: [AllAccountActions.VIEW_ACCOUNT],
 }
+
+export enum AccountType {
+  B2B = 'B2B',
+}

@@ -158,8 +158,9 @@ export * from './mutations/b2b/accountHierarchy/useCreateCustomerB2bAccount/useC
 export * from './mutations/b2b/accountHierarchy/useUpdateCustomerB2bAccount/useUpdateCustomerB2bAccount'
 
 //quotes
-export * from './mutations/quotes/useDeleteQuoteItem/useDeleteQuoteItem'
-export * from './mutations/quotes/useCreateQuoteItem/useCreateQuoteItem'
-export * from './mutations/quotes/useCreateQuote/useCreateQuote'
-export * from './mutations/quotes/useUpdateQuoteItemFulfillment/useUpdateQuoteItemFulfillment'
-export * from './mutations/quotes/useUpdateQuoteItemQuantity/useUpdateQuoteItemQuantity'
+export * from './mutations/b2b/quotes/useDeleteQuoteItem/useDeleteQuoteItem'
+export * from './mutations/b2b/quotes/useCreateQuoteItem/useCreateQuoteItem'
+export * from './mutations/b2b/quotes/useCreateQuote/useCreateQuote'
+export * from './mutations/b2b/quotes/useUpdateQuoteItemFulfillment/useUpdateQuoteItemFulfillment'
+export * from './mutations/b2b/quotes/useUpdateQuoteItemQuantity/useUpdateQuoteItemQuantity'
+export * from './mutations/b2b/quotes/useDeleteQuote/useDeleteQuote'
