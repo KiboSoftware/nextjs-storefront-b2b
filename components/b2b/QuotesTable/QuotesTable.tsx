@@ -27,7 +27,7 @@ import getConfig from 'next/config'
 import { useTranslation } from 'next-i18next'
 
 import { KiboPagination, KiboSelect, Price, SearchBar } from '@/components/common'
-import { QuotesFilterDialog } from '@/components/dialogs'
+import { ConfirmationDialog, QuotesFilterDialog } from '@/components/dialogs'
 import { useModalContext } from '@/context'
 import { useDebounce, useDeleteQuote } from '@/hooks'
 import { quoteGetters } from '@/lib/getters'
@@ -152,8 +152,17 @@ const QuotesTable = (props: QuotesTableProps) => {
   }
 
   const handleDeleteQuote = (id: string) => {
-    deleteQuote.mutate(id)
-    handleClose()
+    showModal({
+      Component: ConfirmationDialog,
+      props: {
+        onConfirm: () => {
+          deleteQuote.mutate(id)
+          handleClose()
+        },
+        contentText: t('delete-quote-confirm-message'),
+        primaryButtonText: t('delete'),
+      },
+    })
   }
 
   const handleFilterAction = (filters: QuoteFilters) => {
