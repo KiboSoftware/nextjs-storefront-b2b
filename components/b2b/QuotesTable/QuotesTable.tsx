@@ -152,17 +152,20 @@ const QuotesTable = (props: QuotesTableProps) => {
   }
 
   const handleDeleteQuote = (id: string) => {
-    showModal({
-      Component: ConfirmationDialog,
-      props: {
-        onConfirm: () => {
-          deleteQuote.mutate(id)
-          handleClose()
+    try {
+      showModal({
+        Component: ConfirmationDialog,
+        props: {
+          onConfirm: () => {
+            deleteQuote.mutate(id, { onSettled: () => handleClose() })
+          },
+          contentText: t('delete-quote-confirm-message'),
+          primaryButtonText: t('delete'),
         },
-        contentText: t('delete-quote-confirm-message'),
-        primaryButtonText: t('delete'),
-      },
-    })
+      })
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   const handleFilterAction = (filters: QuoteFilters) => {
@@ -347,7 +350,11 @@ const QuotesTable = (props: QuotesTableProps) => {
                             <IconButton size="small" onClick={handleEmailQuote}>
                               <Mail fontSize="small" />
                             </IconButton>
-                            <IconButton size="small" onClick={() => handleDeleteQuote(quoteId)}>
+                            <IconButton
+                              size="small"
+                              data-testid="delete-quote"
+                              onClick={() => handleDeleteQuote(quoteId)}
+                            >
                               <Delete fontSize="small" />
                             </IconButton>
                           </Box>
