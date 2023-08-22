@@ -10,7 +10,7 @@ const { Common } = composeStories(stories)
 const onSaveMock = jest.fn()
 const onCloseMock = jest.fn()
 
-const AccountHierarchyEditFormMock = ({
+const AccountHierarchyChangeParentMock = ({
   onClose,
   onSave,
 }: {
@@ -28,8 +28,8 @@ const AccountHierarchyEditFormMock = ({
 )
 
 jest.mock(
-  '@/components/b2b/AccountHierarchy/AccountHierarchyEditForm/AccountHierarchyEditForm',
-  () => () => AccountHierarchyEditFormMock({ onClose: onCloseMock, onSave: onSaveMock })
+  '@/components/b2b/AccountHierarchy/AccountHierarchyChangeParent/AccountHierarchyChangeParent',
+  () => () => AccountHierarchyChangeParentMock({ onClose: onCloseMock, onSave: onSaveMock })
 )
 
 describe('[components]  AccountHierarchyChangeParentDialog Dialog', () => {
