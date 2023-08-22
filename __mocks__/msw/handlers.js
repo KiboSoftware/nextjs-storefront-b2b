@@ -527,7 +527,7 @@ export const b2bHandlers = [
   }),
 
   // useChangeB2bAccountParent
-  graphql.mutation('changeB2bAccountParent', (_req, res, ctx) => {
+  graphql.mutation('changeB2BAccountParent', (_req, res, ctx) => {
     return res(
       ctx.data({
         changeB2bAccountParent: {

@@ -17,7 +17,7 @@ describe('[hooks] useChangeB2bAccountParentMutation', () => {
       parentAccountId: parentAccount.id,
     }
 
-    result.current.changeB2bAccountParent.mutateAsync({ ...changeB2bAccountParentInputMock })
+    result.current.changeB2bAccountParent.mutateAsync(changeB2bAccountParentInputMock)
 
     await waitFor(() => {
       expect(result.current.changeB2bAccountParent.data).toStrictEqual({
