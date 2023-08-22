@@ -27,7 +27,7 @@ const changeB2bAccountParent = async ({
  *
  * <b>changeB2bAccountParentUser(accountInput: Int!, parentAccountId: Int!): B2BAccount</b>
  *
- * Description : Changes parent of any child account in a hierarchy
+ * Description : Update parent of child account in a hierarchy
  *
  * Parameters passed to function changeB2bAccountParent({accountId,parentAccountId}: MutationChangeB2bAccountParentArgs) => expects object of type 'MutationChangeB2bAccountParentArgs' containing accountId and parentAccountId
  *
