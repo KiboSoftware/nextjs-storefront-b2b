@@ -84,7 +84,6 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
 
   const handleOnSuccess = (account: any, onSuccessCallBack?: () => void) => {
     if (account?.customerAccount) {
-      console.log('----account?.customerAccount----', account?.customerAccount)
       setUser(account?.customerAccount)
     }
 
