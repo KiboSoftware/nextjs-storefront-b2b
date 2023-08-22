@@ -7,6 +7,7 @@ fragment quoteFragment on Quote {
         number
         submittedDate 
         expirationDate
+        email
         total
         status 
         subTotal        
@@ -105,8 +106,11 @@ fragment quoteFragment on Quote {
                     postalOrZipCode
                     addressType 
                     isValidated
+                    countryCode
                 }
             }
+            shippingMethodCode
+            shippingMethodName
         }
         userId
         customerAccountId

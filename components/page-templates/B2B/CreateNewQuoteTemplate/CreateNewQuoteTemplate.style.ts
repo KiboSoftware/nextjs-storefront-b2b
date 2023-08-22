@@ -25,4 +25,14 @@ export const createNewQuoteTemplateStyles = {
     fontStyle: 'italic',
     color: 'grey.600',
   },
+  quoteDetailsHeading: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  quoteDetails: {
+    display: { md: 'flex', xs: 'block' },
+  },
+  gridPaddingTop: {
+    paddingTop: { xs: '0px', md: '24px' },
+  },
 }

@@ -12,11 +12,12 @@ import type { NextPage, GetServerSidePropsContext, NextApiRequest, NextApiRespon
 interface QuotePageProps {
   quoteId: string
   quote: Quote
+  mode: string
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const { locale, params, req, res } = context
-  const { quoteId } = params as any
+  const { locale, params, req, res, query } = context
+  const { quoteId, mode = '' } = query as any
   const draft = true
   const quote = await getQuote(quoteId, draft, req as NextApiRequest, res as NextApiResponse)
 
@@ -28,13 +29,14 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     props: {
       quote,
       quoteId,
+      mode,
       ...(await serverSideTranslations(locale as string, ['common'])),
     },
   }
 }
 
 const QuotePage: NextPage<QuotePageProps> = (props) => {
-  const { quoteId, quote: initialQuote } = props
+  const { quoteId, quote: initialQuote, mode } = props
   const draft = true
   const router = useRouter()
   const { data: quoteResult } = useGetQuoteByID({ quoteId, draft, initialQuote })
@@ -46,7 +48,11 @@ const QuotePage: NextPage<QuotePageProps> = (props) => {
       <Head>
         <meta name="robots" content="noindex,nofollow" />
       </Head>
-      <CreateNewQuoteTemplate quote={quoteResult as Quote} onAccountTitleClick={handleGoToQuotes} />
+      <CreateNewQuoteTemplate
+        quote={quoteResult as Quote}
+        mode={mode}
+        onAccountTitleClick={handleGoToQuotes}
+      />
     </>
   )
 }

@@ -563,6 +563,15 @@ export const b2bHandlers = [
       })
     )
   }),
+  //useUpdateQuote
+  graphql.mutation('updateQuote', (_req, res, ctx) => {
+    return res(ctx.data({ updateQuote: quoteMock?.items?.[0] }))
+  }),
+
+  //useUpdateQuoteFulfillmentInfo
+  graphql.mutation('updateQuoteFulfillmentInfo', (_req, res, ctx) => {
+    return res(ctx.data({ updateQuoteFulfillmentInfo: quoteMock?.items?.[0] }))
+  }),
 
   // useCreateQuoteItem
   graphql.mutation('createQuoteItem', (_req, res, ctx) => {

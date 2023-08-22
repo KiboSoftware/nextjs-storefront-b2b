@@ -77,3 +77,4 @@ export { default as updateQuoteItemFulfillmentMutation } from './b2b/quotes/upda
 export { default as deleteQuoteMutation } from './b2b/quotes/delete-quote'
 export { default as updateQuoteEmailMutation } from './b2b/quotes/update-email-quote'
 export { default as updateQuoteCommentsMutation } from './b2b/quotes/update-quote-comments'
+export { default as updateQuoteFulfillmentInfo } from './b2b/quotes/update-quote-fulfillment-info'

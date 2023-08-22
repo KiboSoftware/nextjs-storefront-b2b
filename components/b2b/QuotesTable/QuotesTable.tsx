@@ -24,6 +24,7 @@ import {
   useTheme,
 } from '@mui/material'
 import getConfig from 'next/config'
+import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 
 import { QuotesTableStyles } from './QuotesTable.styles'
@@ -134,6 +135,7 @@ const QuotesTable = (props: QuotesTableProps) => {
 
   const { deleteQuote } = useDeleteQuote()
 
+  const router = useRouter()
   const getStatusColorCode = (status: string) => {
     return statusColorCode[status]
   }
@@ -163,7 +165,8 @@ const QuotesTable = (props: QuotesTableProps) => {
     })
   }
 
-  const handleEditQuote = () => {
+  const handleEditQuote = (quoteId: string) => {
+    router.push(`/my-account/quote/${quoteId}`)
     handleClose()
   }
 
@@ -337,7 +340,7 @@ const QuotesTable = (props: QuotesTableProps) => {
                           <TableCell component="td" scope="row" align="right">
                             <Box display={'flex'} justifyContent={'flex-end'}>
                               {accessHandler.canEdit(status) && (
-                                <IconButton size="small" onClick={handleEditQuote}>
+                                <IconButton size="small" onClick={() => handleEditQuote(quoteId)}>
                                   <Edit fontSize="small" />
                                 </IconButton>
                               )}
@@ -393,7 +396,7 @@ const QuotesTable = (props: QuotesTableProps) => {
           }}
         >
           {accessHandler.canEdit(anchorEl?.quote?.status as string) && (
-            <MenuItem onClick={handleEditQuote}>
+            <MenuItem onClick={() => handleEditQuote(anchorEl?.quote?.id as string)}>
               <Typography variant="body2">{t('edit-quote')}</Typography>
             </MenuItem>
           )}

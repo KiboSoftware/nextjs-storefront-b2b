@@ -13,7 +13,7 @@ const mockOperations = operations as {
 }
 
 const context = {
-  params: {
+  query: {
     quoteId: 'quote-id',
   },
   req: {
@@ -82,6 +82,7 @@ describe('[page] Quote Page', () => {
       props: {
         quote: mockQuote,
         quoteId: 'quote-id',
+        mode: '',
         _nextI18Next: {
           initialI18nStore: { 'mock-locale': [{}], en: [{}] },
           initialLocale: 'mock-locale',
@@ -95,6 +96,7 @@ describe('[page] Quote Page', () => {
     const props = {
       quoteId: 'quote-id',
       quote: quoteMock?.items?.[0] as Quote,
+      mode: '',
     }
     render(
       <RQNotificationContextProvider>

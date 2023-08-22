@@ -45,7 +45,7 @@ const QuotesTemplate = (props: QuotesTemplateProps) => {
       })
 
       if (createQuoteResponse?.id) {
-        router.push(`/my-account/quote/${createQuoteResponse.id}`)
+        router.push(`/my-account/quote/${createQuoteResponse.id}?mode=create`)
       }
       return null
     } catch (err) {

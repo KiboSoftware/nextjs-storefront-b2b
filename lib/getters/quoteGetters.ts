@@ -1,10 +1,13 @@
 import { format } from 'date-fns'
 
 import { DateFormat } from '../constants'
+import { FulfillmentOptions } from '../constants'
 import {
   AuditRecord,
   AuditRecordChange,
   AuditRecordChangeField,
+  CrContact,
+  CrOrderItem,
   Quote,
   QuoteCollection,
 } from '../gql/types'
@@ -78,6 +81,25 @@ const getQuotesPaginationDetails = (collection: QuoteCollection) => {
   }
 }
 
+const getQuoteShippingContact = (quote: Quote): CrContact =>
+  quote?.fulfillmentInfo?.fulfillmentContact as CrContact
+
+const getItemsByFulfillment = (quote: Quote, fulfillmentMethod: string): CrOrderItem[] => {
+  return (
+    (quote?.items?.filter(
+      (lineItem) => lineItem?.fulfillmentMethod === fulfillmentMethod
+    ) as CrOrderItem[]) || []
+  )
+}
+const getQuotePickupItems = (quote: Quote): CrOrderItem[] => {
+  return getItemsByFulfillment(quote, FulfillmentOptions.PICKUP)
+}
+const getQuoteShipItems = (quote: Quote): CrOrderItem[] =>
+  getItemsByFulfillment(quote, FulfillmentOptions.SHIP)
+
+const getQuoteShippingMethodCode = (quote: Quote): string =>
+  quote.fulfillmentInfo?.shippingMethodCode || ''
+
 export const quoteGetters = {
   getQuotes,
   getNumber,
@@ -92,4 +114,8 @@ export const quoteGetters = {
   getQuoteId,
   getQuotesPaginationDetails,
   getRecordType,
+  getQuoteShippingContact,
+  getQuotePickupItems,
+  getQuoteShipItems,
+  getQuoteShippingMethodCode,
 }

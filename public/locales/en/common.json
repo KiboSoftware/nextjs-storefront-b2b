@@ -489,5 +489,9 @@
   "email-input-placeholder": "Press Enter after entering email address",
   "email-addresses": "Email address(es)",
   "b2b-account-request": "B2B Account Request",
-  "request-account": "Request Account"
+  "request-account": "Request Account",
+  "remove-item": "Remove Item",
+  "remove-quote-item": "Yes, remove",
+  "remove-quote-item-confirmation": "Are you sure you want to remove this item from the quote? This action cannot be undone.",
+  "continue-to-checkout": "Continue to Checkout"
 }
