@@ -19,7 +19,7 @@ import { AccountHierarchyStyles } from './AccountHierarchyTree.styles'
 import { AccountHierarchyTreeLabel } from '@/components/b2b'
 import { AddChildAccountProps, EditChildAccountProps, HierarchyNode } from '@/lib/types'
 
-import { B2BAccount } from '@/lib/gql/types'
+import { B2BAccount, B2BUser } from '@/lib/gql/types'
 
 interface AccountHierarchyTreeProps {
   role: string
@@ -30,7 +30,7 @@ interface AccountHierarchyTreeProps {
   handleEditAccount: ({ accounts }: EditChildAccountProps) => void
   handleSwapAccount: (accountId: number, parentAccountId: number) => void
   handleDisableAccount: (b2BAccount: B2BAccount) => void
-  handleBuyersBtnClick: () => void
+  handleBuyersBtnClick: (b2BUsers: B2BUser[]) => void
   handleQuotesBtnClick: (id: number) => void
 }
 
@@ -99,7 +99,7 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
         onEditAccountClick={onEditAccountClick}
         onDisableAccountClick={onDisableAccountClick}
         onAccountSwap={onAccountSwap}
-        onBuyersBtnClick={handleBuyersBtnClick}
+        onBuyersBtnClick={() => handleBuyersBtnClick(currentAccount.users as B2BUser[])}
         onQuotesBtnClick={() => handleQuotesBtnClick(currentAccount.id)}
         icons={
           <ListItemIcon sx={{ display: 'flex' }}>

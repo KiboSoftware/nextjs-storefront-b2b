@@ -47,12 +47,6 @@ import { B2BUserInput, CustomerB2BUserRole } from '@/lib/types/CustomerB2BUser'
 
 import { B2BUser } from '@/lib/gql/types'
 
-interface AddUserButtonProps {
-  isUserFormOpen: boolean
-  onClick: () => void
-  sx?: SxProps<Theme>
-}
-
 const BackButtonLink = styled(Link)(({ theme }: { theme: Theme }) => ({
   typography: 'body2',
   textDecoration: 'none',
