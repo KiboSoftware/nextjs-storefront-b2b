@@ -5,7 +5,7 @@ import { Box, Button, Grid, useMediaQuery, useTheme } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 
-import { AccountHierarchyTree, QuotesTable } from '@/components/b2b'
+import { AccountHierarchyTree, QuotesTable, UserTable } from '@/components/b2b'
 import {
   AccountHierarchyAddFormDialog,
   AccountHierarchyChangeParentDialog,
@@ -85,6 +85,8 @@ const AccountHierarchyTemplate = () => {
   ]
   const [activeComponent, setActiveComponent] = useState('accountHierarchy')
   const activeBreadCrumb = breadcrumbList.filter((item) => item.key === activeComponent)[0]
+
+  const [b2bUsers, setB2bUsers] = useState<B2BUser[]>([])
 
   // Add this to achieve Mobile Layout
   const onBackClick = () => {
@@ -197,8 +199,9 @@ const AccountHierarchyTemplate = () => {
     })
   }
 
-  const handleBuyersBtnClick = () => {
-    console.log('buyers button clicked')
+  const handleBuyersBtnClick = (users: B2BUser[]) => {
+    setB2bUsers(users)
+    setActiveComponent('buyers')
   }
 
   const { quotesSearchParam, sortingValues, handleQuotesSearchParam } = useB2BQuote()
@@ -274,9 +277,12 @@ const AccountHierarchyTemplate = () => {
           quoteCollection={quoteCollection}
           sortingValues={sortingValues}
           filters={parseFilterParamToObject(quotesSearchParam.filter as string)}
+          showActionButtons={false}
           setQuotesSearchParam={handleQuotesSearchParam}
         />
       )}
+
+      {activeComponent === 'buyers' && <UserTable b2bUsers={b2bUsers} showActionButtons={false} />}
     </Grid>
   )
 }

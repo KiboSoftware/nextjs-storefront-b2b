@@ -41,6 +41,7 @@ interface QuotesTableProps {
   quoteCollection: QuoteCollection
   sortingValues: QuoteSortingOptions
   filters: QuoteFilters
+  showActionButtons?: boolean
   setQuotesSearchParam: (param: QueryQuotesArgs) => void
 }
 
@@ -95,7 +96,13 @@ const mobileColumns = [
 ]
 
 const QuotesTable = (props: QuotesTableProps) => {
-  const { quoteCollection, sortingValues, filters, setQuotesSearchParam } = props
+  const {
+    quoteCollection,
+    sortingValues,
+    filters,
+    showActionButtons = true,
+    setQuotesSearchParam,
+  } = props
 
   const { publicRuntimeConfig } = getConfig()
 
@@ -318,29 +325,33 @@ const QuotesTable = (props: QuotesTableProps) => {
                           </Box>
                         </TableCell>
                         <TableCell component="td" scope="row" align="right">
-                          <Box display={'flex'} justifyContent={'flex-end'}>
-                            <IconButton size="small" onClick={handleEditQuote}>
-                              <Edit fontSize="small" />
-                            </IconButton>
-                            <IconButton size="small" onClick={handleEmailQuote}>
-                              <Mail fontSize="small" />
-                            </IconButton>
-                            <IconButton
-                              size="small"
-                              data-testid="delete-quote"
-                              onClick={() => handleDeleteQuote(quoteId)}
-                            >
-                              <Delete fontSize="small" />
-                            </IconButton>
-                          </Box>
+                          {showActionButtons && (
+                            <Box display={'flex'} justifyContent={'flex-end'}>
+                              <IconButton size="small" onClick={handleEditQuote}>
+                                <Edit fontSize="small" />
+                              </IconButton>
+                              <IconButton size="small" onClick={handleEmailQuote}>
+                                <Mail fontSize="small" />
+                              </IconButton>
+                              <IconButton
+                                size="small"
+                                data-testid="delete-quote"
+                                onClick={() => handleDeleteQuote(quoteId)}
+                              >
+                                <Delete fontSize="small" />
+                              </IconButton>
+                            </Box>
+                          )}
                         </TableCell>
                       </>
                     ) : (
                       <>
                         <TableCell component="td" scope="row" align="right">
-                          <IconButton size="small" onClick={(e) => handleClick(e, quoteId)}>
-                            <MoreVert fontSize="small" />
-                          </IconButton>
+                          {showActionButtons && (
+                            <IconButton size="small" onClick={(e) => handleClick(e, quoteId)}>
+                              <MoreVert fontSize="small" />
+                            </IconButton>
+                          )}
                         </TableCell>
                       </>
                     )}
