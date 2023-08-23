@@ -1,10 +1,13 @@
 import React from 'react'
 
 import { useMediaQuery } from '@mui/material'
-import { render, screen, fireEvent } from '@testing-library/react'
-import '@testing-library/jest-dom/extend-expect' // For using jest-dom matchers
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import '@testing-library/jest-dom/extend-expect'
 
-import MobileB2BLayout from './MobileB2BLayout' // Adjust the path as needed
+import MobileB2BLayout from './MobileB2BLayout'
+
+const user = userEvent.setup()
 
 jest.mock('@mui/material', () => ({
   ...jest.requireActual('@mui/material'),
@@ -35,7 +38,7 @@ describe('MobileB2BLayout', () => {
 
     const arrowIcon = screen.getByTestId('arrow-icon')
 
-    fireEvent.click(arrowIcon)
+    user.click(arrowIcon)
 
     expect(mockOnBackClick).toHaveBeenCalled()
   })
