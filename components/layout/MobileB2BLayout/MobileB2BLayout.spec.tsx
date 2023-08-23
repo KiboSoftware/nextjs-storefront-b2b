@@ -33,12 +33,12 @@ describe('MobileB2BLayout', () => {
     expect(arrowIcon).toBeInTheDocument()
   })
 
-  it('calls onBackClick when back button is clicked', () => {
+  it('calls onBackClick when back button is clicked', async () => {
     render(<MobileB2BLayout {...testProps} />)
 
     const arrowIcon = screen.getByTestId('arrow-icon')
 
-    user.click(arrowIcon)
+    await user.click(arrowIcon)
 
     expect(mockOnBackClick).toHaveBeenCalled()
   })
