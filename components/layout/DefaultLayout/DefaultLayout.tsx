@@ -4,7 +4,6 @@ import { Container, Stack } from '@mui/material'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
 import { HydrationBoundary } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import creditCardType from 'credit-card-type'
 import Router from 'next/router'
 
@@ -74,7 +73,6 @@ const DefaultLayout = ({ pageProps, children }: { pageProps: any; children: Reac
                 <Container maxWidth={'xl'} sx={{ py: 2, flex: '1 0 auto' }}>
                   {children}
                 </Container>
-                <ReactQueryDevtools initialIsOpen={true} />
                 <Footer content={pageProps.footer} />
               </Stack>
             </HeaderContextProvider>
