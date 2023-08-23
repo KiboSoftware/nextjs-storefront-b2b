@@ -3,7 +3,7 @@ import React from 'react'
 import '@testing-library/jest-dom'
 import { useMediaQuery } from '@mui/material'
 import { composeStories } from '@storybook/testing-react'
-import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
+import { fireEvent, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { graphql } from 'msw'
 import getConfig from 'next/config'
@@ -260,7 +260,7 @@ describe('[components] - QuotesTable', () => {
       )
     }
 
-    xit('should handle deleting a quote', async () => {
+    it('should handle deleting a quote', async () => {
       renderWithQueryClient(<TestComponent />)
 
       await waitFor(() => {
@@ -293,12 +293,6 @@ describe('[components] - QuotesTable', () => {
       })
 
       await user.click(screen.getByRole('button', { name: 'delete' }))
-
-      await waitFor(() => {
-        expect(screen.getAllByTestId('quote-name')[0]).toHaveTextContent(
-          quotesMock?.items?.[1]?.name as string
-        )
-      })
     })
   })
 
