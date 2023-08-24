@@ -15,7 +15,7 @@ describe('[components]  EmailQuoteDialog', () => {
   it('should render EmailQuoteDialog component', () => {
     renderWithQueryClient(<Common closeModal={closeModalMock} onEmailSend={onEmailSendMock} />)
 
-    expect(screen.getByPlaceholderText('email-input-placeholder')).toBeVisible()
+    expect(screen.getByRole('combobox')).toBeVisible()
 
     expect(screen.getByRole('button', { name: 'send' })).toBeDisabled()
     expect(screen.getByRole('button', { name: 'cancel' })).toBeVisible()
