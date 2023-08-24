@@ -6,7 +6,6 @@ import {
   Chip,
   FormControl,
   FormControlLabel,
-  InputLabel,
   Stack,
   TextField,
   Typography,
@@ -78,7 +77,7 @@ const EmailQuoteContent = (props: EmailQuoteContentProps) => {
             variant="outlined"
             label={option}
             {...getTagProps({ index })}
-            key={index}
+            key={option}
             onDelete={() => handleDelete(index)}
           />
         ))

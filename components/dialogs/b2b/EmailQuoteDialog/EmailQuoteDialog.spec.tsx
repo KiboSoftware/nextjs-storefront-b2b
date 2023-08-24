@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/testing-react'
-import { screen, waitFor, within } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import * as stories from './EmailQuoteDialog.stories'
