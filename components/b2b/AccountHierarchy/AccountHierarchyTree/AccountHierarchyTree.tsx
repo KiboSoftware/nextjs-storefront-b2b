@@ -19,15 +19,17 @@ import { AccountHierarchyStyles } from './AccountHierarchyTree.styles'
 import { AccountHierarchyTreeLabel } from '@/components/b2b'
 import { AddChildAccountProps, EditChildAccountProps, HierarchyNode } from '@/lib/types'
 
-import { B2BAccount, B2BUser } from '@/lib/gql/types'
+import { B2BAccount, B2BUser, CustomerAccount } from '@/lib/gql/types'
 
 interface AccountHierarchyTreeProps {
   role: string
   accounts: any[]
+  customerAccount: CustomerAccount | undefined
   hierarchy: HierarchyNode[] | undefined
   handleViewAccount: (item: B2BAccount) => void
   handleAddAccount: ({ isAddingAccountToChild, accounts }: AddChildAccountProps) => void
   handleEditAccount: ({ accounts }: EditChildAccountProps) => void
+  handleChangeParent: ({ accounts }: EditChildAccountProps) => void
   handleSwapAccount: (accountId: number, parentAccountId: number) => void
   handleDisableAccount: (b2BAccount: B2BAccount) => void
   handleBuyersBtnClick: (b2BUsers: B2BUser[]) => void
@@ -47,9 +49,11 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
     accounts,
     hierarchy,
     role,
+    customerAccount,
     handleViewAccount,
     handleAddAccount,
     handleEditAccount,
+    handleChangeParent,
     handleDisableAccount,
     handleSwapAccount,
     handleBuyersBtnClick,
@@ -78,11 +82,19 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
         accounts: [currentAccount],
       })
 
-    const onEditAccountClick = () =>
-      handleEditAccount({
-        accounts,
-        b2BAccount: currentAccount,
-      })
+    const onEditAccountClick = () => {
+      if (customerAccount?.id === currentAccount.id) {
+        handleEditAccount({
+          accounts,
+          b2BAccount: currentAccount,
+        })
+      } else {
+        handleChangeParent({
+          accounts,
+          b2BAccount: currentAccount,
+        })
+      }
+    }
 
     const onDisableAccountClick = () => handleDisableAccount(currentAccount)
 
@@ -120,8 +132,10 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
 
   const getSwapAccountParams = ({ items, targetPath }: any) => {
     let parent = items
-    targetPath.forEach((h: number) => {
-      parent = parent[h] ?? parent?.children[h]
+    targetPath.forEach((h: number, index: number) => {
+      if (index < targetPath?.length) {
+        parent = parent[h] ?? parent?.children[h]
+      }
     })
 
     return parent?.id

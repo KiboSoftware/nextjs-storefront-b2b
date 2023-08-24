@@ -7,7 +7,7 @@ import { useTranslation } from 'next-i18next'
 
 import { AccountHierarchyTree, QuotesTable, UserTable } from '@/components/b2b'
 import {
-  AccountHierarchyAddFormDialog,
+  AccountHierarchyFormDialog,
   AccountHierarchyChangeParentDialog,
   ConfirmationDialog,
   ViewAccountDetailsDialog,
@@ -108,7 +108,9 @@ const AccountHierarchyTemplate = () => {
     formValues: CreateCustomerB2bAccountParams,
     account: B2BAccount
   ) => {
+    console.log(formValues)
     const variables = buildUpdateCustomerB2bAccountParams(formValues, account)
+    console.log(variables)
     const updateCustomerB2BAccount = await updateCustomerB2bAccount.mutateAsync({
       ...variables,
     })
@@ -122,7 +124,7 @@ const AccountHierarchyTemplate = () => {
 
   const handleAddAccount = ({ isAddingAccountToChild, accounts }: AddChildAccountProps) => {
     showModal({
-      Component: AccountHierarchyAddFormDialog,
+      Component: AccountHierarchyFormDialog,
       props: {
         accounts,
         isAddingAccountToChild,
@@ -136,11 +138,24 @@ const AccountHierarchyTemplate = () => {
 
   const handleEditAccount = ({ accounts, b2BAccount }: EditChildAccountProps) => {
     showModal({
+      Component: AccountHierarchyFormDialog,
+      props: {
+        accounts,
+        b2BAccount,
+        formTitle: t('edit-child-account'),
+        onSave: (formValues: CreateCustomerB2bAccountParams) =>
+          handleEditAccountFormSubmit(formValues, b2BAccount),
+        onClose: () => closeModal(),
+      },
+    })
+  }
+
+  const handleChangeParent = ({ accounts, b2BAccount }: EditChildAccountProps) => {
+    showModal({
       Component: AccountHierarchyChangeParentDialog,
       props: {
         accounts,
         b2BAccount,
-        primaryButtonText: t('save'),
         formTitle: t('edit-child-account'),
         onSave: (accountId: number, parentAccountId: number) =>
           handleB2bAccountParentChange(accountId, parentAccountId),
@@ -187,7 +202,7 @@ const AccountHierarchyTemplate = () => {
 
   const handleAddChildAccount = () => {
     showModal({
-      Component: AccountHierarchyAddFormDialog,
+      Component: AccountHierarchyFormDialog,
       props: {
         accounts: accountHierarchy.accounts,
         isAddingAccountToChild: false,
@@ -230,9 +245,7 @@ const AccountHierarchyTemplate = () => {
         headerText={
           activeBreadCrumb?.key === 'accountHierarchy'
             ? t('account-hierarchy')
-            : activeBreadCrumb?.key === 'quotes'
-            ? t('quotes')
-            : t('buyers')
+            : t(activeBreadCrumb?.key)
         }
         backText={activeBreadCrumb?.backText}
         onBackClick={onBackClick}
@@ -258,11 +271,13 @@ const AccountHierarchyTemplate = () => {
           <Grid item xs={12}>
             <AccountHierarchyTree
               role={userGetters.getRole(data?.items?.[0] as B2BUser)}
+              customerAccount={user}
               accounts={accountHierarchy.accounts}
               hierarchy={accountHierarchy.hierarchy}
               handleViewAccount={handleViewAccount}
               handleAddAccount={handleAddAccount}
               handleEditAccount={handleEditAccount}
+              handleChangeParent={handleChangeParent}
               handleSwapAccount={handleSwapAccount}
               handleDisableAccount={handleDisableAccount}
               handleBuyersBtnClick={handleBuyersBtnClick}
