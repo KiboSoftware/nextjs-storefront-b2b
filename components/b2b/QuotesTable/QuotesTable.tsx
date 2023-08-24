@@ -28,9 +28,9 @@ import { useTranslation } from 'next-i18next'
 
 import { QuotesTableStyles } from './QuotesTable.styles'
 import { KiboPagination, KiboSelect, Price, SearchBar } from '@/components/common'
-import { ConfirmationDialog, QuotesFilterDialog } from '@/components/dialogs'
+import { ConfirmationDialog, EmailQuoteDialog, QuotesFilterDialog } from '@/components/dialogs'
 import { useModalContext } from '@/context'
-import { useDebounce, useDeleteQuote } from '@/hooks'
+import { useDebounce, useDeleteQuote, useEmailQuote } from '@/hooks'
 import { quoteGetters } from '@/lib/getters'
 import { buildQuotesFilterParam } from '@/lib/helpers'
 import { QuoteFilters, QuoteSortingOptions } from '@/lib/types'
@@ -103,6 +103,7 @@ const QuotesTable = (props: QuotesTableProps) => {
   const theme = useTheme()
 
   const { showModal } = useModalContext()
+  const { emailQuote } = useEmailQuote()
   const tabAndDesktop = useMediaQuery(theme.breakpoints.up('sm'))
   const [searchTerm, setSearchTerm] = useState('')
   const debouncedTerm = useDebounce(searchTerm, publicRuntimeConfig.debounceTimeout)
@@ -147,9 +148,13 @@ const QuotesTable = (props: QuotesTableProps) => {
     handleClose()
   }
 
-  const handleEmailQuote = () => {
-    // TODO
-    // showModal({ Component: EmailQuoteDialog })
+  const handleEmailQuote = (quoteId: string) => {
+    showModal({
+      Component: EmailQuoteDialog,
+      props: {
+        onEmailSend: (emails: string[]) => emailQuote.mutate({ quoteId, emails }),
+      },
+    })
     handleClose()
   }
 
@@ -322,7 +327,7 @@ const QuotesTable = (props: QuotesTableProps) => {
                             <IconButton size="small" onClick={handleEditQuote}>
                               <Edit fontSize="small" />
                             </IconButton>
-                            <IconButton size="small" onClick={handleEmailQuote}>
+                            <IconButton size="small" onClick={() => handleEmailQuote(quoteId)}>
                               <Mail fontSize="small" />
                             </IconButton>
                             <IconButton
@@ -370,7 +375,7 @@ const QuotesTable = (props: QuotesTableProps) => {
           <MenuItem onClick={handleEditQuote}>
             <Typography variant="body2">{t('edit-quote')}</Typography>
           </MenuItem>
-          <MenuItem onClick={handleEmailQuote}>
+          <MenuItem onClick={() => handleEmailQuote(anchorEl.id)}>
             <Typography variant="body2">{t('email-quote')}</Typography>
           </MenuItem>
           <MenuItem onClick={() => handleDeleteQuote(anchorEl.id)}>
