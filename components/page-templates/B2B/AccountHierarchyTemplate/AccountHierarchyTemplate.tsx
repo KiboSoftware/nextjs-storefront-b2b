@@ -108,9 +108,7 @@ const AccountHierarchyTemplate = () => {
     formValues: CreateCustomerB2bAccountParams,
     account: B2BAccount
   ) => {
-    console.log(formValues)
     const variables = buildUpdateCustomerB2bAccountParams(formValues, account)
-    console.log(variables)
     const updateCustomerB2BAccount = await updateCustomerB2bAccount.mutateAsync({
       ...variables,
     })
@@ -283,7 +281,9 @@ const AccountHierarchyTemplate = () => {
         />
       )}
 
-      {activeComponent === 'buyers' && <UserTable b2bUsers={b2bUsers} showActionButtons={false} />}
+      {activeComponent === 'buyers' && (
+        <UserTable mdScreen={mdScreen} b2bUsers={b2bUsers} showActionButtons={false} />
+      )}
     </Grid>
   )
 }

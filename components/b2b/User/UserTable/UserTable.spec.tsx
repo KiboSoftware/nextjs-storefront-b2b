@@ -6,7 +6,7 @@ import * as stories from './UserTable.stories' // import all stories from the st
 
 import { B2BUser } from '@/lib/gql/types'
 
-const { Table } = composeStories(stories)
+const { Table, TableMobile } = composeStories(stories)
 
 const onDeleteMock = jest.fn()
 const onCloseMock = jest.fn()
@@ -87,6 +87,13 @@ describe('[component] User Table', () => {
     )
   })
 
+  it('should show No Record Found when users list is empty', () => {
+    render(<Table {...Table.args} b2bUsers={[]} />)
+
+    const noRecordFound = screen.getByText('no-record-found')
+    expect(noRecordFound).toBeVisible()
+  })
+
   it('should show user form when user clicks on Edit icon', async () => {
     render(<Table {...Table.args} />)
 
@@ -128,5 +135,17 @@ describe('[component] User Table', () => {
     fireEvent.click(cancelButton)
 
     expect(onCloseMock).toHaveBeenCalled()
+  })
+
+  it('should show edit user dialog when mdScreen is false', async () => {
+    render(<TableMobile {...TableMobile.args} />)
+
+    const rows = await screen.findAllByRole('row')
+    const userActionMenu = within(rows[1]).getByTestId('EditIcon')
+    expect(userActionMenu).toBeVisible()
+
+    fireEvent.click(userActionMenu)
+    const dialog = screen.getByRole('dialog')
+    expect(dialog).toBeVisible()
   })
 })

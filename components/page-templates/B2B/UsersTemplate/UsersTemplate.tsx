@@ -258,6 +258,7 @@ const UsersTemplate = () => {
         ) : (
           <>
             <UserTable
+              mdScreen={mdScreen}
               b2bUsers={data?.items as B2BUser[]}
               onSave={handleUpdateUser}
               onDelete={handleDelete}
