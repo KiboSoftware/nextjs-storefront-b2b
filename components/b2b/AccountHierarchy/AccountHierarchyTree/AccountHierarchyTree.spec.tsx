@@ -13,7 +13,6 @@ const hierarchy = b2BAccountHierarchyResult.hierarchy
 const AccountHierarchyTreeLabelMock = () => (
   <div data-testid="account-hierarchy-tree-label-mock"></div>
 )
-
 jest.mock(
   '@/components/b2b/AccountHierarchy/AccountHierarchyTreeLabel/AccountHierarchyTreeLabel',
   () => () => AccountHierarchyTreeLabelMock()

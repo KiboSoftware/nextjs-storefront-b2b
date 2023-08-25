@@ -1,8 +1,6 @@
 import * as React from 'react'
 
-import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import DragIndicator from '@mui/icons-material/DragIndicator'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import {
   Box,
   Button,
@@ -17,6 +15,7 @@ import Nestable from 'react-nestable'
 
 import { AccountHierarchyStyles } from './AccountHierarchyTree.styles'
 import { AccountHierarchyTreeLabel } from '@/components/b2b'
+import { KiboCollapseIndicator } from '@/components/common'
 import { AddChildAccountProps, EditChildAccountProps, HierarchyNode } from '@/lib/types'
 
 import { B2BAccount, B2BUser, CustomerAccount } from '@/lib/gql/types'
@@ -34,14 +33,6 @@ interface AccountHierarchyTreeProps {
   handleDisableAccount: (b2BAccount: B2BAccount) => void
   handleBuyersBtnClick: (b2BUsers: B2BUser[]) => void
   handleQuotesBtnClick: (id: number) => void
-}
-
-const CollapseStateIndicator = ({ isCollapsed }: { isCollapsed: boolean }) => {
-  return (
-    <Box display="flex" justifyContent="center" alignItems="center">
-      {isCollapsed ? <ChevronRightIcon /> : <ExpandMoreIcon />}
-    </Box>
-  )
 }
 
 export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
@@ -64,64 +55,6 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
   const mdScreen = useMediaQuery(theme.breakpoints.up('md'))
 
   const { t } = useTranslation('common')
-
-  const renderItem = (props: any) => {
-    const { item, collapseIcon, handler } = props
-
-    const currentAccount: B2BAccount = accounts?.find(
-      (account: B2BAccount) => account.id === item.id
-    )
-
-    const onViewAccountClick = () => {
-      handleViewAccount(currentAccount)
-    }
-
-    const onAddAccountClick = () =>
-      handleAddAccount({
-        isAddingAccountToChild: true,
-        accounts: [currentAccount],
-      })
-
-    const onEditAccountClick = () => {
-      if (customerAccount?.id === currentAccount.id) {
-        handleEditAccount({
-          accounts,
-          b2BAccount: currentAccount,
-        })
-      } else {
-        handleChangeParent({
-          accounts,
-          b2BAccount: currentAccount,
-        })
-      }
-    }
-
-    const onDisableAccountClick = () => handleDisableAccount(currentAccount)
-
-    const onAccountSwap = (parentAccountId: number) =>
-      handleSwapAccount(currentAccount?.id, parentAccountId)
-
-    return (
-      <AccountHierarchyTreeLabel
-        role={role}
-        mdScreen={mdScreen}
-        label={currentAccount?.companyOrOrganization as string}
-        onViewAccountClick={onViewAccountClick}
-        onAddAccountClick={onAddAccountClick}
-        onEditAccountClick={onEditAccountClick}
-        onDisableAccountClick={onDisableAccountClick}
-        onAccountSwap={onAccountSwap}
-        onBuyersBtnClick={() => handleBuyersBtnClick(currentAccount.users as B2BUser[])}
-        onQuotesBtnClick={() => handleQuotesBtnClick(currentAccount.id)}
-        icons={
-          <ListItemIcon sx={{ display: 'flex' }}>
-            <IconButton size="small">{handler}</IconButton>
-            {collapseIcon ? <IconButton size="small">{collapseIcon}</IconButton> : null}
-          </ListItemIcon>
-        }
-      />
-    )
-  }
 
   const handleCollapse = (collapseCase: 'ALL' | 'NONE') => {
     const instance = refNestable.current as any
@@ -164,9 +97,31 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
       <Nestable
         ref={(el) => (refNestable.current = el)}
         items={hierarchy as HierarchyNode[]}
-        renderItem={renderItem}
+        renderItem={({ item, collapseIcon, handler }: any) => (
+          <AccountHierarchyTreeLabel
+            role={role}
+            mdScreen={mdScreen}
+            item={item}
+            accounts={accounts}
+            customerAccount={customerAccount}
+            handleViewAccount={handleViewAccount}
+            handleAddAccount={handleAddAccount}
+            handleEditAccount={handleEditAccount}
+            handleDisableAccount={handleDisableAccount}
+            handleChangeParent={handleChangeParent}
+            handleSwapAccount={handleSwapAccount}
+            handleBuyersBtnClick={handleBuyersBtnClick}
+            handleQuotesBtnClick={handleQuotesBtnClick}
+            icons={
+              <ListItemIcon sx={{ display: 'flex' }}>
+                <IconButton size="small">{handler}</IconButton>
+                {collapseIcon ? <IconButton size="small">{collapseIcon}</IconButton> : null}
+              </ListItemIcon>
+            }
+          />
+        )}
         renderCollapseIcon={({ isCollapsed }) => (
-          <CollapseStateIndicator isCollapsed={isCollapsed} />
+          <KiboCollapseIndicator isCollapsed={isCollapsed} />
         )}
         onChange={({ dragItem, items, targetPath }) =>
           handleSwapAccount(dragItem?.id, getSwapAccountParams({ items, targetPath }))

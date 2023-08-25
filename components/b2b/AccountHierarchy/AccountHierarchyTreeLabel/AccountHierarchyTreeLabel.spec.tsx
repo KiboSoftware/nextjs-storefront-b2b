@@ -2,7 +2,7 @@ import { composeStories } from '@storybook/testing-react'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import * as stories from './AccountHierarchyTreeLabel.stories'
-import { userResponseMock } from '@/__mocks__/stories'
+import { b2BAccountHierarchyResult } from '@/__mocks__/stories'
 
 const { Admin, Purchaser, NonPurchaser } = composeStories(stories)
 
@@ -21,7 +21,8 @@ interface AccountHierarchyActionsMockProps {
   onQuotesClick: () => void
 }
 
-const companyOrOrganizationName = userResponseMock?.companyOrOrganization as string
+const companyOrOrganizationName = b2BAccountHierarchyResult?.accounts?.[0]
+  ?.companyOrOrganization as string
 
 const AccountHierarchyActionsMock = ({
   onAdd,
