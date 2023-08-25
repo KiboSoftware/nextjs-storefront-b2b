@@ -9,13 +9,11 @@ const { Admin, Purchaser, NonPurchaser } = composeStories(stories)
 const onAddMock = jest.fn()
 const onEditMock = jest.fn()
 const onViewMock = jest.fn()
-const onDisableMock = jest.fn()
 const onBuyerClickMock = jest.fn()
 const onQuotesClickMock = jest.fn()
 interface AccountHierarchyActionsMockProps {
   onAdd: () => void
   onEdit: () => void
-  onDisable: () => void
   onView: () => void
   onBuyerClick: () => void
   onQuotesClick: () => void
@@ -27,7 +25,6 @@ const companyOrOrganizationName = b2BAccountHierarchyResult?.accounts?.[0]
 const AccountHierarchyActionsMock = ({
   onAdd,
   onEdit,
-  onDisable,
   onView,
   onBuyerClick,
   onQuotesClick,
@@ -38,9 +35,6 @@ const AccountHierarchyActionsMock = ({
     </button>
     <button data-testid="item-edit-mock-button" onClick={onEdit}>
       Edit
-    </button>
-    <button data-testid="item-disable-mock-button" onClick={onDisable}>
-      Disable
     </button>
     <button data-testid="item-view-mock-button" onClick={onView}>
       View
@@ -60,7 +54,6 @@ jest.mock(
     AccountHierarchyActionsMock({
       onAdd: onAddMock,
       onEdit: onEditMock,
-      onDisable: onDisableMock,
       onView: onViewMock,
       onBuyerClick: onBuyerClickMock,
       onQuotesClick: onQuotesClickMock,
@@ -90,11 +83,6 @@ describe('AccountHierarchyTreeLabel', () => {
     expect(accountEditButton).toBeVisible()
     fireEvent.click(accountEditButton)
     expect(onEditMock).toHaveBeenCalled()
-
-    const accountDIsableButton = screen.getByTestId('item-disable-mock-button')
-    expect(accountDIsableButton).toBeVisible()
-    fireEvent.click(accountDIsableButton)
-    expect(onDisableMock).toHaveBeenCalled()
 
     const buyerButton = screen.getByTestId('buyer-mock-button')
     expect(buyerButton).toBeVisible()

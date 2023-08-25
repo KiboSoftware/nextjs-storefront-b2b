@@ -10,7 +10,6 @@ const onQuotesClickMock = jest.fn()
 const onAddMock = jest.fn()
 const onEditMock = jest.fn()
 const onViewMock = jest.fn()
-const onDisableMock = jest.fn()
 
 describe('AccountHierarchyActions', () => {
   it('should render component', async () => {
@@ -22,7 +21,6 @@ describe('AccountHierarchyActions', () => {
         onEdit={onEditMock}
         onView={onViewMock}
         mdScreen={true}
-        onDisable={onDisableMock}
       />
     )
 
@@ -40,10 +38,6 @@ describe('AccountHierarchyActions', () => {
     const accountViewButton = screen.getByRole('button', { name: 'item-view' })
     accountViewButton.click()
     expect(onViewMock).toHaveBeenCalled()
-
-    const accountDisableButton = screen.getByRole('button', { name: 'item-disable' })
-    accountDisableButton.click()
-    expect(onDisableMock).toHaveBeenCalled()
 
     const buyerButton = screen.getByText('buyers')
     buyerButton.click()

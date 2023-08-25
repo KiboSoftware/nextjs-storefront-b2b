@@ -30,7 +30,6 @@ interface AccountHierarchyTreeProps {
   handleEditAccount: ({ accounts }: EditChildAccountProps) => void
   handleChangeParent: ({ accounts }: EditChildAccountProps) => void
   handleSwapAccount: (accountId: number, parentAccountId: number) => void
-  handleDisableAccount: (b2BAccount: B2BAccount) => void
   handleBuyersBtnClick: (b2BUsers: B2BUser[]) => void
   handleQuotesBtnClick: (id: number) => void
 }
@@ -45,7 +44,6 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
     handleAddAccount,
     handleEditAccount,
     handleChangeParent,
-    handleDisableAccount,
     handleSwapAccount,
     handleBuyersBtnClick,
     handleQuotesBtnClick,
@@ -107,7 +105,6 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
             handleViewAccount={handleViewAccount}
             handleAddAccount={handleAddAccount}
             handleEditAccount={handleEditAccount}
-            handleDisableAccount={handleDisableAccount}
             handleChangeParent={handleChangeParent}
             handleSwapAccount={handleSwapAccount}
             handleBuyersBtnClick={handleBuyersBtnClick}

@@ -1,7 +1,6 @@
 import React from 'react'
 
 import AddCircle from '@mui/icons-material/AddCircle'
-import Delete from '@mui/icons-material/Delete'
 import Edit from '@mui/icons-material/Edit'
 import Visibility from '@mui/icons-material/Visibility'
 import { Box, IconButton, Typography } from '@mui/material'
@@ -18,11 +17,10 @@ interface AccountHierarchyActionsProps {
   onAdd: () => void
   onView: () => void
   onEdit: () => void
-  onDisable: () => void
 }
 
 const AccountHierarchyActions = (props: AccountHierarchyActionsProps) => {
-  const { role, mdScreen, onAdd, onView, onEdit, onDisable, onBuyersClick, onQuotesClick } = props
+  const { role, mdScreen, onAdd, onView, onEdit, onBuyersClick, onQuotesClick } = props
   const { t } = useTranslation('common')
 
   const onMenuItemSelection = (option: string) => {
@@ -30,7 +28,6 @@ const AccountHierarchyActions = (props: AccountHierarchyActionsProps) => {
       [AllAccountActions.ADD_ACCOUNT]: onAdd,
       [AllAccountActions.VIEW_ACCOUNT]: onView,
       [AllAccountActions.EDIT_ACCOUNT]: onEdit,
-      [AllAccountActions.DELETE_ACCOUNT]: onDisable,
       [AllAccountActions.VIEW_BUYER_ACCOUNT]: onBuyersClick,
       [AllAccountActions.VIEW_QUOTES]: onQuotesClick,
     }
@@ -91,15 +88,6 @@ const AccountHierarchyActions = (props: AccountHierarchyActionsProps) => {
             onClick={onEdit}
           >
             <Edit />
-          </IconButton>
-          <IconButton
-            size="small"
-            sx={{ p: 0.5 }}
-            aria-label="item-disable"
-            name="item-disable"
-            onClick={onDisable}
-          >
-            <Delete />
           </IconButton>
         </Box>
       )}
