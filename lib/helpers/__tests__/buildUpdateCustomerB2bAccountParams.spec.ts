@@ -33,15 +33,6 @@ describe('[helpers] buildUpdateCustomerB2bAccountParams function', () => {
         companyOrOrganization,
         taxId,
         isActive: true,
-        users: [
-          {
-            firstName,
-            lastName,
-            emailAddress,
-            userName,
-            localeCode,
-          },
-        ],
       },
     })
   })

@@ -26,6 +26,7 @@ import { B2BUserInput } from '@/lib/types'
 import { B2BUser } from '@/lib/gql/types'
 
 interface UserTableProps {
+  mdScreen: boolean
   b2bUsers: B2BUser[] | undefined
   showActionButtons?: boolean
   onDelete?: (id: string | undefined) => void
@@ -42,12 +43,11 @@ const style = {
 }
 
 const UserTable = (props: UserTableProps) => {
-  const { b2bUsers, showActionButtons = true, onDelete, onSave } = props
+  const { mdScreen, b2bUsers, showActionButtons = true, onDelete, onSave } = props
 
   const { t } = useTranslation('common')
   const { showModal, closeModal } = useModalContext()
   const theme = useTheme()
-  const mdScreen = useMediaQuery(theme.breakpoints.up('md'))
   const [editUserId, setEditUserId] = useState<string | undefined>(undefined)
 
   const onEditUserButtonClick = (b2BUser: B2BUser) => {
