@@ -56,10 +56,15 @@ export const useGetQuoteShippingMethods = (
     isLoading,
     isSuccess,
   } = useQuery({
-    queryKey: quoteShippingMethodKeys.detail(quoteId, draft),
+    queryKey: quoteShippingMethodKeys.detail(
+      quoteId,
+      draft,
+      isNewAddressAdded,
+      selectedShippingAddressId
+    ),
     queryFn: () => loadShippingMethods(quoteId, draft),
     // cacheTime: 0,
-    enabled: !!(quoteId && draft && (isNewAddressAdded?.toString() || selectedShippingAddressId)), //!!quoteId && !!draft,
+    enabled: !!(quoteId && draft && (isNewAddressAdded?.toString() || selectedShippingAddressId)),
   })
 
   return { data, isLoading, isSuccess }

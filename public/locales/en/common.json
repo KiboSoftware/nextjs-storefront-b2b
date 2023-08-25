@@ -491,7 +491,15 @@
   "b2b-account-request": "B2B Account Request",
   "request-account": "Request Account",
   "remove-item": "Remove Item",
-  "remove-quote-item": "Yes, remove",
+  "submit-quote-title": "Submit Quote",
+  "remove-quote-item": "Yes, Remove",
+  "submit-quote": "Yes, Submit for Approval",
+  "clear-quote-changes": "Yes, Clear Changes",
   "remove-quote-item-confirmation": "Are you sure you want to remove this item from the quote? This action cannot be undone.",
-  "continue-to-checkout": "Continue to Checkout"
+  "submit-quote-confirmation": "Are you sure you want to submit this quote to be reviewed by the seller? This action cannot be undone.",
+  "clear-quote-changes-confirmation": "Are you sure you want to clear all new changes made to this quote? This action cannot be undone.",
+  "continue-to-checkout": "Continue to Checkout",
+  "comments": "Comments",
+  "view-full-comment-thread": "View Full Comment Thread",
+  "address": "Address"
 }

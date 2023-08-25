@@ -123,7 +123,7 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
     try {
       const initiateOrderResponse = isMultiShipEnabled
         ? await initiateCheckout.mutateAsync(cart?.id)
-        : await initiateOrder.mutateAsync(cart?.id)
+        : await initiateOrder.mutateAsync({ cartId: cart?.id as string })
 
       if (initiateOrderResponse?.id) {
         router.push(`/checkout/${initiateOrderResponse.id}`)

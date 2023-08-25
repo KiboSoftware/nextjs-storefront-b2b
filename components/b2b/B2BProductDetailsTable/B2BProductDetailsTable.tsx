@@ -25,6 +25,7 @@ interface B2BProductDetailsTableProps {
   purchaseLocation: Location
   status?: string
   mode?: string
+  isQuote?: boolean
   onFulfillmentOptionChange: (value: string, id: string) => void
   onStoreSetOrUpdate: (id: string) => void
   onQuantityUpdate: (cartItemId: string, quantity: number) => void
@@ -37,6 +38,7 @@ export default function B2BProductDetailsTable(props: B2BProductDetailsTableProp
     fulfillmentLocations,
     purchaseLocation,
     mode,
+    isQuote = false,
     status,
     onFulfillmentOptionChange,
     onStoreSetOrUpdate,
@@ -120,7 +122,7 @@ export default function B2BProductDetailsTable(props: B2BProductDetailsTableProp
                 />
               </TableCell>
               <TableCell>
-                {status?.toLowerCase() === 'inreview' || !mode ? (
+                {status?.toLowerCase() === 'inreview' || (!mode && isQuote) ? (
                   <Typography>
                     {item.fulfillmentMethod} - {item.fulfillmentLocationCode}
                   </Typography>
@@ -136,7 +138,7 @@ export default function B2BProductDetailsTable(props: B2BProductDetailsTableProp
                 )}
               </TableCell>
               <TableCell>
-                {status?.toLowerCase() === 'inreview' || !mode ? (
+                {status?.toLowerCase() === 'inreview' || (!mode && isQuote) ? (
                   <Typography>{item.quantity}</Typography>
                 ) : (
                   <QuantitySelector
@@ -181,16 +183,17 @@ export default function B2BProductDetailsTable(props: B2BProductDetailsTableProp
                 />
               </TableCell>
               <TableCell>
-                {status?.toLowerCase() !== 'inreview' && (mode === 'create' || mode === 'edit') && (
-                  <IconButton
-                    sx={{ p: 0.5 }}
-                    aria-label="item-delete"
-                    name="item-delete"
-                    onClick={() => onItemDelete(item?.id as string)}
-                  >
-                    <Delete />
-                  </IconButton>
-                )}
+                {status?.toLowerCase() !== 'inreview' &&
+                  (mode === 'create' || mode === 'edit' || !isQuote) && (
+                    <IconButton
+                      sx={{ p: 0.5 }}
+                      aria-label="item-delete"
+                      name="item-delete"
+                      onClick={() => onItemDelete(item?.id as string)}
+                    >
+                      <Delete />
+                    </IconButton>
+                  )}
               </TableCell>
             </TableRow>
           ))}

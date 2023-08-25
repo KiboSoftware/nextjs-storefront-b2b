@@ -24,8 +24,12 @@ export const shippingMethodKeys = {
 
 export const quoteShippingMethodKeys = {
   all: ['quoteShippingMethod'] as const,
-  detail: (id: string, draft?: boolean, addressId?: number | string) =>
-    [...quoteShippingMethodKeys.all, id, draft, addressId] as const,
+  detail: (
+    id: string,
+    draft?: boolean,
+    addressId?: boolean,
+    selectedShippingAddressId?: string | number
+  ) => [...quoteShippingMethodKeys.all, id, draft, addressId, selectedShippingAddressId] as const,
 }
 export const searchKeys = {
   all: ['search'] as const,

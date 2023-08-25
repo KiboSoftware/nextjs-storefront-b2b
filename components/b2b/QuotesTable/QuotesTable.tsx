@@ -133,7 +133,7 @@ const QuotesTable = (props: QuotesTableProps) => {
     Expired: 'error',
   }
 
-  const { deleteQuote } = useDeleteQuote()
+  const { deleteQuote } = useDeleteQuote({ draft: false })
 
   const router = useRouter()
   const getStatusColorCode = (status: string) => {
@@ -180,13 +180,13 @@ const QuotesTable = (props: QuotesTableProps) => {
     handleClose()
   }
 
-  const handleDeleteQuote = (id: string) => {
+  const handleDeleteQuote = (quoteId: string, draft: boolean) => {
     try {
       showModal({
         Component: ConfirmationDialog,
         props: {
           onConfirm: () => {
-            deleteQuote.mutate(id, { onSettled: () => handleClose() })
+            deleteQuote.mutate({ quoteId, draft }, { onSettled: () => handleClose() })
           },
           contentText: t('delete-quote-confirm-message'),
           primaryButtonText: t('delete'),
@@ -353,7 +353,7 @@ const QuotesTable = (props: QuotesTableProps) => {
                               <IconButton
                                 size="small"
                                 data-testid="delete-quote"
-                                onClick={() => handleDeleteQuote(quoteId)}
+                                onClick={() => handleDeleteQuote(quoteId, false)}
                               >
                                 <Delete fontSize="small" />
                               </IconButton>
@@ -405,7 +405,7 @@ const QuotesTable = (props: QuotesTableProps) => {
               <Typography variant="body2">{t('email-quote')}</Typography>
             </MenuItem>
           )}
-          <MenuItem onClick={() => handleDeleteQuote(anchorEl?.quote?.id as string)}>
+          <MenuItem onClick={() => handleDeleteQuote(anchorEl?.quote?.id as string, false)}>
             <Typography variant="body2">{t('delete-quote')}</Typography>
           </MenuItem>
         </Menu>

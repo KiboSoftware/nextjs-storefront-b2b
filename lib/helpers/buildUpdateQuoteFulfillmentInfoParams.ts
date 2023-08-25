@@ -1,6 +1,6 @@
-import type { CrOrder, CrContact, CrFulfillmentInfoInput, Quote } from '@/lib/gql/types'
+import type { CrContact, CrFulfillmentInfoInput, Quote } from '@/lib/gql/types'
 
-export interface QuoteFullmentInfoParams {
+export interface QuoteFulfillmentInfoParams {
   quoteId: string
   updateMode: string
   fulfillmentInfoInput: CrFulfillmentInfoInput
@@ -18,7 +18,7 @@ export interface UpdateQuoteFulfillmentInfoParams {
 
 export const buildUpdateQuoteFulfillmentInfoParams = (
   params: UpdateQuoteFulfillmentInfoParams
-): QuoteFullmentInfoParams => {
+): QuoteFulfillmentInfoParams => {
   const { quoteId, updateMode, quote, contact, email, shippingMethodCode, shippingMethodName } =
     params
 
@@ -36,5 +36,5 @@ export const buildUpdateQuoteFulfillmentInfoParams = (
 
       shippingMethodName: shippingMethodName ? shippingMethodName : null,
     } as CrFulfillmentInfoInput,
-  } as QuoteFullmentInfoParams
+  } as QuoteFulfillmentInfoParams
 }

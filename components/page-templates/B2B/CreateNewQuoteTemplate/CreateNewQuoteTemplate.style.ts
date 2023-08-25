@@ -1,3 +1,5 @@
+import { grey } from '@/styles/theme'
+
 export const createNewQuoteTemplateStyles = {
   wrapIcon: {
     display: 'flex',
@@ -33,6 +35,15 @@ export const createNewQuoteTemplateStyles = {
     display: { md: 'flex', xs: 'block' },
   },
   gridPaddingTop: {
-    paddingTop: { xs: '0px', md: '24px' },
+    paddingTop: { xs: 0, md: '24px' },
+  },
+  viewFullCommentThreadButton: {
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+  },
+  viewFullCommentThreadLink: {
+    color: 'grey.900',
+    textDecorationColor: `${grey[900]}`,
   },
 }

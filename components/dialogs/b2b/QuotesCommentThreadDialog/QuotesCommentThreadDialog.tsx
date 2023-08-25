@@ -10,21 +10,31 @@ import { QuoteComment } from '@/lib/gql/types'
 interface QuoteCommentThreadDialogProps {
   userId: string
   comments: QuoteComment[]
+  mode?: string
+  status?: string
+  onAddCommentToQuote: (comment: string) => void
   closeModal: () => void
 }
 
 const QuoteCommentThreadDialog = (props: QuoteCommentThreadDialogProps) => {
-  const { userId, comments, closeModal } = props
+  const { userId, comments, mode, status, onAddCommentToQuote, closeModal } = props
   const { t } = useTranslation('common')
 
-  const handleComment = () => {
+  const handleComment = (comment: string) => {
+    onAddCommentToQuote(comment)
     closeModal()
   }
 
   const DialogArgs = {
     Title: t('comment-thread'),
     Content: (
-      <QuotesCommentThread comments={comments} userId={userId} onAddComment={handleComment} />
+      <QuotesCommentThread
+        comments={comments}
+        userId={userId}
+        mode={mode}
+        status={status}
+        onAddComment={handleComment}
+      />
     ),
     showContentTopDivider: true,
     showContentBottomDivider: false,
