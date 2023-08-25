@@ -5,7 +5,7 @@ export const buildUpdateCustomerB2bAccountParams = (
   params: CreateCustomerB2bAccountParams,
   account: B2BAccount
 ): MutationUpdateCustomerB2bAccountArgs => {
-  const { parentAccount, companyOrOrganization, taxId, firstName, lastName, emailAddress } = params
+  const { parentAccount, companyOrOrganization, taxId } = params
 
   const updateCustomerB2bAccountParam = {
     accountId: account?.id,
@@ -15,15 +15,6 @@ export const buildUpdateCustomerB2bAccountParams = (
       companyOrOrganization,
       taxId,
       isActive: true,
-      users: [
-        {
-          firstName,
-          lastName,
-          emailAddress,
-          userName: emailAddress,
-          localeCode: 'en-IN',
-        },
-      ],
     },
   }
 

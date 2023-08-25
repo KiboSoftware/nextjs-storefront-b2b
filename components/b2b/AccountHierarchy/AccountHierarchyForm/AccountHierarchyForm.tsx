@@ -112,7 +112,7 @@ const AccountHierarchyForm = (props: AccountHierarchyFormProps) => {
             control={control}
             render={({ field }) => (
               <KiboTextBox
-                value={field.value ?? ''}
+                value={field.value}
                 label={t('parent-account')}
                 onChange={(_name, value) => field.onChange(value)}
                 onBlur={field.onBlur}
@@ -154,7 +154,7 @@ const AccountHierarchyForm = (props: AccountHierarchyFormProps) => {
           control={control}
           render={({ field }) => (
             <KiboTextBox
-              value={field.value ?? ''}
+              value={field.value}
               label={t('company-name')}
               onChange={(_name, value) => field.onChange(value)}
               onBlur={field.onBlur}
@@ -169,7 +169,7 @@ const AccountHierarchyForm = (props: AccountHierarchyFormProps) => {
           control={control}
           render={({ field }) => (
             <KiboTextBox
-              value={field.value ?? ''}
+              value={field.value}
               label={`${t('tax-id')} (${t('optional')})`}
               onChange={(_name, value) => field.onChange(value)}
               onBlur={field.onBlur}
@@ -184,7 +184,7 @@ const AccountHierarchyForm = (props: AccountHierarchyFormProps) => {
           control={control}
           render={({ field }) => (
             <KiboTextBox
-              value={field.value ?? ''}
+              value={field.value}
               label={t('first-name')}
               onChange={(_name, value) => field.onChange(value)}
               onBlur={field.onBlur}
@@ -198,7 +198,7 @@ const AccountHierarchyForm = (props: AccountHierarchyFormProps) => {
           control={control}
           render={({ field }) => (
             <KiboTextBox
-              value={field.value ?? ''}
+              value={field.value}
               label={t('last-name-or-sur-name')}
               onChange={(_name, value) => field.onChange(value)}
               onBlur={field.onBlur}
@@ -214,7 +214,7 @@ const AccountHierarchyForm = (props: AccountHierarchyFormProps) => {
           render={({ field }) => (
             <KiboTextBox
               type="email"
-              value={field.value ?? ''}
+              value={field.value}
               label={t('email')}
               onChange={(_name, value) => field.onChange(value)}
               onBlur={field.onBlur}

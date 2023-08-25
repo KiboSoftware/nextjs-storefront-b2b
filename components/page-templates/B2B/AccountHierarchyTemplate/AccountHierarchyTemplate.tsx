@@ -22,12 +22,14 @@ import {
   useGetB2BUserQueries,
   useGetQuotes,
   useUpdateCustomerB2bAccountMutation,
+  useUpdateCustomerB2bUserMutation,
 } from '@/hooks'
 import { userGetters } from '@/lib/getters'
 import {
   buildAccountHierarchy,
   buildCreateCustomerB2bAccountParams,
   buildUpdateCustomerB2bAccountParams,
+  buildUpdateCustomerB2bUserParams,
   parseFilterParamToObject,
 } from '@/lib/helpers'
 import {
@@ -52,6 +54,7 @@ const AccountHierarchyTemplate = () => {
   const { b2BAccountHierarchy } = useGetB2BAccountHierarchy(user?.id as number)
   const { createCustomerB2bAccount } = useCreateCustomerB2bAccountMutation()
   const { updateCustomerB2bAccount } = useUpdateCustomerB2bAccountMutation()
+  const { updateCustomerB2bUser } = useUpdateCustomerB2bUserMutation()
   const { changeB2bAccountParent } = useChangeB2bAccountParentMutation()
   const { data } = useGetB2BUserQueries({
     accountId: user?.id as number,
@@ -108,11 +111,21 @@ const AccountHierarchyTemplate = () => {
     formValues: CreateCustomerB2bAccountParams,
     account: B2BAccount
   ) => {
-    const variables = buildUpdateCustomerB2bAccountParams(formValues, account)
-    const updateCustomerB2BAccount = await updateCustomerB2bAccount.mutateAsync({
-      ...variables,
+    const b2BUser = account?.users?.[0]
+    const accountParams = buildUpdateCustomerB2bAccountParams(formValues, account)
+    const userParams = buildUpdateCustomerB2bUserParams({
+      user,
+      b2BUser,
+      values: { ...formValues, isActive: b2BUser?.isActive },
     })
-    if (updateCustomerB2BAccount) closeModal()
+
+    const updateCustomerB2BAccount = await updateCustomerB2bAccount.mutateAsync({
+      ...accountParams,
+    })
+    const updateCustomerB2BUser = await updateCustomerB2bUser.mutateAsync({
+      ...userParams,
+    })
+    if (updateCustomerB2BAccount && updateCustomerB2BUser) closeModal()
   }
 
   const handleB2bAccountParentChange = async (accountId: number, parentAccountId: number) => {
