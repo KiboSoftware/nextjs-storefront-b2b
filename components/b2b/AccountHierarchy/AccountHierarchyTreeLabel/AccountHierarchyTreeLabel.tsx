@@ -20,7 +20,6 @@ interface AccountHierarchyTreeLabelProps {
   handleEditAccount: ({ accounts }: EditChildAccountProps) => void
   handleChangeParent: ({ accounts }: EditChildAccountProps) => void
   handleSwapAccount: (accountId: number, parentAccountId: number) => void
-  handleDisableAccount: (b2BAccount: B2BAccount) => void
   handleBuyersBtnClick: (b2BUsers: B2BUser[]) => void
   handleQuotesBtnClick: (id: number) => void
 }
@@ -38,7 +37,6 @@ const AccountHierarchyTreeLabel = (props: AccountHierarchyTreeLabelProps) => {
     handleEditAccount,
     handleChangeParent,
     handleSwapAccount,
-    handleDisableAccount,
     handleBuyersBtnClick,
     handleQuotesBtnClick,
   } = props
@@ -71,8 +69,6 @@ const AccountHierarchyTreeLabel = (props: AccountHierarchyTreeLabelProps) => {
     }
   }
 
-  const onDisableAccountClick = () => handleDisableAccount(currentAccount)
-
   const onAccountSwap = (parentAccountId: number) =>
     handleSwapAccount(currentAccount?.id, parentAccountId)
 
@@ -90,7 +86,6 @@ const AccountHierarchyTreeLabel = (props: AccountHierarchyTreeLabelProps) => {
               onAdd={() => onAddAccountClick()}
               onView={() => onViewAccountClick()}
               onEdit={() => onEditAccountClick()}
-              onDisable={() => onDisableAccountClick()}
             />
           ) : null
         }

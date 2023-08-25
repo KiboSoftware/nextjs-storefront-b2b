@@ -187,19 +187,6 @@ const AccountHierarchyTemplate = () => {
     })
   }
 
-  const handleDisableAccount = (b2BAccount: B2BAccount) => {
-    showModal({
-      Component: ConfirmationDialog,
-      props: {
-        contentText: t('disable-account-confirm-message'),
-        primaryButtonText: t('yes-remove'),
-        title: t('confirmation'),
-        onConfirm: () => console.log('account disabled'),
-        onClose: () => closeModal(),
-      },
-    })
-  }
-
   const handleAddChildAccount = () => {
     showModal({
       Component: AccountHierarchyFormDialog,
@@ -279,7 +266,6 @@ const AccountHierarchyTemplate = () => {
               handleEditAccount={handleEditAccount}
               handleChangeParent={handleChangeParent}
               handleSwapAccount={handleSwapAccount}
-              handleDisableAccount={handleDisableAccount}
               handleBuyersBtnClick={handleBuyersBtnClick}
               handleQuotesBtnClick={handleQuotesBtnClick}
             />
