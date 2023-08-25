@@ -4,34 +4,77 @@ import { List, ListItem, ListItemIcon, ListItemText } from '@mui/material'
 
 import { AccountHierarchyActions } from '@/components/b2b'
 import { B2BRoles } from '@/lib/constants'
+import { AddChildAccountProps, EditChildAccountProps } from '@/lib/types'
+
+import { B2BAccount, B2BUser, CustomerAccount } from '@/lib/gql/types'
 
 interface AccountHierarchyTreeLabelProps {
-  label: string
+  item: B2BAccount
+  accounts: B2BAccount[]
+  customerAccount: CustomerAccount | undefined
   icons?: any
   role: string
   mdScreen?: boolean
-  onViewAccountClick: () => void
-  onAddAccountClick: () => void
-  onEditAccountClick: () => void
-  onDisableAccountClick: () => void
-  onAccountSwap: (accountId: number, parentAccountId: number) => void
-  onBuyersBtnClick: () => void
-  onQuotesBtnClick: () => void
+  handleViewAccount: (item: B2BAccount) => void
+  handleAddAccount: ({ isAddingAccountToChild, accounts }: AddChildAccountProps) => void
+  handleEditAccount: ({ accounts }: EditChildAccountProps) => void
+  handleChangeParent: ({ accounts }: EditChildAccountProps) => void
+  handleSwapAccount: (accountId: number, parentAccountId: number) => void
+  handleDisableAccount: (b2BAccount: B2BAccount) => void
+  handleBuyersBtnClick: (b2BUsers: B2BUser[]) => void
+  handleQuotesBtnClick: (id: number) => void
 }
 
 const AccountHierarchyTreeLabel = (props: AccountHierarchyTreeLabelProps) => {
   const {
-    label,
+    item,
+    accounts,
+    customerAccount,
     icons,
     role,
     mdScreen,
-    onViewAccountClick,
-    onAddAccountClick,
-    onEditAccountClick,
-    onDisableAccountClick,
-    onBuyersBtnClick,
-    onQuotesBtnClick,
+    handleViewAccount,
+    handleAddAccount,
+    handleEditAccount,
+    handleChangeParent,
+    handleSwapAccount,
+    handleDisableAccount,
+    handleBuyersBtnClick,
+    handleQuotesBtnClick,
   } = props
+
+  const currentAccount: B2BAccount = accounts?.find(
+    (account: B2BAccount) => account.id === item.id
+  ) as B2BAccount
+
+  const onViewAccountClick = () => {
+    handleViewAccount(currentAccount)
+  }
+
+  const onAddAccountClick = () =>
+    handleAddAccount({
+      isAddingAccountToChild: true,
+      accounts: [currentAccount],
+    })
+
+  const onEditAccountClick = () => {
+    if (customerAccount?.id === currentAccount.id) {
+      handleEditAccount({
+        accounts,
+        b2BAccount: currentAccount,
+      })
+    } else {
+      handleChangeParent({
+        accounts,
+        b2BAccount: currentAccount,
+      })
+    }
+  }
+
+  const onDisableAccountClick = () => handleDisableAccount(currentAccount)
+
+  const onAccountSwap = (parentAccountId: number) =>
+    handleSwapAccount(currentAccount?.id, parentAccountId)
 
   return (
     <List dense={true}>
@@ -42,8 +85,8 @@ const AccountHierarchyTreeLabel = (props: AccountHierarchyTreeLabelProps) => {
             <AccountHierarchyActions
               role={role}
               mdScreen={mdScreen}
-              onBuyersClick={() => onBuyersBtnClick()}
-              onQuotesClick={onQuotesBtnClick}
+              onBuyersClick={() => handleBuyersBtnClick(currentAccount.users as B2BUser[])}
+              onQuotesClick={() => handleQuotesBtnClick(currentAccount.id)}
               onAdd={() => onAddAccountClick()}
               onView={() => onViewAccountClick()}
               onEdit={() => onEditAccountClick()}
@@ -53,7 +96,7 @@ const AccountHierarchyTreeLabel = (props: AccountHierarchyTreeLabelProps) => {
         }
       >
         {icons ? <ListItemIcon>{icons}</ListItemIcon> : null}
-        <ListItemText primary={label} />
+        <ListItemText primary={currentAccount?.companyOrOrganization} />
       </ListItem>
     </List>
   )

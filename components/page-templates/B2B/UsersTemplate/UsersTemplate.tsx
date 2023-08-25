@@ -12,7 +12,6 @@ import {
   CircularProgress,
   Grid,
   Pagination,
-  SxProps,
   Theme,
   Typography,
   styled,
