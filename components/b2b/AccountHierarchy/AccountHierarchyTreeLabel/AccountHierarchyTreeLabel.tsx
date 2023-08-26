@@ -67,6 +67,10 @@ const AccountHierarchyTreeLabel = (props: AccountHierarchyTreeLabelProps) => {
     }
   }
 
+  const onBuyersClick = () => handleBuyersBtnClick(currentAccount.users as B2BUser[])
+
+  const onQuotesClick = () => handleQuotesBtnClick(currentAccount.id)
+
   return (
     <List dense={true}>
       <ListItem
@@ -76,11 +80,11 @@ const AccountHierarchyTreeLabel = (props: AccountHierarchyTreeLabelProps) => {
             <AccountHierarchyActions
               role={role}
               mdScreen={mdScreen}
-              onBuyersClick={() => handleBuyersBtnClick(currentAccount.users as B2BUser[])}
-              onQuotesClick={() => handleQuotesBtnClick(currentAccount.id)}
-              onAdd={() => onAddAccountClick()}
-              onView={() => onViewAccountClick()}
-              onEdit={() => onEditAccountClick()}
+              onBuyersClick={onBuyersClick}
+              onQuotesClick={onQuotesClick}
+              onAdd={onAddAccountClick}
+              onView={onViewAccountClick}
+              onEdit={onEditAccountClick}
             />
           ) : null
         }

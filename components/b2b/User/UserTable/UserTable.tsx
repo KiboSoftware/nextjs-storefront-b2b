@@ -12,7 +12,6 @@ import {
   TableHead,
   TableRow,
   Typography,
-  useMediaQuery,
   useTheme,
 } from '@mui/material'
 import { useTranslation } from 'next-i18next'
