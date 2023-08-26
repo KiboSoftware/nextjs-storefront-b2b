@@ -83,7 +83,7 @@ const AccountHierarchyForm = (props: AccountHierarchyFormProps) => {
       }
       setSelectedParentAccount(parentAccount)
     }
-  }, [accounts])
+  }, [accounts, b2BAccount])
 
   const onSubmit = () => {
     if (isLoading || !isValid) return
@@ -103,51 +103,58 @@ const AccountHierarchyForm = (props: AccountHierarchyFormProps) => {
     setSelectedParentAccount(account)
   }
 
+  const getParentAccountField = () => {
+    if (isAddingAccountToChild)
+      return (
+        <Controller
+          name="parentAccount"
+          control={control}
+          render={({ field }) => (
+            <KiboTextBox
+              value={field.value}
+              label={t('parent-account')}
+              onChange={(_name, value) => field.onChange(value)}
+              onBlur={field.onBlur}
+              disabled
+              error={!!errors?.parentAccount}
+              helperText={errors?.parentAccount?.message as string}
+            />
+          )}
+        />
+      )
+    else
+      return (
+        <Controller
+          name="parentAccount"
+          control={control}
+          render={({ field }) => (
+            <KiboSelect
+              sx={{ marginBottom: '20px' }}
+              name="parentAccount"
+              label={t('parent-account')}
+              onChange={handleParentAccountChange}
+              placeholder={t('select-parent-account')}
+              error={!!errors?.parentAccount}
+              helperText={errors?.parentAccount?.message as string}
+              value={selectedParentAccount?.id?.toString() ?? ''}
+            >
+              {accounts?.map((account: B2BAccount) => {
+                return (
+                  <MenuItem key={account?.id} value={`${account?.id}`}>
+                    {account?.companyOrOrganization}
+                  </MenuItem>
+                )
+              })}
+            </KiboSelect>
+          )}
+        />
+      )
+  }
+
   return (
     <form data-testid="account-hierarchy-form" onSubmit={handleSubmit(onSubmit)}>
       <FormControl sx={{ width: '100%' }}>
-        {isAddingAccountToChild ? (
-          <Controller
-            name="parentAccount"
-            control={control}
-            render={({ field }) => (
-              <KiboTextBox
-                value={field.value}
-                label={t('parent-account')}
-                onChange={(_name, value) => field.onChange(value)}
-                onBlur={field.onBlur}
-                disabled
-                error={!!errors?.parentAccount}
-                helperText={errors?.parentAccount?.message as string}
-              />
-            )}
-          />
-        ) : (
-          <Controller
-            name="parentAccount"
-            control={control}
-            render={({ field }) => (
-              <KiboSelect
-                sx={{ marginBottom: '20px' }}
-                name="parentAccount"
-                label={t('parent-account')}
-                onChange={handleParentAccountChange}
-                placeholder={t('select-parent-account')}
-                error={!!errors?.parentAccount}
-                helperText={errors?.parentAccount?.message as string}
-                value={selectedParentAccount?.id?.toString() ?? ''}
-              >
-                {accounts?.map((account: B2BAccount) => {
-                  return (
-                    <MenuItem key={account?.id} value={`${account?.id}`}>
-                      {account?.companyOrOrganization}
-                    </MenuItem>
-                  )
-                })}
-              </KiboSelect>
-            )}
-          />
-        )}
+        {!b2BAccount ? getParentAccountField() : null}
 
         <Controller
           name="companyOrOrganization"
