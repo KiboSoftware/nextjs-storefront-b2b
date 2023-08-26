@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState, useRef } from 'react'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import { FiberManualRecord } from '@mui/icons-material'
@@ -176,6 +176,7 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
     isNewAddressAdded,
     selectedShippingAddressId,
   })
+  const shippingAddressRef = useRef<HTMLDivElement>(null)
 
   const isSaveAndExitDisabled =
     quote?.name &&
@@ -350,11 +351,11 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
         shippingMethodCode,
         shippingMethodName,
       })
-      // shippingAddressRef.current &&
-      //   (shippingAddressRef.current as Element).scrollIntoView({
-      //     behavior: 'smooth',
-      //     block: 'start',
-      //   })
+      shippingAddressRef.current &&
+        (shippingAddressRef.current as Element).scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        })
     } catch (error) {
       console.error(error)
     }
@@ -727,7 +728,7 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
             <Divider />
 
             {quoteItems?.length ? (
-              <>
+              <Stack ref={shippingAddressRef}>
                 {<Typography variant="h2">{t('shipping-information')}</Typography>}
                 {shouldShowAddAddressButton && mode && status.toLowerCase() !== 'inreview' && (
                   <>
@@ -931,7 +932,7 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
                   </Stack>
                 )}
                 <Divider />
-              </>
+              </Stack>
             ) : null}
             <Box>
               <Stack direction="row" sx={{ justifyContent: 'space-between' }}>

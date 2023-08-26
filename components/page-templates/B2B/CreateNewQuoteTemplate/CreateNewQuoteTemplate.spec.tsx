@@ -33,7 +33,8 @@ const configurableProductMock = {
     },
   ],
 }
-
+const scrollIntoViewMock = jest.fn()
+window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock
 jest.mock('@mui/material', () => ({
   ...jest.requireActual('@mui/material'),
   useMediaQuery: jest.fn(),
