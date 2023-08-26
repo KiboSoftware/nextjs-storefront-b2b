@@ -30,7 +30,6 @@ import {
   B2BProductSearch,
   OrderSummaryEditable,
   QuotesCommentThread,
-  ShippingInformation,
 } from '@/components/b2b'
 import QuoteHistory from '@/components/b2b/QuotesHistory/QuotesHistory'
 import { CartItemList } from '@/components/cart'
@@ -66,7 +65,6 @@ import { buildAddressParams } from '@/lib/helpers'
 import { Address } from '@/lib/types'
 
 import {
-  AuditRecord,
   CrContact,
   CrOrderItem,
   CuAddress,
@@ -115,7 +113,7 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
     data?.items?.[0]?.firstName || data?.items?.[0]?.lastName
       ? data?.items?.[0]?.firstName + ' ' + data?.items?.[0]?.lastName
       : '-'
-  const quoteName = quote?.name || ''
+  const quoteName = quote?.name ?? ''
   const {
     control,
     formState: { isValid },
@@ -172,12 +170,12 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
   )
   const { updateQuoteFulfillmentInfo } = useUpdateQuoteFulfillmentInfo()
   const { deleteQuote } = useDeleteQuote({ draft })
-  const { data: shippingMethods } = useGetQuoteShippingMethods(
+  const { data: shippingMethods } = useGetQuoteShippingMethods({
     quoteId,
     draft,
     isNewAddressAdded,
-    selectedShippingAddressId
-  )
+    selectedShippingAddressId,
+  })
 
   const isSaveAndExitDisabled =
     quote?.name &&

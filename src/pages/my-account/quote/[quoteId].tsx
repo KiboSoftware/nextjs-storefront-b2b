@@ -16,7 +16,7 @@ interface QuotePageProps {
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const { locale, params, req, res, query } = context
+  const { locale, req, res, query } = context
   const { quoteId, mode = '' } = query as any
   const draft = true
   const quote = await getQuote(quoteId, draft, req as NextApiRequest, res as NextApiResponse)

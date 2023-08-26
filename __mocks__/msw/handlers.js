@@ -594,6 +594,10 @@ export const b2bHandlers = [
   graphql.query('quotes', (_req, res, ctx) => {
     return res(ctx.data({ quotes: quotesMock }))
   }),
+
+  graphql.query('getQuoteShippingMethods', (_req, res, ctx) => {
+    return res(ctx.data({ getQuoteShippingMethods: shippingRateMock?.orderShipmentMethods }))
+  }),
   //useUpdateQuoteItemQuantity
   graphql.mutation('updateQuoteItemQuantity', (_req, res, ctx) => {
     return res(ctx.data({ updateQuoteItemQuantity: quoteMock?.items?.[0] }))
@@ -602,6 +606,11 @@ export const b2bHandlers = [
   //useUpdateQuoteItemFulfillment
   graphql.mutation('updateQuoteItemFulfillment', (_req, res, ctx) => {
     return res(ctx.data({ updateQuoteItemFulfillment: quoteMock?.items?.[0] }))
+  }),
+
+  //useUpdateQuoteAdjustments
+  graphql.mutation('updateQuoteAdjustments', (_req, res, ctx) => {
+    return res(ctx.data({ updateQuoteAdjustments: quoteMock?.items?.[0] }))
   }),
 ]
 

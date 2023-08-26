@@ -45,12 +45,17 @@ const loadShippingMethods = async (quoteId: string, draft: boolean) => {
  * @returns 'response?.getQuoteShippingMethods', which contains shipping methods based on quoteId and draft request.
  */
 
-export const useGetQuoteShippingMethods = (
-  quoteId: string,
-  draft: boolean,
-  isNewAddressAdded: boolean,
+export const useGetQuoteShippingMethods = ({
+  quoteId,
+  draft,
+  isNewAddressAdded,
+  selectedShippingAddressId,
+}: {
+  quoteId: string
+  draft: boolean
+  isNewAddressAdded: boolean
   selectedShippingAddressId: number
-): UseQuoteShippingMethodsResponse => {
+}): UseQuoteShippingMethodsResponse => {
   const {
     data = [],
     isLoading,

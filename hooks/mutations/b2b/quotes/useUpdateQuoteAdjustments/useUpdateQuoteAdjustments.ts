@@ -35,7 +35,7 @@ const updateQuoteAdjustments = async (params: UpdateQuoteAdjustmentsProps): Prom
  *
  * <b>updateQuoteAdjustments({quoteId: String!, updateMode: String, quoteAdjustmentInput: QuoteAdjustmentInput}): Quote</b>
  *
- * Description : Adds a comment for a quote
+ * Description : update quote adjustments for a quote
  *
  * Parameters passed to function updateQuoteAdjustments(params: UpdateQuoteAdjustmentsProps) => expects object of type 'UpdateQuoteAdjustmentsProps' containing quoteId, updateMode, quoteAdjustmentInput
  *

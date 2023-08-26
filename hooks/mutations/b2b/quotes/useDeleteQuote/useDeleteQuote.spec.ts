@@ -15,4 +15,16 @@ describe('[hooks] useDeleteQuote', () => {
       expect(result.current.deleteQuote.data).toEqual(true)
     })
   })
+
+  it('should discard changes of a quote', async () => {
+    const { result } = renderHook(() => useDeleteQuote({ draft: true }), {
+      wrapper: createQueryClientWrapper(),
+    })
+
+    result.current.deleteQuote.mutate({ quoteId: 'quote-id', draft: true })
+
+    await waitFor(() => {
+      expect(result.current.deleteQuote.data).toEqual(true)
+    })
+  })
 })
