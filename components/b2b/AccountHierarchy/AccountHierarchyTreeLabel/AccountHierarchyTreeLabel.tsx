@@ -67,6 +67,10 @@ const AccountHierarchyTreeLabel = (props: AccountHierarchyTreeLabelProps) => {
     }
   }
 
+  const onBuyersClick = () => handleBuyersBtnClick(currentAccount.users as B2BUser[])
+
+  const onQuotesClick = () => handleQuotesBtnClick(currentAccount.id)
+
   return (
     <ListItem
       data-testid="tree-label"
@@ -76,8 +80,8 @@ const AccountHierarchyTreeLabel = (props: AccountHierarchyTreeLabelProps) => {
           <AccountHierarchyActions
             role={role}
             mdScreen={mdScreen}
-            onBuyersClick={() => handleBuyersBtnClick(currentAccount.users as B2BUser[])}
-            onQuotesClick={() => handleQuotesBtnClick(currentAccount.id)}
+            onBuyersClick={onBuyersClick}
+            onQuotesClick={onQuotesClick}
             onAdd={onAddAccountClick}
             onView={onViewAccountClick}
             onEdit={onEditAccountClick}

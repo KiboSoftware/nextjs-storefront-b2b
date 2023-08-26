@@ -12,7 +12,7 @@ describe('[helpers] buildUpdateCustomerB2bAccountParams function', () => {
 
     const { id, parentAccountId, companyOrOrganization, taxId, users } =
       b2BAccountHierarchyResult.accounts[1]
-    const { firstName, lastName, emailAddress, userName, localeCode } = users?.[0] as B2BUser
+    const { firstName, lastName, emailAddress } = users?.[0] as B2BUser
 
     const values: CreateCustomerB2bAccountParams = {
       parentAccount,
