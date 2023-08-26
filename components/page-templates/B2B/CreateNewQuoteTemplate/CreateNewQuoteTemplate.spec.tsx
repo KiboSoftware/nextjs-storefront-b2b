@@ -13,7 +13,8 @@ import { renderWithQueryClient } from '@/__test__/utils'
 import { DialogRoot, ModalContextProvider } from '@/context'
 
 import { CrOrderItem } from '@/lib/gql/types'
-const { Common, CreateNewQuoteTemplateMobile } = composeStories(stories)
+const { Common, CreateNewQuoteTemplateMobile, CreateNewQuoteTemplateDesktop } =
+  composeStories(stories)
 
 const user = userEvent.setup()
 
@@ -137,7 +138,9 @@ describe('[components] CreateNewQuoteTemplate', () => {
       useMediaQueryMock.mockReturnValue(true)
     })
     it('should render CreateNewQuoteTemplate component', async () => {
-      renderWithQueryClient(<Common {...Common.args} />)
+      renderWithQueryClient(
+        <CreateNewQuoteTemplateDesktop {...CreateNewQuoteTemplateDesktop.args} />
+      )
 
       const quotesText = screen.getByText(/quotes/i)
       const createQuote = screen.getByText(/create-a-quote/i)

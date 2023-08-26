@@ -23,11 +23,19 @@ const Template: ComponentStory<typeof CreateNewQuoteTemplate> = (args) => (
 export const Common = Template.bind({})
 Common.args = {
   quote: quoteMock?.items?.[0] as Quote,
+  mode: 'edit',
+}
+
+export const CreateNewQuoteTemplateDesktop = Template.bind({})
+CreateNewQuoteTemplateDesktop.args = {
+  quote: quoteMock?.items?.[0] as Quote,
+  mode: 'create',
 }
 
 export const CreateNewQuoteTemplateMobile = Template.bind({})
 CreateNewQuoteTemplateMobile.args = {
   quote: quoteMock?.items?.[0] as Quote,
+  mode: 'edit',
 }
 CreateNewQuoteTemplateMobile.parameters = {
   viewport: {
