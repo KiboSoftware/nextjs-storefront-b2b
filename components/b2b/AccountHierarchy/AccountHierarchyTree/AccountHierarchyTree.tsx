@@ -16,7 +16,13 @@ import Nestable from 'react-nestable'
 import { AccountHierarchyStyles } from './AccountHierarchyTree.styles'
 import { AccountHierarchyTreeLabel } from '@/components/b2b'
 import { KiboCollapseIndicator } from '@/components/common'
-import { AddChildAccountProps, EditChildAccountProps, HierarchyNode } from '@/lib/types'
+import { getSwapAccountParams } from '@/lib/helpers'
+import {
+  AddChildAccountProps,
+  EditChildAccountProps,
+  HierarchyNode,
+  NestableOnChangeArgs,
+} from '@/lib/types'
 
 import { B2BAccount, B2BUser, CustomerAccount } from '@/lib/gql/types'
 
@@ -61,15 +67,9 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
 
   const refNestable = React.useRef<Nestable | null>(null)
 
-  const getSwapAccountParams = ({ items, targetPath }: any) => {
-    let parent = items
-    targetPath.forEach((h: number, index: number) => {
-      if (index < targetPath?.length) {
-        parent = parent[h] ?? parent?.children[h]
-      }
-    })
-
-    return parent?.id
+  const onAccountSwap = ({ dragItem, items, targetPath }: NestableOnChangeArgs) => {
+    const { accountId, parentAccountId } = getSwapAccountParams({ dragItem, items, targetPath })
+    handleSwapAccount(accountId, parentAccountId)
   }
 
   return (
@@ -106,7 +106,6 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
             handleAddAccount={handleAddAccount}
             handleEditAccount={handleEditAccount}
             handleChangeParent={handleChangeParent}
-            handleSwapAccount={handleSwapAccount}
             handleBuyersBtnClick={handleBuyersBtnClick}
             handleQuotesBtnClick={handleQuotesBtnClick}
             icons={
@@ -120,9 +119,7 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
         renderCollapseIcon={({ isCollapsed }) => (
           <KiboCollapseIndicator isCollapsed={isCollapsed} />
         )}
-        onChange={({ dragItem, items, targetPath }) =>
-          handleSwapAccount(dragItem?.id, getSwapAccountParams({ items, targetPath }))
-        }
+        onChange={(accountSwapArgs: NestableOnChangeArgs) => onAccountSwap(accountSwapArgs)}
         handler={
           <Box display="flex" justifyContent="center" alignItems="center">
             <DragIndicator />

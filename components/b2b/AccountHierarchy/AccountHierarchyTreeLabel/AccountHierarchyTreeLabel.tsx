@@ -19,7 +19,6 @@ interface AccountHierarchyTreeLabelProps {
   handleAddAccount: ({ isAddingAccountToChild, accounts }: AddChildAccountProps) => void
   handleEditAccount: ({ accounts }: EditChildAccountProps) => void
   handleChangeParent: ({ accounts }: EditChildAccountProps) => void
-  handleSwapAccount: (accountId: number, parentAccountId: number) => void
   handleBuyersBtnClick: (b2BUsers: B2BUser[]) => void
   handleQuotesBtnClick: (id: number) => void
 }
@@ -36,7 +35,6 @@ const AccountHierarchyTreeLabel = (props: AccountHierarchyTreeLabelProps) => {
     handleAddAccount,
     handleEditAccount,
     handleChangeParent,
-    handleSwapAccount,
     handleBuyersBtnClick,
     handleQuotesBtnClick,
   } = props
@@ -68,9 +66,6 @@ const AccountHierarchyTreeLabel = (props: AccountHierarchyTreeLabelProps) => {
       })
     }
   }
-
-  const onAccountSwap = (parentAccountId: number) =>
-    handleSwapAccount(currentAccount?.id, parentAccountId)
 
   return (
     <List dense={true}>
