@@ -56,7 +56,7 @@ const AccountHierarchyTemplate = () => {
   const { updateCustomerB2bAccount } = useUpdateCustomerB2bAccountMutation()
   const { updateCustomerB2bUser } = useUpdateCustomerB2bUserMutation()
   const { changeB2bAccountParent } = useChangeB2bAccountParentMutation()
-  const { data } = useGetB2BUserQueries({
+  const { data: currentB2bUser } = useGetB2BUserQueries({
     accountId: user?.id as number,
     filter: '',
     pageSize: 5,
@@ -235,7 +235,7 @@ const AccountHierarchyTemplate = () => {
       accounts: b2BAccountHierarchy?.accounts,
       hierarchy,
     })
-  }, [b2BAccountHierarchy, data])
+  }, [b2BAccountHierarchy, currentB2bUser])
 
   return (
     <Grid container gap={3}>
@@ -268,7 +268,7 @@ const AccountHierarchyTemplate = () => {
           </Grid>
           <Grid item xs={12}>
             <AccountHierarchyTree
-              role={userGetters.getRole(data?.items?.[0] as B2BUser)}
+              role={userGetters.getRole(currentB2bUser?.items?.[0] as B2BUser)}
               customerAccount={user}
               accounts={accountHierarchy.accounts}
               hierarchy={accountHierarchy.hierarchy}

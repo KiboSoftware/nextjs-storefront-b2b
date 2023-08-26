@@ -68,27 +68,26 @@ const AccountHierarchyTreeLabel = (props: AccountHierarchyTreeLabelProps) => {
   }
 
   return (
-    <List dense={true}>
-      <ListItem
-        data-testid="tree-label"
-        secondaryAction={
-          role !== B2BRoles.NON_PURCHASER ? (
-            <AccountHierarchyActions
-              role={role}
-              mdScreen={mdScreen}
-              onBuyersClick={() => handleBuyersBtnClick(currentAccount.users as B2BUser[])}
-              onQuotesClick={() => handleQuotesBtnClick(currentAccount.id)}
-              onAdd={() => onAddAccountClick()}
-              onView={() => onViewAccountClick()}
-              onEdit={() => onEditAccountClick()}
-            />
-          ) : null
-        }
-      >
-        {icons ? <ListItemIcon>{icons}</ListItemIcon> : null}
-        <ListItemText primary={currentAccount?.companyOrOrganization} />
-      </ListItem>
-    </List>
+    <ListItem
+      data-testid="tree-label"
+      onClick={() => handleViewAccount(currentAccount)}
+      secondaryAction={
+        role !== B2BRoles.NON_PURCHASER ? (
+          <AccountHierarchyActions
+            role={role}
+            mdScreen={mdScreen}
+            onBuyersClick={() => handleBuyersBtnClick(currentAccount.users as B2BUser[])}
+            onQuotesClick={() => handleQuotesBtnClick(currentAccount.id)}
+            onAdd={onAddAccountClick}
+            onView={onViewAccountClick}
+            onEdit={onEditAccountClick}
+          />
+        ) : null
+      }
+    >
+      {icons ? <ListItemIcon>{icons}</ListItemIcon> : null}
+      <ListItemText primary={currentAccount?.companyOrOrganization} />
+    </ListItem>
   )
 }
 

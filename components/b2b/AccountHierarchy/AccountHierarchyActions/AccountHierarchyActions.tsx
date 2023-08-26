@@ -38,6 +38,8 @@ const AccountHierarchyActions = (props: AccountHierarchyActionsProps) => {
     }
   }
 
+  if (role === B2BRoles.NON_PURCHASER) return null
+
   return mdScreen ? (
     <Box
       data-testid="account-actions"
@@ -62,7 +64,7 @@ const AccountHierarchyActions = (props: AccountHierarchyActionsProps) => {
       </Typography>
       {role === B2BRoles.ADMIN && (
         <Box display={'flex'} gap={2}>
-          <IconButton
+          {/* <IconButton
             size="small"
             sx={{ p: 0.5 }}
             aria-label="item-view"
@@ -70,7 +72,7 @@ const AccountHierarchyActions = (props: AccountHierarchyActionsProps) => {
             onClick={onView}
           >
             <Visibility />
-          </IconButton>
+          </IconButton> */}
           <IconButton
             size="small"
             sx={{ p: 0.5 }}

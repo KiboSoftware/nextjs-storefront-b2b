@@ -104,9 +104,7 @@ const UserTable = (props: UserTableProps) => {
                   isEditMode={true}
                   b2BUser={b2bUser}
                   onClose={() => setEditUserId(undefined)}
-                  onSave={(formValues: B2BUserInput, b2BUser: B2BUser | undefined) =>
-                    onSave?.(formValues, b2BUser)
-                  }
+                  onSave={(formValues: B2BUserInput) => onSave?.(formValues, b2bUser)}
                 />
               </TableCell>
             </TableRow>

@@ -11,6 +11,13 @@ import { B2BRoles } from '@/lib/constants'
 export default {
   title: 'B2B/AccountHierarchy/AccountHierarchyTreeLabel',
   component: AccountHierarchyTreeLabel,
+  argTypes: {
+    handleAddAccount: { action: 'handleAddAccount' },
+    handleEditAccount: { action: 'handleEditAccount' },
+    handleChangeParent: { action: 'handleChangeParent' },
+    handleBuyersBtnClick: { action: 'handleBuyersBtnClick' },
+    handleQuotesBtnClick: { action: 'handleQuotesBtnClick' },
+  },
 } as ComponentMeta<typeof AccountHierarchyTreeLabel>
 
 const mockUser = userResponseMock
