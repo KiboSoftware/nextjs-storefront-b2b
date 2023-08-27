@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   IconButton,
+  List,
   ListItemIcon,
   Typography,
   useMediaQuery,
@@ -92,40 +93,47 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
         <Typography fontWeight="bold">{t('org-name')}</Typography>
       </Box>
 
-      <Nestable
-        ref={(el) => (refNestable.current = el)}
-        items={hierarchy as HierarchyNode[]}
-        renderItem={({ item, collapseIcon, handler }: any) => (
-          <AccountHierarchyTreeLabel
-            role={role}
-            mdScreen={mdScreen}
-            item={item}
-            accounts={accounts}
-            customerAccount={customerAccount}
-            handleViewAccount={handleViewAccount}
-            handleAddAccount={handleAddAccount}
-            handleEditAccount={handleEditAccount}
-            handleChangeParent={handleChangeParent}
-            handleBuyersBtnClick={handleBuyersBtnClick}
-            handleQuotesBtnClick={handleQuotesBtnClick}
-            icons={
-              <ListItemIcon sx={{ display: 'flex' }}>
-                <IconButton size="small">{handler}</IconButton>
-                {collapseIcon ? <IconButton size="small">{collapseIcon}</IconButton> : null}
-              </ListItemIcon>
-            }
-          />
-        )}
-        renderCollapseIcon={({ isCollapsed }) => (
-          <KiboCollapseIndicator isCollapsed={isCollapsed} />
-        )}
-        onChange={(accountSwapArgs: NestableOnChangeArgs) => onAccountSwap(accountSwapArgs)}
-        handler={
-          <Box display="flex" justifyContent="center" alignItems="center">
-            <DragIndicator />
-          </Box>
-        }
-      />
+      <List dense={true}>
+        <Nestable
+          ref={(el) => (refNestable.current = el)}
+          items={hierarchy as HierarchyNode[]}
+          renderItem={({ item, collapseIcon, handler }: any) => (
+            <AccountHierarchyTreeLabel
+              role={role}
+              mdScreen={mdScreen}
+              item={item}
+              accounts={accounts}
+              customerAccount={customerAccount}
+              handleViewAccount={handleViewAccount}
+              handleAddAccount={handleAddAccount}
+              handleEditAccount={handleEditAccount}
+              handleChangeParent={handleChangeParent}
+              handleBuyersBtnClick={handleBuyersBtnClick}
+              handleQuotesBtnClick={handleQuotesBtnClick}
+              icons={
+                <ListItemIcon sx={{ display: 'flex' }}>
+                  <IconButton size="small">{handler}</IconButton>
+                  {collapseIcon ? <IconButton size="small">{collapseIcon}</IconButton> : null}
+                </ListItemIcon>
+              }
+            />
+          )}
+          renderCollapseIcon={({ isCollapsed }) => (
+            <KiboCollapseIndicator isCollapsed={isCollapsed} />
+          )}
+          onChange={(accountSwapArgs: NestableOnChangeArgs) => onAccountSwap(accountSwapArgs)}
+          handler={
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              data-testid="drag-handler"
+            >
+              <DragIndicator />
+            </Box>
+          }
+        />
+      </List>
     </>
   )
 }
