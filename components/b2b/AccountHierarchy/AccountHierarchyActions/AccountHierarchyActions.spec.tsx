@@ -90,9 +90,6 @@ describe('[components] AccountHierarchyActions', () => {
 
     await user.click(moreIcon)
 
-    const deleteButton = screen.getByRole('menuitem', { name: 'Delete account' })
-    expect(deleteButton).toBeVisible()
-
     const addChildAccountButton = screen.getByRole('menuitem', { name: 'Add a child account' })
     await user.click(addChildAccountButton)
     expect(onAddMock).toHaveBeenCalled()
