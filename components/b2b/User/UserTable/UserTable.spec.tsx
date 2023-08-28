@@ -1,10 +1,9 @@
 import '@testing-library/jest-dom'
 import { composeStories } from '@storybook/testing-react'
-import { render, screen, within } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import * as stories from './UserTable.stories' // import all stories from the stories file
-import { customerB2BUserForPage0Mock } from '@/__mocks__/stories'
 import { B2BUserInput } from '@/lib/types'
 
 import { B2BUser } from '@/lib/gql/types'
@@ -15,6 +14,7 @@ const user = userEvent.setup()
 
 const onDeleteMock = jest.fn()
 const onSaveMock = jest.fn()
+const onViewMock = jest.fn()
 
 jest.mock('@/components/b2b/User/UserForm/UserForm', () => ({
   __esModule: true,
@@ -170,7 +170,7 @@ describe('[component] User Table', () => {
   })
 
   it('should show edit user dialog when mdScreen is false', async () => {
-    render(<TableMobile {...TableMobile.args} onSave={onSaveMock} />)
+    render(<TableMobile {...TableMobile.args} onSave={onSaveMock} onView={onViewMock} />)
 
     const rows = await screen.findAllByRole('row')
     const userActionMenu = within(rows[1]).getByTestId('EditIcon')
@@ -196,5 +196,8 @@ describe('[component] User Table', () => {
       },
       Table.args?.b2bUsers?.[0]
     )
+
+    fireEvent.click(rows[0])
+    expect(onViewMock).toHaveBeenCalled()
   })
 })

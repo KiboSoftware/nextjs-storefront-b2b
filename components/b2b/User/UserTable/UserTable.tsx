@@ -28,6 +28,7 @@ interface UserTableProps {
   mdScreen: boolean
   b2bUsers: B2BUser[] | undefined
   showActionButtons?: boolean
+  onView?: (b2BUser: B2BUser) => void
   onDelete?: (id: string | undefined) => void
   onSave?: (formValues: B2BUserInput, b2BUser?: B2BUser | undefined) => void
 }
@@ -42,7 +43,7 @@ const style = {
 }
 
 const UserTable = (props: UserTableProps) => {
-  const { mdScreen, b2bUsers, showActionButtons = true, onDelete, onSave } = props
+  const { mdScreen, b2bUsers, showActionButtons = true, onView, onDelete, onSave } = props
 
   const { t } = useTranslation('common')
   const { showModal, closeModal } = useModalContext()
@@ -108,7 +109,7 @@ const UserTable = (props: UserTableProps) => {
               </TableCell>
             </TableRow>
           ) : (
-            <TableRow key={b2bUser?.userId}>
+            <TableRow key={b2bUser?.userId} onClick={() => !mdScreen && onView?.(b2bUser)}>
               <TableCell colSpan={2} sx={style.emailAddressCell}>
                 {userGetters.getEmailAddress(b2bUser)}
               </TableCell>
