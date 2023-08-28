@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { List, ListItem, ListItemIcon, ListItemText } from '@mui/material'
+import { ListItem, ListItemIcon, ListItemText } from '@mui/material'
 
 import { AccountHierarchyActions } from '@/components/b2b'
 import { B2BRoles } from '@/lib/constants'
