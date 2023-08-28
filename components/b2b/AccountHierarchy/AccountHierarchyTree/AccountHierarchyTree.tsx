@@ -1,6 +1,8 @@
 import * as React from 'react'
 
+import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import DragIndicator from '@mui/icons-material/DragIndicator'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import {
   Box,
   Button,
@@ -16,7 +18,6 @@ import Nestable from 'react-nestable'
 
 import { AccountHierarchyStyles } from './AccountHierarchyTree.styles'
 import { AccountHierarchyTreeLabel } from '@/components/b2b'
-import { KiboCollapseIndicator } from '@/components/common'
 import { getSwapAccountParams } from '@/lib/helpers'
 import {
   AddChildAccountProps,
@@ -119,7 +120,9 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
             />
           )}
           renderCollapseIcon={({ isCollapsed }) => (
-            <KiboCollapseIndicator isCollapsed={isCollapsed} />
+            <Box display="flex" justifyContent="center" alignItems="center">
+              {isCollapsed ? <ChevronRightIcon /> : <ExpandMoreIcon />}
+            </Box>
           )}
           onChange={(accountSwapArgs: NestableOnChangeArgs) => onAccountSwap(accountSwapArgs)}
           handler={

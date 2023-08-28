@@ -74,7 +74,6 @@ const AccountHierarchyTreeLabel = (props: AccountHierarchyTreeLabelProps) => {
   return (
     <ListItem
       data-testid="tree-label"
-      onClick={() => handleViewAccount(currentAccount)}
       secondaryAction={
         role !== B2BRoles.NON_PURCHASER ? (
           <AccountHierarchyActions

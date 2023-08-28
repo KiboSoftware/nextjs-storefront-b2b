@@ -1,10 +1,8 @@
 import React from 'react'
 
-import {
-  AddCircle as AddCircleIcon,
-  Edit as EditIcon,
-  Visibility as VisibilityIcon,
-} from '@mui/icons-material'
+import AddCircleIcon from '@mui/icons-material/AddCircle'
+import EditIcon from '@mui/icons-material/Edit'
+import VisibilityIcon from '@mui/icons-material/Visibility'
 import { Box, IconButton, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 
