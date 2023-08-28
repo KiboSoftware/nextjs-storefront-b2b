@@ -1,8 +1,10 @@
 import React from 'react'
 
-import AddCircle from '@mui/icons-material/AddCircle'
-import Edit from '@mui/icons-material/Edit'
-import Visibility from '@mui/icons-material/Visibility'
+import {
+  AddCircle as AddCircleIcon,
+  Edit as EditIcon,
+  Visibility as VisibilityIcon,
+} from '@mui/icons-material'
 import { Box, IconButton, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 
@@ -64,15 +66,15 @@ const AccountHierarchyActions = (props: AccountHierarchyActionsProps) => {
       </Typography>
       {role === B2BRoles.ADMIN && (
         <Box display={'flex'} gap={2}>
-          {/* <IconButton
+          <IconButton
             size="small"
             sx={{ p: 0.5 }}
             aria-label="item-view"
             name="item-view"
             onClick={onView}
           >
-            <Visibility />
-          </IconButton> */}
+            <VisibilityIcon />
+          </IconButton>
           <IconButton
             size="small"
             sx={{ p: 0.5 }}
@@ -80,7 +82,7 @@ const AccountHierarchyActions = (props: AccountHierarchyActionsProps) => {
             name="item-add"
             onClick={onAdd}
           >
-            <AddCircle />
+            <AddCircleIcon />
           </IconButton>
           <IconButton
             size="small"
@@ -89,7 +91,7 @@ const AccountHierarchyActions = (props: AccountHierarchyActionsProps) => {
             name="item-edit"
             onClick={onEdit}
           >
-            <Edit />
+            <EditIcon />
           </IconButton>
         </Box>
       )}

@@ -11,8 +11,9 @@ import {
   AccountHierarchyChangeParentDialog,
   ConfirmationDialog,
   ViewAccountDetailsDialog,
+  ViewUserDetailDialog,
 } from '@/components/dialogs'
-import MobileB2BLayout from '@/components/layout/MobileB2BLayout/MobileB2BLayout'
+import { MobileB2BLayout } from '@/components/layout'
 import { useAuthContext, useModalContext } from '@/context'
 import {
   useB2BQuote,
@@ -212,6 +213,17 @@ const AccountHierarchyTemplate = () => {
     })
   }
 
+  const handleViewAccountUser = (b2BUser: B2BUser) => {
+    showModal({
+      Component: ViewUserDetailDialog,
+      props: {
+        b2BUser,
+        title: t('confirmation'),
+        onClose: () => closeModal(),
+      },
+    })
+  }
+
   const handleBuyersBtnClick = (users: B2BUser[]) => {
     setB2bUsers(users)
     setActiveComponent('buyers')
@@ -295,7 +307,12 @@ const AccountHierarchyTemplate = () => {
       )}
 
       {activeComponent === 'buyers' && (
-        <UserTable mdScreen={mdScreen} b2bUsers={b2bUsers} showActionButtons={false} />
+        <UserTable
+          mdScreen={mdScreen}
+          b2bUsers={b2bUsers}
+          onView={handleViewAccountUser}
+          showActionButtons={false}
+        />
       )}
     </Grid>
   )
