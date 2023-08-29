@@ -22,6 +22,7 @@ import {
   useInitiateOrder,
   useInitiateCheckout,
 } from '@/hooks'
+import { useCreateQuoteFromCart } from '@/hooks'
 import { FulfillmentOptions as FulfillmentOptionsConstant } from '@/lib/constants'
 import { cartGetters, orderGetters, productGetters } from '@/lib/getters'
 
@@ -53,6 +54,7 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
   const { deleteCartItem } = useDeleteCartItem()
   const { updateCartCoupon } = useUpdateCartCoupon()
   const { deleteCartCoupon } = useDeleteCartCoupon()
+  const { createQuoteFromCart } = useCreateQuoteFromCart()
 
   const { data: purchaseLocation } = useGetPurchaseLocation()
 
@@ -134,6 +136,20 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
     }
   }
 
+  const handleInitiateQuote = async () => {
+    try {
+      const response = await createQuoteFromCart.mutateAsync({
+        cartId: cart?.id as string,
+        updateMode: 'ApplyToDraft',
+      })
+      if (response?.id) {
+        router.push(`/my-account/quote/${response.id}?mode=create`)
+      }
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
   return (
     <>
       <Grid container spacing={3}>
@@ -163,7 +179,7 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
           {mdScreen ? (
             <Stack direction="row" gap={2}>
               <Stack direction="column" gap={2}>
-                <LoadingButton variant="contained" color="secondary">
+                <LoadingButton variant="contained" color="secondary" onClick={handleInitiateQuote}>
                   {t('initiate-quote')}
                 </LoadingButton>
               </Stack>

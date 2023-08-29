@@ -79,3 +79,4 @@ export { default as updateQuoteEmailMutation } from './b2b/quotes/update-email-q
 export { default as updateQuoteCommentsMutation } from './b2b/quotes/update-quote-comments'
 export { default as updateQuoteFulfillmentInfo } from './b2b/quotes/update-quote-fulfillment-info'
 export { default as updateQuoteAdjustmentsMutation } from './b2b/quotes/update-quote-adjustments'
+export { default as createQuoteFromCartMutation } from './b2b/quotes/create-quote-from-cart'

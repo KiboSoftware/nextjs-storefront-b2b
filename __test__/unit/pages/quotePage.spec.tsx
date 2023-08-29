@@ -42,10 +42,10 @@ jest.mock('next-i18next/serverSideTranslations', () => ({
   }),
 }))
 
-const CreateNewQuoteTemplate = () => <div data-testid="create-new-quote-template-mock" />
+const QuoteDetailsTemplate = () => <div data-testid="quote-details-template-mock" />
 jest.mock(
-  '@/components/page-templates/B2B/CreateNewQuoteTemplate/CreateNewQuoteTemplate.tsx',
-  () => () => CreateNewQuoteTemplate()
+  '@/components/page-templates/B2B/QuoteDetailsTemplate/QuoteDetailsTemplate.tsx',
+  () => () => QuoteDetailsTemplate()
 )
 
 jest.mock('@/lib/api/util/getUserClaimsFromRequest.ts', () => jest.fn(() => null))

@@ -48,28 +48,21 @@ const loadShippingMethods = async (quoteId: string, draft: boolean) => {
 export const useGetQuoteShippingMethods = ({
   quoteId,
   draft,
-  isNewAddressAdded,
-  selectedShippingAddressId,
+  enabled,
 }: {
   quoteId: string
   draft: boolean
-  isNewAddressAdded: boolean
-  selectedShippingAddressId: number
+  enabled: boolean
 }): UseQuoteShippingMethodsResponse => {
   const {
     data = [],
     isLoading,
     isSuccess,
   } = useQuery({
-    queryKey: quoteShippingMethodKeys.detail(
-      quoteId,
-      draft,
-      isNewAddressAdded,
-      selectedShippingAddressId
-    ),
+    queryKey: quoteShippingMethodKeys.all,
     queryFn: () => loadShippingMethods(quoteId, draft),
     // cacheTime: 0,
-    enabled: !!(quoteId && draft && (isNewAddressAdded?.toString() || selectedShippingAddressId)),
+    enabled: !!enabled,
   })
 
   return { data, isLoading, isSuccess }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, SyntheticEvent } from 'react'
 
 import Delete from '@mui/icons-material/Delete'
 import Edit from '@mui/icons-material/Edit'
@@ -165,12 +165,14 @@ const QuotesTable = (props: QuotesTableProps) => {
     })
   }
 
-  const handleEditQuote = (quoteId: string) => {
+  const handleEditQuote = (e: SyntheticEvent<Element, Event>, quoteId: string) => {
+    e.stopPropagation()
     router.push(`/my-account/quote/${quoteId}`)
     handleClose()
   }
 
-  const handleEmailQuote = (quoteId: string) => {
+  const handleEmailQuote = (e: SyntheticEvent<Element, Event>, quoteId: string) => {
+    e.stopPropagation()
     showModal({
       Component: EmailQuoteDialog,
       props: {
@@ -180,7 +182,12 @@ const QuotesTable = (props: QuotesTableProps) => {
     handleClose()
   }
 
-  const handleDeleteQuote = (quoteId: string, draft: boolean) => {
+  const handleDeleteQuote = (
+    e: SyntheticEvent<Element, Event>,
+    quoteId: string,
+    draft: boolean
+  ) => {
+    e.stopPropagation()
     try {
       showModal({
         Component: ConfirmationDialog,
@@ -300,7 +307,9 @@ const QuotesTable = (props: QuotesTableProps) => {
                     sx={{
                       ...QuotesTableStyles.tableRow,
                       borderLeftColor: getStatusColorCode(status),
+                      cursor: 'pointer',
                     }}
+                    onClick={() => router.push(`/my-account/quote/${quoteId}`)}
                   >
                     <TableCell component="td" scope="row">
                       <Typography variant="body2" data-testid={`quote-number`}>
@@ -340,12 +349,18 @@ const QuotesTable = (props: QuotesTableProps) => {
                           <TableCell component="td" scope="row" align="right">
                             <Box display={'flex'} justifyContent={'flex-end'}>
                               {accessHandler.canEdit(status) && (
-                                <IconButton size="small" onClick={() => handleEditQuote(quoteId)}>
+                                <IconButton
+                                  size="small"
+                                  onClick={(e) => handleEditQuote(e, quoteId)}
+                                >
                                   <Edit fontSize="small" />
                                 </IconButton>
                               )}
                               {accessHandler.canEmail(status) && (
-                                <IconButton size="small" onClick={() => handleEmailQuote(quoteId)}>
+                                <IconButton
+                                  size="small"
+                                  onClick={(e) => handleEmailQuote(e, quoteId)}
+                                >
                                   <Mail fontSize="small" />
                                 </IconButton>
                               )}
@@ -353,7 +368,7 @@ const QuotesTable = (props: QuotesTableProps) => {
                               <IconButton
                                 size="small"
                                 data-testid="delete-quote"
-                                onClick={() => handleDeleteQuote(quoteId, false)}
+                                onClick={(e) => handleDeleteQuote(e, quoteId, false)}
                               >
                                 <Delete fontSize="small" />
                               </IconButton>
@@ -396,16 +411,16 @@ const QuotesTable = (props: QuotesTableProps) => {
           }}
         >
           {accessHandler.canEdit(anchorEl?.quote?.status as string) && (
-            <MenuItem onClick={() => handleEditQuote(anchorEl?.quote?.id as string)}>
+            <MenuItem onClick={(e) => handleEditQuote(e, anchorEl?.quote?.id as string)}>
               <Typography variant="body2">{t('edit-quote')}</Typography>
             </MenuItem>
           )}
           {accessHandler.canEmail(anchorEl?.quote?.status as string) && (
-            <MenuItem onClick={() => handleEmailQuote(anchorEl?.quote?.id as string)}>
+            <MenuItem onClick={(e) => handleEmailQuote(e, anchorEl?.quote?.id as string)}>
               <Typography variant="body2">{t('email-quote')}</Typography>
             </MenuItem>
           )}
-          <MenuItem onClick={() => handleDeleteQuote(anchorEl?.quote?.id as string, false)}>
+          <MenuItem onClick={(e) => handleDeleteQuote(e, anchorEl?.quote?.id as string, false)}>
             <Typography variant="body2">{t('delete-quote')}</Typography>
           </MenuItem>
         </Menu>

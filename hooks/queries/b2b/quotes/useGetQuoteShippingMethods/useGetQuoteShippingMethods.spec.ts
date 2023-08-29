@@ -11,8 +11,7 @@ describe('[hooks] useGetQuoteShippingMethods', () => {
         useGetQuoteShippingMethods({
           quoteId: 'quote-id',
           draft: true,
-          isNewAddressAdded: true,
-          selectedShippingAddressId: 123,
+          enabled: true,
         }),
       {
         wrapper: createQueryClientWrapper(),

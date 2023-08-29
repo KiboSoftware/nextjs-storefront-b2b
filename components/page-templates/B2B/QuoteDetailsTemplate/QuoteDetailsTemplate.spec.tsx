@@ -6,15 +6,14 @@ import { screen, waitFor, cleanup } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { graphql } from 'msw'
 
-import * as stories from './CreateNewQuoteTemplate.stories'
+import * as stories from './QuoteDetailsTemplate.stories'
 import { server } from '@/__mocks__/msw/server'
 import { quoteMock, singleQuoteItemMock, singleQuoteMock } from '@/__mocks__/stories'
 import { renderWithQueryClient } from '@/__test__/utils'
 import { DialogRoot, ModalContextProvider } from '@/context'
 
 import { CrOrderItem } from '@/lib/gql/types'
-const { Common, CreateNewQuoteTemplateMobile, CreateNewQuoteTemplateDesktop } =
-  composeStories(stories)
+const { Common, QuoteDetailsTemplateMobile, QuoteDetailsTemplateDesktop } = composeStories(stories)
 
 const user = userEvent.setup()
 
@@ -132,16 +131,14 @@ afterEach(() => {
   cleanup()
 })
 
-describe('[components] CreateNewQuoteTemplate', () => {
+describe('[components] QuoteDetailsTemplate', () => {
   describe('Desktop', () => {
     beforeEach(() => {
       const useMediaQueryMock = useMediaQuery as jest.Mock
       useMediaQueryMock.mockReturnValue(true)
     })
-    it('should render CreateNewQuoteTemplate component', async () => {
-      renderWithQueryClient(
-        <CreateNewQuoteTemplateDesktop {...CreateNewQuoteTemplateDesktop.args} />
-      )
+    it('should render QuoteDetailsTemplate component', async () => {
+      renderWithQueryClient(<QuoteDetailsTemplateDesktop {...QuoteDetailsTemplateDesktop.args} />)
 
       const quotesText = screen.getByText(/quotes/i)
       const createQuote = screen.getByText(/create-a-quote/i)
@@ -215,8 +212,8 @@ describe('[components] CreateNewQuoteTemplate', () => {
       useMediaQueryMock.mockReturnValue(false)
     })
 
-    it('should render CreateNewQuoteTemplate Mobile component', async () => {
-      renderWithQueryClient(<CreateNewQuoteTemplateMobile {...CreateNewQuoteTemplateMobile.args} />)
+    it('should render QuoteDetailsTemplate Mobile component', async () => {
+      renderWithQueryClient(<QuoteDetailsTemplateMobile {...QuoteDetailsTemplateMobile.args} />)
       const b2bProductComponent = screen.getByTestId('b2b-product-search-component')
 
       expect(b2bProductComponent).toBeVisible()

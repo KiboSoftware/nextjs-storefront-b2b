@@ -501,5 +501,7 @@
   "continue-to-checkout": "Continue to Checkout",
   "comments": "Comments",
   "view-full-comment-thread": "View Full Comment Thread",
-  "address": "Address"
+  "view-full-history": "View Full History",
+  "address": "Address",
+  "no-shipping-details-found": "No Shipping Details Found"
 }

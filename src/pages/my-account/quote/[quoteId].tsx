@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
-import { CreateNewQuoteTemplate } from '@/components/page-templates'
+import { QuoteDetailsTemplate } from '@/components/page-templates'
 import { useGetQuoteByID } from '@/hooks/queries/quotes/useGetQuoteById/useGetQuoteById'
 import { getQuote } from '@/lib/api/operations'
 
@@ -48,7 +48,7 @@ const QuotePage: NextPage<QuotePageProps> = (props) => {
       <Head>
         <meta name="robots" content="noindex,nofollow" />
       </Head>
-      <CreateNewQuoteTemplate
+      <QuoteDetailsTemplate
         quote={quoteResult as Quote}
         mode={mode}
         onAccountTitleClick={handleGoToQuotes}

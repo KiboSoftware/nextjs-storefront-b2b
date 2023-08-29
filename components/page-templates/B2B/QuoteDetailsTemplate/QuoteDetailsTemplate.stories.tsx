@@ -2,22 +2,22 @@ import React from 'react'
 
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
-import CreateNewQuoteTemplate from './CreateNewQuoteTemplate'
+import QuoteDetailsTemplate from './QuoteDetailsTemplate'
 import { quoteMock } from '@/__mocks__/stories'
 
 import { Quote } from '@/lib/gql/types'
 
 // Common
 export default {
-  title: 'Page Templates/B2B/CreateNewQuoteTemplate',
-  component: CreateNewQuoteTemplate,
+  title: 'Page Templates/B2B/QuoteDetailsTemplate',
+  component: QuoteDetailsTemplate,
   argTypes: {
     onAccountTitleClick: { action: 'onAccountTitleClick' },
   },
-} as ComponentMeta<typeof CreateNewQuoteTemplate>
+} as ComponentMeta<typeof QuoteDetailsTemplate>
 
-const Template: ComponentStory<typeof CreateNewQuoteTemplate> = (args) => (
-  <CreateNewQuoteTemplate {...args} />
+const Template: ComponentStory<typeof QuoteDetailsTemplate> = (args) => (
+  <QuoteDetailsTemplate {...args} />
 )
 
 export const Common = Template.bind({})
@@ -26,18 +26,18 @@ Common.args = {
   mode: 'edit',
 }
 
-export const CreateNewQuoteTemplateDesktop = Template.bind({})
-CreateNewQuoteTemplateDesktop.args = {
+export const QuoteDetailsTemplateDesktop = Template.bind({})
+QuoteDetailsTemplateDesktop.args = {
   quote: quoteMock?.items?.[0] as Quote,
   mode: 'create',
 }
 
-export const CreateNewQuoteTemplateMobile = Template.bind({})
-CreateNewQuoteTemplateMobile.args = {
+export const QuoteDetailsTemplateMobile = Template.bind({})
+QuoteDetailsTemplateMobile.args = {
   quote: quoteMock?.items?.[0] as Quote,
   mode: 'edit',
 }
-CreateNewQuoteTemplateMobile.parameters = {
+QuoteDetailsTemplateMobile.parameters = {
   viewport: {
     defaultViewport: 'iphone12promax',
   },

@@ -142,8 +142,7 @@ export const addressKeys = {
 
 export const b2bQuotesKeys = {
   all: ['quotes'],
-  quotesParams: (params: QueryQuotesArgs) =>
-    [...b2bQuotesKeys.all, JSON.stringify(params)] as const,
+  quotesParams: (params: QueryQuotesArgs) => [...b2bQuotesKeys.all, params] as const,
 }
 export const quoteKeys = {
   all: ['quote'] as const,

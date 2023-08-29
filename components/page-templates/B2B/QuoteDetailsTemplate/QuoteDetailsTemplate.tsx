@@ -15,7 +15,6 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
-  useTheme,
   Link,
   Divider,
 } from '@mui/material'
@@ -24,7 +23,7 @@ import { useTranslation } from 'next-i18next'
 import { Controller, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
-import { createNewQuoteTemplateStyles } from './CreateNewQuoteTemplate.style'
+import { quoteDetailsTemplateStyles } from './QuoteDetailsTemplate.style'
 import {
   B2BProductDetailsTable,
   B2BProductSearch,
@@ -73,7 +72,7 @@ import {
   Quote,
   QuoteComment,
 } from '@/lib/gql/types'
-export interface CreateNewQuoteTemplateProps {
+export interface QuoteDetailsTemplateProps {
   quote: Quote
   mode?: string
   onAccountTitleClick: () => void
@@ -83,14 +82,13 @@ const schema = yup.object().shape({
   name: yup.string().required('This field is required'),
 })
 
-const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
-  const theme = useTheme()
+const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
   const statusColorCode: any = {
-    Pending: theme.palette.action.disabled,
-    InReview: theme.palette.warning.main,
-    ReadyForCheckout: theme.palette.info.main,
-    Completed: theme.palette.success.main,
-    Expired: theme.palette.error.main,
+    Pending: 'disabled',
+    InReview: 'warning',
+    ReadyForCheckout: 'info',
+    Completed: 'success',
+    Expired: 'error',
   }
   const { quote, mode, onAccountTitleClick } = props
   const { showModal } = useModalContext()
@@ -99,6 +97,8 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
   const draft = true
   const mdScreen = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'))
   const { user, isAuthenticated } = useAuthContext()
+  const roleName = user?.roleName
+  console.log('user', user)
 
   const accountName = user?.companyOrOrganization ?? '-'
   const { number, quoteId, status, createdDate, expirationDate } =
@@ -170,11 +170,16 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
   )
   const { updateQuoteFulfillmentInfo } = useUpdateQuoteFulfillmentInfo()
   const { deleteQuote } = useDeleteQuote({ draft })
+  const shouldFetchShippingMethods =
+    quoteId &&
+    draft &&
+    shipItems?.length &&
+    selectedShippingAddressId &&
+    !selectedShippingMethodCode
   const { data: shippingMethods } = useGetQuoteShippingMethods({
     quoteId,
     draft,
-    isNewAddressAdded,
-    selectedShippingAddressId,
+    enabled: shouldFetchShippingMethods as boolean,
   })
   const shippingAddressRef = useRef<HTMLDivElement>(null)
 
@@ -274,7 +279,7 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
               updateMode: 'ApplyAndCommit',
               name: quote?.name as string,
             })
-            router.push('/my-account/b2b/quotes')
+            if (updateQuote.isSuccess) router.push('/my-account/b2b/quotes')
           },
           title: t('submit-quote-title'),
           contentText: t('submit-quote-confirmation'),
@@ -432,6 +437,25 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
     }
   }
 
+  const handleViewFullCommentHistory = async () => {
+    try {
+      showModal({
+        Component: QuoteCommentThreadDialog,
+        props: {
+          userId: user?.userId,
+          comments: quote?.comments,
+          onAddCommentToQuote: handleAddCommentToQuote,
+          showContentTopDivider: true,
+          showContentBottomDivider: true,
+          mode,
+          status,
+        },
+      })
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
   const handleClearChanges = async () => {
     try {
       showModal({
@@ -477,21 +501,21 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
 
   return (
     <>
-      <Grid container spacing={3}>
+      <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Stack sx={createNewQuoteTemplateStyles.wrapIcon} direction="row" gap={2}>
+          <Stack sx={quoteDetailsTemplateStyles.wrapIcon} direction="row" gap={2}>
             <Box sx={{ display: 'flex' }} onClick={onAccountTitleClick}>
-              <ArrowBackIos fontSize="inherit" sx={createNewQuoteTemplateStyles.wrapIcon} />
+              <ArrowBackIos fontSize="inherit" sx={quoteDetailsTemplateStyles.wrapIcon} />
               {mdScreen && <Typography variant="body2">{t('quotes')}</Typography>}
             </Box>
             {!mdScreen && (
-              <Box sx={createNewQuoteTemplateStyles.createNewQuoteTextBox}>
+              <Box sx={quoteDetailsTemplateStyles.createNewQuoteTextBox}>
                 {mode === 'create' ? (
-                  <Typography variant="h2" sx={createNewQuoteTemplateStyles.createNewQuoteText}>
+                  <Typography variant="h2" sx={quoteDetailsTemplateStyles.createNewQuoteText}>
                     {t('create-a-quote')}
                   </Typography>
                 ) : (
-                  <Typography variant="h2" sx={createNewQuoteTemplateStyles.createNewQuoteText}>
+                  <Typography variant="h2" sx={quoteDetailsTemplateStyles.createNewQuoteText}>
                     {quoteName}
                   </Typography>
                 )}
@@ -517,7 +541,11 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
                 <LoadingButton
                   variant="contained"
                   color="secondary"
-                  disabled={status?.toLowerCase() === 'inreview' || !(quote?.hasDraft as boolean)}
+                  disabled={
+                    status?.toLowerCase() === 'inreview' ||
+                    roleName === 'Nonpurchaser' ||
+                    !(quote?.hasDraft as boolean)
+                  }
                   onClick={handleClearChanges}
                 >
                   {t('clear-changes')}
@@ -527,7 +555,7 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
                 <LoadingButton
                   variant="contained"
                   color="secondary"
-                  disabled={status?.toLowerCase() === 'inreview'}
+                  disabled={status?.toLowerCase() === 'inreview' || roleName === 'Nonpurchaser'}
                   onClick={() => handleEditQuote(quoteId)}
                 >
                   {t('edit-quote')}
@@ -536,7 +564,7 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
               <LoadingButton
                 variant="contained"
                 color="inherit"
-                disabled={status?.toLowerCase() === 'inreview'}
+                disabled={status?.toLowerCase() === 'inreview' || roleName === 'Nonpurchaser'}
                 onClick={handleSubmit(handleSaveQuoteName)}
               >
                 {t('save-and-exit')}
@@ -547,6 +575,7 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
                   color="primary"
                   disabled={
                     status?.toLowerCase() === 'inreview' ||
+                    roleName === 'Nonpurchaser' ||
                     !isSaveAndExitDisabled ||
                     !quote?.hasDraft
                   }
@@ -559,7 +588,7 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
                 <LoadingButton
                   variant="contained"
                   color="primary"
-                  disabled={quote?.hasDraft as boolean}
+                  disabled={(quote?.hasDraft as boolean) || roleName === 'Nonpurchaser'}
                   onClick={handleGotoCheckout}
                 >
                   {t('continue-to-checkout')}
@@ -573,8 +602,8 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
           xs={12}
           md={12}
           sx={{
-            ...createNewQuoteTemplateStyles.quoteDetailsHeading,
-            ...createNewQuoteTemplateStyles.gridPaddingTop,
+            ...quoteDetailsTemplateStyles.quoteDetailsHeading,
+            ...quoteDetailsTemplateStyles.gridPaddingTop,
           }}
         >
           <Typography variant="h2" mb={2}>
@@ -599,7 +628,7 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
                 onChange={(_name: string, value: string) => field.onChange(value)}
                 onBlur={field.onBlur}
                 required
-                disabled={status?.toLocaleLowerCase() === 'inreview'}
+                disabled={status?.toLocaleLowerCase() === 'inreview' || roleName === 'Nonpurchaser'}
               />
             )}
           />
@@ -609,8 +638,8 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
           xs={12}
           md={8}
           sx={{
-            ...createNewQuoteTemplateStyles.quoteDetails,
-            ...createNewQuoteTemplateStyles.gridPaddingTop,
+            ...quoteDetailsTemplateStyles.quoteDetails,
+            ...quoteDetailsTemplateStyles.gridPaddingTop,
           }}
         >
           <Grid container rowSpacing={1} columnSpacing={{ md: 1 }}>
@@ -667,7 +696,7 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
             <B2BProductSearch onAddProduct={handleAddProduct} />
           )}
         </Grid>
-        <Grid item xs={12} sx={{ ...createNewQuoteTemplateStyles.gridPaddingTop }}>
+        <Grid item xs={12} sx={{ ...quoteDetailsTemplateStyles.gridPaddingTop }}>
           <Stack gap={3}>
             {mdScreen ? (
               <B2BProductDetailsTable
@@ -699,7 +728,7 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
                     onCartItemActionSelection={() => null}
                   />
                 ) : (
-                  <Typography variant="body1" sx={createNewQuoteTemplateStyles.noCartItems}>
+                  <Typography variant="body1" sx={quoteDetailsTemplateStyles.noCartItems}>
                     {t('search-to-add-products')}
                   </Typography>
                 )}
@@ -726,213 +755,246 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
               />
             </Box>
             <Divider />
-
             {quoteItems?.length ? (
-              <Stack ref={shippingAddressRef}>
-                {<Typography variant="h2">{t('shipping-information')}</Typography>}
-                {shouldShowAddAddressButton && mode && status.toLowerCase() !== 'inreview' && (
-                  <>
-                    <Stack gap={2} width="100%">
-                      {defaultShippingAddress && (
-                        <>
-                          <Typography variant="h4" fontWeight={'bold'}>
-                            {t('your-default-shipping-address')}
-                          </Typography>
-                          <KiboRadio
-                            radioOptions={[
-                              {
-                                value: String(defaultShippingAddress.id),
-                                name: String(defaultShippingAddress.id),
-                                optionIndicator: t('primary'),
-                                label: (
-                                  <AddressCard
-                                    firstName={defaultShippingAddress?.firstName as string}
-                                    middleNameOrInitial={
-                                      defaultShippingAddress?.middleNameOrInitial as string
-                                    }
-                                    lastNameOrSurname={
-                                      defaultShippingAddress?.lastNameOrSurname as string
-                                    }
-                                    address1={defaultShippingAddress?.address?.address1 as string}
-                                    address2={defaultShippingAddress?.address?.address2 as string}
-                                    cityOrTown={
-                                      defaultShippingAddress?.address?.cityOrTown as string
-                                    }
-                                    stateOrProvince={
-                                      defaultShippingAddress?.address?.stateOrProvince as string
-                                    }
-                                    postalOrZipCode={
-                                      defaultShippingAddress?.address?.postalOrZipCode as string
-                                    }
-                                  />
-                                ),
-                              },
-                            ]}
-                            selected={selectedShippingAddressId?.toString()}
-                            align="flex-start"
-                            onChange={handleAddressSelect}
-                          />
-                        </>
-                      )}
-                      {showPreviouslySavedAddress && (
-                        <>
-                          <Typography variant="h4" fontWeight={'bold'}>
-                            {t('previously-saved-shipping-addresses')}
-                          </Typography>
-                          <KiboRadio
-                            radioOptions={previouslySavedShippingAddress?.map((address, index) => {
-                              return {
-                                value: String(address.id),
-                                name: String(address.id),
-                                label: (
-                                  <AddressCard
-                                    firstName={address?.firstName as string}
-                                    middleNameOrInitial={address?.middleNameOrInitial as string}
-                                    lastNameOrSurname={address?.lastNameOrSurname as string}
-                                    address1={address?.address?.address1 as string}
-                                    address2={address?.address?.address2 as string}
-                                    cityOrTown={address?.address?.cityOrTown as string}
-                                    stateOrProvince={address?.address?.stateOrProvince as string}
-                                    postalOrZipCode={address?.address?.postalOrZipCode as string}
-                                  />
-                                ),
-                              }
-                            })}
-                            selected={selectedShippingAddressId?.toString()}
-                            align="flex-start"
-                            onChange={handleAddressSelect}
-                          />
-                        </>
-                      )}
-                      <Button
-                        variant="contained"
-                        color="inherit"
-                        sx={{ width: { xs: '100%', sm: '50%' } }}
-                        onClick={handleAddNewAddress}
-                      >
-                        {t('add-new-address')}
-                      </Button>
-                    </Stack>
-                    {shippingMethods.length > 0 && (
-                      <ShippingMethod
-                        shipItems={shipItems}
-                        pickupItems={pickupItems}
-                        orderShipmentMethods={[...shippingMethods]}
-                        selectedShippingMethodCode={selectedShippingMethodCode}
-                        onShippingMethodChange={handleSaveShippingMethod}
-                        // onStoreLocatorClick={handleStoreLocatorClick}
-                      />
-                    )}
-                  </>
-                )}
-                {!shouldShowAddAddressButton && mode && status.toLowerCase() !== 'inreview' && (
-                  <>
-                    <AddressForm
-                      isUserLoggedIn={false}
-                      saveAddressLabel={t('save-shipping-address')}
-                      setAutoFocus={true}
-                      validateForm={validateForm}
-                      onSaveAddress={handleSaveAddressToQuote}
-                      onFormStatusChange={handleFormStatusChange}
-                    />
-                    {isAuthenticated && (
-                      <FormControlLabel
-                        label={t('save-address-to-account')}
-                        control={
-                          <Checkbox
-                            sx={{ marginLeft: '0.5rem' }}
-                            inputProps={{
-                              'aria-label': t('save-address-to-account'),
-                            }}
-                            onChange={() => setIsAddressSavedToAccount(!isAddressSavedToAccount)}
-                          />
-                        }
-                      />
-                    )}
-                    <Box m={1} maxWidth={'872px'} data-testid="address-form">
-                      <Grid container>
-                        <Grid item xs={6} gap={2} display={'flex'} direction={'column'}>
-                          <Button
-                            variant="contained"
-                            color="secondary"
-                            onClick={() => setShouldShowAddAddressButton(true)}
-                          >
-                            {t('cancel')}
-                          </Button>
+              shipItems.length > 0 ? (
+                <Stack ref={shippingAddressRef}>
+                  {
+                    <Typography variant="h2" pb={1}>
+                      {t('shipping-information')}
+                    </Typography>
+                  }
+                  {shouldShowAddAddressButton && mode && status.toLowerCase() !== 'inreview' && (
+                    <>
+                      <Stack gap={2} width="100%">
+                        {defaultShippingAddress && (
+                          <>
+                            <Typography variant="h4" fontWeight={'bold'}>
+                              {t('your-default-shipping-address')}
+                            </Typography>
+                            <KiboRadio
+                              radioOptions={[
+                                {
+                                  value: String(defaultShippingAddress.id),
+                                  name: String(defaultShippingAddress.id),
+                                  optionIndicator: t('primary'),
+                                  label: (
+                                    <AddressCard
+                                      firstName={defaultShippingAddress?.firstName as string}
+                                      middleNameOrInitial={
+                                        defaultShippingAddress?.middleNameOrInitial as string
+                                      }
+                                      lastNameOrSurname={
+                                        defaultShippingAddress?.lastNameOrSurname as string
+                                      }
+                                      address1={defaultShippingAddress?.address?.address1 as string}
+                                      address2={defaultShippingAddress?.address?.address2 as string}
+                                      cityOrTown={
+                                        defaultShippingAddress?.address?.cityOrTown as string
+                                      }
+                                      stateOrProvince={
+                                        defaultShippingAddress?.address?.stateOrProvince as string
+                                      }
+                                      postalOrZipCode={
+                                        defaultShippingAddress?.address?.postalOrZipCode as string
+                                      }
+                                    />
+                                  ),
+                                },
+                              ]}
+                              selected={selectedShippingAddressId?.toString()}
+                              align="flex-start"
+                              onChange={handleAddressSelect}
+                            />
+                          </>
+                        )}
+                        {showPreviouslySavedAddress && (
+                          <>
+                            <Typography variant="h4" fontWeight={'bold'}>
+                              {t('previously-saved-shipping-addresses')}
+                            </Typography>
+                            <KiboRadio
+                              radioOptions={previouslySavedShippingAddress?.map(
+                                (address, index) => {
+                                  return {
+                                    value: String(address.id),
+                                    name: String(address.id),
+                                    label: (
+                                      <AddressCard
+                                        firstName={address?.firstName as string}
+                                        middleNameOrInitial={address?.middleNameOrInitial as string}
+                                        lastNameOrSurname={address?.lastNameOrSurname as string}
+                                        address1={address?.address?.address1 as string}
+                                        address2={address?.address?.address2 as string}
+                                        cityOrTown={address?.address?.cityOrTown as string}
+                                        stateOrProvince={
+                                          address?.address?.stateOrProvince as string
+                                        }
+                                        postalOrZipCode={
+                                          address?.address?.postalOrZipCode as string
+                                        }
+                                      />
+                                    ),
+                                  }
+                                }
+                              )}
+                              selected={selectedShippingAddressId?.toString()}
+                              align="flex-start"
+                              onChange={handleAddressSelect}
+                            />
+                          </>
+                        )}
+                        {roleName === 'Admin' && (
                           <Button
                             variant="contained"
                             color="inherit"
-                            style={{ textTransform: 'none' }}
-                            onClick={handleAddressValidationAndSave}
-                            {...(!isAddressFormValid && { disabled: true })}
+                            sx={{ width: { xs: '100%', sm: '50%' } }}
+                            onClick={handleAddNewAddress}
                           >
-                            {t('save-shipping-address')}
+                            {t('add-new-address')}
                           </Button>
-                        </Grid>
-                      </Grid>
-                    </Box>
-                  </>
-                )}
-                {(!mode || status.toLocaleLowerCase() === 'inreview') && (
-                  <Stack direction="row" justifyContent="space-between">
-                    {quote?.fulfillmentInfo?.fulfillmentContact && (
-                      <Box>
-                        <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
-                          {t('address')}
-                        </Typography>
-                        <AddressCard
-                          firstName={
-                            quote?.fulfillmentInfo?.fulfillmentContact?.firstName as string
-                          }
-                          middleNameOrInitial={
-                            quote?.fulfillmentInfo?.fulfillmentContact
-                              ?.middleNameOrInitial as string
-                          }
-                          lastNameOrSurname={
-                            quote?.fulfillmentInfo?.fulfillmentContact?.lastNameOrSurname as string
-                          }
-                          address1={
-                            quote?.fulfillmentInfo?.fulfillmentContact?.address?.address1 as string
-                          }
-                          address2={
-                            quote?.fulfillmentInfo?.fulfillmentContact?.address?.address2 as string
-                          }
-                          cityOrTown={
-                            quote?.fulfillmentInfo?.fulfillmentContact?.address
-                              ?.cityOrTown as string
-                          }
-                          stateOrProvince={
-                            quote?.fulfillmentInfo?.fulfillmentContact?.address
-                              ?.stateOrProvince as string
-                          }
-                          postalOrZipCode={
-                            quote?.fulfillmentInfo?.fulfillmentContact?.address
-                              ?.postalOrZipCode as string
+                        )}
+                      </Stack>
+                      {shippingMethods.length > 0 && (
+                        <ShippingMethod
+                          shipItems={shipItems}
+                          pickupItems={pickupItems}
+                          orderShipmentMethods={[...shippingMethods]}
+                          selectedShippingMethodCode={selectedShippingMethodCode}
+                          onShippingMethodChange={handleSaveShippingMethod}
+                          // onStoreLocatorClick={handleStoreLocatorClick}
+                        />
+                      )}
+                    </>
+                  )}
+                  {!shouldShowAddAddressButton && mode && status.toLowerCase() !== 'inreview' && (
+                    <>
+                      <AddressForm
+                        isUserLoggedIn={false}
+                        saveAddressLabel={t('save-shipping-address')}
+                        setAutoFocus={true}
+                        validateForm={validateForm}
+                        onSaveAddress={handleSaveAddressToQuote}
+                        onFormStatusChange={handleFormStatusChange}
+                      />
+                      {isAuthenticated && (
+                        <FormControlLabel
+                          label={t('save-address-to-account')}
+                          control={
+                            <Checkbox
+                              sx={{ marginLeft: '0.5rem' }}
+                              inputProps={{
+                                'aria-label': t('save-address-to-account'),
+                              }}
+                              onChange={() => setIsAddressSavedToAccount(!isAddressSavedToAccount)}
+                            />
                           }
                         />
-                      </Box>
-                    )}
-                    {quote?.fulfillmentInfo?.shippingMethodName && quote?.subTotal && (
-                      <Box>
-                        <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
-                          {t('shipping-method')}
-                        </Typography>
-                        <Typography>{`${quote?.fulfillmentInfo?.shippingMethodName}-${t(
-                          'currency',
-                          {
-                            val: quote?.shippingSubTotal,
-                          }
-                        )}`}</Typography>
-                      </Box>
-                    )}
-                    {!quote?.fulfillmentInfo?.fulfillmentContact &&
-                      !quote?.fulfillmentInfo?.shippingMethodName && (
-                        <Typography>No Shipping Details Found</Typography>
                       )}
-                  </Stack>
-                )}
-                <Divider />
-              </Stack>
+                      <Box m={1} maxWidth={'872px'} data-testid="address-form">
+                        <Grid container>
+                          <Grid item xs={6} gap={2} display={'flex'} direction={'column'}>
+                            <Button
+                              variant="contained"
+                              color="secondary"
+                              onClick={() => setShouldShowAddAddressButton(true)}
+                            >
+                              {t('cancel')}
+                            </Button>
+                            <Button
+                              variant="contained"
+                              color="inherit"
+                              style={{ textTransform: 'none' }}
+                              onClick={handleAddressValidationAndSave}
+                              {...(!isAddressFormValid && { disabled: true })}
+                            >
+                              {t('save-shipping-address')}
+                            </Button>
+                          </Grid>
+                        </Grid>
+                      </Box>
+                    </>
+                  )}
+                  {(!mode ||
+                    status.toLocaleLowerCase() === 'inreview' ||
+                    roleName === 'Nonpurchaser') && (
+                    <Stack direction="row" justifyContent="space-between">
+                      {quote?.fulfillmentInfo?.fulfillmentContact && (
+                        <Box pb={1}>
+                          <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
+                            {t('address')}
+                          </Typography>
+                          <AddressCard
+                            firstName={
+                              quote?.fulfillmentInfo?.fulfillmentContact?.firstName as string
+                            }
+                            middleNameOrInitial={
+                              quote?.fulfillmentInfo?.fulfillmentContact
+                                ?.middleNameOrInitial as string
+                            }
+                            lastNameOrSurname={
+                              quote?.fulfillmentInfo?.fulfillmentContact
+                                ?.lastNameOrSurname as string
+                            }
+                            address1={
+                              quote?.fulfillmentInfo?.fulfillmentContact?.address
+                                ?.address1 as string
+                            }
+                            address2={
+                              quote?.fulfillmentInfo?.fulfillmentContact?.address
+                                ?.address2 as string
+                            }
+                            cityOrTown={
+                              quote?.fulfillmentInfo?.fulfillmentContact?.address
+                                ?.cityOrTown as string
+                            }
+                            stateOrProvince={
+                              quote?.fulfillmentInfo?.fulfillmentContact?.address
+                                ?.stateOrProvince as string
+                            }
+                            postalOrZipCode={
+                              quote?.fulfillmentInfo?.fulfillmentContact?.address
+                                ?.postalOrZipCode as string
+                            }
+                          />
+                        </Box>
+                      )}
+                      {quote?.fulfillmentInfo?.shippingMethodName && quote?.subTotal && (
+                        <Box>
+                          <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
+                            {t('shipping-method')}
+                          </Typography>
+                          <Typography pt={1}>{`${quote?.fulfillmentInfo?.shippingMethodName} - ${t(
+                            'currency',
+                            {
+                              val: quote?.shippingSubTotal,
+                            }
+                          )}`}</Typography>
+                        </Box>
+                      )}
+                      {!quote?.fulfillmentInfo?.fulfillmentContact &&
+                        !quote?.fulfillmentInfo?.shippingMethodName && (
+                          <Typography>{t('no-shipping-details-found')}</Typography>
+                        )}
+                    </Stack>
+                  )}
+                  <Divider />
+                </Stack>
+              ) : (
+                <Stack>
+                  <Typography variant="h2" component="h2" sx={{ fontWeight: 'bold' }}>
+                    {t('pickup')}
+                  </Typography>
+                  <ShippingMethod
+                    showTitle={false}
+                    shipItems={shipItems}
+                    pickupItems={pickupItems}
+                    orderShipmentMethods={[...shippingMethods]}
+                    selectedShippingMethodCode={selectedShippingMethodCode}
+                    onShippingMethodChange={handleSaveShippingMethod}
+                    // onStoreLocatorClick={handleStoreLocatorClick}
+                  />
+                </Stack>
+              )
             ) : null}
             <Box>
               <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
@@ -942,9 +1004,11 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
                 {mode && status?.toLowerCase() !== 'inreview' && (
                   <Button
                     onClick={handleViewFullCommentThread}
-                    sx={{ ...createNewQuoteTemplateStyles.viewFullCommentThreadButton }}
+                    sx={{ ...quoteDetailsTemplateStyles.viewFullCommentThreadAndHistoryButton }}
                   >
-                    <Link sx={{ ...createNewQuoteTemplateStyles.viewFullCommentThreadLink }}>
+                    <Link
+                      sx={{ ...quoteDetailsTemplateStyles.viewFullCommentThreadAndHistoryLink }}
+                    >
                       {t('view-full-comment-thread')}
                     </Link>
                   </Button>
@@ -960,9 +1024,23 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
             </Box>
             <Divider />
             <Box>
-              <Typography variant="h2" pb={1}>
-                {t('quote-history')}
-              </Typography>
+              <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
+                <Typography variant="h2" pb={1}>
+                  {t('quote-history')}
+                </Typography>
+                {mode && status?.toLowerCase() !== 'inreview' && (
+                  <Button
+                    onClick={handleViewFullCommentHistory}
+                    sx={{ ...quoteDetailsTemplateStyles.viewFullCommentThreadAndHistoryButton }}
+                  >
+                    <Link
+                      sx={{ ...quoteDetailsTemplateStyles.viewFullCommentThreadAndHistoryLink }}
+                    >
+                      {t('view-full-history')}
+                    </Link>
+                  </Button>
+                )}
+              </Stack>
             </Box>
 
             {!mdScreen ? (
@@ -971,7 +1049,7 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
                   <LoadingButton
                     variant="contained"
                     color="primary"
-                    disabled={quote?.hasDraft as boolean}
+                    disabled={(quote?.hasDraft as boolean) || roleName === 'Nonpurchaser'}
                     onClick={handleGotoCheckout}
                     fullWidth
                   >
@@ -984,6 +1062,7 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
                     color="primary"
                     disabled={
                       status?.toLowerCase() === 'inreview' ||
+                      roleName === 'Nonpurchaser' ||
                       !isSaveAndExitDisabled ||
                       !quote?.hasDraft
                     }
@@ -1001,7 +1080,9 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
                       fullWidth
                       sx={{ padding: '0.375rem 0.5rem' }}
                       disabled={
-                        status?.toLowerCase() === 'inreview' || !(quote?.hasDraft as boolean)
+                        status?.toLowerCase() === 'inreview' ||
+                        roleName === 'Nonpurchaser' ||
+                        !(quote?.hasDraft as boolean)
                       }
                       onClick={handleClearChanges}
                     >
@@ -1012,7 +1093,7 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
                     <LoadingButton
                       variant="contained"
                       color="secondary"
-                      disabled={status?.toLowerCase() === 'inreview'}
+                      disabled={status?.toLowerCase() === 'inreview' || roleName === 'Nonpurchaser'}
                       sx={{ padding: '0.375rem 0.5rem' }}
                       fullWidth
                       onClick={() => handleEditQuote(quoteId)}
@@ -1025,7 +1106,7 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
                     variant="contained"
                     color="inherit"
                     fullWidth
-                    disabled={status?.toLowerCase() === 'inreview'}
+                    disabled={status?.toLowerCase() === 'inreview' || roleName === 'Nonpurchaser'}
                     onClick={handleSubmit(handleSaveQuoteName)}
                   >
                     {t('save-and-exit')}
@@ -1040,4 +1121,4 @@ const CreateNewQuoteTemplate = (props: CreateNewQuoteTemplateProps) => {
   )
 }
 
-export default CreateNewQuoteTemplate
+export default QuoteDetailsTemplate

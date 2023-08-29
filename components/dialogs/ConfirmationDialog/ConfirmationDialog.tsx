@@ -45,7 +45,7 @@ const ConfirmationDialog = (props: ConfirmationDialogProps) => {
     Title: title,
     Content: <ConfirmationDialogContent contentText={contentText} />,
     Actions: (
-      <Stack gap={2} width="100%" direction="row">
+      <Stack gap={2} width="100%">
         <Button
           sx={{ width: '100%' }}
           variant="contained"
