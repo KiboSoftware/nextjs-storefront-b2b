@@ -104,7 +104,7 @@ describe('[page] Quote Page', () => {
       </RQNotificationContextProvider>
     )
 
-    const createNewQuote = screen.getByTestId('create-new-quote-template-mock')
+    const createNewQuote = screen.getByTestId('quote-details-template-mock')
     expect(createNewQuote).toBeVisible()
   })
 })

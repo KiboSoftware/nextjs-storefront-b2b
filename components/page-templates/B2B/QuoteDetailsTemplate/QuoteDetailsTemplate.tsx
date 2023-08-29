@@ -29,12 +29,16 @@ import {
   B2BProductSearch,
   OrderSummaryEditable,
   QuotesCommentThread,
+  QuotesHistory,
 } from '@/components/b2b'
-import QuoteHistory from '@/components/b2b/QuotesHistory/QuotesHistory'
 import { CartItemList } from '@/components/cart'
 import { ShippingMethod } from '@/components/checkout'
 import { AddressCard, AddressForm, KiboRadio, KiboTextBox } from '@/components/common'
-import { ConfirmationDialog, QuoteCommentThreadDialog } from '@/components/dialogs'
+import {
+  ConfirmationDialog,
+  QuoteCommentThreadDialog,
+  QuotesHistoryDialog,
+} from '@/components/dialogs'
 import { useAuthContext, useModalContext } from '@/context'
 import {
   useGetPurchaseLocation,
@@ -64,6 +68,7 @@ import { buildAddressParams } from '@/lib/helpers'
 import { Address } from '@/lib/types'
 
 import {
+  AuditRecord,
   CrContact,
   CrOrderItem,
   CuAddress,
@@ -440,15 +445,9 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
   const handleViewFullCommentHistory = async () => {
     try {
       showModal({
-        Component: QuoteCommentThreadDialog,
+        Component: QuotesHistoryDialog,
         props: {
-          userId: user?.userId,
-          comments: quote?.comments,
-          onAddCommentToQuote: handleAddCommentToQuote,
-          showContentTopDivider: true,
-          showContentBottomDivider: true,
-          mode,
-          status,
+          auditHistory: quote?.auditHistory as AuditRecord[],
         },
       })
     } catch (e) {
@@ -1041,6 +1040,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                   </Button>
                 )}
               </Stack>
+              <QuotesHistory auditHistory={quote?.auditHistory?.slice(0, 3) as AuditRecord[]} />
             </Box>
 
             {!mdScreen ? (

@@ -42,6 +42,7 @@ const QuoteHistoryItem = ({ record }: { record: AuditRecord }) => {
   const actionText: any = {
     Add: t('added'),
     Update: t('updated'),
+    Remove: t('removed'),
   }
 
   return (
