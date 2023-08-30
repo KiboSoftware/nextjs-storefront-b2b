@@ -6,14 +6,14 @@ import { getB2BAccountHierarchyQuery as query } from '@/lib/gql/queries'
 import { decodeParseCookieValue } from '@/lib/helpers'
 import { B2BAccountHierarchyResult } from '@/lib/types'
 
-const { publicRuntimeConfig } = getConfig()
-
-const authCookieName = publicRuntimeConfig.userCookieKey.toLowerCase()
-
 export default async function getB2BAccountHierarchy(
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<B2BAccountHierarchyResult | null> {
+  const { publicRuntimeConfig } = getConfig()
+
+  const authCookieName = publicRuntimeConfig.userCookieKey.toLowerCase()
+
   const cookies = req?.cookies
 
   if (!cookies?.[authCookieName]) return null

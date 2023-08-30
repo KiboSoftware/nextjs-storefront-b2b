@@ -7,7 +7,7 @@ import { B2BUser } from '@/lib/gql/types'
 describe('[helpers] buildUpdateCustomerB2bAccountParams function', () => {
   it('should return the buildUpdateCustomerB2bAccountParams variables', () => {
     const parentAccount = {
-      id: 1004,
+      id: 1174,
     }
 
     const { id, parentAccountId, companyOrOrganization, taxId, users } =
