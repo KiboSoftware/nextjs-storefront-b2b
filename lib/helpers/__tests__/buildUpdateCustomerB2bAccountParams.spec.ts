@@ -16,7 +16,7 @@ describe('[helpers] buildUpdateCustomerB2bAccountParams function', () => {
 
     const values: CreateCustomerB2bAccountParams = {
       parentAccount,
-      companyOrOrganization: companyOrOrganization as string,
+      companyOrOrganization: companyOrOrganization,
       taxId: taxId as string,
       firstName: firstName as string,
       lastName: lastName as string,

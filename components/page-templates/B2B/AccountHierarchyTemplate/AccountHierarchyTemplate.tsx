@@ -38,7 +38,6 @@ import {
   B2BAccountHierarchyResult,
   CreateCustomerB2bAccountParams,
   EditChildAccountProps,
-  HierarchyNode,
   HierarchyTree,
 } from '@/lib/types'
 

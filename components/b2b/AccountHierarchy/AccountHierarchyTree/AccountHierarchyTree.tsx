@@ -88,34 +88,6 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
     handleSwapAccount(accountId, parentAccountId)
   }
 
-  const TreeItemComponent = React.forwardRef<HTMLDivElement, TreeItemComponentProps<HierarchyTree>>(
-    (props, ref) => {
-      const currentAccount: B2BAccount = accounts?.find(
-        (account: B2BAccount) => account.id === props.item.id
-      ) as B2BAccount
-
-      return (
-        <SimpleTreeItemWrapper {...props} ref={ref}>
-          <AccountHierarchyTreeLabel
-            role={role}
-            mdScreen={mdScreen}
-            currentAccount={currentAccount}
-            accounts={accounts}
-            customerAccount={customerAccount}
-            handleViewAccount={handleViewAccount}
-            handleAddAccount={handleAddAccount}
-            handleEditAccount={handleEditAccount}
-            handleChangeParent={handleChangeParent}
-            handleBuyersBtnClick={handleBuyersBtnClick}
-            handleQuotesBtnClick={handleQuotesBtnClick}
-          />
-        </SimpleTreeItemWrapper>
-      )
-    }
-  )
-
-  TreeItemComponent.displayName = 'TreeItemComponent'
-
   return (
     <>
       <Box sx={{ ...AccountHierarchyStyles.expandCollapseButtonBox }} gap={1}>
@@ -153,7 +125,32 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
             }
           }}
           // eslint-disable-next-line react/display-name
-          TreeItemComponent={TreeItemComponent}
+          TreeItemComponent={React.forwardRef<
+            HTMLDivElement,
+            TreeItemComponentProps<HierarchyTree>
+          >((props, ref) => {
+            const currentAccount: B2BAccount = accounts?.find(
+              (account: B2BAccount) => account.id === props.item.id
+            ) as B2BAccount
+
+            return (
+              <SimpleTreeItemWrapper {...props} ref={ref}>
+                <AccountHierarchyTreeLabel
+                  role={role}
+                  mdScreen={mdScreen}
+                  currentAccount={currentAccount}
+                  accounts={accounts}
+                  customerAccount={customerAccount}
+                  handleViewAccount={handleViewAccount}
+                  handleAddAccount={handleAddAccount}
+                  handleEditAccount={handleEditAccount}
+                  handleChangeParent={handleChangeParent}
+                  handleBuyersBtnClick={handleBuyersBtnClick}
+                  handleQuotesBtnClick={handleQuotesBtnClick}
+                />
+              </SimpleTreeItemWrapper>
+            )
+          })}
         />
       </NoSsr>
     </>

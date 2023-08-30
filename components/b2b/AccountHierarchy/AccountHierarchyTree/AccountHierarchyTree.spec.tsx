@@ -6,7 +6,6 @@ import userEvent from '@testing-library/user-event'
 import * as stories from './AccountHierarchyTree.stories'
 import { b2BAccountHierarchyResult, hierarchyTreeMock } from '@/__mocks__/stories'
 import { B2BRoles } from '@/lib/constants'
-import { HierarchyTree } from '@/lib/types'
 
 const user = userEvent.setup()
 const { Admin } = composeStories(stories)

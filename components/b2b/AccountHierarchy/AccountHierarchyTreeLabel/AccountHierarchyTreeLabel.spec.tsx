@@ -15,8 +15,7 @@ const handleBuyersBtnClickMock = jest.fn()
 const handleQuotesBtnClickMock = jest.fn()
 const handleViewAccountMock = jest.fn()
 
-const companyOrOrganizationName = b2BAccountHierarchyResult?.accounts?.[0]
-  ?.companyOrOrganization as string
+const companyOrOrganizationName = b2BAccountHierarchyResult?.accounts?.[0]?.companyOrOrganization
 
 jest.mock(
   '@/components/b2b/AccountHierarchy/AccountHierarchyActions/AccountHierarchyActions',

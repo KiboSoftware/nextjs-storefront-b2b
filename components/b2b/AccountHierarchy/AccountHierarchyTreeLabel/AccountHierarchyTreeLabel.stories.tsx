@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { ListItemIcon } from '@mui/material'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
 import AccountHierarchyTreeLabel from './AccountHierarchyTreeLabel'
