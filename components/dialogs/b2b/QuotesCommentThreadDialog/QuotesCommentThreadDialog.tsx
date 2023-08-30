@@ -12,12 +12,13 @@ interface QuoteCommentThreadDialogProps {
   comments: QuoteComment[]
   mode?: string
   status?: string
+  userIdAndEmails?: string
   onAddCommentToQuote: (comment: string) => void
   closeModal: () => void
 }
 
 const QuoteCommentThreadDialog = (props: QuoteCommentThreadDialogProps) => {
-  const { userId, comments, mode, status, onAddCommentToQuote, closeModal } = props
+  const { userId, comments, mode, status, userIdAndEmails, onAddCommentToQuote, closeModal } = props
   const { t } = useTranslation('common')
 
   const handleComment = (comment: string) => {
@@ -33,6 +34,7 @@ const QuoteCommentThreadDialog = (props: QuoteCommentThreadDialogProps) => {
         userId={userId}
         mode={mode}
         status={status}
+        userIdAndEmails={userIdAndEmails}
         onAddComment={handleComment}
       />
     ),

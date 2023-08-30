@@ -14,6 +14,7 @@ import { quotesMock } from '@/__mocks__/stories/quotesMock'
 import { renderWithQueryClient } from '@/__test__/utils'
 import { DialogRoot, ModalContextProvider } from '@/context'
 import { useGetQuotes } from '@/hooks'
+import { QuoteStatus } from '@/lib/constants'
 import { quoteGetters } from '@/lib/getters'
 
 import { Quote } from '@/lib/gql/types'
@@ -246,7 +247,7 @@ describe('[components] - QuotesTable', () => {
           : expect(screen.getAllByTestId('quote-expirationDate')[index]).toBeEmptyDOMElement()
         expect(screen.getAllByTestId('quote-createdDate')[index]).toHaveTextContent(createdDate)
         expect(screen.getAllByTestId('quote-total')[index]).toHaveTextContent('currency')
-        expect(screen.getAllByTestId('quote-status')[index]).toHaveTextContent(status)
+        expect(screen.getAllByTestId('quote-status')[index]).toHaveTextContent(QuoteStatus[status])
       })
     })
 

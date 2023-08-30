@@ -146,7 +146,7 @@ describe('[components] QuoteDetailsTemplate', () => {
       const quoteSummary = screen.getByText(/quote-summary/i)
 
       const clearChangesButton = screen.getByRole('button', { name: 'clear-changes' })
-      const saveAndExitButton = screen.getByRole('button', { name: 'save-and-exit' })
+      const saveAndExitButton = screen.getByRole('button', { name: 'save-quote' })
       const submitForApprovalButton = screen.getByRole('button', { name: 'submit-for-approval' })
       const printQuoteButton = screen.getByRole('button', { name: 'print-quote' })
       const b2bProductComponent = screen.getByTestId('b2b-product-search-component')

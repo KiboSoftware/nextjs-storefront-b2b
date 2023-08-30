@@ -201,7 +201,7 @@ export enum AccountType {
   B2B = 'B2B',
 }
 
-export const QuoteStatus = {
+export const QuoteStatus: { [key: string]: string } = {
   Pending: 'Pending',
   InReview: 'In Review',
   ReadyForCheckout: 'Ready For Checkout',

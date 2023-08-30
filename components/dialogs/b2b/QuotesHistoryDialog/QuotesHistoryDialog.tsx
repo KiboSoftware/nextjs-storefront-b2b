@@ -10,16 +10,17 @@ import { AuditRecord } from '@/lib/gql/types'
 
 interface QuoteHistoryDialogProps {
   auditHistory: AuditRecord[]
+  userIdAndEmails?: any
   closeModal: () => void
 }
 
 const QuoteHistoryDialog = (props: QuoteHistoryDialogProps) => {
-  const { auditHistory, closeModal } = props
+  const { auditHistory, userIdAndEmails, closeModal } = props
   const { t } = useTranslation('common')
 
   const DialogArgs = {
     Title: t('quote-history'),
-    Content: <QuotesHistory auditHistory={auditHistory} />,
+    Content: <QuotesHistory auditHistory={auditHistory} userIdAndEmails={userIdAndEmails} />,
     Actions: (
       <Stack width="20%">
         <Button

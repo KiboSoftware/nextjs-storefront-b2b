@@ -32,6 +32,7 @@ import { KiboPagination, KiboSelect, Price, SearchBar } from '@/components/commo
 import { ConfirmationDialog, EmailQuoteDialog, QuotesFilterDialog } from '@/components/dialogs'
 import { useModalContext } from '@/context'
 import { useDebounce, useDeleteQuote, useEmailQuote } from '@/hooks'
+import { QuoteStatus } from '@/lib/constants'
 import { quoteGetters } from '@/lib/getters'
 import { buildQuotesFilterParam } from '@/lib/helpers'
 import { QuoteFilters, QuoteSortingOptions } from '@/lib/types'
@@ -342,7 +343,7 @@ const QuotesTable = (props: QuotesTableProps) => {
                               fontSize="small"
                               color={getStatusColorCode(status)}
                             />
-                            <Typography variant="body2">{status}</Typography>
+                            <Typography variant="body2">{QuoteStatus[status]}</Typography>
                           </Box>
                         </TableCell>
                         {showActionButtons && (

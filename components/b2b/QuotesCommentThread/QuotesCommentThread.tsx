@@ -2,14 +2,9 @@ import React, { useState } from 'react'
 
 import { Timeline, TimelineContent, TimelineItem } from '@mui/lab'
 import { Box, Button, Typography } from '@mui/material'
-import { format } from 'date-fns'
 import { useTranslation } from 'next-i18next'
 
 import { KiboTextBox } from '@/components/common'
-import { useAuthContext } from '@/context'
-import { useGetB2BUserQueries } from '@/hooks'
-import useEmailAndDate from '@/hooks/custom/useEmailAndDate/useEmailAndDate'
-import { DateFormat } from '@/lib/constants'
 import { quoteGetters } from '@/lib/getters'
 
 import { QuoteComment } from '@/lib/gql/types'
@@ -19,28 +14,23 @@ interface QuotesCommentThreadProps {
   userId: string
   mode?: string
   status?: string
+  userIdAndEmails?: any
   onAddComment: (comment: string) => void
 }
 
 const QuotesCommentThread = (props: QuotesCommentThreadProps) => {
-  const { comments, userId, mode, status, onAddComment } = props
+  const { comments, userId, mode, status, userIdAndEmails, onAddComment } = props
   const { t } = useTranslation('common')
 
   const [comment, setComment] = useState<string>('')
-  const filter = comments.map((comment) => `userId eq ${comment.auditInfo?.createBy}`).join(' or ')
-  const emailAndDate = useEmailAndDate(filter, '')
-
-  // const handleEmailDetailsAndDate = async (createdBy: string, createdDate: string) => {
-  //   const { data: b2bUserDetails } = useGetB2BUserQueries({
-  //     accountId: user?.id as number,
-  //     filter: `userId eq ${createdBy}`,
-  //   })
-  //   const dateCreated = format(new Date(createdDate), DateFormat.DATE_FORMAT_WITH_SLASH)
-  //   return `${b2bUserDetails?.items?.[0]?.emailAddress}-${dateCreated}`
-  // }
 
   const handleComment = (_: any, value: string) => {
     setComment(value)
+  }
+
+  const handleAddComment = (comment: string) => {
+    onAddComment(comment)
+    setComment('')
   }
 
   return (
@@ -51,23 +41,18 @@ const QuotesCommentThread = (props: QuotesCommentThreadProps) => {
         <Timeline>
           {comments.map((comment) => (
             <Box key={comment?.id}>
-              <TimelineItem
-                key={comment.id}
-                position={comment.auditInfo?.createBy === userId ? 'right' : 'left'}
-              >
+              <TimelineItem position={comment.auditInfo?.createBy === userId ? 'right' : 'left'}>
                 <TimelineContent
                   sx={{ textAlign: comment.auditInfo?.createBy === userId ? 'right' : 'left' }}
                 >
-                  {format(
-                    new Date(comment.auditInfo?.createDate),
-                    DateFormat.DATE_FORMAT_WITH_SLASH
+                  {quoteGetters.getEmailAddressAndDate(
+                    comment.auditInfo?.createBy as string,
+                    comment.auditInfo?.createDate as string,
+                    userIdAndEmails
                   )}
                 </TimelineContent>
               </TimelineItem>
-              <TimelineItem
-                key={comment.id}
-                position={comment.auditInfo?.createBy === userId ? 'right' : 'left'}
-              >
+              <TimelineItem position={comment.auditInfo?.createBy === userId ? 'right' : 'left'}>
                 <TimelineContent
                   sx={{ textAlign: comment.auditInfo?.createBy === userId ? 'right' : 'left' }}
                 >
@@ -88,7 +73,7 @@ const QuotesCommentThread = (props: QuotesCommentThreadProps) => {
               onChange={handleComment}
             />
           </Box>
-          <Button variant="contained" color="inherit" onClick={() => onAddComment(comment)}>
+          <Button variant="contained" color="inherit" onClick={() => handleAddComment(comment)}>
             {t('add-comment')}
           </Button>
         </Box>

@@ -62,6 +62,7 @@ import {
   AddressType,
   DefaultId,
   FulfillmentOptions as FulfillmentOptionsConstant,
+  QuoteStatus,
 } from '@/lib/constants'
 import { orderGetters, productGetters, quoteGetters, userGetters } from '@/lib/getters'
 import { buildAddressParams } from '@/lib/helpers'
@@ -69,6 +70,7 @@ import { Address } from '@/lib/types'
 
 import {
   AuditRecord,
+  B2BUser,
   CrContact,
   CrOrderItem,
   CuAddress,
@@ -103,7 +105,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
   const mdScreen = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'))
   const { user, isAuthenticated } = useAuthContext()
   const roleName = user?.roleName
-  console.log('user', user)
+  console.log('role name', roleName)
 
   const accountName = user?.companyOrOrganization ?? '-'
   const { number, quoteId, status, createdDate, expirationDate } =
@@ -114,6 +116,17 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
     accountId: user?.id as number,
     filter: `userId eq ${quote?.userId}`,
   })
+
+  const { data: b2bUserData } = useGetB2BUserQueries({
+    accountId: user?.id as number,
+  })
+
+  const userIdToEmail: { [userId: string]: string } = {}
+
+  b2bUserData?.items?.forEach((item) => {
+    userIdToEmail[item?.userId as string] = item?.emailAddress as string
+  })
+
   const createdBy =
     data?.items?.[0]?.firstName || data?.items?.[0]?.lastName
       ? data?.items?.[0]?.firstName + ' ' + data?.items?.[0]?.lastName
@@ -176,23 +189,20 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
   const { updateQuoteFulfillmentInfo } = useUpdateQuoteFulfillmentInfo()
   const { deleteQuote } = useDeleteQuote({ draft })
   const shouldFetchShippingMethods =
-    quoteId &&
-    draft &&
-    shipItems?.length &&
-    selectedShippingAddressId &&
-    !selectedShippingMethodCode
+    quoteId && draft && shipItems?.length && selectedShippingAddressId
   const { data: shippingMethods } = useGetQuoteShippingMethods({
     quoteId,
     draft,
-    enabled: shouldFetchShippingMethods as boolean,
+    enabled: !!shouldFetchShippingMethods as boolean,
   })
   const shippingAddressRef = useRef<HTMLDivElement>(null)
 
   const isSaveAndExitDisabled =
     quote?.name &&
-    quote?.fulfillmentInfo?.fulfillmentContact?.address &&
-    quote?.fulfillmentInfo?.shippingMethodCode &&
-    quote?.fulfillmentInfo?.shippingMethodName
+    ((quote?.fulfillmentInfo?.fulfillmentContact?.address &&
+      quote?.fulfillmentInfo?.shippingMethodCode &&
+      quote?.fulfillmentInfo?.shippingMethodName) ||
+      pickupItems.length)
 
   const userShippingAddress = isAuthenticated
     ? userGetters.getUserShippingAddress(addressCollection?.items as CustomerContact[])
@@ -429,7 +439,8 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
         Component: QuoteCommentThreadDialog,
         props: {
           userId: user?.userId,
-          comments: quote?.comments,
+          comments: quote?.comments?.reverse(),
+          userIdAndEmails: userIdToEmail,
           onAddCommentToQuote: handleAddCommentToQuote,
           showContentTopDivider: true,
           showContentBottomDivider: true,
@@ -447,7 +458,8 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
       showModal({
         Component: QuotesHistoryDialog,
         props: {
-          auditHistory: quote?.auditHistory as AuditRecord[],
+          auditHistory: quote?.auditHistory?.reverse() as AuditRecord[],
+          userIdAndEmails: userIdToEmail,
         },
       })
     } catch (e) {
@@ -566,7 +578,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                 disabled={status?.toLowerCase() === 'inreview' || roleName === 'Nonpurchaser'}
                 onClick={handleSubmit(handleSaveQuoteName)}
               >
-                {t('save-and-exit')}
+                {t('save-quote')}
               </LoadingButton>
               {(status?.toLowerCase() !== 'readyforcheckout' || mode === 'edit') && (
                 <LoadingButton
@@ -598,6 +610,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
         </Grid>
         <Grid
           item
+          columns={{ xs: 12, md: 8 }}
           xs={12}
           md={12}
           sx={{
@@ -635,7 +648,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
         <Grid
           item
           xs={12}
-          md={8}
+          md={10}
           sx={{
             ...quoteDetailsTemplateStyles.quoteDetails,
             ...quoteDetailsTemplateStyles.gridPaddingTop,
@@ -654,7 +667,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
               </InputLabel>
               <Box display={'flex'} gap={1} data-testid={`quote-status`}>
                 <FiberManualRecord fontSize="small" color={getStatusColorCode(status)} />
-                <Typography variant="body2">{status}</Typography>
+                <Typography variant="body2">{QuoteStatus[status]}</Typography>
               </Box>
             </Grid>
             <Grid item xs={6} md={2}>
@@ -853,7 +866,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                           </Button>
                         )}
                       </Stack>
-                      {shippingMethods.length > 0 && (
+                      {shippingMethods.length > 0 && selectedShippingAddressId && (
                         <ShippingMethod
                           shipItems={shipItems}
                           pickupItems={pickupItems}
@@ -980,7 +993,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                 </Stack>
               ) : (
                 <Stack>
-                  <Typography variant="h2" component="h2" sx={{ fontWeight: 'bold' }}>
+                  <Typography variant="h2" component="h2" pb={1} sx={{ fontWeight: 'bold' }}>
                     {t('pickup')}
                   </Typography>
                   <ShippingMethod
@@ -1014,11 +1027,12 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                 )}
               </Stack>
               <QuotesCommentThread
-                comments={quote?.comments?.slice(0, 3) as QuoteComment[]}
+                comments={quote?.comments?.slice(-3).reverse() as QuoteComment[]}
                 userId={user?.userId as string}
                 onAddComment={handleAddCommentToQuote}
                 status={status}
                 mode={mode}
+                userIdAndEmails={userIdToEmail}
               />
             </Box>
             <Divider />
@@ -1040,7 +1054,10 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                   </Button>
                 )}
               </Stack>
-              <QuotesHistory auditHistory={quote?.auditHistory?.slice(0, 3) as AuditRecord[]} />
+              <QuotesHistory
+                auditHistory={quote?.auditHistory?.slice(-3).reverse() as AuditRecord[]}
+                userIdAndEmails={userIdToEmail}
+              />
             </Box>
 
             {!mdScreen ? (
@@ -1109,7 +1126,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                     disabled={status?.toLowerCase() === 'inreview' || roleName === 'Nonpurchaser'}
                     onClick={handleSubmit(handleSaveQuoteName)}
                   >
-                    {t('save-and-exit')}
+                    {t('save-quote')}
                   </LoadingButton>
                 </Box>
               </Box>
