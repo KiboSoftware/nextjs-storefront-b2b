@@ -28,5 +28,5 @@ Common.args = {
   comments: quoteMock.comments,
   userId: quoteMock.userId as string,
   mode: 'edit',
-  status: quoteMock?.status as string,
+  status: 'Pending',
 }
