@@ -1,7 +1,6 @@
 import { format } from 'date-fns'
 
-import { DateFormat } from '../constants'
-import { FulfillmentOptions } from '../constants'
+import { DateFormat, FulfillmentOptions } from '../constants'
 import {
   AuditRecord,
   AuditRecordChange,

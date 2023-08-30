@@ -70,7 +70,6 @@ export * from './custom/useCardContactActions/useCardContactActions'
 export * from './custom/useCartActions/useCartActions'
 export * from './custom/useB2BQuote/useB2BQuote'
 export * from './queries/b2b/useGetCustomerPurchaseOrderAccount/useGetCustomerPurchaseOrderAccount'
-export * from './custom/useEmailAndDate/useEmailAndDate'
 
 // Mutations
 
@@ -176,3 +175,5 @@ export * from './mutations/b2b/quotes/useEmailQuote/useEmailQuote'
 export * from './mutations/b2b/quotes/useUpdateQuoteFulfillmentInfo/useUpdateQuoteFulfillmentInfo'
 export * from './mutations/b2b/quotes/useUpdateQuoteAdjustments/useUpdateQuoteAdjustments'
 export * from './mutations/b2b/quotes/useCreateQuoteFromCart/useCreateQuoteFromCart'
+export * from './mutations/b2b/quotes/useUpdateQuote/useUpdateQuote'
+export * from './mutations/b2b/quotes/useAddQuoteComment/useAddQuoteComment'

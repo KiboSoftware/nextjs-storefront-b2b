@@ -54,10 +54,10 @@ import {
   useUpdateQuoteAdjustments,
   useDeleteQuote,
   useInitiateOrder,
+  useUpdateQuote,
+  useAddQuoteComment,
 } from '@/hooks'
 import { useQuoteActions } from '@/hooks/custom/useQuoteActions/useQuoteActions'
-import { useAddQuoteComment } from '@/hooks/mutations/b2b/quotes/useAddQuoteComment/useAddQuoteComment'
-import { useUpdateQuote } from '@/hooks/mutations/quotes/useUpdateQuote/useUpdateQuote'
 import {
   AddressType,
   DefaultId,
@@ -70,7 +70,6 @@ import { Address } from '@/lib/types'
 
 import {
   AuditRecord,
-  B2BUser,
   CrContact,
   CrOrderItem,
   CuAddress,
@@ -132,11 +131,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
       ? data?.items?.[0]?.firstName + ' ' + data?.items?.[0]?.lastName
       : '-'
   const quoteName = quote?.name ?? ''
-  const {
-    control,
-    formState: { isValid },
-    handleSubmit,
-  } = useForm({
+  const { control, formState, handleSubmit } = useForm({
     mode: 'onBlur',
     reValidateMode: 'onBlur',
     resolver: yupResolver(schema),
@@ -193,7 +188,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
   const { data: shippingMethods } = useGetQuoteShippingMethods({
     quoteId,
     draft,
-    enabled: !!shouldFetchShippingMethods as boolean,
+    enabled: !!shouldFetchShippingMethods,
   })
   const shippingAddressRef = useRef<HTMLDivElement>(null)
 

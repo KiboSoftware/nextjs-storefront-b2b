@@ -352,6 +352,7 @@ const QuotesTable = (props: QuotesTableProps) => {
                               {accessHandler.canEdit(status) && (
                                 <IconButton
                                   size="small"
+                                  data-testid="edit-quote"
                                   onClick={(e) => handleEditQuote(e, quoteId)}
                                 >
                                   <Edit fontSize="small" />

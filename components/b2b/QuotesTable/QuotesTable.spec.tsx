@@ -7,6 +7,7 @@ import { fireEvent, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { graphql } from 'msw'
 import getConfig from 'next/config'
+import mockRouter from 'next-router-mock'
 
 import * as stories from './QuotesTable.stories'
 import { server } from '@/__mocks__/msw/server'
@@ -294,6 +295,35 @@ describe('[components] - QuotesTable', () => {
       })
 
       await user.click(screen.getByRole('button', { name: 'delete' }))
+    })
+
+    it('should redirect to quote details page when users click on edit button', async () => {
+      renderWithQueryClient(
+        <Common
+          quoteCollection={quotesMock}
+          filters={{
+            expirationDate: '',
+            createDate: '',
+            status: '',
+            name: '',
+            number: '',
+          }}
+          setQuotesSearchParam={setQuotesSearchParamMock}
+        />
+      )
+      // await waitFor(() => {
+      const editQuote = screen.getAllByTestId('edit-quote')
+
+      user.click(editQuote[0])
+      // })
+
+      await waitFor(() => {
+        expect(mockRouter).toMatchObject({
+          asPath: `/my-account/quote/${quotesMock.items?.[0]?.id}`,
+          pathname: `/my-account/quote/${quotesMock.items?.[0]?.id}`,
+          query: {},
+        })
+      })
     })
   })
 
