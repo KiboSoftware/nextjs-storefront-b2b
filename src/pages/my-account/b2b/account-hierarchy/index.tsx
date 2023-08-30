@@ -15,9 +15,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     res as NextApiResponse
   )
 
-  const hierarchy =
-    hierarchyResponse?.accounts ??
-    buildAccountHierarchy(hierarchyResponse?.accounts as B2BAccount[])
+  const hierarchy = hierarchyResponse?.accounts
+    ? buildAccountHierarchy(hierarchyResponse?.accounts as B2BAccount[])
+    : []
 
   const initialData = {
     accounts: hierarchyResponse?.accounts || [],
