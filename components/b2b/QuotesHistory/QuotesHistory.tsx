@@ -109,13 +109,13 @@ const QuoteHistory = (props: QuoteHistoryProps) => {
   const { auditHistory, userIdAndEmails } = props
   const { t } = useTranslation('common')
 
-  if (auditHistory.length === 0) {
+  if (auditHistory?.length === 0) {
     return <Typography variant="body2">{t('no-quote-history')}</Typography>
   }
 
   return (
     <>
-      {auditHistory.map((record) => (
+      {auditHistory?.map((record) => (
         <QuoteHistoryItem key={record.id} record={record} userIdAndEmails={userIdAndEmails} />
       ))}
     </>

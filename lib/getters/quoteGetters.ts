@@ -97,12 +97,26 @@ const getQuoteShipItems = (quote: Quote): CrOrderItem[] =>
   getItemsByFulfillment(quote, FulfillmentOptions.SHIP)
 
 const getQuoteShippingMethodCode = (quote: Quote): string =>
-  quote.fulfillmentInfo?.shippingMethodCode || ''
+  quote?.fulfillmentInfo?.shippingMethodCode || ''
 
 const getEmailAddressAndDate = (userId: string, date: string, userIdAndEmailAddress: any) => {
   const email = userIdAndEmailAddress?.[userId] || 'Seller'
   const dateWithSlash = format(new Date(date), DateFormat.DATE_FORMAT_WITH_SLASH) || 'seller-date'
   return `${email} - ${dateWithSlash}`
+}
+
+const getQuoteCreatedBy = (firstName: string, lastName: string) => {
+  return firstName || lastName ? `${firstName} ${lastName}` : '-'
+}
+
+const getSaveAndExitDisabled = (quoteName: string, fulfillmentInfo: any, pickupItems: any) => {
+  return (
+    quoteName &&
+    ((fulfillmentInfo?.fulfillmentContact?.address &&
+      fulfillmentInfo?.shippingMethodCode &&
+      fulfillmentInfo?.shippingMethodName) ||
+      pickupItems.length)
+  )
 }
 
 export const quoteGetters = {
@@ -124,4 +138,6 @@ export const quoteGetters = {
   getQuoteShipItems,
   getQuoteShippingMethodCode,
   getEmailAddressAndDate,
+  getQuoteCreatedBy,
+  getSaveAndExitDisabled,
 }

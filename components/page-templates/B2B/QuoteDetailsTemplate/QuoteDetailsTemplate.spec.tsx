@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { useMediaQuery } from '@mui/material'
 import { composeStories } from '@storybook/testing-react'
@@ -7,9 +7,11 @@ import userEvent from '@testing-library/user-event'
 import { graphql } from 'msw'
 import mockRouter from 'next-router-mock'
 
+import QuoteDetailsTemplate from './QuoteDetailsTemplate'
 import * as stories from './QuoteDetailsTemplate.stories'
 import { server } from '@/__mocks__/msw/server'
 import {
+  customerB2BUserForPage0Mock,
   orderMock,
   quoteMock,
   quotesMock,
@@ -18,8 +20,9 @@ import {
 } from '@/__mocks__/stories'
 import { renderWithQueryClient } from '@/__test__/utils'
 import { DialogRoot, ModalContextProvider } from '@/context'
+import { useGetQuoteByID } from '@/hooks/queries/quotes/useGetQuoteById/useGetQuoteById'
 
-import { CrOrderItem } from '@/lib/gql/types'
+import { CrOrderItem, Quote } from '@/lib/gql/types'
 const {
   Common,
   QuoteDetailsTemplateMobile,
@@ -129,6 +132,24 @@ jest.mock(
   () => () => QuotesHistoryDialogMock()
 )
 
+const TestComponent = () => {
+  const { data: quoteResult } = useGetQuoteByID({
+    quoteId: 'test-quote-id',
+    draft: false,
+  })
+  const onAccountTitleClickMock = jest.fn()
+  const props = {
+    quote: quoteResult as Quote,
+    mode: 'edit',
+    initialB2BUsers: customerB2BUserForPage0Mock,
+    currentB2BUser: customerB2BUserForPage0Mock,
+    onAccountTitleClick: onAccountTitleClickMock,
+  }
+  return <QuoteDetailsTemplate {...props} />
+}
+const setup = () => {
+  renderWithQueryClient(<TestComponent />)
+}
 const addToQuoteTest = async () => {
   const quoteItemCount = quoteMock.items?.[0]?.items?.length
 
@@ -140,8 +161,8 @@ const addToQuoteTest = async () => {
     graphql.query('getQuoteByID', (_req, res, ctx) => {
       return res(
         ctx.data({
-          ...singleQuoteMock,
           quote: {
+            ...singleQuoteMock.quote,
             items: [...(singleQuoteMock.quote?.items as CrOrderItem[]), singleQuoteItemMock],
           },
         })
@@ -149,7 +170,7 @@ const addToQuoteTest = async () => {
     })
   )
 
-  user.click(screen.getByTestId('add-non-configurable-product-button'))
+  await user.click(screen.getByTestId('add-non-configurable-product-button'))
 
   await waitFor(() => {
     expect(screen.queryByTestId('quoteItems-length')).toHaveTextContent(
@@ -198,8 +219,8 @@ describe('[components] QuoteDetailsTemplate', () => {
       })
     })
 
-    xit('should add product in list when user clicks on non configurable product', async () => {
-      renderWithQueryClient(<Common {...Common.args} />)
+    it('should add product in list when user clicks on non configurable product', async () => {
+      setup()
 
       expect(screen.queryByTestId('b2b-product-details-table-component')).toBeVisible()
 
@@ -315,8 +336,8 @@ describe('[components] QuoteDetailsTemplate', () => {
       })
     })
 
-    xit('should show quote name when users click on save quote button', async () => {
-      renderWithQueryClient(<Common {...Common.args} />)
+    it('should show quote name when users click on save quote button', async () => {
+      setup()
 
       const quoteNameTextBox = screen.getByPlaceholderText('enter-quote-name')
 
@@ -355,14 +376,13 @@ describe('[components] QuoteDetailsTemplate', () => {
       })
     })
 
-    xit('should add product in list when user clicks on non configurable product', async () => {
-      const useMediaQueryMock = useMediaQuery as jest.Mock
-      useMediaQueryMock.mockReturnValueOnce(false)
+    it('should add product in list when user clicks on non configurable product', async () => {
+      setup()
 
-      renderWithQueryClient(<Common {...Common.args} />)
-
-      expect(screen.queryByTestId('cart-item-list-component')).toBeVisible()
-
+      await waitFor(() => {
+        const cartItemListComponents = screen.queryByTestId('cart-item-list-component')
+        expect(cartItemListComponents).toBeVisible()
+      })
       await addToQuoteTest()
     })
   })

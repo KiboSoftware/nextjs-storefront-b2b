@@ -208,3 +208,11 @@ export const QuoteStatus: { [key: string]: string } = {
   Completed: 'Completed',
   Expired: 'Expired',
 }
+
+export const StatusColorCode: any = {
+  Pending: 'disabled',
+  InReview: 'warning',
+  ReadyForCheckout: 'info',
+  Completed: 'success',
+  Expired: 'error',
+}

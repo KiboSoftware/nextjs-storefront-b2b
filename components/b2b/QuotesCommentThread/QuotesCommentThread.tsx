@@ -35,11 +35,11 @@ const QuotesCommentThread = (props: QuotesCommentThreadProps) => {
 
   return (
     <Box>
-      {comments.length === 0 ? (
+      {comments?.length === 0 ? (
         <Typography variant="body2">{t('no-comments-added')}</Typography>
       ) : (
         <Timeline>
-          {comments.map((comment) => (
+          {comments?.map((comment) => (
             <Box key={comment?.id}>
               <TimelineItem position={comment.auditInfo?.createBy === userId ? 'right' : 'left'}>
                 <TimelineContent

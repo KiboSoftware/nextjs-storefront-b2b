@@ -32,7 +32,7 @@ import { KiboPagination, KiboSelect, Price, SearchBar } from '@/components/commo
 import { ConfirmationDialog, EmailQuoteDialog, QuotesFilterDialog } from '@/components/dialogs'
 import { useModalContext } from '@/context'
 import { useDebounce, useDeleteQuote, useEmailQuote } from '@/hooks'
-import { QuoteStatus } from '@/lib/constants'
+import { QuoteStatus, StatusColorCode } from '@/lib/constants'
 import { quoteGetters } from '@/lib/getters'
 import { buildQuotesFilterParam } from '@/lib/helpers'
 import { QuoteFilters, QuoteSortingOptions } from '@/lib/types'
@@ -126,19 +126,11 @@ const QuotesTable = (props: QuotesTableProps) => {
   const [searchTerm, setSearchTerm] = useState('')
   const debouncedTerm = useDebounce(searchTerm, publicRuntimeConfig.debounceTimeout)
 
-  const statusColorCode: any = {
-    Pending: 'disabled',
-    InReview: 'warning',
-    ReadyForCheckout: 'info',
-    Completed: 'success',
-    Expired: 'error',
-  }
-
   const { deleteQuote } = useDeleteQuote({ draft: false })
 
   const router = useRouter()
   const getStatusColorCode = (status: string) => {
-    return statusColorCode[status]
+    return StatusColorCode[status]
   }
 
   // Mobile Actions

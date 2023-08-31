@@ -60,9 +60,11 @@ import {
 import { useQuoteActions } from '@/hooks/custom/useQuoteActions/useQuoteActions'
 import {
   AddressType,
+  B2BRoles,
   DefaultId,
   FulfillmentOptions as FulfillmentOptionsConstant,
   QuoteStatus,
+  StatusColorCode,
 } from '@/lib/constants'
 import { orderGetters, productGetters, quoteGetters, userGetters } from '@/lib/getters'
 import { buildAddressParams } from '@/lib/helpers'
@@ -81,6 +83,8 @@ import {
 export interface QuoteDetailsTemplateProps {
   quote: Quote
   mode?: string
+  currentB2BUser: any
+  initialB2BUsers: any
   onAccountTitleClick: () => void
 }
 
@@ -89,14 +93,7 @@ const schema = yup.object().shape({
 })
 
 const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
-  const statusColorCode: any = {
-    Pending: 'disabled',
-    InReview: 'warning',
-    ReadyForCheckout: 'info',
-    Completed: 'success',
-    Expired: 'error',
-  }
-  const { quote, mode, onAccountTitleClick } = props
+  const { quote, mode, initialB2BUsers, currentB2BUser, onAccountTitleClick } = props
   const { showModal } = useModalContext()
   const { t } = useTranslation('common')
   const updateMode = 'ApplyToDraft'
@@ -110,13 +107,9 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
     quoteGetters.getQuoteDetails(quote)
   const quoteItems = (quote?.items as CrOrderItem[]) ?? []
 
-  const { data } = useGetB2BUserQueries({
-    accountId: user?.id as number,
-    filter: `userId eq ${quote?.userId}`,
-  })
-
   const { data: b2bUserData } = useGetB2BUserQueries({
     accountId: user?.id as number,
+    initialB2BUsers,
   })
 
   const userIdToEmail: { [userId: string]: string } = {}
@@ -125,10 +118,11 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
     userIdToEmail[item?.userId as string] = item?.emailAddress as string
   })
 
-  const createdBy =
-    data?.items?.[0]?.firstName || data?.items?.[0]?.lastName
-      ? data?.items?.[0]?.firstName + ' ' + data?.items?.[0]?.lastName
-      : '-'
+  const createdBy = quoteGetters.getQuoteCreatedBy(
+    currentB2BUser?.items?.[0]?.firstName as string,
+    currentB2BUser?.items?.[0]?.lastName as string
+  )
+
   const quoteName = quote?.name ?? ''
   const { control, formState, handleSubmit } = useForm({
     mode: 'onBlur',
@@ -137,7 +131,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
     shouldFocusError: true,
   })
   const getStatusColorCode = useCallback((status: string) => {
-    return statusColorCode[status]
+    return StatusColorCode[status]
   }, [])
 
   const locationCodes = orderGetters.getFulfillmentLocationCodes(quoteItems as any)
@@ -193,12 +187,11 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
   })
   const shippingAddressRef = useRef<HTMLDivElement>(null)
 
-  const isSaveAndExitDisabled =
-    quote?.name &&
-    ((quote?.fulfillmentInfo?.fulfillmentContact?.address &&
-      quote?.fulfillmentInfo?.shippingMethodCode &&
-      quote?.fulfillmentInfo?.shippingMethodName) ||
-      pickupItems.length)
+  const isSaveAndExitDisabled = quoteGetters.getSaveAndExitDisabled(
+    quote?.name as string,
+    quote?.fulfillmentInfo,
+    pickupItems
+  )
 
   const userShippingAddress = isAuthenticated
     ? userGetters.getUserShippingAddress(addressCollection?.items as CustomerContact[])
@@ -245,6 +238,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
       addItemToQuote(quoteId, updateMode, productData, 1)
     }
   }
+
   const handleDeleteItem = async (quoteItemId: string) => {
     try {
       showModal({
@@ -307,6 +301,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
   const handleEditQuote = (quoteId: string) => {
     router.push(`/my-account/quote/${quoteId}?mode=edit`)
   }
+
   const handleSaveAddressToQuote = async ({ contact }: { contact: CrContact }) => {
     try {
       await validateCustomerAddress.mutateAsync({
@@ -352,6 +347,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
       handleSaveAddressToQuote({ contact })
     }
   }
+
   const handleSaveShippingMethod = async (shippingMethodCode: string) => {
     const shippingMethodName = shippingMethods.find(
       (method) => method.shippingMethodCode === shippingMethodCode
@@ -428,6 +424,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
       console.error(error)
     }
   }
+
   const handleViewFullCommentThread = async () => {
     try {
       showModal({
@@ -549,7 +546,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                   color="secondary"
                   disabled={
                     status?.toLowerCase() === 'inreview' ||
-                    roleName === 'Nonpurchaser' ||
+                    roleName === B2BRoles.NON_PURCHASER ||
                     !(quote?.hasDraft as boolean)
                   }
                   onClick={handleClearChanges}
@@ -561,7 +558,9 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                 <LoadingButton
                   variant="contained"
                   color="secondary"
-                  disabled={status?.toLowerCase() === 'inreview' || roleName === 'Nonpurchaser'}
+                  disabled={
+                    status?.toLowerCase() === 'inreview' || roleName === B2BRoles.NON_PURCHASER
+                  }
                   onClick={() => handleEditQuote(quoteId)}
                 >
                   {t('edit-quote')}
@@ -570,7 +569,9 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
               <LoadingButton
                 variant="contained"
                 color="inherit"
-                disabled={status?.toLowerCase() === 'inreview' || roleName === 'Nonpurchaser'}
+                disabled={
+                  status?.toLowerCase() === 'inreview' || roleName === B2BRoles.NON_PURCHASER
+                }
                 onClick={handleSubmit(handleSaveQuoteName)}
               >
                 {t('save-quote')}
@@ -581,7 +582,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                   color="primary"
                   disabled={
                     status?.toLowerCase() === 'inreview' ||
-                    roleName === 'Nonpurchaser' ||
+                    roleName === B2BRoles.NON_PURCHASER ||
                     !isSaveAndExitDisabled ||
                     !quote?.hasDraft
                   }
@@ -594,7 +595,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                 <LoadingButton
                   variant="contained"
                   color="primary"
-                  disabled={(quote?.hasDraft as boolean) || roleName === 'Nonpurchaser'}
+                  disabled={(quote?.hasDraft as boolean) || roleName === B2BRoles.NON_PURCHASER}
                   onClick={handleGotoCheckout}
                 >
                   {t('continue-to-checkout')}
@@ -635,7 +636,9 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                 onChange={(_name: string, value: string) => field.onChange(value)}
                 onBlur={field.onBlur}
                 required
-                disabled={status?.toLocaleLowerCase() === 'inreview' || roleName === 'Nonpurchaser'}
+                disabled={
+                  status?.toLocaleLowerCase() === 'inreview' || roleName === B2BRoles.NON_PURCHASER
+                }
               />
             )}
           />
@@ -743,19 +746,19 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
             )}
             <Box>
               <OrderSummaryEditable
-                itemTaxTotal={quote.itemTaxTotal}
+                itemTaxTotal={quote?.itemTaxTotal}
                 adjustment={quote?.adjustment?.amount || (0 as number)}
-                dutyTotal={quote.dutyTotal}
-                handlingAdjustment={quote.handlingAdjustment?.amount || (0 as number)}
-                handlingSubTotal={quote.handlingSubTotal}
-                handlingTaxTotal={quote.handlingTaxTotal}
-                handlingTotal={quote.handlingTotal}
-                itemTotal={quote.itemTotal}
+                dutyTotal={quote?.dutyTotal}
+                handlingAdjustment={quote?.handlingAdjustment?.amount || (0 as number)}
+                handlingSubTotal={quote?.handlingSubTotal}
+                handlingTaxTotal={quote?.handlingTaxTotal}
+                handlingTotal={quote?.handlingTotal}
+                itemTotal={quote?.itemTotal}
                 shippingAdjustment={quote?.shippingAdjustment?.amount || (0 as number)}
-                shippingSubTotal={quote.shippingSubTotal}
-                shippingTaxTotal={quote.shippingTaxTotal}
-                shippingTotal={quote.shippingTotal}
-                subTotal={quote.subTotal}
+                shippingSubTotal={quote?.shippingSubTotal}
+                shippingTaxTotal={quote?.shippingTaxTotal}
+                shippingTotal={quote?.shippingTotal}
+                subTotal={quote?.subTotal}
                 onSave={handleUpdateQuoteAdjustments}
                 mode={mode}
                 status={status}
@@ -770,7 +773,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                       {t('shipping-information')}
                     </Typography>
                   }
-                  {shouldShowAddAddressButton && mode && status.toLowerCase() !== 'inreview' && (
+                  {shouldShowAddAddressButton && mode && status?.toLowerCase() !== 'inreview' && (
                     <>
                       <Stack gap={2} width="100%">
                         {defaultShippingAddress && (
@@ -873,7 +876,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                       )}
                     </>
                   )}
-                  {!shouldShowAddAddressButton && mode && status.toLowerCase() !== 'inreview' && (
+                  {!shouldShowAddAddressButton && mode && status?.toLowerCase() !== 'inreview' && (
                     <>
                       <AddressForm
                         isUserLoggedIn={false}
@@ -922,8 +925,8 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                     </>
                   )}
                   {(!mode ||
-                    status.toLocaleLowerCase() === 'inreview' ||
-                    roleName === 'Nonpurchaser') && (
+                    status?.toLocaleLowerCase() === 'inreview' ||
+                    roleName === B2BRoles.NON_PURCHASER) && (
                     <Stack direction="row" justifyContent="space-between">
                       {quote?.fulfillmentInfo?.fulfillmentContact && (
                         <Box pb={1}>
@@ -1061,20 +1064,20 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                   <LoadingButton
                     variant="contained"
                     color="primary"
-                    disabled={(quote?.hasDraft as boolean) || roleName === 'Nonpurchaser'}
+                    disabled={(quote?.hasDraft as boolean) || roleName === B2BRoles.NON_PURCHASER}
                     onClick={handleGotoCheckout}
                     fullWidth
                   >
                     {t('continue-to-checkout')}
                   </LoadingButton>
                 )}
-                {(status.toLowerCase() !== 'readyforcheckout' || quote.hasDraft) && (
+                {(status?.toLowerCase() !== 'readyforcheckout' || quote?.hasDraft) && (
                   <LoadingButton
                     variant="contained"
                     color="primary"
                     disabled={
                       status?.toLowerCase() === 'inreview' ||
-                      roleName === 'Nonpurchaser' ||
+                      roleName === B2BRoles.NON_PURCHASER ||
                       !isSaveAndExitDisabled ||
                       !quote?.hasDraft
                     }
@@ -1093,7 +1096,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                       sx={{ padding: '0.375rem 0.5rem' }}
                       disabled={
                         status?.toLowerCase() === 'inreview' ||
-                        roleName === 'Nonpurchaser' ||
+                        roleName === B2BRoles.NON_PURCHASER ||
                         !(quote?.hasDraft as boolean)
                       }
                       onClick={handleClearChanges}
@@ -1105,7 +1108,9 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                     <LoadingButton
                       variant="contained"
                       color="secondary"
-                      disabled={status?.toLowerCase() === 'inreview' || roleName === 'Nonpurchaser'}
+                      disabled={
+                        status?.toLowerCase() === 'inreview' || roleName === B2BRoles.NON_PURCHASER
+                      }
                       sx={{ padding: '0.375rem 0.5rem' }}
                       fullWidth
                       onClick={() => handleEditQuote(quoteId)}
@@ -1118,7 +1123,9 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                     variant="contained"
                     color="inherit"
                     fullWidth
-                    disabled={status?.toLowerCase() === 'inreview' || roleName === 'Nonpurchaser'}
+                    disabled={
+                      status?.toLowerCase() === 'inreview' || roleName === B2BRoles.NON_PURCHASER
+                    }
                     onClick={handleSubmit(handleSaveQuoteName)}
                   >
                     {t('save-quote')}
