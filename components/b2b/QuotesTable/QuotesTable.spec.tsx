@@ -35,6 +35,12 @@ jest.mock('@mui/material', () => ({
 
 const setQuotesSearchParamMock = jest.fn()
 
+const EmailQuoteDialogMock = () => <div data-testid="email-quote-dialog-mock" />
+jest.mock(
+  '@/components/dialogs/b2b/EmailQuoteDialog/EmailQuoteDialog.tsx',
+  () => () => EmailQuoteDialogMock()
+)
+
 describe('[components] - QuotesTable', () => {
   it("should show 'no-quotes-found' if quotes are not provided", () => {
     renderWithQueryClient(
@@ -323,6 +329,30 @@ describe('[components] - QuotesTable', () => {
           pathname: `/my-account/quote/${quotesMock.items?.[0]?.id}`,
           query: {},
         })
+      })
+    })
+
+    it('should open a email quote dialog when users click on email button', async () => {
+      renderWithQueryClient(
+        <Common
+          quoteCollection={quotesMock}
+          filters={{
+            expirationDate: '',
+            createDate: '',
+            status: '',
+            name: '',
+            number: '',
+          }}
+          setQuotesSearchParam={setQuotesSearchParamMock}
+        />
+      )
+
+      const emailQuoteButton = screen.getAllByTestId('email-quote')
+
+      user.click(emailQuoteButton[0])
+
+      await waitFor(() => {
+        expect(screen.getByTestId('email-quote-dialog-mock')).toBeVisible()
       })
     })
   })

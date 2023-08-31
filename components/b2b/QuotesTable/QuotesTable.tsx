@@ -361,6 +361,7 @@ const QuotesTable = (props: QuotesTableProps) => {
                               {accessHandler.canEmail(status) && (
                                 <IconButton
                                   size="small"
+                                  data-testid="email-quote"
                                   onClick={(e) => handleEmailQuote(e, quoteId)}
                                 >
                                   <Mail fontSize="small" />
