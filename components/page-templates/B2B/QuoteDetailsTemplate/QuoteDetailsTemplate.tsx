@@ -104,7 +104,6 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
   const mdScreen = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'))
   const { user, isAuthenticated } = useAuthContext()
   const roleName = user?.roleName
-  console.log('role name', roleName)
 
   const accountName = user?.companyOrOrganization ?? '-'
   const { number, quoteId, status, createdDate, expirationDate } =
@@ -147,6 +146,8 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
 
   const { deleteQuoteItem } = useDeleteQuoteItem()
   const { updateQuote } = useUpdateQuote()
+  const { addComment } = useAddQuoteComment()
+  const { initiateOrder } = useInitiateOrder()
   const router = useRouter()
   const { data: purchaseLocation } = useGetPurchaseLocation()
   const { openProductQuickViewModal, handleAddToQuote } = useProductCardActions()
@@ -375,7 +376,6 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
       console.error(error)
     }
   }
-  const { addComment } = useAddQuoteComment()
 
   const handleSaveAddressToAccount = async (contact: CrContact) => {
     const address = {
@@ -481,7 +481,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
       console.error(e)
     }
   }
-  const { initiateOrder } = useInitiateOrder()
+
   const handleGotoCheckout = async () => {
     try {
       const initiateOrderResponse = await initiateOrder.mutateAsync({

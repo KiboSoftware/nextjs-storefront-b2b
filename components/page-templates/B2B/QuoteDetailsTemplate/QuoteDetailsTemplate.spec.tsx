@@ -5,15 +5,28 @@ import { composeStories } from '@storybook/testing-react'
 import { screen, waitFor, cleanup } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { graphql } from 'msw'
+import mockRouter from 'next-router-mock'
 
 import * as stories from './QuoteDetailsTemplate.stories'
 import { server } from '@/__mocks__/msw/server'
-import { quoteMock, singleQuoteItemMock, singleQuoteMock } from '@/__mocks__/stories'
+import {
+  orderMock,
+  quoteMock,
+  quotesMock,
+  singleQuoteItemMock,
+  singleQuoteMock,
+} from '@/__mocks__/stories'
 import { renderWithQueryClient } from '@/__test__/utils'
 import { DialogRoot, ModalContextProvider } from '@/context'
 
 import { CrOrderItem } from '@/lib/gql/types'
-const { Common, QuoteDetailsTemplateMobile, QuoteDetailsTemplateDesktop } = composeStories(stories)
+const {
+  Common,
+  QuoteDetailsTemplateMobile,
+  QuoteDetailsTemplateDesktop,
+  QuoteDetailsTemplateViewModeDesktop,
+  QuoteDetailsTemplateReadyForCheckoutDesktop,
+} = composeStories(stories)
 
 const user = userEvent.setup()
 
@@ -97,6 +110,12 @@ jest.mock('@/components/b2b/B2BProductSearch/B2BProductSearch', () => ({
     </div>
   ),
 }))
+
+const ConfirmationDialogMock = () => <div data-testid="confirmation-dialog-mock" />
+jest.mock(
+  '@/components/dialogs/ConfirmationDialog/ConfirmationDialog.tsx',
+  () => () => ConfirmationDialogMock()
+)
 
 const addToQuoteTest = async () => {
   const quoteItemCount = quoteMock.items?.[0]?.items?.length
@@ -202,6 +221,52 @@ describe('[components] QuoteDetailsTemplate', () => {
 
       await waitFor(() => {
         expect(handleAccountTitleClickMock).toHaveBeenCalled()
+      })
+    })
+
+    it('should open a quote details page in edit mode when user clicks on edit button', async () => {
+      renderWithQueryClient(
+        <QuoteDetailsTemplateViewModeDesktop {...QuoteDetailsTemplateViewModeDesktop.args} />
+      )
+      const editButton = screen.getByRole('button', { name: 'edit-quote' })
+      user.click(editButton)
+
+      await waitFor(() => {
+        expect(mockRouter).toMatchObject({
+          asPath: `/my-account/quote/${quoteMock?.items?.[0]?.id}?mode=edit`,
+          pathname: `/my-account/quote/${quoteMock?.items?.[0]?.id}`,
+          query: {},
+        })
+      })
+    })
+
+    it('should open clear changes dialog when users click on clear changes button', async () => {
+      renderWithQueryClient(<Common {...Common.args} />)
+      const clearChangesButton = screen.getByRole('button', { name: 'clear-changes' })
+
+      user.click(clearChangesButton)
+
+      await waitFor(() => {
+        expect(screen.getByTestId('confirmation-dialog-mock')).toBeVisible()
+      })
+    })
+
+    it('should redirect to checkout page when users click on continue to checkout button', async () => {
+      renderWithQueryClient(
+        <QuoteDetailsTemplateReadyForCheckoutDesktop
+          {...QuoteDetailsTemplateReadyForCheckoutDesktop.args}
+        />
+      )
+      const continueToCheckoutButton = screen.getByRole('button', { name: 'continue-to-checkout' })
+
+      user.click(continueToCheckoutButton)
+
+      await waitFor(() => {
+        expect(mockRouter).toMatchObject({
+          asPath: `/checkout/${orderMock?.checkout?.id}`,
+          pathname: `/checkout/${orderMock?.checkout?.id}`,
+          query: {},
+        })
       })
     })
   })
