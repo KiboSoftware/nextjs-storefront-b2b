@@ -117,6 +117,18 @@ jest.mock(
   () => () => ConfirmationDialogMock()
 )
 
+const QuoteCommentThreadDialogMock = () => <div data-testid="quote-comment-thread-dialog-mock" />
+jest.mock(
+  '@/components/dialogs/b2b/QuotesCommentThreadDialog/QuotesCommentThreadDialog.tsx',
+  () => () => QuoteCommentThreadDialogMock()
+)
+
+const QuotesHistoryDialogMock = () => <div data-testid="quotes-history-dialog-mock" />
+jest.mock(
+  '@/components/dialogs/b2b/QuotesHistoryDialog/QuotesHistoryDialog.tsx',
+  () => () => QuotesHistoryDialogMock()
+)
+
 const addToQuoteTest = async () => {
   const quoteItemCount = quoteMock.items?.[0]?.items?.length
 
@@ -251,6 +263,28 @@ describe('[components] QuoteDetailsTemplate', () => {
       })
     })
 
+    it('should open quote comments dialog when users click on view full comment thread link', async () => {
+      renderWithQueryClient(<Common {...Common.args} />)
+      const fullCommentThread = screen.getByText(/view-full-comment-thread/i)
+
+      user.click(fullCommentThread)
+
+      await waitFor(() => {
+        expect(screen.getByTestId('quote-comment-thread-dialog-mock')).toBeVisible()
+      })
+    })
+
+    it('should open quote history dialog when users click on full history link', async () => {
+      renderWithQueryClient(<Common {...Common.args} />)
+      const viewFullHistory = screen.getByText(/view-full-history/i)
+
+      user.click(viewFullHistory)
+
+      await waitFor(() => {
+        expect(screen.getByTestId('quotes-history-dialog-mock')).toBeVisible()
+      })
+    })
+
     it('should redirect to checkout page when users click on continue to checkout button', async () => {
       renderWithQueryClient(
         <QuoteDetailsTemplateReadyForCheckoutDesktop
@@ -267,6 +301,38 @@ describe('[components] QuoteDetailsTemplate', () => {
           pathname: `/checkout/${orderMock?.checkout?.id}`,
           query: {},
         })
+      })
+    })
+
+    it('should redirect to quotes pages when users click on submit for approval button', async () => {
+      renderWithQueryClient(<Common {...Common.args} />)
+      const submitForApproval = screen.getByRole('button', { name: 'submit-for-approval' })
+
+      user.click(submitForApproval)
+
+      await waitFor(() => {
+        expect(screen.getByTestId('confirmation-dialog-mock')).toBeVisible()
+      })
+    })
+
+    xit('should show quote name when users click on save quote button', async () => {
+      renderWithQueryClient(<Common {...Common.args} />)
+
+      const quoteNameTextBox = screen.getByPlaceholderText('enter-quote-name')
+
+      await user.type(quoteNameTextBox, 'Quote Name')
+
+      const saveQuote = screen.getByRole('button', { name: /save-quote/i })
+      user.click(saveQuote)
+
+      server.use(
+        graphql.query('getQuoteByID', (_req, res, ctx) => {
+          return res(ctx.data({ quote: { ...quoteMock?.items?.[0], name: 'Quote Name' } }))
+        })
+      )
+
+      await waitFor(() => {
+        expect(screen.getByText('Quote Name')).toBeVisible()
       })
     })
   })

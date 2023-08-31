@@ -22,7 +22,7 @@ const Template: ComponentStory<typeof QuoteDetailsTemplate> = (args) => (
 
 export const Common = Template.bind({})
 Common.args = {
-  quote: quoteMock?.items?.[0] as Quote,
+  quote: { ...(quoteMock?.items?.[0] as Quote), hasDraft: true, name: 'quote name' },
   mode: 'edit',
 }
 
