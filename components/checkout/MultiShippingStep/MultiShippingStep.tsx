@@ -286,10 +286,8 @@ const MultiShippingStep = (props: MultiShippingStepProps) => {
     showModal({
       Component: AddressFormDialog,
       props: {
-        isUserLoggedIn: false,
         formTitle: destinationInput?.destinationId ? t('edit-address') : t('add-new-address'),
         contact: destinationInput,
-        isAddressFormValid: false,
         setAutoFocus: true,
         validateForm: false,
         onSaveAddress: handleUpdateDestinationAddress,
@@ -421,14 +419,13 @@ const MultiShippingStep = (props: MultiShippingStepProps) => {
           {!shouldShowAddAddressButton && (
             <>
               <AddressForm
-                isUserLoggedIn={false}
-                saveAddressLabel={t('save-shipping-address')}
                 setAutoFocus={true}
                 validateForm={validateForm}
                 onSaveAddress={handleSaveAddress}
                 onFormStatusChange={handleFormStatusChange}
+                onCancel={() => setShouldShowAddAddressButton(true)}
               />
-              <Stack pl={1} gap={2} sx={{ width: { xs: '100%', md: '50%' } }}>
+              {/* <Stack pl={1} gap={2} sx={{ width: { xs: '100%', md: '50%' } }}>
                 <Button
                   variant="contained"
                   color="secondary"
@@ -445,7 +442,7 @@ const MultiShippingStep = (props: MultiShippingStepProps) => {
                 >
                   {t('save-shipping-address')}
                 </Button>
-              </Stack>
+              </Stack> */}
             </>
           )}
         </>

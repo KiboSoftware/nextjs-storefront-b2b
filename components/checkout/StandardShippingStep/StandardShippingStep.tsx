@@ -373,30 +373,30 @@ const StandardShippingStep = (props: ShippingProps) => {
       {!shouldShowAddAddressButton && (
         <>
           <AddressForm
-            isUserLoggedIn={false}
-            saveAddressLabel={t('save-shipping-address')}
             setAutoFocus={true}
             validateForm={validateForm}
             onSaveAddress={handleSaveAddressToCheckout}
+            useReCaptchaInFormSubmit
             onFormStatusChange={handleFormStatusChange}
-          />
+            onCancel={() => setShouldShowAddAddressButton(true)}
+          >
+            {isAuthenticated && (
+              <FormControlLabel
+                label={t('save-address-to-account')}
+                control={
+                  <Checkbox
+                    sx={{ marginLeft: '0.5rem' }}
+                    inputProps={{
+                      'aria-label': t('save-address-to-account'),
+                    }}
+                    onChange={() => setIsAddressSavedToAccount(!isAddressSavedToAccount)}
+                  />
+                }
+              />
+            )}
+          </AddressForm>
 
-          {isAuthenticated && (
-            <FormControlLabel
-              label={t('save-address-to-account')}
-              control={
-                <Checkbox
-                  sx={{ marginLeft: '0.5rem' }}
-                  inputProps={{
-                    'aria-label': t('save-address-to-account'),
-                  }}
-                  onChange={() => setIsAddressSavedToAccount(!isAddressSavedToAccount)}
-                />
-              }
-            />
-          )}
-
-          <Box m={1} maxWidth={'872px'} data-testid="address-form">
+          {/* <Box m={1} maxWidth={'872px'} data-testid="address-form">
             <Grid container>
               <Grid item xs={6} gap={2} display={'flex'} direction={'column'}>
                 <Button
@@ -417,7 +417,7 @@ const StandardShippingStep = (props: ShippingProps) => {
                 </Button>
               </Grid>
             </Grid>
-          </Box>
+          </Box> */}
         </>
       )}
     </Stack>

@@ -910,22 +910,6 @@ const PaymentStep = (props: PaymentStepProps) => {
                           onSaveCardData={handleCardFormData}
                           onFormStatusChange={handleCardFormValidDetails}
                         />
-
-                        {isAuthenticated ? (
-                          <FormControlLabel
-                            sx={{
-                              width: '100%',
-                              paddingLeft: '0.5rem',
-                            }}
-                            control={
-                              <Checkbox
-                                onChange={handleSavePaymentMethodCheckbox}
-                                data-testid="save-payment"
-                              />
-                            }
-                            label={`${t('save-payment-method-checkbox')}`}
-                          />
-                        ) : null}
                       </>
                     ) : null}
                     {shouldShowPurchaseOrderForm ? (
@@ -958,12 +942,34 @@ const PaymentStep = (props: PaymentStepProps) => {
                           key={selectedPaymentTypeRadio}
                           contact={billingFormAddress.contact}
                           setAutoFocus={false}
-                          isUserLoggedIn={isAuthenticated}
                           onSaveAddress={handleBillingFormAddress}
                           validateForm={validateForm}
+                          isSaveDisabled={
+                            !Boolean(
+                              cardFormDetails.isCardDetailsValidated ||
+                                purchaseOrderFormDetails.isPurchaseOrderFormValidated
+                            )
+                          }
                           onFormStatusChange={handleBillingFormValidDetails}
-                        />
-                        <Stack pl={1} gap={2} sx={{ width: { xs: '100%', md: '50%' } }}>
+                          onCancel={cancelAddingNewPaymentMethod}
+                        >
+                          {isAuthenticated ? (
+                            <FormControlLabel
+                              label={`${t('save-payment-method-checkbox')}`}
+                              sx={{
+                                width: '100%',
+                                paddingLeft: '0.5rem',
+                              }}
+                              control={
+                                <Checkbox
+                                  onChange={handleSavePaymentMethodCheckbox}
+                                  data-testid="save-payment"
+                                />
+                              }
+                            />
+                          ) : null}
+                        </AddressForm>
+                        {/* <Stack pl={1} gap={2} sx={{ width: { xs: '100%', md: '50%' } }}>
                           <Button
                             variant="contained"
                             color="secondary"
@@ -979,7 +985,7 @@ const PaymentStep = (props: PaymentStepProps) => {
                           >
                             {t('save-payment-method')}
                           </Button>
-                        </Stack>
+                        </Stack> */}
                       </>
                     ) : null}
                     {!(shouldShowPurchaseOrderForm || shouldShowCardForm) ? (

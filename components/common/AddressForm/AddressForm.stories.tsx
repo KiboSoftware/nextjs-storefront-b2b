@@ -24,8 +24,6 @@ export const Common = Template.bind({})
 Common.args = {
   setAutoFocus: true,
   contact: undefined,
-  isUserLoggedIn: false,
-  saveAddressLabel: 'Save shipping address',
   onSaveAddress: (data: Address) => console.log('called handleSave(data) : ', data),
 }
 
@@ -33,7 +31,6 @@ Common.args = {
 export const ForLoggedInUser = Template.bind({})
 ForLoggedInUser.args = {
   ...Common.args,
-  isUserLoggedIn: true,
 }
 
 // WithDefault Values

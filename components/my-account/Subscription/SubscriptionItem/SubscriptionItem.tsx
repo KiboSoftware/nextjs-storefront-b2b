@@ -608,7 +608,6 @@ const SubscriptionItem = (props: SubscriptionItemProps) => {
                     onClick={() =>
                       handleShowDialog(AddressFormDialog, {
                         subscriptionId: subscriptionDetailsData?.id as string,
-                        isUserLoggedIn: true,
                         setAutoFocus: true,
                         onSaveAddress: handleAddNewShippingAddress,
                       })

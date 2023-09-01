@@ -1,30 +1,32 @@
-/* eslint-disable  @typescript-eslint/no-explicit-any */
 /* eslint-disable  jsx-a11y/no-autofocus */
 import React, { useState, useEffect } from 'react'
 
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Box, Grid, FormControlLabel, Checkbox } from '@mui/material'
+import { Box, Grid, FormControlLabel, Checkbox, Stack, Button } from '@mui/material'
 import MenuItem from '@mui/material/MenuItem'
 import getConfig from 'next/config'
 import { useTranslation } from 'next-i18next'
+import { useReCaptcha } from 'next-recaptcha-v3'
 import { useForm, Controller } from 'react-hook-form'
 import * as yup from 'yup'
 
 import { KiboSelect, KiboTextBox } from '@/components/common'
+import { useSnackbarContext } from '@/context'
+import { validateGoogleReCaptcha } from '@/lib/helpers'
 import type { Address, ContactForm } from '@/lib/types'
 
 interface AddressFormProps {
   contact?: ContactForm
   countries?: string[]
-  isUserLoggedIn: boolean
-  saveAddressLabel?: string
   isAddressFormInDialog?: boolean
   setAutoFocus?: boolean
   validateForm: boolean
-  showDefaultPaymentMethodCheckbox?: boolean
+  useReCaptchaInFormSubmit?: boolean
+  isSaveDisabled?: boolean
   onSaveAddress: (data: Address) => void
   onFormStatusChange?: (status: boolean) => void
-  onDefaultPaymentChange?: (value: boolean) => void
+  onCancel: () => void
+  children?: any
 }
 
 const schema = yup.object().shape({
@@ -49,19 +51,22 @@ const schema = yup.object().shape({
 // Component
 const AddressForm = (props: AddressFormProps) => {
   const { publicRuntimeConfig } = getConfig()
+  const reCaptchaKey = publicRuntimeConfig.recaptcha.reCaptchaKey
+
+  const { executeRecaptcha } = useReCaptcha()
+  const { showSnackbar } = useSnackbarContext()
 
   const {
     contact,
     countries = publicRuntimeConfig.countries,
-    isUserLoggedIn = false,
-    saveAddressLabel,
     isAddressFormInDialog = false,
     setAutoFocus = false,
     validateForm = false,
-    showDefaultPaymentMethodCheckbox = false,
+    useReCaptchaInFormSubmit = false,
+    isSaveDisabled = false,
     onSaveAddress,
     onFormStatusChange,
-    onDefaultPaymentChange,
+    onCancel,
   } = props
 
   // Define Variables and States
@@ -91,8 +96,32 @@ const AddressForm = (props: AddressFormProps) => {
       )
     })
 
-  const onValid = async (formData: ContactForm) =>
-    onSaveAddress({ contact: formData, isDataUpdated: true })
+  const onValid = async (formData: ContactForm) => {
+    useReCaptchaInFormSubmit && reCaptchaKey
+      ? submitFormWithRecaptcha({ contact: formData, isDataUpdated: true })
+      : onSaveAddress({ contact: formData, isDataUpdated: true })
+  }
+
+  const submitFormWithRecaptcha = (address: Address) => {
+    if (!executeRecaptcha) {
+      console.log('Execute recaptcha not yet available')
+      return
+    }
+    executeRecaptcha('enquiryFormSubmit').then(async (gReCaptchaToken) => {
+      const captcha = await validateGoogleReCaptcha(gReCaptchaToken)
+
+      if (captcha?.status === 'success') {
+        onSaveAddress(address)
+      } else {
+        showSnackbar(captcha.message, 'error')
+      }
+    })
+  }
+
+  const handleCancel = () => {
+    onCancel()
+    reset(undefined)
+  }
 
   useEffect(() => {
     if (onFormStatusChange) onFormStatusChange(isValid)
@@ -115,6 +144,7 @@ const AddressForm = (props: AddressFormProps) => {
       noValidate
       autoComplete="off"
       data-testid="address-form"
+      onSubmit={handleSubmit(onValid)}
     >
       <Grid container rowSpacing={1} columnSpacing={{ md: 4 }}>
         <Grid item xs={12} md={isAddressFormInDialog ? 12 : 6}>
@@ -311,7 +341,9 @@ const AddressForm = (props: AddressFormProps) => {
           />
         </Grid>
 
-        {isUserLoggedIn && saveAddressLabel && (
+        {props.children}
+
+        {/* {isUserLoggedIn && saveAddressLabel && (
           <Grid item md={12}>
             <FormControlLabel
               control={<Checkbox onChange={() => setSaveAddress((prevState) => !prevState)} />}
@@ -333,8 +365,21 @@ const AddressForm = (props: AddressFormProps) => {
               label={t('make-this-my-default-payment')}
             />
           </Grid>
-        )}
+        )} */}
       </Grid>
+      <Stack pl={1} gap={2} sx={{ width: { xs: '100%', md: '50%', maxWidth: '26.313rem' } }}>
+        <Button variant="contained" color="secondary" onClick={handleCancel}>
+          {t('cancel')}
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+          {...(!isValid && isSaveDisabled && { disabled: true })}
+        >
+          {t('save')}
+        </Button>
+      </Stack>
     </Box>
   )
 }

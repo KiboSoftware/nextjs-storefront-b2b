@@ -451,23 +451,24 @@ const PaymentMethod = (props: PaymentMethodProps) => {
                 </Typography>
                 <AddressForm
                   setAutoFocus={false}
-                  isUserLoggedIn={true}
                   onSaveAddress={handleBillingFormAddress}
                   validateForm={validateForm}
                   onFormStatusChange={handleBillingFormValidDetails}
                   isAddressFormInDialog={isAddressFormInDialog}
-                />
+                  isSaveDisabled={!cardFormDetails.isCardDetailsValidated}
+                  onCancel={cancelAddingNewPaymentMethod}
+                >
+                  {Boolean(savedCardsAndContacts?.length) ? (
+                    <FormControlLabel
+                      sx={{ width: '100%', pl: '0.5rem' }}
+                      defaultChecked={cardFormDetails.isDefaultPayMethod}
+                      control={<Checkbox defaultChecked={cardFormDetails.isDefaultPayMethod} />}
+                      label={`${t('make-this-my-default-payment')}`}
+                      onChange={(_, value) => setIsDefaultPaymentMethod(value)}
+                    />
+                  ) : null}
+                </AddressForm>
               </>
-            )}
-
-            {Boolean(savedCardsAndContacts?.length) && (
-              <FormControlLabel
-                sx={{ width: '100%', pl: '0.5rem' }}
-                defaultChecked={cardFormDetails.isDefaultPayMethod}
-                control={<Checkbox defaultChecked={cardFormDetails.isDefaultPayMethod} />}
-                label={`${t('make-this-my-default-payment')}`}
-                onChange={(_, value) => setIsDefaultPaymentMethod(value)}
-              />
             )}
 
             {!showBillingFormAddress && (
@@ -482,7 +483,7 @@ const PaymentMethod = (props: PaymentMethodProps) => {
             )}
           </Stack>
 
-          <Stack pl={1} paddingY={2} gap={2} sx={{ maxWidth: '26.313rem' }}>
+          {/* <Stack pl={1} paddingY={2} gap={2} sx={{ maxWidth: '26.313rem' }}>
             <Button variant="contained" color="secondary" onClick={cancelAddingNewPaymentMethod}>
               {t('cancel')}
             </Button>
@@ -494,7 +495,7 @@ const PaymentMethod = (props: PaymentMethodProps) => {
             >
               {t('save-payment-method')}
             </Button>
-          </Stack>
+          </Stack> */}
         </Stack>
       )}
     </Box>

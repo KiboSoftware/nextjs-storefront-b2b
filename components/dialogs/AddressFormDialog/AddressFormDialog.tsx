@@ -18,13 +18,7 @@ const AddressFormDialog = (props: AddressFormDialogProps) => {
   const { closeModal } = useModalContext()
   const { t } = useTranslation('common')
   const isAddressFormInDialog = true
-  const {
-    formTitle = t('add-new-address'),
-    contact,
-    isUserLoggedIn,
-    setAutoFocus,
-    onSaveAddress,
-  } = props
+  const { formTitle = t('add-new-address'), contact, setAutoFocus, onSaveAddress } = props
   const [isDialogAddressFormValid, setIsAddressFormDialogValid] = useState<boolean>(false)
   const [validateDialogForm, setValidateDialogForm] = useState<boolean>(false)
   const handleFormStatusChange = (status: boolean) => {
@@ -44,12 +38,12 @@ const AddressFormDialog = (props: AddressFormDialogProps) => {
         <>
           <AddressForm
             contact={contact}
-            isUserLoggedIn={isUserLoggedIn}
             setAutoFocus={setAutoFocus}
             validateForm={validateDialogForm}
             isAddressFormInDialog={isAddressFormInDialog}
             onSaveAddress={onSaveAddress}
             onFormStatusChange={handleFormStatusChange}
+            onCancel={() => closeModal()}
           />
           <Stack pl={1} gap={2} sx={{ width: '100%' }}>
             <Button variant="contained" color="secondary" onClick={closeModal}>

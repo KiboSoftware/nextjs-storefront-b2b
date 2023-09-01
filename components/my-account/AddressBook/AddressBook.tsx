@@ -196,22 +196,6 @@ const AddressBook = (props: AddressBookProps) => {
 
   const handleAddressValidationAndSave = () => setValidateForm(true)
 
-  const submitFormWithRecaptcha = (address: Address) => {
-    if (!executeRecaptcha) {
-      console.log('Execute recaptcha not yet available')
-      return
-    }
-    executeRecaptcha('enquiryFormSubmit').then(async (gReCaptchaToken) => {
-      const captcha = await validateGoogleReCaptcha(gReCaptchaToken)
-
-      if (captcha?.status === 'success') {
-        await handleSaveAddress(address)
-      } else {
-        showSnackbar(captcha.message, 'error')
-      }
-    })
-  }
-
   const handleSaveAddress = async (address: Address) => {
     address = {
       ...address,
@@ -426,33 +410,31 @@ const AddressBook = (props: AddressBookProps) => {
           </Grid>
 
           <AddressForm
-            saveAddressLabel={''}
             setAutoFocus={true}
-            isUserLoggedIn={true}
             validateForm={validateForm}
-            onSaveAddress={(address) =>
-              reCaptchaKey ? submitFormWithRecaptcha(address) : handleSaveAddress(address)
-            }
+            useReCaptchaInFormSubmit
+            onSaveAddress={handleSaveAddress}
             onFormStatusChange={handleFormStatusChange}
             contact={editAddress as ContactForm}
-          />
-
-          {shouldShowDefaultCheckbox() && (
-            <FormControlLabel
-              label={t('make-this-my-default-address')}
-              control={
-                <Checkbox
-                  sx={{ marginLeft: '0.5rem' }}
-                  inputProps={{
-                    'aria-label': t('make-this-my-default-address'),
-                  }}
-                  checked={isDefaultAddress}
-                  onChange={() => setIsDefaultAddress(!isDefaultAddress)}
-                />
-              }
-            />
-          )}
-          <Stack pl={1} gap={2} sx={{ width: { xs: '100%', md: '50%', maxWidth: '26.313rem' } }}>
+            onCancel={handleCancelUpdateAddress}
+          >
+            {shouldShowDefaultCheckbox() ? (
+              <FormControlLabel
+                label={t('make-this-my-default-address')}
+                control={
+                  <Checkbox
+                    sx={{ marginLeft: '0.5rem' }}
+                    inputProps={{
+                      'aria-label': t('make-this-my-default-address'),
+                    }}
+                    checked={isDefaultAddress}
+                    onChange={() => setIsDefaultAddress(!isDefaultAddress)}
+                  />
+                }
+              />
+            ) : null}
+          </AddressForm>
+          {/* <Stack pl={1} gap={2} sx={{ width: { xs: '100%', md: '50%', maxWidth: '26.313rem' } }}>
             <Button variant="contained" color="secondary" onClick={handleCancelUpdateAddress}>
               {t('cancel')}
             </Button>
@@ -464,7 +446,7 @@ const AddressBook = (props: AddressBookProps) => {
             >
               {t('save')}
             </Button>
-          </Stack>
+          </Stack> */}
         </Box>
       )}
     </Box>
