@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import { useMediaQuery } from '@mui/material'
 import { composeStories } from '@storybook/testing-react'
@@ -14,7 +14,6 @@ import {
   customerB2BUserForPage0Mock,
   orderMock,
   quoteMock,
-  quotesMock,
   singleQuoteItemMock,
   singleQuoteMock,
 } from '@/__mocks__/stories'

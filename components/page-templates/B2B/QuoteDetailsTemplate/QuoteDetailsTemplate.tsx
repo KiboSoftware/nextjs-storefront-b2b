@@ -124,7 +124,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
   )
 
   const quoteName = quote?.name ?? ''
-  const { control, formState, handleSubmit } = useForm({
+  const { control, handleSubmit } = useForm({
     mode: 'onBlur',
     reValidateMode: 'onBlur',
     resolver: yupResolver(schema),
@@ -864,7 +864,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                           </Button>
                         )}
                       </Stack>
-                      {shippingMethods.length > 0 && selectedShippingAddressId && (
+                      {shippingMethods.length > 0 && Boolean(selectedShippingAddressId) && (
                         <ShippingMethod
                           shipItems={shipItems}
                           pickupItems={pickupItems}
@@ -968,7 +968,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                           />
                         </Box>
                       )}
-                      {quote?.fulfillmentInfo?.shippingMethodName && quote?.subTotal && (
+                      {quote?.fulfillmentInfo?.shippingMethodName && Boolean(quote?.subTotal) && (
                         <Box>
                           <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
                             {t('shipping-method')}
