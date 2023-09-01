@@ -31,6 +31,7 @@ import {
   QuotesCommentThread,
   QuotesHistory,
 } from '@/components/b2b'
+import AccessWrapper from '@/components/b2b/AccessWrapper/AccessWrapper'
 import { CartItemList } from '@/components/cart'
 import { ShippingMethod } from '@/components/checkout'
 import { AddressCard, AddressForm, KiboRadio, KiboTextBox } from '@/components/common'
@@ -540,7 +541,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
         <Grid item sm={6} display={'flex'} justifyContent={'flex-end'}>
           {mdScreen ? (
             <Stack direction="row" gap={2}>
-              {(mode === 'create' || mode === 'edit') && (
+              <AccessWrapper name="ClearChanges" quoteMode={mode}>
                 <LoadingButton
                   variant="contained"
                   color="secondary"
@@ -553,8 +554,8 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                 >
                   {t('clear-changes')}
                 </LoadingButton>
-              )}
-              {!mode && (
+              </AccessWrapper>
+              <AccessWrapper name="EditQuoteButton" quoteMode={mode}>
                 <LoadingButton
                   variant="contained"
                   color="secondary"
@@ -565,7 +566,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                 >
                   {t('edit-quote')}
                 </LoadingButton>
-              )}
+              </AccessWrapper>
               <LoadingButton
                 variant="contained"
                 color="inherit"
@@ -576,7 +577,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
               >
                 {t('save-quote')}
               </LoadingButton>
-              {(status?.toLowerCase() !== 'readyforcheckout' || mode === 'edit') && (
+              <AccessWrapper name="SubmitForApproval" quoteStatus={status} quoteMode={mode}>
                 <LoadingButton
                   variant="contained"
                   color="primary"
@@ -590,8 +591,8 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                 >
                   {t('submit-for-approval')}
                 </LoadingButton>
-              )}
-              {status?.toLowerCase() === 'readyforcheckout' && (
+              </AccessWrapper>
+              <AccessWrapper name="ContinueToCheckout" quoteStatus={status}>
                 <LoadingButton
                   variant="contained"
                   color="primary"
@@ -600,7 +601,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                 >
                   {t('continue-to-checkout')}
                 </LoadingButton>
-              )}
+              </AccessWrapper>
             </Stack>
           ) : null}
         </Grid>
@@ -702,9 +703,9 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
           <Typography variant="h2" mb={2}>
             {t('quote-summary')}
           </Typography>
-          {mode && status?.toLowerCase() !== 'inreview' && (
+          <AccessWrapper name="B2BProductSearch" quoteMode={mode} quoteStatus={status}>
             <B2BProductSearch onAddProduct={handleAddProduct} />
-          )}
+          </AccessWrapper>
         </Grid>
         <Grid item xs={12} sx={{ ...quoteDetailsTemplateStyles.gridPaddingTop }}>
           <Stack gap={3}>
@@ -853,7 +854,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                             />
                           </>
                         )}
-                        {roleName === 'Admin' && (
+                        <AccessWrapper name="QuoteAddShippingAddress">
                           <Button
                             variant="contained"
                             color="inherit"
@@ -862,7 +863,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                           >
                             {t('add-new-address')}
                           </Button>
-                        )}
+                        </AccessWrapper>
                       </Stack>
                       {shippingMethods.length > 0 && Boolean(selectedShippingAddressId) && (
                         <ShippingMethod
@@ -924,9 +925,11 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                       </Box>
                     </>
                   )}
-                  {(!mode ||
-                    status?.toLocaleLowerCase() === 'inreview' ||
-                    roleName === B2BRoles.NON_PURCHASER) && (
+                  <AccessWrapper
+                    name="ShippingMethodReadOnly"
+                    quoteMode={mode}
+                    quoteStatus={status}
+                  >
                     <Stack direction="row" justifyContent="space-between">
                       {quote?.fulfillmentInfo?.fulfillmentContact && (
                         <Box pb={1}>
@@ -986,7 +989,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                           <Typography>{t('no-shipping-details-found')}</Typography>
                         )}
                     </Stack>
-                  )}
+                  </AccessWrapper>
                   <Divider />
                 </Stack>
               ) : (
@@ -1011,7 +1014,11 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                 <Typography variant="h2" pb={1}>
                   {t('comments')}
                 </Typography>
-                {mode && status?.toLowerCase() !== 'inreview' && (
+                <AccessWrapper
+                  name="ViewFullCommentThreadAndHistory"
+                  quoteMode={mode}
+                  quoteStatus={status}
+                >
                   <Button
                     onClick={handleViewFullCommentThread}
                     sx={{ ...quoteDetailsTemplateStyles.viewFullCommentThreadAndHistoryButton }}
@@ -1022,7 +1029,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                       {t('view-full-comment-thread')}
                     </Link>
                   </Button>
-                )}
+                </AccessWrapper>
               </Stack>
               <QuotesCommentThread
                 comments={quote?.comments?.slice(-3).reverse() as QuoteComment[]}
@@ -1039,7 +1046,11 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                 <Typography variant="h2" pb={1}>
                   {t('quote-history')}
                 </Typography>
-                {mode && status?.toLowerCase() !== 'inreview' && (
+                <AccessWrapper
+                  name="ViewFullCommentThreadAndHistory"
+                  quoteMode={mode}
+                  quoteStatus={status}
+                >
                   <Button
                     onClick={handleViewFullCommentHistory}
                     sx={{ ...quoteDetailsTemplateStyles.viewFullCommentThreadAndHistoryButton }}
@@ -1050,7 +1061,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                       {t('view-full-history')}
                     </Link>
                   </Button>
-                )}
+                </AccessWrapper>
               </Stack>
               <QuotesHistory
                 auditHistory={quote?.auditHistory?.slice(-3).reverse() as AuditRecord[]}
@@ -1060,7 +1071,11 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
 
             {!mdScreen ? (
               <Box paddingY={1} display="flex" flexDirection={'column'} gap={2}>
-                {status?.toLowerCase() === 'readyforcheckout' && !quote?.hasDraft && (
+                <AccessWrapper
+                  name="ContinueToCheckoutForMobile"
+                  quoteStatus={status}
+                  hasDraft={quote?.hasDraft as boolean}
+                >
                   <LoadingButton
                     variant="contained"
                     color="primary"
@@ -1070,8 +1085,12 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                   >
                     {t('continue-to-checkout')}
                   </LoadingButton>
-                )}
-                {(status?.toLowerCase() !== 'readyforcheckout' || quote?.hasDraft) && (
+                </AccessWrapper>
+                <AccessWrapper
+                  name="SubmitForApprovalForMobile"
+                  quoteStatus={status}
+                  hasDraft={quote?.hasDraft as boolean}
+                >
                   <LoadingButton
                     variant="contained"
                     color="primary"
@@ -1086,9 +1105,9 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                   >
                     {t('submit-for-approval')}
                   </LoadingButton>
-                )}
+                </AccessWrapper>
                 <Box display="flex" gap={3}>
-                  {(mode === 'create' || mode === 'edit') && (
+                  <AccessWrapper name="ClearChanges" quoteMode={mode}>
                     <LoadingButton
                       variant="contained"
                       color="secondary"
@@ -1103,8 +1122,8 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                     >
                       {t('clear-changes')}
                     </LoadingButton>
-                  )}
-                  {!mode && (
+                  </AccessWrapper>
+                  <AccessWrapper name="EditQuoteButton" quoteMode={mode}>
                     <LoadingButton
                       variant="contained"
                       color="secondary"
@@ -1117,7 +1136,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                     >
                       {t('edit-quote')}
                     </LoadingButton>
-                  )}
+                  </AccessWrapper>
 
                   <LoadingButton
                     variant="contained"
