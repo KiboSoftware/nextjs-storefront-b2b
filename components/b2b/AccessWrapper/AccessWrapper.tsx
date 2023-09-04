@@ -38,8 +38,8 @@ const AccessManager: any = (
     B2BProductSearch: quoteMode && quoteStatus !== QuoteStatus.InReview,
     ShippingMethodReadOnly:
       !quoteMode || quoteStatus === QuoteStatus.InReview || role === B2BRoles.NON_PURCHASER,
-    ViewFullCommentThreadAndHistory: quoteMode && quoteStatus !== QuoteStatus.InReview,
     CreateQuoteButton: role !== B2BRoles.NON_PURCHASER,
+    AddComment: quoteMode && quoteStatus !== QuoteStatus.InReview,
   }
 }
 

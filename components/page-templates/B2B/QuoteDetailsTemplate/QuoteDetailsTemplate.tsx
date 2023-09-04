@@ -1014,26 +1014,21 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
               )
             ) : null}
             <Box>
-              <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
+              <Stack
+                direction="row"
+                sx={{ justifyContent: 'space-between', alignItems: 'baseline' }}
+              >
                 <Typography variant="h2" pb={1}>
                   {t('comments')}
                 </Typography>
-                <AccessWrapper
-                  name="ViewFullCommentThreadAndHistory"
-                  quoteMode={mode}
-                  quoteStatus={QuoteStatus[status]}
+                <Button
+                  onClick={handleViewFullCommentThread}
+                  sx={{ ...quoteDetailsTemplateStyles.viewFullCommentThreadAndHistoryButton }}
                 >
-                  <Button
-                    onClick={handleViewFullCommentThread}
-                    sx={{ ...quoteDetailsTemplateStyles.viewFullCommentThreadAndHistoryButton }}
-                  >
-                    <Link
-                      sx={{ ...quoteDetailsTemplateStyles.viewFullCommentThreadAndHistoryLink }}
-                    >
-                      {t('view-full-comment-thread')}
-                    </Link>
-                  </Button>
-                </AccessWrapper>
+                  <Link sx={{ ...quoteDetailsTemplateStyles.viewFullCommentThreadAndHistoryLink }}>
+                    {t('view-full-comment-thread')}
+                  </Link>
+                </Button>
               </Stack>
               <QuotesCommentThread
                 comments={quote?.comments?.slice(-3).reverse() as QuoteComment[]}
@@ -1041,31 +1036,27 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                 onAddComment={handleAddCommentToQuote}
                 status={status}
                 mode={mode}
+                showLeft
                 userIdAndEmails={userIdToEmail}
               />
             </Box>
             <Divider />
             <Box>
-              <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
+              <Stack
+                direction="row"
+                sx={{ justifyContent: 'space-between', alignItems: 'baseline' }}
+              >
                 <Typography variant="h2" pb={1}>
                   {t('quote-history')}
                 </Typography>
-                <AccessWrapper
-                  name="ViewFullCommentThreadAndHistory"
-                  quoteMode={mode}
-                  quoteStatus={QuoteStatus[status]}
+                <Button
+                  onClick={handleViewFullCommentHistory}
+                  sx={{ ...quoteDetailsTemplateStyles.viewFullCommentThreadAndHistoryButton }}
                 >
-                  <Button
-                    onClick={handleViewFullCommentHistory}
-                    sx={{ ...quoteDetailsTemplateStyles.viewFullCommentThreadAndHistoryButton }}
-                  >
-                    <Link
-                      sx={{ ...quoteDetailsTemplateStyles.viewFullCommentThreadAndHistoryLink }}
-                    >
-                      {t('view-full-history')}
-                    </Link>
-                  </Button>
-                </AccessWrapper>
+                  <Link sx={{ ...quoteDetailsTemplateStyles.viewFullCommentThreadAndHistoryLink }}>
+                    {t('view-full-history')}
+                  </Link>
+                </Button>
               </Stack>
               <QuotesHistory
                 auditHistory={quote?.auditHistory?.slice(-3).reverse() as AuditRecord[]}
