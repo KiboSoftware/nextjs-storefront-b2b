@@ -577,7 +577,11 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
               >
                 {t('save-quote')}
               </LoadingButton>
-              <AccessWrapper name="SubmitForApproval" quoteStatus={status} quoteMode={mode}>
+              <AccessWrapper
+                name="SubmitForApproval"
+                quoteStatus={QuoteStatus[status]}
+                quoteMode={mode}
+              >
                 <LoadingButton
                   variant="contained"
                   color="primary"
@@ -592,7 +596,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                   {t('submit-for-approval')}
                 </LoadingButton>
               </AccessWrapper>
-              <AccessWrapper name="ContinueToCheckout" quoteStatus={status}>
+              <AccessWrapper name="ContinueToCheckout" quoteStatus={QuoteStatus[status]}>
                 <LoadingButton
                   variant="contained"
                   color="primary"
@@ -703,7 +707,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
           <Typography variant="h2" mb={2}>
             {t('quote-summary')}
           </Typography>
-          <AccessWrapper name="B2BProductSearch" quoteMode={mode} quoteStatus={status}>
+          <AccessWrapper name="B2BProductSearch" quoteMode={mode} quoteStatus={QuoteStatus[status]}>
             <B2BProductSearch onAddProduct={handleAddProduct} />
           </AccessWrapper>
         </Grid>
@@ -928,7 +932,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                   <AccessWrapper
                     name="ShippingMethodReadOnly"
                     quoteMode={mode}
-                    quoteStatus={status}
+                    quoteStatus={QuoteStatus[status]}
                   >
                     <Stack direction="row" justifyContent="space-between">
                       {quote?.fulfillmentInfo?.fulfillmentContact && (
@@ -1017,7 +1021,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                 <AccessWrapper
                   name="ViewFullCommentThreadAndHistory"
                   quoteMode={mode}
-                  quoteStatus={status}
+                  quoteStatus={QuoteStatus[status]}
                 >
                   <Button
                     onClick={handleViewFullCommentThread}
@@ -1049,7 +1053,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                 <AccessWrapper
                   name="ViewFullCommentThreadAndHistory"
                   quoteMode={mode}
-                  quoteStatus={status}
+                  quoteStatus={QuoteStatus[status]}
                 >
                   <Button
                     onClick={handleViewFullCommentHistory}
@@ -1073,7 +1077,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
               <Box paddingY={1} display="flex" flexDirection={'column'} gap={2}>
                 <AccessWrapper
                   name="ContinueToCheckoutForMobile"
-                  quoteStatus={status}
+                  quoteStatus={QuoteStatus[status]}
                   hasDraft={quote?.hasDraft as boolean}
                 >
                   <LoadingButton
@@ -1088,7 +1092,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                 </AccessWrapper>
                 <AccessWrapper
                   name="SubmitForApprovalForMobile"
-                  quoteStatus={status}
+                  quoteStatus={QuoteStatus[status]}
                   hasDraft={quote?.hasDraft as boolean}
                 >
                   <LoadingButton

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useAuthContext } from '@/context'
 import { B2BRoles, QuoteStatus } from '@/lib/constants'
 
@@ -32,19 +30,16 @@ const AccessManager: any = (
     EditQuote: handleEditQuoteAccess(role, quoteStatus),
     EmailQuote: handleEmailQuoteAccess(role, quoteStatus),
     ClearChanges: quoteMode === 'create' || quoteMode === 'edit',
-    SubmitForApproval:
-      quoteStatus?.toLocaleLowerCase() !== 'readyforcheckout' || quoteMode === 'edit',
-    ContinueToCheckout: quoteStatus?.toLocaleLowerCase() === 'readyforcheckout',
+    SubmitForApproval: quoteStatus !== QuoteStatus.ReadyForCheckout || quoteMode === 'edit',
+    ContinueToCheckout: quoteStatus === QuoteStatus.ReadyForCheckout,
     EditQuoteButton: !quoteMode,
-    SubmitForApprovalForMobile: quoteStatus?.toLocaleLowerCase() !== 'readyforcheckout' || hasDraft,
-    ContinueToCheckoutForMobile:
-      quoteStatus?.toLocaleLowerCase() === 'readyforcheckout' && !hasDraft,
-    B2BProductSearch: quoteMode && quoteStatus?.toLowerCase() !== 'inreview',
+    SubmitForApprovalForMobile: quoteStatus !== QuoteStatus.ReadyForCheckout || hasDraft,
+    ContinueToCheckoutForMobile: quoteStatus === QuoteStatus.ReadyForCheckout && !hasDraft,
+    B2BProductSearch: quoteMode && quoteStatus !== QuoteStatus.InReview,
     ShippingMethodReadOnly:
-      !quoteMode ||
-      quoteStatus?.toLocaleLowerCase() === 'inreview' ||
-      role === B2BRoles.NON_PURCHASER,
-    ViewFullCommentThreadAndHistory: quoteMode && quoteStatus?.toLowerCase() !== 'inreview',
+      !quoteMode || quoteStatus === QuoteStatus.InReview || role === B2BRoles.NON_PURCHASER,
+    ViewFullCommentThreadAndHistory: quoteMode && quoteStatus !== QuoteStatus.InReview,
+    CreateQuoteButton: role !== B2BRoles.NON_PURCHASER,
   }
 }
 
