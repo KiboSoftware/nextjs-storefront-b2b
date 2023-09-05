@@ -541,7 +541,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
         <Grid item sm={6} display={'flex'} justifyContent={'flex-end'}>
           {mdScreen ? (
             <Stack direction="row" gap={2}>
-              <AccessWrapper name="ClearChanges" quoteMode={mode}>
+              <AccessWrapper name="QuoteClearChanges" quoteMode={mode}>
                 <LoadingButton
                   variant="contained"
                   color="secondary"
@@ -578,7 +578,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                 {t('save-quote')}
               </LoadingButton>
               <AccessWrapper
-                name="SubmitForApproval"
+                name="QuoteSubmitForApproval"
                 quoteStatus={QuoteStatus[status]}
                 quoteMode={mode}
               >
@@ -596,7 +596,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                   {t('submit-for-approval')}
                 </LoadingButton>
               </AccessWrapper>
-              <AccessWrapper name="ContinueToCheckout" quoteStatus={QuoteStatus[status]}>
+              <AccessWrapper name="QuoteContinueToCheckout" quoteStatus={QuoteStatus[status]}>
                 <LoadingButton
                   variant="contained"
                   color="primary"
@@ -1067,7 +1067,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
             {!mdScreen ? (
               <Box paddingY={1} display="flex" flexDirection={'column'} gap={2}>
                 <AccessWrapper
-                  name="ContinueToCheckoutForMobile"
+                  name="QuoteContinueToCheckoutForMobile"
                   quoteStatus={QuoteStatus[status]}
                   hasDraft={quote?.hasDraft as boolean}
                 >
@@ -1082,7 +1082,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                   </LoadingButton>
                 </AccessWrapper>
                 <AccessWrapper
-                  name="SubmitForApprovalForMobile"
+                  name="QuoteSubmitForApprovalForMobile"
                   quoteStatus={QuoteStatus[status]}
                   hasDraft={quote?.hasDraft as boolean}
                 >
@@ -1102,7 +1102,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                   </LoadingButton>
                 </AccessWrapper>
                 <Box display="flex" gap={3}>
-                  <AccessWrapper name="ClearChanges" quoteMode={mode}>
+                  <AccessWrapper name="QuoteClearChanges" quoteMode={mode}>
                     <LoadingButton
                       variant="contained"
                       color="secondary"
