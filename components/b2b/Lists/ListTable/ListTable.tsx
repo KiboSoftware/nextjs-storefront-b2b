@@ -21,6 +21,7 @@ import { grey } from '@mui/material/colors'
 import { useTranslation } from 'next-i18next'
 
 import { styles } from '@/components/b2b/Lists/ListTable/ListTable.style'
+import { useGetB2BUsersEmailAndId } from '@/hooks'
 import formatDate from '@/lib/helpers/formatDate'
 
 import { CrWishlist, Maybe } from '@/lib/gql/types'
@@ -105,6 +106,7 @@ const ListTable = (props: ListTableProps) => {
   const { t } = useTranslation('common')
   const theme = useTheme()
   const mdScreen = useMediaQuery(theme.breakpoints.up('md'))
+  const userIdAndEmail = useGetB2BUsersEmailAndId()
 
   return (
     <TableContainer
@@ -137,7 +139,7 @@ const ListTable = (props: ListTableProps) => {
                       {item?.name}
                       <br />
                       <Typography style={{ margin: '5px 0', color: grey[400] }}>
-                        {item?.auditInfo?.createBy}
+                        {userIdAndEmail[item?.auditInfo?.createBy as string]}
                       </Typography>
                     </Box>
                   )}
@@ -147,7 +149,7 @@ const ListTable = (props: ListTableProps) => {
                 </TableCell>
                 {mdScreen && (
                   <TableCell sx={{ ...styles.tableCellStyles, width: '20%' }}>
-                    {item?.auditInfo?.createBy}
+                    {userIdAndEmail[item?.auditInfo?.createBy as string]}
                   </TableCell>
                 )}
                 <TableCell sx={{ ...styles.tableCellStyles, width: mdScreen ? '25%' : '10%' }}>

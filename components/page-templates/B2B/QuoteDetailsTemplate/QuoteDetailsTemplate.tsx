@@ -45,7 +45,6 @@ import {
   useGetPurchaseLocation,
   useGetStoreLocations,
   useProductCardActions,
-  useGetB2BUserQueries,
   useDeleteQuoteItem,
   useGetCustomerAddresses,
   useGetQuoteShippingMethods,
@@ -57,6 +56,7 @@ import {
   useInitiateOrder,
   useUpdateQuote,
   useAddQuoteComment,
+  useGetB2BUsersEmailAndId,
 } from '@/hooks'
 import { useQuoteActions } from '@/hooks/custom/useQuoteActions/useQuoteActions'
 import {
@@ -108,16 +108,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
     quoteGetters.getQuoteDetails(quote)
   const quoteItems = (quote?.items as CrOrderItem[]) ?? []
 
-  const { data: b2bUserData } = useGetB2BUserQueries({
-    accountId: user?.id as number,
-    initialB2BUsers,
-  })
-
-  const userIdToEmail: { [userId: string]: string } = {}
-
-  b2bUserData?.items?.forEach((item) => {
-    userIdToEmail[item?.userId as string] = item?.emailAddress as string
-  })
+  const userIdToEmail = useGetB2BUsersEmailAndId(initialB2BUsers)
 
   const createdBy = quoteGetters.getQuoteCreatedBy(
     currentB2BUser?.items?.[0]?.firstName as string,
