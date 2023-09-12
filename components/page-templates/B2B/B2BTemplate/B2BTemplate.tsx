@@ -180,7 +180,7 @@ const B2BTemplate = (props: B2BTemplateProps) => {
             variant={mdScreen ? 'h1' : 'h2'}
             sx={{ paddingLeft: { md: '0.5rem', xs: 0 } }}
           >
-            {t('KiboUSA')}
+            {user?.companyOrOrganization}
           </Typography>
         </Box>
         <Box

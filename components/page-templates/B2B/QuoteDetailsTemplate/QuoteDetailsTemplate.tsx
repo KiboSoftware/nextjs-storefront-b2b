@@ -504,7 +504,6 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
   useEffect(() => {
     setValue('name', quote?.name as string)
   }, [quote?.name])
-  console.log('quote details tempalte view', hasPermission(actions.VIEW_ACCOUNT))
   return (
     <>
       <Grid container spacing={2}>
