@@ -58,7 +58,7 @@ describe('[page] Account Hierarchy Page', () => {
 
     const response = await getServerSideProps(context as any)
 
-    const hierarchy = buildAccountHierarchy(b2BAccountHierarchyResult?.accounts)
+    const hierarchy = buildAccountHierarchy(b2BAccountHierarchyResult?.accounts, 123)
 
     expect(response).toStrictEqual({
       props: {
