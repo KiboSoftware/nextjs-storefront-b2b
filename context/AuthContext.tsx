@@ -78,7 +78,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
 
     const { roleId, roleName } = roles
     const userWithRole = { ...user, roleId, roleName } as CustomerAccountWithRole
-
+    document.cookie = `userRole=${roleName}; path=/`
     setUser(userWithRole)
   }, [userAccount])
 

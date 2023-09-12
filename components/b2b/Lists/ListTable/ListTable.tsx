@@ -52,7 +52,6 @@ const ListTableMobileOptions = (props: ListTableMobileOptions) => {
   const options = [
     { name: t('edit'), onClick: onEditList },
     { name: t('add-list-items-to-cart'), onClick: onAddListToCart },
-    { name: t('initiate-quote'), onClick: onInitiateQuote },
     { name: t('duplicate'), onClick: onCopyList },
     { name: t('delete'), onClick: onDeleteList },
   ]
@@ -155,14 +154,6 @@ const ListTable = (props: ListTableProps) => {
                 <TableCell sx={{ ...styles.tableCellStyles, width: mdScreen ? '25%' : '10%' }}>
                   {mdScreen ? (
                     <Box sx={{ justifyContent: 'flex-end', display: 'flex' }}>
-                      <Button
-                        variant="text"
-                        color="inherit"
-                        data-testid="initiateQuoteBtn"
-                        onClick={() => onInitiateQuote(item?.id as string)}
-                      >
-                        {t('initiate-quote')}
-                      </Button>
                       <Button
                         variant="text"
                         color="inherit"

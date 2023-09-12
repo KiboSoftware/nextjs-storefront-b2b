@@ -13,7 +13,7 @@ import { useModalContext } from '@/context'
 import { useDeleteCustomerCard, useDeleteCustomerAddress } from '@/hooks'
 import { DisplayMode, AddressType } from '@/lib/constants'
 import { addressGetters, cardGetters, userGetters } from '@/lib/getters'
-import { tokenizeCreditCardPayment } from '@/lib/helpers'
+import { actions, hasPermission, tokenizeCreditCardPayment } from '@/lib/helpers'
 import type {
   Address,
   CardForm,
@@ -329,56 +329,62 @@ const PaymentMethod = (props: PaymentMethodProps) => {
     <Box width="100%">
       {!isAddingNewPayment && (
         <Stack gap={2}>
-          {!displaySavedCardsAndContacts?.length && (
+          {(!hasPermission(actions.VIEW_PAYMENTS) || !displaySavedCardsAndContacts?.length) && (
             <Typography variant="body1">{t('no-saved-payments-yet')}</Typography>
           )}
-
-          {displaySavedCardsAndContacts?.map((each) => (
-            <Stack key={each?.cardInfo?.id as string} data-testid="saved-cards-and-contacts">
-              {each.cardInfo?.isDefaultPayMethod && (
-                <Typography variant="body1" fontWeight={700}>
-                  {t('primary')}
-                </Typography>
-              )}
-              <Box display="flex" justifyContent={'space-between'}>
-                <PaymentBillingCard
-                  cardNumberPart={cardGetters.getCardNumberPart(each.cardInfo)}
-                  expireMonth={cardGetters.getExpireMonth(each.cardInfo)}
-                  expireYear={cardGetters.getExpireYear(each.cardInfo)}
-                  cardType={cardGetters.getCardType(each.cardInfo)}
-                  {...addressGetters.getAddress(
-                    each?.billingAddressInfo?.contact?.address as CrAddress
-                  )}
-                />
-                <Stack gap={1}>
-                  <Typography
-                    variant="body2"
-                    sx={{ cursor: 'pointer' }}
-                    onClick={() => handleEdit(each)}
-                    data-testid="payment-method-edit-link"
-                  >
-                    {t('edit')}
+          {hasPermission(actions.VIEW_PAYMENTS) &&
+            displaySavedCardsAndContacts?.map((each: PaymentAndBilling) => (
+              <Stack key={each?.cardInfo?.id as string} data-testid="saved-cards-and-contacts">
+                {each.cardInfo?.isDefaultPayMethod && (
+                  <Typography variant="body1" fontWeight={700}>
+                    {t('primary')}
                   </Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{ cursor: 'pointer' }}
-                    onClick={() => openDeleteConfirmation(each.cardInfo as SavedCard)}
-                  >
-                    {t('delete')}
-                  </Typography>
-                </Stack>
-              </Box>
-            </Stack>
-          ))}
-          <Button
-            variant="contained"
-            color="inherit"
-            sx={{ ...styles.addPaymentMethodButtonStyle }}
-            onClick={() => handleAddNewPaymentMethod()}
-            startIcon={<AddCircleOutlineIcon />}
-          >
-            {t('add-payment-method')}
-          </Button>
+                )}
+                <Box display="flex" justifyContent={'space-between'}>
+                  <PaymentBillingCard
+                    cardNumberPart={cardGetters.getCardNumberPart(each.cardInfo)}
+                    expireMonth={cardGetters.getExpireMonth(each.cardInfo)}
+                    expireYear={cardGetters.getExpireYear(each.cardInfo)}
+                    cardType={cardGetters.getCardType(each.cardInfo)}
+                    {...addressGetters.getAddress(
+                      each?.billingAddressInfo?.contact?.address as CrAddress
+                    )}
+                  />
+                  <Stack gap={1}>
+                    {hasPermission(actions.EDIT_PAYMENTS) && (
+                      <Typography
+                        variant="body2"
+                        sx={{ cursor: 'pointer' }}
+                        onClick={() => handleEdit(each)}
+                        data-testid="payment-method-edit-link"
+                      >
+                        {t('edit')}
+                      </Typography>
+                    )}
+                    {hasPermission(actions.DELETE_PAYMENTS) && (
+                      <Typography
+                        variant="body2"
+                        sx={{ cursor: 'pointer' }}
+                        onClick={() => openDeleteConfirmation(each.cardInfo as SavedCard)}
+                      >
+                        {t('delete')}
+                      </Typography>
+                    )}
+                  </Stack>
+                </Box>
+              </Stack>
+            ))}
+          {hasPermission(actions.CREATE_PAYMENTS) && (
+            <Button
+              variant="contained"
+              color="inherit"
+              sx={{ ...styles.addPaymentMethodButtonStyle }}
+              onClick={() => handleAddNewPaymentMethod()}
+              startIcon={<AddCircleOutlineIcon />}
+            >
+              {t('add-payment-method')}
+            </Button>
+          )}
           {displaySavedCardsAndContacts?.length > 0 && savedCardsAndContacts.length > 5 && (
             <Box display={'flex'} justifyContent={'center'} width="100%" py={10}>
               <KiboPagination
@@ -470,7 +476,7 @@ const PaymentMethod = (props: PaymentMethodProps) => {
               />
             )}
 
-            {!showBillingFormAddress && (
+            {hasPermission(actions.CREATE_CONTACTS) && !showBillingFormAddress && (
               <Button
                 variant="contained"
                 color="secondary"

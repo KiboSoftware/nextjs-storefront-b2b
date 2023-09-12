@@ -99,13 +99,17 @@ const AccountHierarchyTemplate = (props: AccountHierarchyTemplateProps) => {
   }
 
   const handleAddAccountFormSubmit = async (formValues: CreateCustomerB2bAccountParams) => {
-    const variables = buildCreateCustomerB2bAccountParams({
-      ...formValues,
-    })
-    const createCustomerB2BAccount = await createCustomerB2bAccount.mutateAsync({
-      ...variables,
-    })
-    if (createCustomerB2BAccount) closeModal()
+    try {
+      const variables = buildCreateCustomerB2bAccountParams({
+        ...formValues,
+      })
+      const createCustomerB2BAccount = await createCustomerB2bAccount.mutateAsync({
+        ...variables,
+      })
+      if (createCustomerB2BAccount) closeModal()
+    } catch (e) {
+      console.error
+    }
   }
 
   const handleEditAccountFormSubmit = async (
@@ -130,8 +134,12 @@ const AccountHierarchyTemplate = (props: AccountHierarchyTemplateProps) => {
   }
 
   const handleB2bAccountParentChange = async (accountId: number, parentAccountId: number) => {
-    await changeB2bAccountParent.mutateAsync({ accountId, parentAccountId })
-    closeModal()
+    try {
+      await changeB2bAccountParent.mutateAsync({ accountId, parentAccountId })
+      closeModal()
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   const handleAddAccount = ({ isAddingAccountToChild, accounts }: AddChildAccountProps) => {
@@ -204,7 +212,7 @@ const AccountHierarchyTemplate = (props: AccountHierarchyTemplateProps) => {
     showModal({
       Component: AccountHierarchyFormDialog,
       props: {
-        accounts: accountHierarchy.accounts,
+        accounts: accountHierarchy?.accounts,
         isAddingAccountToChild: false,
         primaryButtonText: t('create-account'),
         title: t('confirmation'),
@@ -243,12 +251,15 @@ const AccountHierarchyTemplate = (props: AccountHierarchyTemplateProps) => {
 
   useEffect(() => {
     if (!b2BAccountHierarchy) return
-    const hierarchy = buildAccountHierarchy(b2BAccountHierarchy?.accounts) as HierarchyTree[]
+    const hierarchy = buildAccountHierarchy(
+      b2BAccountHierarchy?.accounts,
+      user?.id as number
+    ) as HierarchyTree[]
     setAccountHierarchy({
       accounts: b2BAccountHierarchy?.accounts,
       hierarchy,
     })
-  }, [b2BAccountHierarchy, currentB2bUser])
+  }, [b2BAccountHierarchy, currentB2bUser, user])
 
   return (
     <Grid container gap={3}>
@@ -273,6 +284,7 @@ const AccountHierarchyTemplate = (props: AccountHierarchyTemplateProps) => {
                 disableElevation
                 id="formOpenButton"
                 startIcon={<AddCircleOutline />}
+                disabled={userGetters.getRole(currentB2bUser?.items?.[0] as B2BUser) !== 'Admin'}
                 {...(!mdScreen && { fullWidth: true })}
               >
                 {t('add-child-account')}
@@ -283,8 +295,8 @@ const AccountHierarchyTemplate = (props: AccountHierarchyTemplateProps) => {
             <AccountHierarchyTree
               role={userGetters.getRole(currentB2bUser?.items?.[0] as B2BUser)}
               customerAccount={user as CustomerAccount}
-              accounts={accountHierarchy.accounts}
-              hierarchy={accountHierarchy.hierarchy}
+              accounts={accountHierarchy?.accounts}
+              hierarchy={accountHierarchy?.hierarchy}
               handleViewAccount={handleViewAccount}
               handleAddAccount={handleAddAccount}
               handleEditAccount={handleEditAccount}

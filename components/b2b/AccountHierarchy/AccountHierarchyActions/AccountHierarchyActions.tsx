@@ -8,6 +8,7 @@ import { useTranslation } from 'next-i18next'
 
 import { CartItemActionsMobile } from '@/components/cart'
 import { AccountActions, AllAccountActions, B2BRoles } from '@/lib/constants'
+import { actions, hasPermission } from '@/lib/helpers'
 
 interface AccountHierarchyActionsProps {
   role?: string
@@ -62,37 +63,39 @@ const AccountHierarchyActions = (props: AccountHierarchyActionsProps) => {
       >
         {t('quotes')}
       </Typography>
-      {role === B2BRoles.ADMIN && (
-        <Box display={'flex'} gap={2}>
-          <IconButton
-            size="small"
-            sx={{ p: 0.5 }}
-            aria-label="item-view"
-            name="item-view"
-            onClick={onView}
-          >
-            <VisibilityIcon />
-          </IconButton>
-          <IconButton
-            size="small"
-            sx={{ p: 0.5 }}
-            aria-label="item-add"
-            name="item-add"
-            onClick={onAdd}
-          >
-            <AddCircleIcon />
-          </IconButton>
-          <IconButton
-            size="small"
-            sx={{ p: 0.5 }}
-            aria-label="item-edit"
-            name="item-edit"
-            onClick={onEdit}
-          >
-            <EditIcon />
-          </IconButton>
-        </Box>
-      )}
+      <Box display={'flex'} gap={2}>
+        <IconButton
+          size="small"
+          sx={{ p: 0.5 }}
+          aria-label="item-view"
+          name="item-view"
+          onClick={onView}
+        >
+          <VisibilityIcon />
+        </IconButton>
+        {hasPermission(actions.CREATE_ACCOUNT) && (
+          <>
+            <IconButton
+              size="small"
+              sx={{ p: 0.5 }}
+              aria-label="item-add"
+              name="item-add"
+              onClick={onAdd}
+            >
+              <AddCircleIcon />
+            </IconButton>
+            <IconButton
+              size="small"
+              sx={{ p: 0.5 }}
+              aria-label="item-edit"
+              name="item-edit"
+              onClick={onEdit}
+            >
+              <EditIcon />
+            </IconButton>
+          </>
+        )}
+      </Box>
     </Box>
   ) : (
     <CartItemActionsMobile

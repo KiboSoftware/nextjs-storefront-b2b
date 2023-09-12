@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ListItemIcon, ListItemText } from '@mui/material'
+import { ListItemIcon, ListItemText, Typography } from '@mui/material'
 
 import { AccountHierarchyActions } from '@/components/b2b'
 import { B2BRoles } from '@/lib/constants'
@@ -69,7 +69,13 @@ const AccountHierarchyTreeLabel = (props: AccountHierarchyTreeLabelProps) => {
     <>
       <ListItemText
         data-testid="tree-label"
-        primary={currentAccount?.companyOrOrganization}
+        primary={
+          <Typography
+            color={customerAccount?.id === currentAccount.id ? 'primary' : 'text.primary'}
+          >
+            {currentAccount?.companyOrOrganization}
+          </Typography>
+        }
         sx={{ pl: 1 }}
       />
       <ListItemIcon sx={{ ml: 'auto' }}>

@@ -30,7 +30,7 @@ import {
 } from '@/hooks'
 import { AddressType } from '@/lib/constants'
 import { userGetters } from '@/lib/getters'
-import { buildAddressParams, validateGoogleReCaptcha } from '@/lib/helpers'
+import { actions, buildAddressParams, hasPermission, validateGoogleReCaptcha } from '@/lib/helpers'
 import type { Address, ContactForm, DeleteAddressParams } from '@/lib/types'
 
 import type { UpdateCustomerAccountContactDetailsParams } from '@/hooks'
@@ -103,15 +103,17 @@ const AccountAddress = (props: AccountAddressProps) => {
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <AddressCard {...buildAddressProps(customerContact)} />
         <Stack>
-          <Typography
-            variant="body2"
-            sx={{ cursor: 'pointer' }}
-            onClick={() => editAddress(customerContact)}
-            data-testid={`address-edit`}
-          >
-            {t('edit')}
-          </Typography>
-          {!isPrimaryAddress && (
+          {hasPermission(actions.EDIT_CONTACTS) && (
+            <Typography
+              variant="body2"
+              sx={{ cursor: 'pointer' }}
+              onClick={() => editAddress(customerContact)}
+              data-testid={`address-edit`}
+            >
+              {t('edit')}
+            </Typography>
+          )}
+          {hasPermission(actions.DELETE_CONTACTS) && !isPrimaryAddress && (
             <Delete
               sx={{ marginTop: '1.375rem' }}
               onClick={() =>
@@ -325,7 +327,10 @@ const AddressBook = (props: AddressBookProps) => {
             <Typography variant="body1">{t('no-saved-addresses-yet')}</Typography>
           )}
       </Box>
-      {!isAddressModified && (
+      {!hasPermission(actions.VIEW_CONTACTS) && (
+        <Typography variant="body1">{t('no-saved-addresses-yet')}</Typography>
+      )}
+      {hasPermission(actions.VIEW_CONTACTS) && !isAddressModified && (
         <Box>
           <TransitionGroup>
             {displayShippingAddresses?.map((item: CustomerContact, index: number) => (
@@ -391,7 +396,7 @@ const AddressBook = (props: AddressBookProps) => {
           </TransitionGroup>
         </Box>
       )}
-      {!isAddressModified && (
+      {hasPermission(actions.CREATE_CONTACTS) && !isAddressModified && (
         <Button
           variant="contained"
           color="inherit"

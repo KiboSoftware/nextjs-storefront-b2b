@@ -15,7 +15,7 @@ import {
 } from '@/hooks'
 import { DefaultId, AddressType } from '@/lib/constants'
 import { orderGetters, userGetters } from '@/lib/getters'
-import { buildAddressParams } from '@/lib/helpers'
+import { actions, buildAddressParams, hasPermission } from '@/lib/helpers'
 import { Address } from '@/lib/types'
 
 import type {
@@ -348,15 +348,16 @@ const StandardShippingStep = (props: ShippingProps) => {
                 />
               </>
             )}
-
-            <Button
-              variant="contained"
-              color="inherit"
-              sx={{ width: { xs: '100%', sm: '50%' } }}
-              onClick={handleAddNewAddress}
-            >
-              {t('add-new-address')}
-            </Button>
+            {hasPermission(actions.CREATE_CONTACTS) && (
+              <Button
+                variant="contained"
+                color="inherit"
+                sx={{ width: { xs: '100%', sm: '50%' } }}
+                onClick={handleAddNewAddress}
+              >
+                {t('add-new-address')}
+              </Button>
+            )}
           </Stack>
           {shippingMethods.length > 0 && (
             <ShippingMethod

@@ -12,6 +12,7 @@ import { useTranslation } from 'next-i18next'
 
 import { AccountHierarchyStyles } from './AccountHierarchyTree.styles'
 import { AccountHierarchyTreeLabel } from '@/components/b2b'
+import { B2BRoles } from '@/lib/constants'
 import {
   AddChildAccountProps,
   B2BAccountHierarchyResult,
@@ -110,7 +111,8 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
 
       <NoSsr>
         <SortableTree
-          items={hierarchy as TreeItems<HierarchyTree>}
+          items={(hierarchy as TreeItems<HierarchyTree>) || []}
+          disableSorting={role !== B2BRoles.ADMIN}
           onItemsChanged={(items, reason) => {
             if (reason.type === 'dropped') {
               onAccountSwap({
@@ -134,7 +136,12 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
             ) as B2BAccount
 
             return (
-              <SimpleTreeItemWrapper {...props} ref={ref}>
+              <SimpleTreeItemWrapper
+                {...props}
+                disableSorting={props.item.disableSorting}
+                disableInteraction={props.item.disableSorting}
+                ref={ref}
+              >
                 <AccountHierarchyTreeLabel
                   role={role}
                   mdScreen={mdScreen}
