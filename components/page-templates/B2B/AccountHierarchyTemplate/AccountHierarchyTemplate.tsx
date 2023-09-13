@@ -31,13 +31,13 @@ import {
   buildCreateCustomerB2bAccountParams,
   buildUpdateCustomerB2bAccountParams,
   buildUpdateCustomerB2bUserParams,
+  filterAccountsByDisableSorting,
   parseFilterParamToObject,
 } from '@/lib/helpers'
 import {
   AddChildAccountProps,
   B2BAccountHierarchyResult,
   CreateCustomerB2bAccountParams,
-  EditChildAccountProps,
   HierarchyTree,
 } from '@/lib/types'
 
@@ -156,11 +156,16 @@ const AccountHierarchyTemplate = (props: AccountHierarchyTemplateProps) => {
     })
   }
 
-  const handleEditAccount = ({ accounts, b2BAccount }: EditChildAccountProps) => {
+  const filteredAccounts = filterAccountsByDisableSorting(
+    accountHierarchy.hierarchy,
+    accountHierarchy.accounts
+  )
+
+  const handleEditAccount = (b2BAccount: B2BAccount) => {
     showModal({
       Component: AccountHierarchyFormDialog,
       props: {
-        accounts,
+        accounts: filteredAccounts,
         b2BAccount,
         formTitle: t('edit-child-account'),
         primaryButtonText: t('update-account'),
@@ -171,11 +176,11 @@ const AccountHierarchyTemplate = (props: AccountHierarchyTemplateProps) => {
     })
   }
 
-  const handleChangeParent = ({ accounts, b2BAccount }: EditChildAccountProps) => {
+  const handleChangeParent = (b2BAccount: B2BAccount) => {
     showModal({
       Component: AccountHierarchyChangeParentDialog,
       props: {
-        accounts,
+        accounts: filteredAccounts,
         b2BAccount,
         formTitle: t('edit-child-account'),
         onSave: (accountId: number, parentAccountId: number) =>
@@ -212,7 +217,7 @@ const AccountHierarchyTemplate = (props: AccountHierarchyTemplateProps) => {
     showModal({
       Component: AccountHierarchyFormDialog,
       props: {
-        accounts: accountHierarchy?.accounts,
+        accounts: filteredAccounts,
         isAddingAccountToChild: false,
         primaryButtonText: t('create-account'),
         title: t('confirmation'),

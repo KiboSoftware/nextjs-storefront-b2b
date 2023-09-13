@@ -29,8 +29,8 @@ interface AccountHierarchyTreeProps {
   hierarchy: HierarchyTree[]
   handleViewAccount: (item: B2BAccount) => void
   handleAddAccount: ({ isAddingAccountToChild, accounts }: AddChildAccountProps) => void
-  handleEditAccount: ({ accounts }: EditChildAccountProps) => void
-  handleChangeParent: ({ accounts }: EditChildAccountProps) => void
+  handleEditAccount: (b2BAccount: B2BAccount) => void
+  handleChangeParent: (b2BAccount: B2BAccount) => void
   handleSwapAccount: (accountId: number, parentAccountId: number) => void
   handleBuyersBtnClick: (b2BUsers: B2BUser[]) => void
   handleQuotesBtnClick: (id: number) => void
@@ -115,10 +115,12 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
           disableSorting={role !== B2BRoles.ADMIN}
           onItemsChanged={(items, reason) => {
             if (reason.type === 'dropped') {
-              onAccountSwap({
-                accountId: reason.draggedItem.id,
-                parentAccountId: reason.draggedItem.parentId as number,
-              })
+              if (!reason.droppedToParent?.disableSorting) {
+                onAccountSwap({
+                  accountId: reason.draggedItem.id,
+                  parentAccountId: reason.draggedItem.parentId as number,
+                })
+              }
             } else {
               setAccountHierarchy({
                 accounts,
@@ -143,10 +145,10 @@ export default function AccountHierarchyTree(props: AccountHierarchyTreeProps) {
                 ref={ref}
               >
                 <AccountHierarchyTreeLabel
+                  disableSorting={props.item.disableSorting}
                   role={role}
                   mdScreen={mdScreen}
                   currentAccount={currentAccount}
-                  accounts={accounts}
                   customerAccount={customerAccount}
                   handleViewAccount={handleViewAccount}
                   handleAddAccount={handleAddAccount}

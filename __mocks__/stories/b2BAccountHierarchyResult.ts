@@ -706,3 +706,162 @@ export const hierarchyTreeMock = [
     ],
   },
 ]
+
+export const hierarchySortableTreeMock = [
+  {
+    id: 1174,
+    collapsed: false,
+    disableSorting: true,
+    children: [
+      {
+        id: 1177,
+        collapsed: false,
+        disableSorting: true,
+        children: [
+          {
+            id: 1178,
+            collapsed: false,
+            disableSorting: true,
+            children: [
+              {
+                id: 1182,
+                collapsed: false,
+                disableSorting: true,
+                children: [
+                  {
+                    id: 1204,
+                    collapsed: false,
+                    disableSorting: true,
+                    children: [
+                      {
+                        id: 1205,
+                        collapsed: false,
+                        children: [],
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                id: 1193,
+                collapsed: false,
+                disableSorting: true,
+                children: [
+                  {
+                    id: 1206,
+                    collapsed: false,
+                    disableSorting: true,
+                    children: [
+                      {
+                        id: 1190,
+                        collapsed: false,
+                        children: [],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            id: 1183,
+            collapsed: false,
+            disableSorting: false,
+            children: [
+              {
+                id: 1186,
+                collapsed: false,
+                disableSorting: false,
+                children: [
+                  {
+                    id: 1188,
+                    collapsed: false,
+                    disableSorting: false,
+                    children: [],
+                  },
+                  {
+                    id: 1187,
+                    collapsed: false,
+                    disableSorting: false,
+                    children: [],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: 1199,
+        collapsed: false,
+        disableSorting: true,
+        children: [],
+      },
+      {
+        id: 1198,
+        collapsed: false,
+        disableSorting: true,
+        children: [
+          {
+            id: 1179,
+            collapsed: false,
+            disableSorting: true,
+            children: [
+              {
+                id: 1184,
+                collapsed: false,
+                disableSorting: true,
+                children: [
+                  {
+                    id: 1194,
+                    collapsed: false,
+                    disableSorting: true,
+                    children: [
+                      {
+                        id: 1192,
+                        collapsed: false,
+                        disableSorting: true,
+                        children: [],
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                id: 1189,
+                collapsed: false,
+                disableSorting: true,
+                children: [],
+              },
+              {
+                id: 1191,
+                collapsed: false,
+                disableSorting: true,
+                children: [
+                  {
+                    id: 1185,
+                    collapsed: false,
+                    disableSorting: true,
+                    children: [],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: 1200,
+        collapsed: false,
+        disableSorting: true,
+        children: [],
+      },
+      {
+        id: 1196,
+        collapsed: false,
+        disableSorting: true,
+        children: [],
+      },
+    ],
+  },
+]
