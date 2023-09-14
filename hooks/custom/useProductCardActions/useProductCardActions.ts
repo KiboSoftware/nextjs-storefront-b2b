@@ -1,16 +1,18 @@
 import { AddToCartDialog } from '@/components/dialogs'
 import { ProductQuickViewDialog } from '@/components/product'
 import { useModalContext } from '@/context'
-import { useAddCartItem, useCreateQuoteItem, useWishlist } from '@/hooks'
+import { useAddCartItem, useCreateQuoteItem, useUpdateWishlistMutation, useWishlist } from '@/hooks'
+import { productGetters } from '@/lib/getters'
 import { ProductCustom, WishlistProductInput } from '@/lib/types'
 
-import { CrWishlist } from '@/lib/gql/types'
+import { CrProductOption, CrWishlist, CrWishlistInput, Product } from '@/lib/gql/types'
 
 export const useProductCardActions = () => {
   const { showModal } = useModalContext()
   const { addToCart } = useAddCartItem()
   const { addOrRemoveWishlistItem, checkProductInWishlist } = useWishlist()
   const { createQuoteItem } = useCreateQuoteItem()
+  const { updateWishlist } = useUpdateWishlistMutation()
 
   const handleAddToCart = async (payload: any, showConfirmationModal = true) => {
     try {
@@ -81,6 +83,34 @@ export const useProductCardActions = () => {
     }
   }
 
+  const handleAddToList = async ({
+    listData,
+    product,
+    onUpdateListData,
+  }: {
+    listData: CrWishlist | undefined
+    onUpdateListData: (param: CrWishlist) => void
+    product: Product
+  }) => {
+    const items = listData?.items
+    items?.push({
+      product: {
+        options: product?.options as CrProductOption[],
+        productCode: productGetters.getProductId(product as Product),
+        variationProductCode: productGetters.getVariationProductCode(product as Product),
+        isPackagedStandAlone: product?.isPackagedStandAlone,
+      },
+      quantity: 1,
+    })
+    if (listData) listData.items = items
+    const payload = {
+      wishlistId: listData?.id as string,
+      wishlistInput: listData as CrWishlistInput,
+    }
+    const response = await updateWishlist.mutateAsync(payload)
+    onUpdateListData(response.updateWishlist)
+  }
+
   const isATCLoading = addToCart.isPending
 
   return {
@@ -90,5 +120,6 @@ export const useProductCardActions = () => {
     handleWishList,
     checkProductInWishlist,
     isATCLoading,
+    handleAddToList,
   }
 }

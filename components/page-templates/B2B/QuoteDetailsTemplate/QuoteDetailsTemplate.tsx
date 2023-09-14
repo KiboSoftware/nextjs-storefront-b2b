@@ -547,8 +547,8 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                   variant="contained"
                   color="secondary"
                   disabled={
-                    QuoteStatus[status as string] === QuoteStatus.InReview ||
-                    QuoteStatus[status as string] === QuoteStatus.Completed ||
+                    QuoteStatus[status] === QuoteStatus.InReview ||
+                    QuoteStatus[status] === QuoteStatus.Completed ||
                     !(quote?.hasDraft as boolean)
                   }
                   onClick={handleClearChanges}
@@ -561,9 +561,9 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                   variant="contained"
                   color="secondary"
                   disabled={
-                    QuoteStatus[status as string] === QuoteStatus.InReview ||
-                    QuoteStatus[status as string] === QuoteStatus.Completed ||
-                    QuoteStatus[status as string] === QuoteStatus.Expired
+                    QuoteStatus[status] === QuoteStatus.InReview ||
+                    QuoteStatus[status] === QuoteStatus.Completed ||
+                    QuoteStatus[status] === QuoteStatus.Expired
                   }
                   onClick={() => handleEditQuote(quoteId)}
                 >
@@ -574,9 +574,9 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                 variant="contained"
                 color="inherit"
                 disabled={
-                  QuoteStatus[status as string] === QuoteStatus.InReview ||
-                  QuoteStatus[status as string] === QuoteStatus.Completed ||
-                  QuoteStatus[status as string] === QuoteStatus.Expired ||
+                  QuoteStatus[status] === QuoteStatus.InReview ||
+                  QuoteStatus[status] === QuoteStatus.Completed ||
+                  QuoteStatus[status] === QuoteStatus.Expired ||
                   !Boolean(quoteNameField.name)
                 }
                 onClick={handleSubmit(handleSaveQuoteName)}
@@ -589,9 +589,9 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                   variant="contained"
                   color="primary"
                   disabled={
-                    QuoteStatus[status as string] === QuoteStatus.InReview ||
-                    QuoteStatus[status as string] === QuoteStatus.Completed ||
-                    QuoteStatus[status as string] === QuoteStatus.Expired ||
+                    QuoteStatus[status] === QuoteStatus.InReview ||
+                    QuoteStatus[status] === QuoteStatus.Completed ||
+                    QuoteStatus[status] === QuoteStatus.Expired ||
                     !isSaveAndExitDisabled ||
                     !quote?.hasDraft
                   }
@@ -648,9 +648,9 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                 onBlur={field.onBlur}
                 required
                 disabled={
-                  QuoteStatus[status as string] === QuoteStatus.InReview ||
-                  QuoteStatus[status as string] === QuoteStatus.Completed ||
-                  QuoteStatus[status as string] === QuoteStatus.Expired
+                  QuoteStatus[status] === QuoteStatus.InReview ||
+                  QuoteStatus[status] === QuoteStatus.Completed ||
+                  QuoteStatus[status] === QuoteStatus.Expired
                 }
               />
             )}
@@ -790,9 +790,9 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                   }
                   {shouldShowAddAddressButton &&
                     mode &&
-                    QuoteStatus[status as string] !== QuoteStatus.InReview &&
-                    QuoteStatus[status as string] !== QuoteStatus.Completed &&
-                    QuoteStatus[status as string] !== QuoteStatus.Expired && (
+                    QuoteStatus[status] !== QuoteStatus.InReview &&
+                    QuoteStatus[status] !== QuoteStatus.Completed &&
+                    QuoteStatus[status] !== QuoteStatus.Expired && (
                       <>
                         <Stack gap={2} width="100%">
                           {defaultShippingAddress && (
@@ -903,9 +903,9 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                     )}
                   {!shouldShowAddAddressButton &&
                     mode &&
-                    QuoteStatus[status as string] !== QuoteStatus.InReview &&
-                    QuoteStatus[status as string] !== QuoteStatus.Completed &&
-                    QuoteStatus[status as string] !== QuoteStatus.Expired && (
+                    QuoteStatus[status] !== QuoteStatus.InReview &&
+                    QuoteStatus[status] !== QuoteStatus.Completed &&
+                    QuoteStatus[status] !== QuoteStatus.Expired && (
                       <>
                         <AddressForm
                           isUserLoggedIn={false}
@@ -1106,9 +1106,9 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                     variant="contained"
                     color="primary"
                     disabled={
-                      QuoteStatus[status as string] === QuoteStatus.InReview ||
-                      QuoteStatus[status as string] === QuoteStatus.Completed ||
-                      QuoteStatus[status as string] === QuoteStatus.Expired ||
+                      QuoteStatus[status] === QuoteStatus.InReview ||
+                      QuoteStatus[status] === QuoteStatus.Completed ||
+                      QuoteStatus[status] === QuoteStatus.Expired ||
                       !isSaveAndExitDisabled ||
                       !quote?.hasDraft
                     }
@@ -1126,9 +1126,9 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                       fullWidth
                       sx={{ padding: '0.375rem 0.5rem' }}
                       disabled={
-                        QuoteStatus[status as string] === QuoteStatus.InReview ||
-                        QuoteStatus[status as string] === QuoteStatus.Completed ||
-                        QuoteStatus[status as string] === QuoteStatus.Expired ||
+                        QuoteStatus[status] === QuoteStatus.InReview ||
+                        QuoteStatus[status] === QuoteStatus.Completed ||
+                        QuoteStatus[status] === QuoteStatus.Expired ||
                         !(quote?.hasDraft as boolean)
                       }
                       onClick={handleClearChanges}
@@ -1141,9 +1141,9 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                       variant="contained"
                       color="secondary"
                       disabled={
-                        QuoteStatus[status as string] === QuoteStatus.InReview ||
-                        QuoteStatus[status as string] === QuoteStatus.Completed ||
-                        QuoteStatus[status as string] === QuoteStatus.Expired
+                        QuoteStatus[status] === QuoteStatus.InReview ||
+                        QuoteStatus[status] === QuoteStatus.Completed ||
+                        QuoteStatus[status] === QuoteStatus.Expired
                       }
                       sx={{ padding: '0.375rem 0.5rem' }}
                       fullWidth
@@ -1158,9 +1158,9 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                     color="inherit"
                     fullWidth
                     disabled={
-                      QuoteStatus[status as string] === QuoteStatus.InReview ||
-                      QuoteStatus[status as string] === QuoteStatus.Completed ||
-                      QuoteStatus[status as string] === QuoteStatus.Expired ||
+                      QuoteStatus[status] === QuoteStatus.InReview ||
+                      QuoteStatus[status] === QuoteStatus.Completed ||
+                      QuoteStatus[status] === QuoteStatus.Expired ||
                       !Boolean(quoteNameField.name)
                     }
                     onClick={handleSubmit(handleSaveQuoteName)}

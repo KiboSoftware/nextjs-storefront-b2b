@@ -4,7 +4,7 @@ import { ListItemIcon, ListItemText, Typography } from '@mui/material'
 
 import { AccountHierarchyActions } from '@/components/b2b'
 import { B2BRoles } from '@/lib/constants'
-import { AddChildAccountProps, EditChildAccountProps } from '@/lib/types'
+import { AddChildAccountProps } from '@/lib/types'
 
 import { B2BAccount, B2BUser, CustomerAccount } from '@/lib/gql/types'
 

@@ -32,7 +32,6 @@ interface ListTableProps {
   onCopyList: (param: string) => void
   onEditList: (param: string) => void
   onAddListToCart: (param: string) => void
-  onInitiateQuote: (param: string) => void
   isLoading: boolean
 }
 
@@ -41,12 +40,11 @@ interface ListTableMobileOptions {
   onCopyList: (param: string) => void
   onEditList: (param: string) => void
   onAddListToCart: (param: string) => void
-  onInitiateQuote: (param: string) => void
   itemId: string
 }
 
 const ListTableMobileOptions = (props: ListTableMobileOptions) => {
-  const { onDeleteList, onCopyList, onEditList, onAddListToCart, onInitiateQuote, itemId } = props
+  const { onDeleteList, onCopyList, onEditList, onAddListToCart, itemId } = props
   const [anchorEl, setAnchorEL] = useState<HTMLElement | null>(null)
   const { t } = useTranslation('common')
   const options = [
@@ -92,15 +90,7 @@ const ListTableMobileOptions = (props: ListTableMobileOptions) => {
 }
 
 const ListTable = (props: ListTableProps) => {
-  const {
-    rows,
-    onDeleteList,
-    onCopyList,
-    onEditList,
-    onAddListToCart,
-    onInitiateQuote,
-    isLoading,
-  } = props
+  const { rows, onDeleteList, onCopyList, onEditList, onAddListToCart, isLoading } = props
 
   const { t } = useTranslation('common')
   const theme = useTheme()
@@ -191,7 +181,6 @@ const ListTable = (props: ListTableProps) => {
                         onCopyList={onCopyList}
                         onEditList={onEditList}
                         onAddListToCart={onAddListToCart}
-                        onInitiateQuote={onInitiateQuote}
                         itemId={item?.id as string}
                       />
                     </>

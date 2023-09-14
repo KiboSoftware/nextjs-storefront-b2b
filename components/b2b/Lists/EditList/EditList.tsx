@@ -20,17 +20,10 @@ import { B2BProductSearch, ListItem } from '@/components/b2b'
 import styles from '@/components/b2b/Lists/EditList/EditList.style'
 import { KiboTextBox } from '@/components/common'
 import { useProductCardActions, useUpdateWishlistMutation } from '@/hooks'
-import { FulfillmentOptions as FulfillmentOptionsConstant, QuoteStatus } from '@/lib/constants'
 import { productGetters } from '@/lib/getters'
 import { ProductCustom } from '@/lib/types'
 
-import {
-  CrProductOption,
-  CrWishlist,
-  CrWishlistInput,
-  CrWishlistItem,
-  Product,
-} from '@/lib/gql/types'
+import { CrWishlist, CrWishlistInput, CrWishlistItem, Product } from '@/lib/gql/types'
 
 export interface EditListProps {
   onEditFormToggle: () => void
@@ -61,7 +54,7 @@ const EditList = (props: EditListProps) => {
   const mdScreen = useMediaQuery<boolean>(theme.breakpoints.up('md'))
   const { t } = useTranslation('common')
   const { updateWishlist } = useUpdateWishlistMutation()
-  const { openProductQuickViewModal } = useProductCardActions()
+  const { openProductQuickViewModal, handleAddToList } = useProductCardActions()
   const handleSaveWishlist = async () => {
     if (listData) listData.name = editListState.name
     const payload = {
@@ -114,23 +107,11 @@ const EditList = (props: EditListProps) => {
         onUpdateListData,
       })
     } else {
-      const items = listData?.items
-      items?.push({
-        product: {
-          options: product?.options as CrProductOption[],
-          productCode: productGetters.getProductId(product as Product),
-          variationProductCode: productGetters.getVariationProductCode(product as Product),
-          isPackagedStandAlone: product?.isPackagedStandAlone,
-        },
-        quantity: 1,
+      handleAddToList({
+        listData,
+        product: product as Product,
+        onUpdateListData,
       })
-      if (listData) listData.items = items
-      const payload = {
-        wishlistId: listData?.id as string,
-        wishlistInput: listData as CrWishlistInput,
-      }
-      const response = await updateWishlist.mutateAsync(payload)
-      onUpdateListData(response.updateWishlist)
     }
   }
 

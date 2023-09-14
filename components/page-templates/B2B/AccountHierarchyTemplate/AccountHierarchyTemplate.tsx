@@ -121,7 +121,7 @@ const AccountHierarchyTemplate = (props: AccountHierarchyTemplateProps) => {
       })
       if (createCustomerB2BAccount) closeModal()
     } catch (e) {
-      console.error
+      console.error(e)
     }
   }
 

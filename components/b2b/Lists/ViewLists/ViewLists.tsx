@@ -28,6 +28,8 @@ import {
   useDeleteWishlist,
   useAddCartItem,
 } from '@/hooks'
+import { FulfillmentOptions as FulfillmentOptionsConstant } from '@/lib/constants'
+import { productGetters } from '@/lib/getters'
 
 import { CrWishlist, Maybe, ProductOption, WishlistCollection } from '@/lib/gql/types'
 
@@ -130,6 +132,9 @@ const ViewLists = (props: ViewListsProps) => {
           addToCart.mutateAsync({
             product: {
               productCode: item?.product?.productCode as string,
+              variationProductCode: item?.product?.variationProductCode as string,
+              fulfillmentMethod: FulfillmentOptionsConstant.SHIP,
+              purchaseLocationCode: '',
               options: item?.product?.options as ProductOption[],
             },
             quantity: item?.quantity as number,
@@ -226,7 +231,6 @@ const ViewLists = (props: ViewListsProps) => {
               onDeleteList={handleDeleteList}
               onEditList={handleEditList}
               onAddListToCart={handleAddListToCart}
-              onInitiateQuote={handleInitiateQuote}
             />
             <Pagination
               count={wishlistsResponse ? wishlistsResponse.pageCount : 1}

@@ -8,7 +8,6 @@ import { QuotesTable } from '@/components/b2b'
 import MobileB2BLayout from '@/components/layout/MobileB2BLayout/MobileB2BLayout'
 import { useAuthContext } from '@/context'
 import { useCreateQuote } from '@/hooks'
-import { B2BRoles } from '@/lib/constants'
 import { QuoteFilters, QuoteSortingOptions } from '@/lib/types'
 
 import { QueryQuotesArgs, QuoteCollection } from '@/lib/gql/types'

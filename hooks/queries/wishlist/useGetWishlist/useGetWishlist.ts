@@ -73,7 +73,7 @@ export const useGetWishlist = (params?: PageProps): UseWishlistResponse => {
     queryFn: () =>
       getWishlists({
         ...(params as PageProps),
-        startIndex: params ? (params?.startIndex as number) + (params?.pageSize as number) : 0,
+        startIndex: params ? params?.startIndex + params?.pageSize : 0,
       }),
   })
 
