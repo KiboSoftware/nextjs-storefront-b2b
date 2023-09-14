@@ -4,7 +4,7 @@ import { useProductCardActions } from './useProductCardActions'
 import { AddToCartDialog } from '@/components/dialogs'
 import { ProductQuickViewDialog } from '@/components/product'
 import { useModalContext } from '@/context'
-import { useAddCartItem, useWishlist, useCreateQuoteItem } from '@/hooks'
+import { useAddCartItem, useWishlist, useCreateQuoteItem, useUpdateWishlistMutation } from '@/hooks'
 import { ProductCustom } from '@/lib/types'
 
 const showModalMock = jest.fn()
@@ -29,6 +29,9 @@ jest.mock('@/hooks', () => ({
   })),
   useCreateQuoteItem: jest.fn(() => ({
     createQuoteItem: { mutateAsync: createQuoteItemMutateAsyncMock, isPending: false },
+  })),
+  useUpdateWishlistMutation: jest.fn(() => ({
+    updateWishlist: jest.fn(),
   })),
 }))
 
