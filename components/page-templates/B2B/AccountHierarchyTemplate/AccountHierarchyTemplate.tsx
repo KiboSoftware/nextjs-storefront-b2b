@@ -56,6 +56,11 @@ const AccountHierarchyTemplate = (props: AccountHierarchyTemplateProps) => {
   const { showModal, closeModal } = useModalContext()
   const mdScreen = useMediaQuery(theme.breakpoints.up('md'))
 
+  const filteredAccounts = filterAccountsByDisableSorting(
+    initialData?.hierarchy as HierarchyTree[],
+    initialData?.accounts as B2BAccount[]
+  )
+
   const { b2BAccountHierarchy } = useGetB2BAccountHierarchy(user?.id as number, initialData)
   const { createCustomerB2bAccount } = useCreateCustomerB2bAccountMutation()
   const { updateCustomerB2bAccount } = useUpdateCustomerB2bAccountMutation()
@@ -156,11 +161,6 @@ const AccountHierarchyTemplate = (props: AccountHierarchyTemplateProps) => {
     })
   }
 
-  const filteredAccounts = filterAccountsByDisableSorting(
-    accountHierarchy.hierarchy,
-    accountHierarchy.accounts
-  )
-
   const handleEditAccount = (b2BAccount: B2BAccount) => {
     showModal({
       Component: AccountHierarchyFormDialog,
@@ -256,14 +256,18 @@ const AccountHierarchyTemplate = (props: AccountHierarchyTemplateProps) => {
 
   useEffect(() => {
     if (!b2BAccountHierarchy) return
+
     const hierarchy = buildAccountHierarchy(
       b2BAccountHierarchy?.accounts,
       user?.id as number
     ) as HierarchyTree[]
-    setAccountHierarchy({
-      accounts: b2BAccountHierarchy?.accounts,
-      hierarchy,
-    })
+
+    if (hierarchy) {
+      setAccountHierarchy({
+        accounts: b2BAccountHierarchy?.accounts,
+        hierarchy,
+      })
+    }
   }, [b2BAccountHierarchy, currentB2bUser, user])
 
   return (

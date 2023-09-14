@@ -5,6 +5,7 @@ export const filterAccountsByDisableSorting = (
   hierarchy: HierarchyTree[],
   accounts: B2BAccount[]
 ) => {
+  if (hierarchy.length === 0) return accounts
   // Initialize an empty array to store filtered accounts
   const filteredAccounts: B2BAccount[] = []
 
@@ -23,7 +24,7 @@ export const filterAccountsByDisableSorting = (
 
     // Recursively traverse children nodes
     if (node.children && node.children.length > 0) {
-      node.children.forEach((child) => {
+      node.children?.forEach((child) => {
         traverse(child)
       })
     }
