@@ -18,13 +18,10 @@ function getCookie(cookieName: string) {
   return ''
 }
 function getUserBehaviors() {
-  const userRole = getCookie('userRole')
-  const behaviors =
-    userRole === 'Admin'
-      ? [1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 1011, 1012, 1013]
-      : userRole === 'Purchaser'
-      ? [1005, 1008, 1009]
-      : [0] // read from cookie
+  const behaviorsFromCookie = getCookie('behaviors')
+  if (!behaviorsFromCookie) return [0]
+  const behaviorsFromCookieArray = behaviorsFromCookie?.split(',')
+  const behaviors = behaviorsFromCookieArray.map((value) => parseInt(value, 10))
   return behaviors
 }
 

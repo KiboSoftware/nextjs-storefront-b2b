@@ -6,14 +6,20 @@ import { productQuickViewDialogStyle } from './ProductQuickViewDialog.style'
 import KiboDialog from '@/components/common/KiboDialog/KiboDialog'
 import { ProductDetailTemplate } from '@/components/page-templates'
 import { useModalContext } from '@/context/ModalContext'
-import { useProductCardActions } from '@/hooks'
+import { useProductCardActions, useUpdateWishlistMutation } from '@/hooks'
+import { productGetters } from '@/lib/getters'
+import { updateWishlistItemQuantityMutation } from '@/lib/gql/mutations'
 import type { ProductCustom } from '@/lib/types'
+
+import { CrProductOption, CrWishlist, CrWishlistInput, Product } from '@/lib/gql/types'
 
 interface ProductQuickViewDialogProps {
   product: ProductCustom
   isQuickViewModal?: boolean
   dialogProps?: any
   quoteDetails?: any
+  listData?: any
+  onUpdateListData: (param: CrWishlist) => void
 }
 
 const ProductQuickViewDialogFooter = (props: any) => {
@@ -28,6 +34,8 @@ const ProductQuickViewDialogFooter = (props: any) => {
     currentProduct,
     addToCartPayload,
     quoteDetails,
+    listData,
+    onUpdateListData,
   } = props
   const { handleAddToCart, handleWishList, handleAddToQuote } = useProductCardActions()
   const mdScreen = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'))
@@ -36,9 +44,29 @@ const ProductQuickViewDialogFooter = (props: any) => {
     handleAddToCart(addToCartPayload, false)
     onClose()
   }
-
-  const handleAddProductToList = () => {
-    handleWishList(currentProduct)
+  const { updateWishlist } = useUpdateWishlistMutation()
+  const handleAddProductToList = async () => {
+    // handleWishList(currentProduct)
+    const items = listData?.items
+    items?.push({
+      product: {
+        options: addToCartPayload?.product?.options as CrProductOption[],
+        productCode: productGetters.getProductId(addToCartPayload?.product as Product),
+        variationProductCode: productGetters.getVariationProductCode(
+          addToCartPayload?.product as Product
+        ),
+        isPackagedStandAlone: addToCartPayload?.product?.isPackagedStandAlone,
+      },
+      quantity: 1,
+    })
+    if (listData) listData.items = items
+    const payload = {
+      wishlistId: listData?.id as string,
+      wishlistInput: listData as CrWishlistInput,
+    }
+    const response = await updateWishlist.mutateAsync(payload)
+    onUpdateListData(response.updateWishlist)
+    onClose()
   }
 
   const handleAddProductToQuote = () => {
@@ -95,7 +123,7 @@ const ProductQuickViewDialogFooter = (props: any) => {
 }
 
 const ProductQuickViewDialog = (props: ProductQuickViewDialogProps) => {
-  const { product, isQuickViewModal, dialogProps, quoteDetails } = props
+  const { product, isQuickViewModal, dialogProps, quoteDetails, listData, onUpdateListData } = props
   const {
     title,
     cancel,
@@ -142,6 +170,8 @@ const ProductQuickViewDialog = (props: ProductQuickViewDialogProps) => {
             addToCartPayload={addToCartPayload}
             currentProduct={currentProduct}
             quoteDetails={quoteDetails}
+            listData={listData}
+            onUpdateListData={onUpdateListData}
           />
         )
       }

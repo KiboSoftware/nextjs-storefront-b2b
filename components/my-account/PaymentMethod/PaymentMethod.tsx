@@ -329,7 +329,10 @@ const PaymentMethod = (props: PaymentMethodProps) => {
     <Box width="100%">
       {!isAddingNewPayment && (
         <Stack gap={2}>
-          {(!hasPermission(actions.VIEW_PAYMENTS) || !displaySavedCardsAndContacts?.length) && (
+          {!hasPermission(actions.VIEW_PAYMENTS) && (
+            <Typography variant="body1">{t('not-authorized-payment-information')}</Typography>
+          )}
+          {hasPermission(actions.VIEW_PAYMENTS) && !displaySavedCardsAndContacts?.length && (
             <Typography variant="body1">{t('no-saved-payments-yet')}</Typography>
           )}
           {hasPermission(actions.VIEW_PAYMENTS) &&

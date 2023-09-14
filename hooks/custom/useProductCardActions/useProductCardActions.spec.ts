@@ -83,7 +83,7 @@ describe('useProductCardActions', () => {
     const dialogProps = { dialogProp1: 'value1' }
 
     act(() => {
-      result.current.openProductQuickViewModal(product, dialogProps)
+      result.current.openProductQuickViewModal({ product, dialogProps })
     })
 
     expect(showModal).toHaveBeenCalledWith({

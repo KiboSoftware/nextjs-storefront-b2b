@@ -221,7 +221,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
         quoteId: quoteId,
         updateMode: updateMode,
       }
-      openProductQuickViewModal(product, dialogProps, quoteDetails)
+      openProductQuickViewModal({ product, dialogProps, quoteDetails })
     } else {
       const productData = {
         productCode: productGetters.getProductId(product),

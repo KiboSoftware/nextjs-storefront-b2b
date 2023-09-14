@@ -182,6 +182,7 @@ const ViewLists = (props: ViewListsProps) => {
         onUpdateListData={(res: CrWishlist) => {
           setListData(res)
         }}
+        onHandleAddListToCart={handleAddListToCart}
       />
     )
   }

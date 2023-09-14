@@ -75,7 +75,7 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
         addItemToCart: t('add-item-to-cart'),
         isB2B: true,
       }
-      openProductQuickViewModal(product, dialogProps)
+      openProductQuickViewModal({ product, dialogProps })
     } else {
       const payload = {
         product: {

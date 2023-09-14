@@ -4,6 +4,8 @@ import { useModalContext } from '@/context'
 import { useAddCartItem, useCreateQuoteItem, useWishlist } from '@/hooks'
 import { ProductCustom, WishlistProductInput } from '@/lib/types'
 
+import { CrWishlist } from '@/lib/gql/types'
+
 export const useProductCardActions = () => {
   const { showModal } = useModalContext()
   const { addToCart } = useAddCartItem()
@@ -45,11 +47,19 @@ export const useProductCardActions = () => {
     }
   }
 
-  const openProductQuickViewModal = (
-    product: ProductCustom,
-    dialogProps?: any,
+  const openProductQuickViewModal = ({
+    product,
+    dialogProps,
+    quoteDetails,
+    listData,
+    onUpdateListData,
+  }: {
+    product: ProductCustom
+    dialogProps?: any
     quoteDetails?: any
-  ) => {
+    listData?: any
+    onUpdateListData?: (param: CrWishlist) => void
+  }) => {
     showModal({
       Component: ProductQuickViewDialog,
       props: {
@@ -57,6 +67,8 @@ export const useProductCardActions = () => {
         isQuickViewModal: true,
         dialogProps,
         quoteDetails,
+        listData,
+        onUpdateListData,
       },
     })
   }

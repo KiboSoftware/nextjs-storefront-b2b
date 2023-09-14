@@ -321,14 +321,15 @@ const AddressBook = (props: AddressBookProps) => {
   return (
     <Box data-testid={'address-book-component'}>
       <Box pb={2}>
-        {!isAddressModified &&
+        {hasPermission(actions.VIEW_CONTACTS) &&
+          !isAddressModified &&
           !displayShippingAddresses?.length &&
           !displayBillingAddresses?.length && (
             <Typography variant="body1">{t('no-saved-addresses-yet')}</Typography>
           )}
       </Box>
       {!hasPermission(actions.VIEW_CONTACTS) && (
-        <Typography variant="body1">{t('no-saved-addresses-yet')}</Typography>
+        <Typography variant="body1">{t('not-authorized-shipping-information')}</Typography>
       )}
       {hasPermission(actions.VIEW_CONTACTS) && !isAddressModified && (
         <Box>

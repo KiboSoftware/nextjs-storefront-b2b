@@ -30,7 +30,7 @@ export const filterAccountsByDisableSorting = (
   }
 
   // Start the traversal from the root of the hierarchy
-  hierarchy.forEach((rootNode) => {
+  hierarchy?.forEach((rootNode) => {
     traverse(rootNode)
   })
 

@@ -86,5 +86,24 @@ mappings.set(behaviors.VIEW_QUOTES_OF_CHILD_ACCOUNTS, [actions.VIEW_CHILD_ACCOUN
 mappings.set(behaviors.VIEW_ORDERS_OF_CHILD_ACCOUNTS, [actions.VIEW_CHILD_ACCOUNT_ORDERS])
 mappings.set(behaviors.VIEW_RETURNS_OF_CHILD_ACCOUNTS, [actions.VIEW_CHILD_ACCOUNT_RETURNS])
 mappings.set(behaviors.DEFAULT, [actions.VIEW_ACCOUNT, actions.VIEW_USERS, actions.VIEW_CONTACTS])
+mappings.set(behaviors.USER_HAS_FULL_ACCESS_TO_THEIR_ACCOUNT, [
+  actions.CREATE_ACCOUNT,
+  actions.DELETE_ACCOUNT,
+  actions.EDIT_ACCOUNT,
+  actions.VIEW_ACCOUNT,
+  actions.CREATE_USERS,
+  actions.DELETE_USERS,
+  actions.EDIT_USERS,
+  actions.VIEW_USERS,
+  actions.CREATE_CONTACTS,
+  actions.DELETE_CONTACTS,
+  actions.EDIT_CONTACTS,
+  actions.VIEW_CONTACTS,
+  actions.CREATE_PAYMENTS,
+  actions.DELETE_PAYMENTS,
+  actions.EDIT_PAYMENTS,
+  actions.VIEW_PAYMENTS,
+  actions.CREATE_CHECKOUT,
+])
 export { mappings, actions }
 // Explict permissions

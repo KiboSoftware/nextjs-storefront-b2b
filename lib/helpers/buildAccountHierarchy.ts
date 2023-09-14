@@ -7,7 +7,7 @@ const findAndAddChildren = (
   currentUserAccountId: number
 ): HierarchyNode[] => {
   if (hierarchy?.length) {
-    hierarchy.forEach((child: any) => {
+    hierarchy?.forEach((child: any) => {
       if (group[child.id]) {
         child.children = group[child.id]
         if (child.id === currentUserAccountId || !child.disableSorting) {
