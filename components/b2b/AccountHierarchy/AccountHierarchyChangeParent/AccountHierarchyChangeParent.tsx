@@ -29,6 +29,10 @@ const useAccountHierarchySchema = () => {
 const AccountHierarchyChangeParent = (props: AccountHierarchyChangeParentProps) => {
   const { accounts, b2BAccount, onSave, onClose } = props
 
+  const parentAccount = accounts?.find(
+    (account: B2BAccount) => account.id === b2BAccount?.parentAccountId
+  )
+
   const [isLoading, setLoading] = useState<boolean>(false)
   const [selectedParentAccount, setSelectedParentAccount] = useState<B2BAccount>()
 
@@ -77,7 +81,7 @@ const AccountHierarchyChangeParent = (props: AccountHierarchyChangeParentProps) 
     <form data-testid="account-hierarchy-form" onSubmit={handleSubmit(onSubmit)}>
       <Box sx={{ marginBottom: 3 }}>
         <InputLabel shrink>{t('current-parent-account')}</InputLabel>
-        <Typography>{b2BAccount?.companyOrOrganization}</Typography>
+        <Typography>{parentAccount?.companyOrOrganization}</Typography>
       </Box>
 
       <FormControl sx={{ width: '100%' }}>

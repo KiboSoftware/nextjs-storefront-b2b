@@ -506,5 +506,6 @@
   "no-shipping-details-found": "No Shipping Details Found",
   "add-all-items-to-cart": "Add All Items to Cart",
   "not-authorized-shipping-information": "You are not authorized to view Shipping Information",
-  "not-authorized-payment-information": "You are not authorized to view Payment Information"
+  "not-authorized-payment-information": "You are not authorized to view Payment Information",
+  "no-hierarchy-found": "No Hierarchy Found"
 }

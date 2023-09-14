@@ -11,9 +11,10 @@ const findAndAddChildren = (
       if (group[child.id]) {
         child.children = group[child.id]
         if (child.id === currentUserAccountId || !child.disableSorting) {
-          child.children = child.children.map((child: any) => {
-            child.disableSorting = false
-            return child
+          child.disableSorting = false
+          child.children = child.children.map((each: any) => {
+            each.disableSorting = false
+            return each
           })
         }
         delete group[child.id]

@@ -79,7 +79,7 @@ const AccountHierarchyTreeLabel = (props: AccountHierarchyTreeLabelProps) => {
         sx={{ pl: 1 }}
       />
       <ListItemIcon sx={{ ml: 'auto' }}>
-        {role !== B2BRoles.NON_PURCHASER ? (
+        {role !== B2BRoles.NON_PURCHASER && !disableSorting ? (
           <AccountHierarchyActions
             role={role}
             mdScreen={mdScreen}
