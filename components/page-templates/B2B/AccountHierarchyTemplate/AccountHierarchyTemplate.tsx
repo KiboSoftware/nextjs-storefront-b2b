@@ -27,11 +27,13 @@ import {
 } from '@/hooks'
 import { userGetters } from '@/lib/getters'
 import {
+  actions,
   buildAccountHierarchy,
   buildCreateCustomerB2bAccountParams,
   buildUpdateCustomerB2bAccountParams,
   buildUpdateCustomerB2bUserParams,
   filterAccountsByDisableSorting,
+  hasPermission,
   parseFilterParamToObject,
 } from '@/lib/helpers'
 import {
@@ -293,7 +295,7 @@ const AccountHierarchyTemplate = (props: AccountHierarchyTemplateProps) => {
                 disableElevation
                 id="formOpenButton"
                 startIcon={<AddCircleOutline />}
-                disabled={userGetters.getRole(currentB2bUser?.items?.[0] as B2BUser) !== 'Admin'}
+                disabled={!hasPermission(actions.CREATE_ACCOUNT)}
                 {...(!mdScreen && { fullWidth: true })}
               >
                 {t('add-child-account')}
