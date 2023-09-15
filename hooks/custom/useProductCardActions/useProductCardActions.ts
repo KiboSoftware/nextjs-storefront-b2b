@@ -96,8 +96,8 @@ export const useProductCardActions = () => {
     items?.push({
       product: {
         options: product?.options as CrProductOption[],
-        productCode: productGetters.getProductId(product as Product),
-        variationProductCode: productGetters.getVariationProductCode(product as Product),
+        productCode: productGetters.getProductId(product),
+        variationProductCode: productGetters.getVariationProductCode(product),
         isPackagedStandAlone: product?.isPackagedStandAlone,
       },
       quantity: 1,

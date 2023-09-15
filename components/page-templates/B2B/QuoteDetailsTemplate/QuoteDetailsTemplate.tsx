@@ -117,7 +117,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
   )
 
   const quoteName = quote?.name ?? ''
-  const { control, setValue, watch, handleSubmit } = useForm({
+  const { control, watch, handleSubmit } = useForm({
     mode: 'onBlur',
     reValidateMode: 'onBlur',
     resolver: yupResolver(schema),
@@ -651,8 +651,8 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                 placeholder={t('enter-quote-name')}
                 autoComplete="off"
                 ref={null}
-                onChange={(_name: string, value: string) => {
-                  setInputValue(value ? value : '')
+                onChange={(_name: string, value = '') => {
+                  setInputValue(value)
                   field.onChange(value)
                 }}
                 onBlur={field.onBlur}

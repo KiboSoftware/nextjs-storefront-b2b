@@ -10,8 +10,8 @@ export const buildAddItemsToCartParams = (items: CrWishlistItem[]): CrCartItemIn
     wishlistItemsProducts.push({
       product: {
         options: product?.options,
-        productCode: product?.productCode || '',
-        variationProductCode: product?.variationProductCode || '',
+        productCode: product?.productCode ?? '',
+        variationProductCode: product?.variationProductCode ?? '',
       },
       quantity,
       fulfillmentMethod: FulfillmentOptions.SHIP,

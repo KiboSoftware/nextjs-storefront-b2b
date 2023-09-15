@@ -25,7 +25,7 @@ const features: KeyValueType = {
 const actions = {} as KeyValueType
 for (const operationKey in operations) {
   for (const featureKey in features) {
-    const operationKeyString = operationKey as string
+    const operationKeyString = operationKey
     const operationName = operations[operationKeyString as keyof KeyValueType] //obj[str as keyof Person]
     const featureName = features[featureKey as keyof KeyValueType]
     actions[`${operationName}_${featureName}`] = `${operationName}_${featureName}`

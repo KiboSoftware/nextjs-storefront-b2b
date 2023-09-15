@@ -59,22 +59,19 @@ const AccountHierarchyTreeLabel = (props: AccountHierarchyTreeLabelProps) => {
 
   const onQuotesClick = () => handleQuotesBtnClick(currentAccount.id)
 
+  const companyTextColor =
+    customerAccount?.id === currentAccount.id
+      ? 'primary'
+      : disableSorting
+      ? 'text.disabled'
+      : 'text.primary'
+
   return (
     <>
       <ListItemText
         data-testid="tree-label"
         primary={
-          <Typography
-            color={
-              customerAccount?.id === currentAccount.id
-                ? 'primary'
-                : disableSorting
-                ? 'text.disabled'
-                : 'text.primary'
-            }
-          >
-            {currentAccount?.companyOrOrganization}
-          </Typography>
+          <Typography color={companyTextColor}>{currentAccount?.companyOrOrganization}</Typography>
         }
         sx={{ pl: 1 }}
       />

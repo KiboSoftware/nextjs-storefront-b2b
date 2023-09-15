@@ -15,7 +15,6 @@ import {
   useTheme,
   Link,
   Grid,
-  NoSsr,
 } from '@mui/material'
 import getConfig from 'next/config'
 import { useRouter } from 'next/router'
@@ -138,18 +137,13 @@ const B2BTemplate = (props: B2BTemplateProps) => {
       id: 'shipping-information-accordion',
       controls: 'shipping-information-content',
       header: t('shipping-information'),
-      component: (
-        // <NoSsr>
-        <AddressBook user={user as CustomerAccount} contacts={contacts} />
-        // </NoSsr>
-      ),
+      component: <AddressBook user={user as CustomerAccount} contacts={contacts} />,
     },
     {
       id: 'payment-information-accordion',
       controls: 'payment-information-content',
       header: t('payment-information'),
       component: (
-        // <NoSsr>
         <PaymentMethod
           user={user as CustomerAccount}
           cards={cards}
@@ -160,7 +154,6 @@ const B2BTemplate = (props: B2BTemplateProps) => {
               : handleSave(address, card, isUpdatingAddress)
           }
         />
-        // </NoSsr>
       ),
     },
     {

@@ -1,24 +1,9 @@
-import { mappings } from './permissions'
-function getCookie(cookieName: string) {
-  if (typeof document !== 'undefined') {
-    const name = cookieName + '='
-    const decodedCookie = decodeURIComponent(window.document.cookie)
-    const cookieArray = decodedCookie.split(';')
+import { getCookie } from 'cookies-next'
 
-    for (let i = 0; i < cookieArray.length; i++) {
-      let cookie = cookieArray[i]
-      while (cookie.charAt(0) === ' ') {
-        cookie = cookie.substring(1)
-      }
-      if (cookie.indexOf(name) === 0) {
-        return cookie.substring(name.length, cookie.length)
-      }
-    }
-  }
-  return ''
-}
+import { mappings } from './permissions'
+
 function getUserBehaviors() {
-  const behaviorsFromCookie = getCookie('behaviors')
+  const behaviorsFromCookie = getCookie('behaviors') as string
   if (!behaviorsFromCookie) return [0]
   const behaviorsFromCookieArray = behaviorsFromCookie?.split(',')
   const behaviors = behaviorsFromCookieArray.map((value) => parseInt(value, 10))

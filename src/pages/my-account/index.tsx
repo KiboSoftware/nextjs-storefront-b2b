@@ -6,7 +6,6 @@ import { B2BTemplate, MyAccountTemplate } from '@/components/page-templates'
 import { useAuthContext } from '@/context'
 import { getCurrentUser } from '@/lib/api/operations'
 import { AccountType } from '@/lib/constants'
-import { decodeParseCookieValue } from '@/lib/helpers'
 
 import type {
   GetServerSideProps,
