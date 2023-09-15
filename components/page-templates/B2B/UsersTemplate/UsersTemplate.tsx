@@ -11,6 +11,7 @@ import {
   Button,
   CircularProgress,
   Grid,
+  NoSsr,
   Pagination,
   Theme,
   Typography,
@@ -223,31 +224,33 @@ const UsersTemplate = () => {
           </BackButtonLink>
           <Typography variant={mdScreen ? 'h1' : 'h2'}>{t('users')}</Typography>
         </Box>
-        {hasPermission(actions.CREATE_ACCOUNT) && (
-          <Grid container>
-            <Grid item xs={12} md={12}>
-              <Button
-                variant="contained"
-                color="inherit"
-                disabled={isUserFormOpen}
-                onClick={handleAddUserButtonClick}
-                disableElevation
-                id="formOpenButton"
-                startIcon={<AddCircleOutlineIcon />}
-                sx={{ width: { xs: '100%', md: 118 } }}
-              >
-                {t('add-user')}
-              </Button>
-              {isUserFormOpen && (
-                <UserForm
-                  isEditMode={false}
-                  onSave={handleAddUser}
-                  onClose={() => setIsUserFormOpen(false)}
-                />
-              )}
+        <NoSsr>
+          {hasPermission(actions.CREATE_ACCOUNT) && (
+            <Grid container>
+              <Grid item xs={12} md={12}>
+                <Button
+                  variant="contained"
+                  color="inherit"
+                  disabled={isUserFormOpen}
+                  onClick={handleAddUserButtonClick}
+                  disableElevation
+                  id="formOpenButton"
+                  startIcon={<AddCircleOutlineIcon />}
+                  sx={{ width: { xs: '100%', md: 118 } }}
+                >
+                  {t('add-user')}
+                </Button>
+                {isUserFormOpen && (
+                  <UserForm
+                    isEditMode={false}
+                    onSave={handleAddUser}
+                    onClose={() => setIsUserFormOpen(false)}
+                  />
+                )}
+              </Grid>
             </Grid>
-          </Grid>
-        )}
+          )}
+        </NoSsr>
       </Grid>
       <Grid item>
         <SearchBoxContainer>

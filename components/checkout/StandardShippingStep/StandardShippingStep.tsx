@@ -1,7 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from 'react'
 
-import { Stack, Button, Typography, Grid, Box, FormControlLabel, Checkbox } from '@mui/material'
+import {
+  Stack,
+  Button,
+  Typography,
+  Grid,
+  Box,
+  FormControlLabel,
+  Checkbox,
+  NoSsr,
+} from '@mui/material'
 import { useTranslation } from 'next-i18next'
 
 import { ShippingMethod } from '@/components/checkout'
@@ -348,16 +357,18 @@ const StandardShippingStep = (props: ShippingProps) => {
                 />
               </>
             )}
-            {hasPermission(actions.CREATE_CONTACTS) && (
-              <Button
-                variant="contained"
-                color="inherit"
-                sx={{ width: { xs: '100%', sm: '50%' } }}
-                onClick={handleAddNewAddress}
-              >
-                {t('add-new-address')}
-              </Button>
-            )}
+            <NoSsr>
+              {hasPermission(actions.CREATE_CONTACTS) && (
+                <Button
+                  variant="contained"
+                  color="inherit"
+                  sx={{ width: { xs: '100%', sm: '50%' } }}
+                  onClick={handleAddNewAddress}
+                >
+                  {t('add-new-address')}
+                </Button>
+              )}
+            </NoSsr>
           </Stack>
           {shippingMethods.length > 0 && (
             <ShippingMethod

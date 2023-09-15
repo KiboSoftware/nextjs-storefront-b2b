@@ -3,7 +3,7 @@ import React from 'react'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import EditIcon from '@mui/icons-material/Edit'
 import VisibilityIcon from '@mui/icons-material/Visibility'
-import { Box, IconButton, Typography } from '@mui/material'
+import { Box, IconButton, NoSsr, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 
 import { CartItemActionsMobile } from '@/components/cart'
@@ -49,52 +49,66 @@ const AccountHierarchyActions = (props: AccountHierarchyActionsProps) => {
       alignItems={'center'}
       onClick={(e) => e.stopPropagation()}
     >
-      <Typography
-        variant="caption"
-        sx={{ textDecoration: 'underline', cursor: 'pointer' }}
-        onClick={onBuyersClick}
-      >
-        {t('buyers')}
-      </Typography>
-      <Typography
-        variant="caption"
-        sx={{ textDecoration: 'underline', cursor: 'pointer' }}
-        onClick={onQuotesClick}
-      >
-        {t('quotes')}
-      </Typography>
-      <Box display={'flex'} gap={2}>
-        <IconButton
-          size="small"
-          sx={{ p: 0.5 }}
-          aria-label="item-view"
-          name="item-view"
-          onClick={onView}
-        >
-          <VisibilityIcon />
-        </IconButton>
-        {hasPermission(actions.CREATE_ACCOUNT) && (
-          <>
-            <IconButton
-              size="small"
-              sx={{ p: 0.5 }}
-              aria-label="item-add"
-              name="item-add"
-              onClick={onAdd}
-            >
-              <AddCircleIcon />
-            </IconButton>
-            <IconButton
-              size="small"
-              sx={{ p: 0.5 }}
-              aria-label="item-edit"
-              name="item-edit"
-              onClick={onEdit}
-            >
-              <EditIcon />
-            </IconButton>
-          </>
+      <NoSsr>
+        {hasPermission(actions.VIEW_USERS) && (
+          <Typography
+            variant="caption"
+            sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+            onClick={onBuyersClick}
+          >
+            {t('buyers')}
+          </Typography>
         )}
+      </NoSsr>
+      <NoSsr>
+        {hasPermission(actions.VIEW_CHILD_ACCOUNT_QUOTES) && (
+          <Typography
+            variant="caption"
+            sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+            onClick={onQuotesClick}
+          >
+            {t('quotes')}
+          </Typography>
+        )}
+      </NoSsr>
+      <Box display={'flex'} gap={2}>
+        <NoSsr>
+          {hasPermission(actions.VIEW_ACCOUNT) && (
+            <IconButton
+              size="small"
+              sx={{ p: 0.5 }}
+              aria-label="item-view"
+              name="item-view"
+              onClick={onView}
+            >
+              <VisibilityIcon />
+            </IconButton>
+          )}
+        </NoSsr>
+        <NoSsr>
+          {hasPermission(actions.CREATE_ACCOUNT) && (
+            <>
+              <IconButton
+                size="small"
+                sx={{ p: 0.5 }}
+                aria-label="item-add"
+                name="item-add"
+                onClick={onAdd}
+              >
+                <AddCircleIcon />
+              </IconButton>
+              <IconButton
+                size="small"
+                sx={{ p: 0.5 }}
+                aria-label="item-edit"
+                name="item-edit"
+                onClick={onEdit}
+              >
+                <EditIcon />
+              </IconButton>
+            </>
+          )}
+        </NoSsr>
       </Box>
     </Box>
   ) : (
