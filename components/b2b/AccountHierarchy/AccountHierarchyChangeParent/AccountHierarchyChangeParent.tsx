@@ -29,10 +29,6 @@ const useAccountHierarchySchema = () => {
 const AccountHierarchyChangeParent = (props: AccountHierarchyChangeParentProps) => {
   const { accounts, parentAccount, onSave, onClose } = props
 
-  // const parentAccount = accounts?.find(
-  //   (account: B2BAccount) => account.id === b2BAccount?.parentAccountId
-  // )
-
   const [isLoading, setLoading] = useState<boolean>(false)
   const [selectedParentAccount, setSelectedParentAccount] = useState<B2BAccount>()
 
@@ -66,7 +62,6 @@ const AccountHierarchyChangeParent = (props: AccountHierarchyChangeParentProps) 
   const onSubmit = () => {
     if (isLoading || !selectedParentAccount) return
     setLoading(true)
-    // onSave(b2BAccount.id, selectedParentAccount.id)
     onSave(selectedParentAccount.id)
   }
 

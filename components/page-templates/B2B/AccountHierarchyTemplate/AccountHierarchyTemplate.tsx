@@ -291,7 +291,7 @@ const AccountHierarchyTemplate = (props: AccountHierarchyTemplateProps) => {
         hierarchy,
       })
     }
-  }, [])
+  }, [b2BAccountHierarchy, user?.id])
 
   return (
     <Grid container gap={3}>

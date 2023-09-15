@@ -38,7 +38,16 @@ export const getServerSideProps: GetServerSideProps = async (
 }
 
 const MyAccountPage: NextPage<MyAccountPageProps> = (props) => {
-  const { isAuthenticated: serverSideIsAuthenticated, customerAccount } = props
+  const { isAuthenticated: serverSideIsAuthenticated, customerAccount: customerAccountFromServer } =
+    props
+
+  const { user: customerAccountFromClient } = useAuthContext()
+
+  const customerAccount = {
+    ...customerAccountFromServer,
+    ...customerAccountFromClient,
+  }
+
   const { publicRuntimeConfig } = getConfig()
   const { reCaptchaKey } = publicRuntimeConfig.recaptcha
 
