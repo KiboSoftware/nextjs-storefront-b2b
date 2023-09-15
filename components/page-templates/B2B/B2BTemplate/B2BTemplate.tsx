@@ -1,5 +1,3 @@
-// Figma: https://www.figma.com/file/bKJuIwUx6VXmubHZo4rCBq/B2B?type=design&node-id=13-139&mode=design&t=jgLpcUITQZiMxaTj-0
-
 import React from 'react'
 
 import AccountCircle from '@mui/icons-material/AccountCircle'
@@ -17,6 +15,7 @@ import {
   useTheme,
   Link,
   Grid,
+  NoSsr,
 } from '@mui/material'
 import getConfig from 'next/config'
 import { useRouter } from 'next/router'
@@ -139,13 +138,18 @@ const B2BTemplate = (props: B2BTemplateProps) => {
       id: 'shipping-information-accordion',
       controls: 'shipping-information-content',
       header: t('shipping-information'),
-      component: <AddressBook user={user as CustomerAccount} contacts={contacts} />,
+      component: (
+        // <NoSsr>
+        <AddressBook user={user as CustomerAccount} contacts={contacts} />
+        // </NoSsr>
+      ),
     },
     {
       id: 'payment-information-accordion',
       controls: 'payment-information-content',
       header: t('payment-information'),
       component: (
+        // <NoSsr>
         <PaymentMethod
           user={user as CustomerAccount}
           cards={cards}
@@ -156,6 +160,7 @@ const B2BTemplate = (props: B2BTemplateProps) => {
               : handleSave(address, card, isUpdatingAddress)
           }
         />
+        // </NoSsr>
       ),
     },
     {

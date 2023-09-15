@@ -13,6 +13,7 @@ import {
   MenuItem,
   Grid,
   Collapse,
+  NoSsr,
 } from '@mui/material'
 import getConfig from 'next/config'
 import { useTranslation } from 'next-i18next'
@@ -103,27 +104,29 @@ const AccountAddress = (props: AccountAddressProps) => {
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <AddressCard {...buildAddressProps(customerContact)} />
         <Stack>
-          {hasPermission(actions.EDIT_CONTACTS) && (
-            <Typography
-              variant="body2"
-              sx={{ cursor: 'pointer' }}
-              onClick={() => editAddress(customerContact)}
-              data-testid={`address-edit`}
-            >
-              {t('edit')}
-            </Typography>
-          )}
-          {hasPermission(actions.DELETE_CONTACTS) && !isPrimaryAddress && (
-            <Delete
-              sx={{ marginTop: '1.375rem' }}
-              onClick={() =>
-                deleteAddress({
-                  accountId: customerContact?.accountId,
-                  contactId: customerContact?.id as number,
-                })
-              }
-            />
-          )}
+          <NoSsr>
+            {hasPermission(actions.EDIT_CONTACTS) && (
+              <Typography
+                variant="body2"
+                sx={{ cursor: 'pointer' }}
+                onClick={() => editAddress(customerContact)}
+                data-testid={`address-edit`}
+              >
+                {t('edit')}
+              </Typography>
+            )}
+            {hasPermission(actions.DELETE_CONTACTS) && !isPrimaryAddress && (
+              <Delete
+                sx={{ marginTop: '1.375rem' }}
+                onClick={() =>
+                  deleteAddress({
+                    accountId: customerContact?.accountId,
+                    contactId: customerContact?.id as number,
+                  })
+                }
+              />
+            )}
+          </NoSsr>
         </Stack>
       </Box>
       <Divider sx={{ marginTop: '1.75rem', marginBottom: '0.25rem' }} />
@@ -321,95 +324,102 @@ const AddressBook = (props: AddressBookProps) => {
   return (
     <Box data-testid={'address-book-component'}>
       <Box pb={2}>
-        {hasPermission(actions.VIEW_CONTACTS) &&
-          !isAddressModified &&
-          !displayShippingAddresses?.length &&
-          !displayBillingAddresses?.length && (
-            <Typography variant="body1">{t('no-saved-addresses-yet')}</Typography>
-          )}
+        <NoSsr>
+          {hasPermission(actions.VIEW_CONTACTS) &&
+            !isAddressModified &&
+            !displayShippingAddresses?.length &&
+            !displayBillingAddresses?.length && (
+              <Typography variant="body1">{t('no-saved-addresses-yet')}</Typography>
+            )}
+        </NoSsr>
       </Box>
-      {!hasPermission(actions.VIEW_CONTACTS) && (
-        <Typography variant="body1">{t('not-authorized-shipping-information')}</Typography>
-      )}
-      {hasPermission(actions.VIEW_CONTACTS) && !isAddressModified && (
-        <Box>
-          <TransitionGroup>
-            {displayShippingAddresses?.map((item: CustomerContact, index: number) => (
-              <Collapse
-                key={`${item?.id}address`}
-                sx={{
-                  '.MuiCollapse-wrapperInner': {
-                    width: '100%',
-                  },
-                }}
-              >
-                <Box paddingY={1}>
-                  <AccountAddress
-                    customerContact={item}
-                    isPrimaryAddress={index === 0}
-                    addressType={AddressType.SHIPPING}
-                    editAddress={handleEditAddress}
-                    deleteAddress={handleConfirmDeleteAddress}
+      <NoSsr>
+        {!hasPermission(actions.VIEW_CONTACTS) && (
+          <Typography variant="body1">{t('not-authorized-shipping-information')}</Typography>
+        )}
+      </NoSsr>
+      <NoSsr>
+        {hasPermission(actions.VIEW_CONTACTS) && !isAddressModified && (
+          <Box>
+            <TransitionGroup>
+              {displayShippingAddresses?.map((item: CustomerContact, index: number) => (
+                <Collapse
+                  key={`${item?.id}address`}
+                  sx={{
+                    '.MuiCollapse-wrapperInner': {
+                      width: '100%',
+                    },
+                  }}
+                >
+                  <Box paddingY={1}>
+                    <AccountAddress
+                      customerContact={item}
+                      isPrimaryAddress={index === 0}
+                      addressType={AddressType.SHIPPING}
+                      editAddress={handleEditAddress}
+                      deleteAddress={handleConfirmDeleteAddress}
+                    />
+                  </Box>
+                </Collapse>
+              ))}
+              {displayShippingAddresses?.length > 0 && shippingAddresses.length > 5 && (
+                <Box display={'flex'} justifyContent={'center'} width="100%" py={10}>
+                  <KiboPagination
+                    count={Math.ceil(shippingAddresses?.length / shippingAddressPageSize)}
+                    startIndex={shippingAddressStartIndex}
+                    pageSize={shippingAddressPageSize}
+                    onPaginationChange={handleShippingAddressPagination}
                   />
                 </Box>
-              </Collapse>
-            ))}
-            {displayShippingAddresses?.length > 0 && shippingAddresses.length > 5 && (
-              <Box display={'flex'} justifyContent={'center'} width="100%" py={10}>
-                <KiboPagination
-                  count={Math.ceil(shippingAddresses?.length / shippingAddressPageSize)}
-                  startIndex={shippingAddressStartIndex}
-                  pageSize={shippingAddressPageSize}
-                  onPaginationChange={handleShippingAddressPagination}
-                />
-              </Box>
-            )}
-            {displayBillingAddresses?.map((item: CustomerContact, index: number) => (
-              <Collapse
-                key={`${item?.id}address`}
-                sx={{
-                  '.MuiCollapse-wrapperInner': {
-                    width: '100%',
-                  },
-                }}
-              >
-                <Box paddingY={1}>
-                  <AccountAddress
-                    customerContact={item}
-                    isPrimaryAddress={index === 0}
-                    addressType={AddressType.BILLING}
-                    editAddress={handleEditAddress}
-                    deleteAddress={handleConfirmDeleteAddress}
+              )}
+              {displayBillingAddresses?.map((item: CustomerContact, index: number) => (
+                <Collapse
+                  key={`${item?.id}address`}
+                  sx={{
+                    '.MuiCollapse-wrapperInner': {
+                      width: '100%',
+                    },
+                  }}
+                >
+                  <Box paddingY={1}>
+                    <AccountAddress
+                      customerContact={item}
+                      isPrimaryAddress={index === 0}
+                      addressType={AddressType.BILLING}
+                      editAddress={handleEditAddress}
+                      deleteAddress={handleConfirmDeleteAddress}
+                    />
+                  </Box>
+                </Collapse>
+              ))}
+              {displayBillingAddresses?.length > 0 && billingAddresses?.length > 5 && (
+                <Box display={'flex'} justifyContent={'center'} width="100%" py={10}>
+                  <KiboPagination
+                    count={Math.ceil(billingAddresses?.length / billingAddressPageSize)}
+                    startIndex={billingAddressStartIndex}
+                    pageSize={billingAddressPageSize}
+                    onPaginationChange={handleBillingAddressPagination}
                   />
                 </Box>
-              </Collapse>
-            ))}
-            {displayBillingAddresses?.length > 0 && billingAddresses?.length > 5 && (
-              <Box display={'flex'} justifyContent={'center'} width="100%" py={10}>
-                <KiboPagination
-                  count={Math.ceil(billingAddresses?.length / billingAddressPageSize)}
-                  startIndex={billingAddressStartIndex}
-                  pageSize={billingAddressPageSize}
-                  onPaginationChange={handleBillingAddressPagination}
-                />
-              </Box>
-            )}
-          </TransitionGroup>
-        </Box>
-      )}
-      {hasPermission(actions.CREATE_CONTACTS) && !isAddressModified && (
-        <Button
-          variant="contained"
-          color="inherit"
-          sx={{ ...styles.addNewAddressButtonStyle }}
-          onClick={handleNewAddress}
-          fullWidth
-          startIcon={<AddCircleOutlineIcon />}
-        >
-          {t('add-new-address')}
-        </Button>
-      )}
-
+              )}
+            </TransitionGroup>
+          </Box>
+        )}
+      </NoSsr>
+      <NoSsr>
+        {hasPermission(actions.CREATE_CONTACTS) && !isAddressModified && (
+          <Button
+            variant="contained"
+            color="inherit"
+            sx={{ ...styles.addNewAddressButtonStyle }}
+            onClick={handleNewAddress}
+            fullWidth
+            startIcon={<AddCircleOutlineIcon />}
+          >
+            {t('add-new-address')}
+          </Button>
+        )}
+      </NoSsr>
       {isAddressModified && (
         <Box pb={'1.813rem'}>
           <Grid item xs={12} md={6} pl={1} pb={2.5} pr={6.5}>
