@@ -14,9 +14,10 @@ export const heroCarouselStyles = {
     display: 'flex',
     flexDirection: 'column',
     marginBottom: '5%',
-    backgroundColor: 'common.white',
-    opacity: '0.99',
-    color: 'common.black',
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+
+    opacity: '0.95',
+    color: 'common.white',
     justifyContent: 'center',
     marginLeft: 'auto',
     marginRight: 'auto',
