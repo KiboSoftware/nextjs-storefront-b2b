@@ -18,6 +18,8 @@ export const heroCarouselStyles = {
     opacity: '0.99',
     color: 'common.black',
     justifyContent: 'center',
+    marginLeft: 'auto',
+    marginRight: 'auto',
     width: { xs: '80%', md: '50%' },
     gap: 2,
   },
