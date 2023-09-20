@@ -1,11 +1,14 @@
+import ConstructionHeroOne from '@/public/images/construction_hero_1.jpeg'
+import ConstructionHeroTwo from '@/public/images/construction_hero_2.webp'
+
 export const homePageResultMock = [
   {
     buttonText: 'Learn More',
     buttonLink: '/',
     description: 'Lorum Ipsum',
-    imageUrl: '/images/construction_hero_1.jpeg',
+    imageUrl: ConstructionHeroOne,
     imageAlt: 'etc!',
-    mobileImageUrl: '/images/construction_hero_1.jpeg',
+    mobileImageUrl: ConstructionHeroOne,
     subtitle: 'Plus earn 2X Bonus Points',
     title: 'Up to 50% ',
     contentPosition: 'right',
@@ -14,9 +17,9 @@ export const homePageResultMock = [
     buttonText: 'Learn More',
     buttonLink: '/',
     description: 'Lorum Ipsum',
-    imageUrl: '/images/construction_hero_2.webp',
+    imageUrl: ConstructionHeroTwo,
     imageAlt: 'etc!',
-    mobileImageUrl: '/images/construction_hero_2.webp',
+    mobileImageUrl: ConstructionHeroTwo,
     subtitle: 'Plus earn 2X Bonus Points',
     title: 'Up to 50% ',
     contentPosition: 'right',

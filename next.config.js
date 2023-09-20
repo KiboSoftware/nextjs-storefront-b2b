@@ -187,6 +187,16 @@ module.exports = {
         value: 'Nonpurchaser',
       },
     ],
+    builderIO: {
+      apiKey: process.env.BUILDER_IO_API_KEY,
+      homePageModelName: 'page',
+      breakPoints: [
+        { width: 1, itemsToShow: 1 },
+        { width: 550, itemsToShow: 2 },
+        { width: 768, itemsToShow: 4 },
+        { width: 1200, itemsToShow: 5 },
+      ],
+    },
   },
   serverRuntimeConfig: {
     currentUrl: process.env.CURRENT_DOMAIN,
