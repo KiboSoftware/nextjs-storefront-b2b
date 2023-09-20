@@ -1,6 +1,6 @@
 import { categoryTreeDataMock } from '@/__mocks__/stories/categoryTreeDataMock'
 import { homePageResultMock } from '@/__mocks__/stories/homePageResultMock'
-import { getStaticProps } from '@/pages/index'
+import { getServerSideProps } from '@/pages/index'
 
 const mockCategoryTreeData = categoryTreeDataMock
 const mockHomePageResult = homePageResultMock || []
@@ -18,6 +18,9 @@ jest.mock('next/config', () => {
           { value: 'Oldest', id: 'createDate asc' },
         ],
         pageSize: 16,
+      },
+      builderIO: {
+        apiKey: 'api-key',
       },
     },
     serverRuntimeConfig: {
@@ -51,13 +54,17 @@ jest.mock('next-i18next/serverSideTranslations', () => ({
 }))
 
 describe('Home', () => {
-  it('should run getStaticProps method', () => {
+  it('should run getServerSideProps method', () => {
     const context = {
-      params: {},
       locale: 'mock-locale',
+      req: {
+        cookies: {
+          kibo_at: '',
+        },
+      },
     }
 
-    const response = getStaticProps(context)
+    const response = getServerSideProps(context as any)
     expect(response).resolves.toStrictEqual({
       props: {
         _nextI18Next: {

@@ -9,7 +9,7 @@ import { ProductRecommendations } from '@/components/product'
 import getCategoryTree from '@/lib/api/operations/get-category-tree'
 import type { CategoryTreeResponse, NextPageWithLayout } from '@/lib/types'
 
-import type { GetStaticPropsContext } from 'next'
+import type { GetServerSidePropsContext } from 'next'
 
 interface HomePageProps {
   page: any
@@ -343,7 +343,7 @@ Builder.registerComponent(ContentTile, {
     },
   ],
 })
-export async function getStaticProps(context: GetStaticPropsContext) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { locale } = context
   const categoriesTree: CategoryTreeResponse = (await getCategoryTree()) || null
 
