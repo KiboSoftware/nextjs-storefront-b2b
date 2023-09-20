@@ -45,6 +45,8 @@ const DefaultLayout = ({ pageProps, children }: { pageProps: any; children: Reac
       Router.events.off('routeChangeComplete', handleRouteChange)
     }
   }, [])
+  const pageUrl =
+    pageProps && pageProps?.page && pageProps?.page?.data && pageProps?.page?.data?.url
   return (
     <HydrationBoundary state={pageProps.dehydratedState}>
       <ThemeProvider theme={theme}>
@@ -70,7 +72,7 @@ const DefaultLayout = ({ pageProps, children }: { pageProps: any; children: Reac
                 />
                 <DialogRoot />
                 <SnackbarRoot />
-                <Container maxWidth={'xl'} sx={{ py: 2, flex: '1 0 auto' }}>
+                <Container maxWidth={'xl'} sx={{ py: pageUrl === '/' ? 0 : 2, flex: '1 0 auto' }}>
                   {children}
                 </Container>
                 <Footer content={pageProps.footer} />
