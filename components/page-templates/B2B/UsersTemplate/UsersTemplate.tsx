@@ -194,24 +194,24 @@ const UsersTemplate = () => {
   }
 
   const handleAddUserButtonClick = () => {
-    if (mdScreen) {
-      setIsUserFormOpen(true)
-    } else {
-      showModal({
-        Component: UserFormDialog,
-        props: {
-          isEditMode: false,
-          isUserFormInDialog: true,
-          formTitle: t('add-new-user'),
-          b2BUser: undefined,
-          onSave: (b2BUserInput: B2BUserInput) => handleAddUser(b2BUserInput),
-          onClose: () => {
-            setIsUserFormOpen(false)
-            closeModal()
-          },
+    // if (mdScreen) {
+    //   setIsUserFormOpen(true)
+    // } else {
+    showModal({
+      Component: UserFormDialog,
+      props: {
+        isEditMode: false,
+        isUserFormInDialog: true,
+        formTitle: t('add-new-user'),
+        b2BUser: undefined,
+        onSave: (b2BUserInput: B2BUserInput) => handleAddUser(b2BUserInput),
+        onClose: () => {
+          setIsUserFormOpen(false)
+          closeModal()
         },
-      })
-    }
+      },
+    })
+    // }
   }
 
   return (
@@ -240,13 +240,6 @@ const UsersTemplate = () => {
                 >
                   {t('add-user')}
                 </Button>
-                {isUserFormOpen && (
-                  <UserForm
-                    isEditMode={false}
-                    onSave={handleAddUser}
-                    onClose={() => setIsUserFormOpen(false)}
-                  />
-                )}
               </Grid>
             </Grid>
           )}
