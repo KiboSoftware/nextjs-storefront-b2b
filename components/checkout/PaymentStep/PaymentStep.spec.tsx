@@ -24,6 +24,10 @@ import {
   CustomerPurchaseOrderAccount,
 } from '@/lib/gql/types'
 
+jest.mock('@/lib/helpers/hasPermission', () => ({
+  hasPermission: jest.fn().mockImplementation(() => true),
+}))
+
 jest.mock('../CardDetailsForm/CardDetailsForm', () => ({
   __esModule: true,
   default: ({

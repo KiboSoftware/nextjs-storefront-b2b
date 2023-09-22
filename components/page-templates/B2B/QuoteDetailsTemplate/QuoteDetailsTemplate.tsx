@@ -803,7 +803,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                     QuoteStatus[status] !== QuoteStatus.InReview &&
                     QuoteStatus[status] !== QuoteStatus.Completed &&
                     QuoteStatus[status] !== QuoteStatus.Expired && (
-                      <>
+                      <Box pb={2}>
                         <Stack gap={2} width="100%">
                           {defaultShippingAddress && (
                             <>
@@ -911,7 +911,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                             // onStoreLocatorClick={handleStoreLocatorClick}
                           />
                         )}
-                      </>
+                      </Box>
                     )}
                   {!shouldShowAddAddressButton &&
                     mode &&
@@ -1023,7 +1023,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                       )}
                       {!quote?.fulfillmentInfo?.fulfillmentContact &&
                         !quote?.fulfillmentInfo?.shippingMethodName && (
-                          <Typography>{t('no-shipping-details-found')}</Typography>
+                          <Typography pb={1}>{t('no-shipping-details-found')}</Typography>
                         )}
                     </Stack>
                   )}

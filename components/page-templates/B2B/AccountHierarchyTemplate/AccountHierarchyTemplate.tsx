@@ -126,9 +126,12 @@ const AccountHierarchyTemplate = (props: AccountHierarchyTemplateProps) => {
 
   const handleAddAccountFormSubmit = async (formValues: CreateCustomerB2bAccountParams) => {
     try {
-      const variables = buildCreateCustomerB2bAccountParams({
-        ...formValues,
-      })
+      const variables = buildCreateCustomerB2bAccountParams(
+        {
+          ...formValues,
+        },
+        true
+      )
       const createCustomerB2BAccount = await createCustomerB2bAccount.mutateAsync({
         ...variables,
       })
