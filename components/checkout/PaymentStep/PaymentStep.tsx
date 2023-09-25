@@ -680,7 +680,7 @@ const PaymentStep = (props: PaymentStepProps) => {
     const responseForAdd =
       selectedPaymentTypeRadio && (await paymentMethodSelection[selectedPaymentTypeRadio]())
 
-    if (checkout?.id) {
+    if (checkout?.id && responseForAdd?.paymentActionToBeAdded) {
       await onAddPayment(checkout.id, responseForAdd?.paymentActionToBeAdded)
       setStepStatusComplete()
       setStepNext()

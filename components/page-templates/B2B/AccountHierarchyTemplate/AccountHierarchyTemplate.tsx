@@ -14,7 +14,7 @@ import {
   ViewUserDetailDialog,
 } from '@/components/dialogs'
 import { MobileB2BLayout } from '@/components/layout'
-import { useAuthContext, useModalContext } from '@/context'
+import { useModalContext } from '@/context'
 import {
   useB2BQuote,
   useChangeB2bAccountParentMutation,
@@ -47,13 +47,13 @@ import { B2BAccount, B2BUser, CustomerAccount } from '@/lib/gql/types'
 
 interface AccountHierarchyTemplateProps {
   initialData?: B2BAccountHierarchyResult
+  user?: CustomerAccount
 }
 
 const AccountHierarchyTemplate = (props: AccountHierarchyTemplateProps) => {
-  const { initialData } = props
+  const { initialData, user } = props
   const theme = useTheme()
   const router = useRouter()
-  const { user } = useAuthContext()
   const { t } = useTranslation('common')
   const { showModal, closeModal } = useModalContext()
   const mdScreen = useMediaQuery(theme.breakpoints.up('md'))
