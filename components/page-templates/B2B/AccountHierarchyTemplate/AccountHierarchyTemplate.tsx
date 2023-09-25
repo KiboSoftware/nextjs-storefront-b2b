@@ -95,7 +95,7 @@ const AccountHierarchyTemplate = (props: AccountHierarchyTemplateProps) => {
       (account) =>
         account.id !== currentAccount?.parentAccountId &&
         account.id !== currentAccount?.id &&
-        account
+        account.parentAccountId !== currentAccount?.id
     )
   }
 
