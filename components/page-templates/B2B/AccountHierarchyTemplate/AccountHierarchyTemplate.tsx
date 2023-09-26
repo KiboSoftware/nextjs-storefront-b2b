@@ -20,12 +20,10 @@ import {
   useChangeB2bAccountParentMutation,
   useCreateCustomerB2bAccountMutation,
   useGetB2BAccountHierarchy,
-  useGetB2BUserQueries,
   useGetQuotes,
   useUpdateCustomerB2bAccountMutation,
   useUpdateCustomerB2bUserMutation,
 } from '@/hooks'
-import { userGetters } from '@/lib/getters'
 import {
   actions,
   buildAccountHierarchy,
@@ -69,13 +67,6 @@ const AccountHierarchyTemplate = (props: AccountHierarchyTemplateProps) => {
   const { updateCustomerB2bAccount } = useUpdateCustomerB2bAccountMutation()
   const { updateCustomerB2bUser } = useUpdateCustomerB2bUserMutation()
   const { changeB2bAccountParent } = useChangeB2bAccountParentMutation(user?.id as number)
-  const { data: currentB2bUser } = useGetB2BUserQueries({
-    accountId: user?.id as number,
-    filter: '',
-    pageSize: 5,
-    startIndex: 0,
-    q: user?.userName as string,
-  })
 
   const [accountHierarchy, setAccountHierarchy] = useState<B2BAccountHierarchyResult>(
     b2BAccountHierarchy as B2BAccountHierarchyResult
@@ -336,7 +327,6 @@ const AccountHierarchyTemplate = (props: AccountHierarchyTemplateProps) => {
             ) : (
               <NoSsr>
                 <AccountHierarchyTree
-                  role={userGetters.getRole(currentB2bUser?.items?.[0] as B2BUser)}
                   customerAccount={user as CustomerAccount}
                   accounts={accountHierarchy?.accounts}
                   hierarchy={accountHierarchy?.hierarchy}

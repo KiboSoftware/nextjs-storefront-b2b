@@ -61,7 +61,6 @@ import {
 import { useQuoteActions } from '@/hooks/custom/useQuoteActions/useQuoteActions'
 import {
   AddressType,
-  B2BRoles,
   DefaultId,
   FulfillmentOptions as FulfillmentOptionsConstant,
   QuoteStatus,
@@ -1106,9 +1105,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                       <LoadingButton
                         variant="contained"
                         color="primary"
-                        disabled={
-                          (quote?.hasDraft as boolean) || roleName === B2BRoles.NON_PURCHASER
-                        }
+                        disabled={quote?.hasDraft as boolean}
                         onClick={handleGotoCheckout}
                         fullWidth
                       >

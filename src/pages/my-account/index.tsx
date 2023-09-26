@@ -37,7 +37,7 @@ export const getServerSideProps: GetServerSideProps = async (
 const MyAccountPage: NextPage<MyAccountPageProps> = (props) => {
   const { customerAccount: customerAccountFromServer } = props
 
-  const serverSideIsAuthenticated = Boolean(customerAccountFromServer.id)
+  const serverSideIsAuthenticated = Boolean(customerAccountFromServer?.id)
 
   const { user: customerAccountFromClient } = useAuthContext()
 
