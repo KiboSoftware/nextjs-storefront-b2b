@@ -143,7 +143,7 @@ const QuickOrderTemplate = (props: QuickOrderTemplateProps) => {
         updateMode: 'ApplyToDraft',
       })
       if (response?.id) {
-        router.push(`/my-account/quote/${response.id}?mode=create`)
+        router.push(`/my-account/b2b/quote/${response.id}?mode=create`)
       }
     } catch (e) {
       console.error(e)

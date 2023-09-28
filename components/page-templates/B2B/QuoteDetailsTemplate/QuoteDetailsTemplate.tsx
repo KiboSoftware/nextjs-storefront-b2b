@@ -294,7 +294,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
   }
 
   const handleEditQuote = (quoteId: string) => {
-    router.push(`/my-account/quote/${quoteId}?mode=edit`)
+    router.push(`/my-account/b2b/quote/${quoteId}?mode=edit`)
   }
 
   const handleSaveAddressToQuote = async ({ contact }: { contact: CrContact }) => {

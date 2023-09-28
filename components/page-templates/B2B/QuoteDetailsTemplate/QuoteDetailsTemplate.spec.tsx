@@ -268,8 +268,8 @@ describe('[components] QuoteDetailsTemplate', () => {
 
       await waitFor(() => {
         expect(mockRouter).toMatchObject({
-          asPath: `/my-account/quote/${quoteMock?.items?.[0]?.id}?mode=edit`,
-          pathname: `/my-account/quote/${quoteMock?.items?.[0]?.id}`,
+          asPath: `/my-account/b2b/quote/${quoteMock?.items?.[0]?.id}?mode=edit`,
+          pathname: `/my-account/b2b/quote/${quoteMock?.items?.[0]?.id}`,
           query: {},
         })
       })

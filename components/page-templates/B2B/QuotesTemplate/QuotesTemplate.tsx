@@ -42,7 +42,7 @@ const QuotesTemplate = (props: QuotesTemplateProps) => {
       })
 
       if (createQuoteResponse?.id) {
-        router.push(`/my-account/quote/${createQuoteResponse.id}?mode=create`)
+        router.push(`/my-account/b2b/quote/${createQuoteResponse.id}?mode=create`)
       }
       return null
     } catch (err) {
