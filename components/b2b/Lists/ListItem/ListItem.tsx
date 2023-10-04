@@ -171,7 +171,6 @@ const ListItem = (props: ListItemProps) => {
         <Grid item xs={2} flexDirection="row" alignItems={mdScreen ? 'center' : 'flex-start'}>
           <Button
             onClick={openViewDetailsModal}
-            // startIcon={<EditIcon />}
             data-testid="product-modal-btn"
             color="inherit"
             sx={{ minWidth: '20px', padding: '0px', marginRight: mdScreen ? '10px' : 0 }}
