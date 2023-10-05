@@ -42,7 +42,7 @@ import {
   HierarchyTree,
 } from '@/lib/types'
 
-import { B2BAccount, B2BUser, B2BUserCollection, CustomerAccount } from '@/lib/gql/types'
+import { B2BAccount, B2BUser, CustomerAccount } from '@/lib/gql/types'
 
 interface AccountHierarchyTemplateProps {
   initialData?: B2BAccountHierarchyResult
@@ -56,6 +56,14 @@ const AccountHierarchyTemplate = (props: AccountHierarchyTemplateProps) => {
   const { t } = useTranslation('common')
   const { showModal, closeModal } = useModalContext()
   const mdScreen = useMediaQuery(theme.breakpoints.up('md'))
+
+  const [selectedAccountId, setSelectedAccountId] = useState<number>()
+
+  const { data: b2bUsers } = useGetB2BUserQueries({
+    accountId: selectedAccountId as number,
+    filter: 'isRemoved eq false',
+    sortBy: 'createDate asc',
+  })
 
   // filtering the sortable accounts
   const filteredAccounts = filterAccountsByDisableSorting(
@@ -107,13 +115,6 @@ const AccountHierarchyTemplate = (props: AccountHierarchyTemplateProps) => {
   ]
   const [activeComponent, setActiveComponent] = useState('accountHierarchy')
   const activeBreadCrumb = breadcrumbList.filter((item) => item.key === activeComponent)[0]
-
-  // const [b2bUsers, setB2bUsers] = useState<B2BUser[]>([])
-  const [selectedAccount, setSelectedAccount] = useState<number>()
-
-  const { data: b2bUsers, isLoading } = useGetB2BUserQueries({
-    accountId: selectedAccount as number,
-  })
 
   // Add this to achieve Mobile Layout
   const onBackClick = () => {
@@ -262,7 +263,7 @@ const AccountHierarchyTemplate = (props: AccountHierarchyTemplateProps) => {
   }
 
   const handleBuyersBtnClick = (id: number) => {
-    setSelectedAccount(id)
+    setSelectedAccountId(id)
     setActiveComponent('buyers')
   }
 
