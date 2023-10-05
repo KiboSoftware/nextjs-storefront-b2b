@@ -16,15 +16,20 @@ export default async function loginHandler(req: NextApiRequest, res: NextApiResp
     const userClaims = await getUserClaimsFromRequest(req, res)
     const headers = getAdditionalHeader(req)
     const response = await fetcher({ query, variables }, { userClaims, headers })
-
+    if (response?.errors) {
+      throw {
+        message: response?.errors[0]?.extensions?.response?.body?.message,
+        code: response?.errors[0].extensions.response.status,
+      }
+    }
     // set HTTP cookie
     const account = response?.data?.account
     const userId = response?.data?.account?.customerAccount?.userId
     const jwtAccessToken = response?.data?.account?.jwtAccessToken
-    const decoded = JSON.parse(
-      Buffer.from(jwtAccessToken?.split('.')[1], 'base64').toString('ascii')
-    )
-    const bv = decoded['https://www.kibocommerce.com/user_claims'].bv
+    const decoded =
+      jwtAccessToken &&
+      JSON.parse(Buffer.from(jwtAccessToken?.split('.')[1], 'base64').toString('ascii'))
+    const bv = decoded && decoded['https://www.kibocommerce.com/user_claims'].bv
     const behaviors = fromBitVectorSetArray(bv)
     const cookieValue = {
       accessToken: account?.accessToken,
@@ -54,10 +59,9 @@ export default async function loginHandler(req: NextApiRequest, res: NextApiResp
     // response status
     const loginResponse = userId ? successResponse : response
     // send response
+
     res.status(200).json(loginResponse)
-  } catch (error) {
-    console.error(error)
-    const message = 'An unexpected error ocurred'
-    res.status(500).json({ data: null, errors: [{ message }] })
+  } catch (error: any) {
+    res.status(error?.code).json({ message: error?.message })
   }
 }
