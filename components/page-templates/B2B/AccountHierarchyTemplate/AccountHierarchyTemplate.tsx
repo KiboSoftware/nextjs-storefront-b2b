@@ -267,7 +267,9 @@ const AccountHierarchyTemplate = (props: AccountHierarchyTemplateProps) => {
     setActiveComponent('buyers')
   }
 
-  const { quotesSearchParam, sortingValues, handleQuotesSearchParam } = useB2BQuote()
+  const { quotesSearchParam, sortingValues, handleQuotesSearchParam } = useB2BQuote({
+    accountId: user?.id,
+  })
 
   const { data: quoteCollection } = useGetQuotes(quotesSearchParam)
 

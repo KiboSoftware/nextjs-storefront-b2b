@@ -52,12 +52,19 @@ const CreateList = (props: CreateListProps) => {
       product: {
         productCode: product?.productCode as string,
         variationProductCode: product?.variationProductCode as string,
-        options: product?.options as CrProductOption[],
+        options: product?.options?.map((option: any) => {
+          const selected = option?.values?.find((value: any) => value?.isSelected)
+          return {
+            name: option?.attributeDetail?.name,
+            value: selected?.value || selected?.stringValue || selected?.shopperEnteredValue,
+            attributeFQN: option?.attributeFQN,
+          }
+        }) as CrProductOption[],
         isPackagedStandAlone: product?.isPackagedStandAlone,
-        price: product?.currentProduct?.price,
-        imageUrl: productGetters.getCoverImage(product?.currentProduct),
-        name: productGetters.getName(product?.currentProduct),
-        description: productGetters.getDescription(product?.currentProduct),
+        price: product?.price,
+        imageUrl: productGetters.getCoverImage(product),
+        name: productGetters.getName(product),
+        description: productGetters.getDescription(product),
       },
       quantity: 1,
     }
@@ -69,12 +76,19 @@ const CreateList = (props: CreateListProps) => {
       product: {
         productCode: product?.productCode,
         variationProductCode: product?.variationProductCode,
-        options: product?.options as CrProductOption[],
+        options: product?.options?.map((option: any) => {
+          const selected = option?.values?.find((value: any) => value?.isSelected)
+          return {
+            name: option?.attributeDetail?.name,
+            value: selected?.value || selected?.stringValue || selected?.shopperEnteredValue,
+            attributeFQN: option?.attributeFQN,
+          }
+        }) as CrProductOption[],
         isPackagedStandAlone: product?.isPackagedStandAlone,
-        price: product?.currentProduct?.price,
-        imageUrl: productGetters.getCoverImage(product?.currentProduct),
-        name: productGetters.getName(product?.currentProduct),
-        description: productGetters.getDescription(product?.currentProduct),
+        price: product?.price,
+        imageUrl: productGetters.getCoverImage(product),
+        name: productGetters.getName(product),
+        description: productGetters.getDescription(product),
       },
     }
 

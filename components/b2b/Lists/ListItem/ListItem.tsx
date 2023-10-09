@@ -9,12 +9,13 @@ import { useTranslation } from 'next-i18next'
 
 import { ProductViewDialog } from '@/components/b2b'
 import { QuantitySelector, KeyValueDisplay, KiboImage } from '@/components/common'
+import { ProductOptionList } from '@/components/product'
 import { useModalContext } from '@/context'
 import { productGetters } from '@/lib/getters'
 import { uiHelpers } from '@/lib/helpers'
 import DefaultImage from '@/public/product_placeholder.svg'
 
-import { CrWishlistItem } from '@/lib/gql/types'
+import { CrProductOption, CrWishlistItem } from '@/lib/gql/types'
 
 export interface ListItemProps {
   item: CrWishlistItem
@@ -142,6 +143,11 @@ const ListItem = (props: ListItemProps) => {
               }}
               variant="subtitle2"
             />
+          </Box>
+          <Box data-testid="options">
+            {product?.options && (
+              <ProductOptionList options={product?.options as CrProductOption[]} />
+            )}
           </Box>
 
           {mdScreen && (
