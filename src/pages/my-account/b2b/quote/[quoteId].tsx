@@ -22,9 +22,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { quoteId, mode = '' } = query as any
   const draft = true
   const quote = await getQuote(quoteId, draft, req as NextApiRequest, res as NextApiResponse)
-  const b2bUsers = (await getB2BUsers(req as NextApiRequest, res as NextApiResponse)) || null
+  const b2bUsers = (await getB2BUsers(req as NextApiRequest, res as NextApiResponse)) ?? null
   const currentB2BUser =
-    (await getB2BUsers(req as NextApiRequest, res as NextApiResponse, quote?.userId as string)) ||
+    (await getB2BUsers(req as NextApiRequest, res as NextApiResponse, quote?.userId as string)) ??
     null
 
   if (!quote) {

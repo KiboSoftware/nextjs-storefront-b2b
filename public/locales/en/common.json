@@ -511,5 +511,6 @@
   "not-authorized-payment-information": "You are not authorized to view Payment Information",
   "no-hierarchy-found": "No Hierarchy Found",
   "must-be-at-least-8-characters": "Must be at least 8 characters",
-  "standard-shipping": "Standard Shipping"
+  "standard-shipping": "Standard Shipping",
+  "quote-name-saved": "Quote Name saved successfully!"
 }

@@ -287,30 +287,28 @@ const CreateList = (props: CreateListProps) => {
           ))
         )}
         {!mdScreen && (
-          <>
-            <Box display={'flex'} flexDirection={'column'} gap={2} marginTop={'20px'}>
-              <Button
-                variant="contained"
-                color="secondary"
-                type="button"
-                onClick={() => {
-                  onCreateFormToggle(false)
-                }}
-                sx={{ width: '100%' }}
-              >
-                {t('cancel')}
-              </Button>
-              <Button
-                variant="contained"
-                type="submit"
-                form="wishlist-form"
-                sx={{ width: '100%' }}
-                disabled={listState.name.length === 0}
-              >
-                {t('save-and-close')}
-              </Button>
-            </Box>
-          </>
+          <Box display={'flex'} flexDirection={'column'} gap={2} marginTop={'20px'}>
+            <Button
+              variant="contained"
+              color="secondary"
+              type="button"
+              onClick={() => {
+                onCreateFormToggle(false)
+              }}
+              sx={{ width: '100%' }}
+            >
+              {t('cancel')}
+            </Button>
+            <Button
+              variant="contained"
+              type="submit"
+              form="wishlist-form"
+              sx={{ width: '100%' }}
+              disabled={listState.name.length === 0}
+            >
+              {t('save-and-close')}
+            </Button>
+          </Box>
         )}
       </Box>
     </>

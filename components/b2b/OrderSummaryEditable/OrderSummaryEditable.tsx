@@ -162,7 +162,7 @@ const OrderSummaryEditable = (props: OrderSummaryEditableProps) => {
         discounts={shippingDiscounts?.map((shippingDiscount) => {
           return {
             discount: shippingDiscount?.discount?.discount,
-            impact: shippingDiscount?.discount?.impact || 0,
+            impact: shippingDiscount?.discount?.impact ?? 0,
           }
         })}
         setAdjustmentValue={(val) => handleAdjustmentValue(val, 'shippingAdjustment')}

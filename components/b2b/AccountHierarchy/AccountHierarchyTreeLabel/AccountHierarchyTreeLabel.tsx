@@ -73,7 +73,7 @@ const AccountHierarchyTreeLabel = (props: AccountHierarchyTreeLabelProps) => {
         sx={{ pl: 1 }}
       />
       <ListItemIcon sx={{ ml: 'auto' }}>
-        {!disableSorting && !(customerAccount?.id === currentAccount.id) ? (
+        {!disableSorting && customerAccount?.id !== currentAccount.id ? (
           <AccountHierarchyActions
             mdScreen={mdScreen}
             onBuyersClick={onBuyersClick}

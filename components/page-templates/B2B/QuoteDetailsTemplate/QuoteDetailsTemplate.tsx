@@ -40,7 +40,7 @@ import {
   QuoteCommentThreadDialog,
   QuotesHistoryDialog,
 } from '@/components/dialogs'
-import { useAuthContext, useModalContext } from '@/context'
+import { useAuthContext, useModalContext, useSnackbarContext } from '@/context'
 import {
   useGetPurchaseLocation,
   useGetStoreLocations,
@@ -135,6 +135,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
   const { data: locations } = useGetStoreLocations({ filter: locationCodes })
   const fulfillmentLocations = locations && Object.keys(locations).length ? locations : []
 
+  const { showSnackbar } = useSnackbarContext()
   const { deleteQuoteItem } = useDeleteQuoteItem()
   const { updateQuote } = useUpdateQuote()
   const { addComment } = useAddQuoteComment()
@@ -171,7 +172,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
   const shipItems = quoteGetters.getQuoteShipItems(quote)
   const pickupItems = quoteGetters.getQuotePickupItems(quote)
   const selectedShippingMethodCode = quoteGetters.getQuoteShippingMethodCode(quote)
-  const [selectedShippingAddressId, setSelectedShippingAddressId] = useState<number>(
+  const [selectedShippingAddressId, setSelectedShippingAddressId] = useState<number | null>(
     quoteShippingContact?.id as number
   )
   const { updateQuoteFulfillmentInfo } = useUpdateQuoteFulfillmentInfo()
@@ -271,7 +272,12 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
 
   const handleSaveQuoteName = async (formData: any) => {
     const { name } = formData
-    await updateQuote.mutateAsync({ quoteId, name, updateMode })
+    try {
+      const response = await updateQuote.mutateAsync({ quoteId, name, updateMode })
+      if (response) showSnackbar(t('quote-name-saved'), 'success')
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   const handleSubmitForApproval = async () => {
@@ -481,6 +487,9 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
         props: {
           onConfirm: () => {
             deleteQuote.mutate({ quoteId, draft })
+            if (selectedShippingAddressId) {
+              setSelectedShippingAddressId(null)
+            }
           },
           title: t('clear-changes'),
           contentText: t('clear-quote-changes-confirmation'),
@@ -600,7 +609,8 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                       QuoteStatus[status] === QuoteStatus.InReview ||
                       QuoteStatus[status] === QuoteStatus.Completed ||
                       QuoteStatus[status] === QuoteStatus.Expired ||
-                      !Boolean(quoteNameField.name)
+                      !Boolean(quoteNameField.name) ||
+                      quote?.name === quoteNameField.name
                     }
                     onClick={handleSubmit(handleSaveQuoteName)}
                   >
@@ -809,7 +819,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                 orderDiscounts={quote?.orderDiscounts as CrAppliedDiscount[]}
                 mode={mode}
                 status={status}
-                total={quote?.total as number}
+                total={quote?.total}
               />
             </Box>
             <Divider />
