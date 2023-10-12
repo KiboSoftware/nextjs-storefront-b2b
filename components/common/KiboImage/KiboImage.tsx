@@ -28,7 +28,7 @@ const KiboImage = (props: KiboImageProps) => {
       {...props}
       alt={props.alt}
       onError={onImageError}
-      style={{ objectFit: props.objectFit || 'contain' }}
+      style={{ objectFit: props.objectFit ?? 'contain' }}
     />
   )
 }
