@@ -36,9 +36,6 @@ const QuickOrderPage: NextPage = (props: any) => {
   const handleAccountTitleClick = () => router.push('/my-account')
   return (
     <>
-      <Head>
-        <meta name="robots" content="noindex,nofollow" />
-      </Head>
       <QuickOrderTemplate {...props} onAccountTitleClick={handleAccountTitleClick} />
     </>
   )

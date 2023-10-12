@@ -274,7 +274,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
     const { name } = formData
     try {
       const response = await updateQuote.mutateAsync({ quoteId, name, updateMode })
-      if (response) showSnackbar(t('quote-name-saved'), 'success')
+      if (response) showSnackbar(t('quote-saved-success-message'), 'success')
     } catch (error) {
       console.error(error)
     }
@@ -610,7 +610,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                       QuoteStatus[status] === QuoteStatus.Completed ||
                       QuoteStatus[status] === QuoteStatus.Expired ||
                       !Boolean(quoteNameField.name) ||
-                      quote?.name === quoteNameField.name
+                      quote?.name === inputValue
                     }
                     onClick={handleSubmit(handleSaveQuoteName)}
                   >
@@ -1208,7 +1208,8 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                       QuoteStatus[status] === QuoteStatus.InReview ||
                       QuoteStatus[status] === QuoteStatus.Completed ||
                       QuoteStatus[status] === QuoteStatus.Expired ||
-                      !Boolean(quoteNameField.name)
+                      !Boolean(quoteNameField.name) ||
+                      quote?.name === inputValue
                     }
                     onClick={handleSubmit(handleSaveQuoteName)}
                   >

@@ -54,9 +54,6 @@ const QuotePage: NextPage<QuotePageProps> = (props) => {
 
   return (
     <>
-      <Head>
-        <meta name="robots" content="noindex,nofollow" />
-      </Head>
       <QuoteDetailsTemplate
         quote={quoteResult as Quote}
         mode={mode}
