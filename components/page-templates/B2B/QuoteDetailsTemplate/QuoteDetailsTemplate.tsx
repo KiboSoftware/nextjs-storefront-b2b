@@ -141,7 +141,9 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
   const { addComment } = useAddQuoteComment()
   const { initiateOrder } = useInitiateOrder()
   const router = useRouter()
-  const [inputValue, setInputValue] = useState<string>(quote?.name ? quote.name : '')
+  const [quoteNameInputValue, setQuoteNameInputValue] = useState<string>(
+    quote?.name ? quote.name : ''
+  )
   const { data: purchaseLocation } = useGetPurchaseLocation()
   const { openProductQuickViewModal, handleAddToQuote } = useProductCardActions()
   const { handleQuantityUpdate, handleProductPickupLocation, onFulfillmentOptionChange } =
@@ -532,7 +534,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
   }, [JSON.stringify(quoteShippingContact), JSON.stringify(userShippingAddress), isNewAddressAdded])
 
   useEffect(() => {
-    setInputValue(quote?.name ? quote?.name : '')
+    setQuoteNameInputValue(quote?.name ? quote?.name : '')
   }, [JSON.stringify(quote?.name)])
   return (
     <>
@@ -610,7 +612,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                       QuoteStatus[status] === QuoteStatus.Completed ||
                       QuoteStatus[status] === QuoteStatus.Expired ||
                       !Boolean(quoteNameField.name) ||
-                      quote?.name === inputValue
+                      quote?.name === quoteNameInputValue
                     }
                     onClick={handleSubmit(handleSaveQuoteName)}
                   >
@@ -675,13 +677,13 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
             render={({ field }) => (
               <KiboTextBox
                 {...field}
-                value={inputValue || ''}
+                value={quoteNameInputValue || ''}
                 label={t('quote-name')}
                 placeholder={t('enter-quote-name')}
                 autoComplete="off"
                 ref={null}
                 onChange={(_name: string, value = '') => {
-                  setInputValue(value)
+                  setQuoteNameInputValue(value)
                   field.onChange(value)
                 }}
                 onBlur={field.onBlur}
@@ -1209,7 +1211,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                       QuoteStatus[status] === QuoteStatus.Completed ||
                       QuoteStatus[status] === QuoteStatus.Expired ||
                       !Boolean(quoteNameField.name) ||
-                      quote?.name === inputValue
+                      quote?.name === quoteNameInputValue
                     }
                     onClick={handleSubmit(handleSaveQuoteName)}
                   >
