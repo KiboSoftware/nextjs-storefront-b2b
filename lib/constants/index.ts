@@ -193,3 +193,8 @@ export const StatusColorCode: any = {
   Completed: 'success',
   Expired: 'error',
 }
+
+export const CountryCode = {
+  US: 'US',
+  CA: 'CA',
+}
