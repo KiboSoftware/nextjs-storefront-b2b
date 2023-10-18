@@ -59,6 +59,8 @@ import {
   useGetB2BUsersEmailAndId,
   useUpdateOrderPersonalInfo,
   PersonalInfo,
+  useUpdateQuoteCoupon,
+  useDeleteQuoteCoupon,
 } from '@/hooks'
 import { useQuoteActions } from '@/hooks/custom/useQuoteActions/useQuoteActions'
 import {
@@ -106,6 +108,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
   const draft = true
   const mdScreen = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'))
   const { user, isAuthenticated } = useAuthContext()
+  const [promoError, setPromoError] = useState<string>('')
 
   const accountName = user?.companyOrOrganization ?? '-'
   const { number, quoteId, status, createdDate, expirationDate } =
@@ -156,6 +159,8 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
   const { createCustomerAddress } = useCreateCustomerAddress()
   const { validateCustomerAddress } = useValidateCustomerAddress()
   const { updateQuoteAdjustments } = useUpdateQuoteAdjustments()
+  const { updateQuoteCoupon } = useUpdateQuoteCoupon()
+  const { deleteQuoteCoupon } = useDeleteQuoteCoupon()
 
   const addItemToQuote = async (
     quoteId: string,
@@ -504,6 +509,31 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
       console.error(e)
     }
   }
+  const handleApplyCouponCode = async (couponCode: string) => {
+    try {
+      setPromoError('')
+      const response = await updateQuoteCoupon.mutateAsync({
+        quoteId,
+        couponCode,
+      })
+      if (response?.invalidCoupons?.length) {
+        setPromoError(response?.invalidCoupons[0]?.reason)
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const handleRemoveCouponCode = async (couponCode: string) => {
+    try {
+      await deleteQuoteCoupon.mutateAsync({
+        quoteId,
+        couponCode,
+      })
+    } catch (err) {
+      console.error(err)
+    }
+  }
 
   const handleGotoCheckout = async () => {
     try {
@@ -815,13 +845,17 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                 shippingTaxTotal={quote?.shippingTaxTotal}
                 shippingTotal={quote?.shippingTotal}
                 subTotal={quote?.subTotal}
-                onSave={handleUpdateQuoteAdjustments}
                 shippingDiscounts={quote?.shippingDiscounts as CrShippingDiscount[]}
                 handlingDiscounts={quote?.handlingDiscounts as CrAppliedDiscount[]}
                 orderDiscounts={quote?.orderDiscounts as CrAppliedDiscount[]}
+                promoList={quote?.couponCodes as string[]}
                 mode={mode}
                 status={status}
                 total={quote?.total}
+                promoError={promoError}
+                onSave={handleUpdateQuoteAdjustments}
+                onApplyCouponCode={handleApplyCouponCode}
+                onRemoveCouponCode={handleRemoveCouponCode}
               />
             </Box>
             <Divider />
