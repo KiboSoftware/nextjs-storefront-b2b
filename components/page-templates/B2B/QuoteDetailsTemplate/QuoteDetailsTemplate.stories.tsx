@@ -45,7 +45,7 @@ QuoteDetailsTemplateMobile.parameters = {
 
 export const QuoteDetailsTemplateViewModeMobile = Template.bind({})
 QuoteDetailsTemplateViewModeMobile.args = {
-  quote: quoteMock?.items?.[0] as Quote,
+  quote: { ...(quoteMock?.items?.[0] as Quote), name: 'quote name' },
   mode: '',
 }
 QuoteDetailsTemplateViewModeMobile.parameters = {
