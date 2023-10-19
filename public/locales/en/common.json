@@ -516,6 +516,5 @@
   "standard-shipping": "Standard Shipping",
   "quote-saved-success-message": "Quote saved successfully!",
   "shipping-tax-at-checkout": "Shipping charges and Tax to be calculated at checkout",
-  "save-as-billing-address": "Save as billing address",
-  "save-as-shipping-address": "Save as shipping address"
+  "shipping-billing-addresses-are-same": "Shipping and Billing Addresses are same"
 }
