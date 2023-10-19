@@ -32,6 +32,7 @@ const {
   QuoteDetailsTemplateViewModeDesktop,
   QuoteDetailsTemplateReadyForCheckoutDesktop,
   QuoteDetailsTemplateViewModeMobile,
+  QuoteDetailsTemplateShipToHomeDesktop,
 } = composeStories(stories)
 
 const user = userEvent.setup()
@@ -135,6 +136,8 @@ jest.mock(
   () => () => QuotesHistoryDialogMock()
 )
 
+const AddressFormMock = () => <div data-testid="address-card-mock" />
+jest.mock('@/components/common/AddressForm/AddressForm', () => () => AddressFormMock())
 const TestComponent = () => {
   const { data: quoteResult } = useGetQuoteByID({
     quoteId: 'test-quote-id',
@@ -274,6 +277,19 @@ describe('[components] QuoteDetailsTemplate', () => {
           pathname: `/my-account/b2b/quote/${quoteMock?.items?.[0]?.id}`,
           query: {},
         })
+      })
+    })
+
+    it('should open address from when users click on add new address button', async () => {
+      renderWithQueryClient(
+        <QuoteDetailsTemplateShipToHomeDesktop {...QuoteDetailsTemplateShipToHomeDesktop.args} />
+      )
+      const addNewAddress = screen.getByRole('button', { name: 'add-new-address' })
+      user.click(addNewAddress)
+
+      expect(addNewAddress).toBeVisible()
+      await waitFor(() => {
+        expect(screen.getByTestId('address-card-mock')).toBeVisible()
       })
     })
 

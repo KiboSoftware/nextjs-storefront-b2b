@@ -66,4 +66,10 @@ QuoteDetailsTemplateReadyForCheckoutDesktop.args = {
   mode: 'edit',
 }
 
+export const QuoteDetailsTemplateShipToHomeDesktop = Template.bind({})
+QuoteDetailsTemplateShipToHomeDesktop.args = {
+  quote: { ...(quoteMock?.items?.[2] as Quote) },
+  mode: 'edit',
+}
+
 // export const
