@@ -23,6 +23,7 @@ export const quoteMock = {
       shippingTaxTotal: 0,
       handlingTaxTotal: 0,
       dutyTotal: 0,
+      couponCodes: ['test'],
       items: [
         {
           id: 'a2dc8f0975294da4bc2cb05a0093fb6c',

@@ -43,6 +43,17 @@ QuoteDetailsTemplateMobile.parameters = {
   },
 }
 
+export const QuoteDetailsTemplateViewModeMobile = Template.bind({})
+QuoteDetailsTemplateViewModeMobile.args = {
+  quote: quoteMock?.items?.[0] as Quote,
+  mode: '',
+}
+QuoteDetailsTemplateViewModeMobile.parameters = {
+  viewport: {
+    defaultViewport: 'iphone12promax',
+  },
+}
+
 export const QuoteDetailsTemplateViewModeDesktop = Template.bind({})
 QuoteDetailsTemplateViewModeDesktop.args = {
   quote: quoteMock?.items?.[0] as Quote,

@@ -31,6 +31,7 @@ const {
   QuoteDetailsTemplateDesktop,
   QuoteDetailsTemplateViewModeDesktop,
   QuoteDetailsTemplateReadyForCheckoutDesktop,
+  QuoteDetailsTemplateViewModeMobile,
 } = composeStories(stories)
 
 const user = userEvent.setup()
@@ -236,7 +237,8 @@ describe('[components] QuoteDetailsTemplate', () => {
           <DialogRoot />
         </ModalContextProvider>
       )
-
+      const quoteName = Common?.args?.quote?.name || ''
+      expect(screen.getByText(quoteName)).toBeVisible()
       expect(screen.queryByTestId('b2b-product-details-table-component')).toBeVisible()
 
       user.click(screen.getByTestId('add-configurable-product-button'))
@@ -262,6 +264,22 @@ describe('[components] QuoteDetailsTemplate', () => {
     it('should open a quote details page in edit mode when user clicks on edit button', async () => {
       renderWithQueryClient(
         <QuoteDetailsTemplateViewModeDesktop {...QuoteDetailsTemplateViewModeDesktop.args} />
+      )
+      const editButton = screen.getByRole('button', { name: 'edit-quote' })
+      user.click(editButton)
+
+      await waitFor(() => {
+        expect(mockRouter).toMatchObject({
+          asPath: `/my-account/b2b/quote/${quoteMock?.items?.[0]?.id}?mode=edit`,
+          pathname: `/my-account/b2b/quote/${quoteMock?.items?.[0]?.id}`,
+          query: {},
+        })
+      })
+    })
+
+    it('should open a quote details page in edit mode when user clicks on edit button', async () => {
+      renderWithQueryClient(
+        <QuoteDetailsTemplateViewModeMobile {...QuoteDetailsTemplateViewModeMobile.args} />
       )
       const editButton = screen.getByRole('button', { name: 'edit-quote' })
       user.click(editButton)
