@@ -10,16 +10,17 @@ import { quoteKeys } from '@/lib/react-query/queryKeys'
 interface UpdateQuoteCouponParams {
   quoteId: string
   couponCode: string
+  updateMode?: string
 }
 
 const updateQuoteCoupon = async (params: UpdateQuoteCouponParams) => {
   const client = makeGraphQLClient()
-  const { quoteId, couponCode } = params
+  const { quoteId, couponCode, updateMode } = params
 
   const variables = {
     quoteId,
     couponCode,
-    updateMode: 'ApplyToDraft',
+    updateMode,
   }
 
   const response = await client.request({
@@ -33,7 +34,7 @@ const updateQuoteCoupon = async (params: UpdateQuoteCouponParams) => {
 /**
  * [Mutation hook] useUpdateQuoteCoupon uses the graphQL mutation
  *
- * <b>updateQuoteCoupon(quoteId: String!, couponCode: String!): Quote</b>
+ * <b>updateQuoteCoupon(quoteId: String!, couponCode: String!, updateMode: String): Quote</b>
  *
  * Description : Applies promo code in Quote Summary of quote details pages
  *

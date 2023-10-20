@@ -13,6 +13,7 @@ describe('[hooks] useUpdateQuoteCoupon', () => {
     result.current.updateQuoteCoupon.mutateAsync({
       quoteId: 'quote-id',
       couponCode: '10OFF',
+      updateMode: 'ApplyToDraft',
     })
 
     await waitFor(() => {

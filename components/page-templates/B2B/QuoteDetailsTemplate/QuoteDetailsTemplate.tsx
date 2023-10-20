@@ -68,6 +68,7 @@ import {
   DefaultId,
   FulfillmentOptions as FulfillmentOptionsConstant,
   QuoteStatus,
+  QuoteUpdateMode,
   StatusColorCode,
 } from '@/lib/constants'
 import { orderGetters, productGetters, quoteGetters, userGetters } from '@/lib/getters'
@@ -104,7 +105,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
   const { quote, mode, initialB2BUsers, currentB2BUser, onAccountTitleClick } = props
   const { showModal } = useModalContext()
   const { t } = useTranslation('common')
-  const updateMode = 'ApplyToDraft'
+  const updateMode = QuoteUpdateMode.ApplyToDraft
   const draft = true
   const mdScreen = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'))
   const { user, isAuthenticated } = useAuthContext()
@@ -295,7 +296,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
           onConfirm: () => {
             updateQuote.mutate({
               quoteId,
-              updateMode: 'ApplyAndCommit',
+              updateMode: QuoteUpdateMode.ApplyAndCommit,
               name: quote?.name as string,
             })
             router.push('/my-account/b2b/quotes')
@@ -515,6 +516,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
       const response = await updateQuoteCoupon.mutateAsync({
         quoteId,
         couponCode,
+        updateMode,
       })
       if (response?.invalidCoupons?.length) {
         setPromoError(response?.invalidCoupons[0]?.reason)
@@ -529,6 +531,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
       await deleteQuoteCoupon.mutateAsync({
         quoteId,
         couponCode,
+        updateMode,
       })
     } catch (err) {
       console.error(err)

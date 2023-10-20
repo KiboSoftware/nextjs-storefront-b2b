@@ -10,16 +10,17 @@ import { quoteKeys } from '@/lib/react-query/queryKeys'
 interface DeleteQuoteCouponParams {
   quoteId: string
   couponCode: string
+  updateMode?: string
 }
 
 const deleteQuoteCoupon = async (params: DeleteQuoteCouponParams) => {
   const client = makeGraphQLClient()
-  const { quoteId, couponCode } = params
+  const { quoteId, couponCode, updateMode } = params
 
   const variables = {
     quoteId,
     couponCode,
-    updateMode: 'ApplyToDraft',
+    updateMode,
   }
 
   const response = await client.request({
@@ -33,7 +34,7 @@ const deleteQuoteCoupon = async (params: DeleteQuoteCouponParams) => {
 /**
  * [Mutation hook] useDeleteQuoteCoupon uses the graphQL mutation
  *
- * <b>deleteQuoteCoupon(quoteId: String!, couponCode: String!): Quote</b>
+ * <b>deleteQuoteCoupon(quoteId: String!, couponCode: String!, updateMode: String): Quote</b>
  *
  * Description : remove Applied promo code in Quote Summary of quote details pages
  *
