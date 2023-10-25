@@ -204,15 +204,16 @@ const OrderSummaryEditable = (props: OrderSummaryEditableProps) => {
         <ListItemIcon sx={{ minWidth: 30 }} />
         <ListItemText primary={<Typography variant="body2">{t('duty-total')}</Typography>} />
       </ListItem>
-      {mode ? (
-        <PromoCodeBadge
-          onApplyCouponCode={onApplyCouponCode}
-          onRemoveCouponCode={onRemoveCouponCode}
-          promoError={!!promoError}
-          helpText={promoError}
-          promoList={promoList as string[]}
-        />
-      ) : null}
+
+      <PromoCodeBadge
+        onApplyCouponCode={onApplyCouponCode}
+        onRemoveCouponCode={onRemoveCouponCode}
+        promoError={!!promoError}
+        helpText={promoError}
+        promoList={promoList as string[]}
+        isEdit={!!mode}
+      />
+
       <ListItem
         slotProps={{
           root: {

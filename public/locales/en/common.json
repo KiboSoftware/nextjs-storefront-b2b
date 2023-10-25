@@ -394,6 +394,7 @@
   "fulfillment-method-header": "Fulfillment Method",
   "quantity-header": "Quantity",
   "price-header": "Price",
+  "discount-header": "Discount",
   "item-total-header": "Item Total",
   "product-configuration-options": "Product configuration options",
   "add-item-to-cart": "Add item to Cart",

@@ -20,7 +20,7 @@ import { ProductOptionList } from '@/components/product'
 import { productGetters } from '@/lib/getters'
 import DefaultImage from '@/public/product_placeholder.svg'
 
-import type { Maybe, CrProductOption } from '@/lib/gql/types'
+import type { Maybe, CrProductOption, CrAppliedLineItemProductDiscount } from '@/lib/gql/types'
 
 export interface ProductItemProps {
   id?: Maybe<string>
@@ -40,6 +40,7 @@ export interface ProductItemProps {
   subscriptionFrequency?: string
   showChangeStoreLink?: boolean
   isQuickOrder?: boolean
+  discounts?: any
   onStoreLocatorClick?: () => void
 }
 
@@ -72,6 +73,7 @@ const ProductItem = (props: ProductItemProps) => {
     isQuickOrder = false,
     subscriptionFrequency,
     showChangeStoreLink,
+    discounts,
     onStoreLocatorClick,
   } = props
   const { t } = useTranslation('common')
@@ -157,6 +159,16 @@ const ProductItem = (props: ProductItemProps) => {
                     variant="body2"
                   />
                 )}
+                {discounts?.map((discount: any) => (
+                  <KeyValueDisplay
+                    key={`${discount?.discount?.name}`}
+                    color="error.main"
+                    option={{
+                      name: `${discount?.discount?.name}:`,
+                      value: `-${t('currency', { val: discount?.impact })} `,
+                    }}
+                  />
+                ))}
                 {subscriptionFrequency && (
                   <Box pb={1}>
                     <KeyValueDisplay
