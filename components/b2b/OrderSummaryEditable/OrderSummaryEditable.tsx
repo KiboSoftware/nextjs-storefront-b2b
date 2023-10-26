@@ -24,6 +24,7 @@ interface OrderSummaryEditableProps {
   handlingTaxTotal: number
   handlingSubTotal: number
   handlingAdjustment: number
+  itemLevelProductDiscountTotal: number
 
   dutyTotal: number
 
@@ -66,6 +67,7 @@ const OrderSummaryEditable = (props: OrderSummaryEditableProps) => {
     handlingTaxTotal,
 
     dutyTotal,
+    itemLevelProductDiscountTotal,
     mode,
     status,
     total,
@@ -151,7 +153,7 @@ const OrderSummaryEditable = (props: OrderSummaryEditableProps) => {
       <OrderSummarySection
         title="Item"
         total={itemTotal}
-        subTotal={subTotal}
+        subTotal={subTotal - itemLevelProductDiscountTotal}
         adjustment={adjustment}
         taxTotal={itemTaxTotal}
         isEdit={isEdit}
