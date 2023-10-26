@@ -20,7 +20,7 @@ import { ProductOptionList } from '@/components/product'
 import { productGetters } from '@/lib/getters'
 import DefaultImage from '@/public/product_placeholder.svg'
 
-import type { Maybe, CrProductOption, CrAppliedLineItemProductDiscount } from '@/lib/gql/types'
+import type { Maybe, CrProductOption } from '@/lib/gql/types'
 
 export interface ProductItemProps {
   id?: Maybe<string>

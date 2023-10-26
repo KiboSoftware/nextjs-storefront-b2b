@@ -38,7 +38,7 @@ const KeyValueDisplay = (prop: KeyValueDisplayProps) => {
       {typeof option?.value === 'string' ? (
         <Typography
           variant={variant}
-          fontWeight={fontWeight || 'normal'}
+          fontWeight={fontWeight ?? 'normal'}
           component="span"
           color={color}
         >
