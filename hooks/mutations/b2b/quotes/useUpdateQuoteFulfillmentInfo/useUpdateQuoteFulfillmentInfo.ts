@@ -39,9 +39,9 @@ const updateQuoteFulfillment = async (params: UpdateQuoteFulfillmentInfoParams):
  *
  * <b>updateOrderFulfillmentInfo(orderId: String!, updateMode: String, version: String, fulfillmentInfoInput: FulfillmentInfoInput): FulfillmentInfo</b>
  *
- * Description : Updates user shipping(fulfillment) info at checkout
+ * Description : Updates user shipping(fulfillment) info at quote
  *
- * Parameters passed to function updateShippingInfo(params: CheckoutShippingParams) => expects object of type ' ShippingInfo' containing  orderId and fulfillmentInfoInput
+ * Parameters passed to function updateQuoteFulfillment(params: UpdateQuoteFulfillmentInfoParams) => expects object of type ' ShippingInfo' containing  orderId and fulfillmentInfoInput
  *
  * On success, calls invalidateQueries on quoteKeys and fetches the updated result.
  *

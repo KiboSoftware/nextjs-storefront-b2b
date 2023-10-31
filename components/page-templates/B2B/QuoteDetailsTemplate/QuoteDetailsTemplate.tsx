@@ -143,7 +143,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
   const fulfillmentLocations = locations && Object.keys(locations).length ? locations : []
 
   const { showSnackbar } = useSnackbarContext()
-  const { deleteQuoteItem } = useDeleteQuoteItem()
+
   const { updateQuote } = useUpdateQuote()
   const { addComment } = useAddQuoteComment()
   const { initiateOrder } = useInitiateOrder()
@@ -152,14 +152,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
     quote?.name ? quote.name : ''
   )
   const { data: purchaseLocation } = useGetPurchaseLocation()
-  const { openProductQuickViewModal, handleAddToQuote } = useProductCardActions()
-  const { handleQuantityUpdate, handleProductPickupLocation, onFulfillmentOptionChange } =
-    useQuoteActions({
-      quoteId,
-      updateMode,
-      quoteItems,
-      purchaseLocation,
-    })
+
   const { createCustomerAddress } = useCreateCustomerAddress()
   const { validateCustomerAddress } = useValidateCustomerAddress()
   const { updateQuoteAdjustments } = useUpdateQuoteAdjustments()
@@ -190,11 +183,27 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
   const { deleteQuote } = useDeleteQuote({ draft })
   const shouldFetchShippingMethods =
     quoteId && draft && shipItems?.length && selectedShippingAddressId
+  const { openProductQuickViewModal, handleAddToQuote } = useProductCardActions(
+    !!shouldFetchShippingMethods
+  )
+  const { deleteQuoteItem } = useDeleteQuoteItem({
+    shouldFetchShippingMethods: !!shouldFetchShippingMethods as boolean,
+  })
   const { data: shippingMethods } = useGetQuoteShippingMethods({
     quoteId,
     draft,
     enabled: !!shouldFetchShippingMethods,
   })
+
+  const { handleQuantityUpdate, handleProductPickupLocation, onFulfillmentOptionChange } =
+    useQuoteActions({
+      quoteId,
+      updateMode,
+      quoteItems,
+      purchaseLocation,
+      shouldFetchShippingMethods: !!shouldFetchShippingMethods as boolean,
+    })
+
   const { updateOrderPersonalInfo } = useUpdateOrderPersonalInfo()
 
   const shippingAddressRef = useRef<HTMLDivElement>(null)
@@ -240,7 +249,12 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
         quoteId: quoteId,
         updateMode: updateMode,
       }
-      openProductQuickViewModal({ product, dialogProps, quoteDetails })
+      openProductQuickViewModal({
+        product,
+        dialogProps,
+        quoteDetails,
+        shouldFetchShippingMethods: !!shouldFetchShippingMethods,
+      })
     } else {
       const productData = {
         productCode: productGetters.getProductId(product),
@@ -559,6 +573,36 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
       console.error(err)
     }
   }
+  const handleSaveUpdatedFulfillmentToQuote = async () => {
+    if (shouldFetchShippingMethods) {
+      const shippingMethodsFromAPI = [...shippingMethods]
+      const shippingMethod = {
+        ...shippingMethodsFromAPI?.find(
+          (method) => method?.shippingMethodCode === selectedShippingMethodCode
+        ),
+      }
+      const shippingMethodName =
+        `${shippingMethod?.shippingMethodName}` +
+        ' - ' +
+        t('currency', { val: shippingMethod?.price })
+
+      await updateQuoteFulfillmentInfo.mutateAsync({
+        quote,
+        quoteId,
+        updateMode,
+        contact: undefined,
+        email: undefined,
+        shippingMethodCode: selectedShippingMethodCode,
+        shippingMethodName,
+      })
+    }
+  }
+
+  useEffect(() => {
+    if (!!selectedShippingMethodCode) {
+      handleSaveUpdatedFulfillmentToQuote()
+    }
+  }, [JSON.stringify(shippingMethods)])
 
   useEffect(() => {
     setSavedShippingAddresses(
