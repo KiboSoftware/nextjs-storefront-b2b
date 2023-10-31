@@ -747,6 +747,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                     sx={{ p: 0.5 }}
                     aria-label="item-view"
                     name="item-view"
+                    data-testid="save-quote-name"
                     disabled={
                       QuoteStatus[status] === QuoteStatus.InReview ||
                       QuoteStatus[status] === QuoteStatus.Completed ||
@@ -762,6 +763,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                     sx={{ p: 0.5 }}
                     aria-label="item-view"
                     name="item-view"
+                    data-testid="cancel-quote-name"
                     onClick={() => setQuoteNameInputValue(quote?.name as string)}
                   >
                     <DisabledByDefault />
