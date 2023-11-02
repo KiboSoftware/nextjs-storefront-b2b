@@ -9,7 +9,8 @@ import {
   buildUpdateQuoteFulfillmentInfoParams,
   UpdateQuoteFulfillmentInfoParams,
 } from '@/lib/helpers'
-import { quoteKeys } from '@/lib/react-query/queryKeys'
+import { quoteKeys, quoteShippingMethodKeys } from '@/lib/react-query/queryKeys'
+import { ShouldFetchShippingMethods } from '@/lib/types'
 
 import type { CrFulfillmentInfoInput, Quote } from '@/lib/gql/types'
 
@@ -48,7 +49,9 @@ const updateQuoteFulfillment = async (params: UpdateQuoteFulfillmentInfoParams):
  * @returns 'response?.updateQuoteFulfillmentInfo', which contains updated shipping quote information
  */
 
-export const useUpdateQuoteFulfillmentInfo = () => {
+export const useUpdateQuoteFulfillmentInfo = ({
+  shouldFetchShippingMethods,
+}: ShouldFetchShippingMethods) => {
   const queryClient = useQueryClient()
 
   return {
@@ -56,6 +59,9 @@ export const useUpdateQuoteFulfillmentInfo = () => {
       mutationFn: updateQuoteFulfillment,
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: quoteKeys.all })
+        if (shouldFetchShippingMethods) {
+          queryClient.invalidateQueries({ queryKey: quoteShippingMethodKeys.all })
+        }
       },
     }),
   }

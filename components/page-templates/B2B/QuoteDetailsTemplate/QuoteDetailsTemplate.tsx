@@ -86,6 +86,7 @@ import {
   CrOrderInput,
   CrOrderItem,
   CrShippingDiscount,
+  CrShippingRate,
   CuAddress,
   CustomerContact,
   Location,
@@ -179,10 +180,12 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
   const [selectedShippingAddressId, setSelectedShippingAddressId] = useState<number | null>(
     quoteShippingContact?.id as number
   )
-  const { updateQuoteFulfillmentInfo } = useUpdateQuoteFulfillmentInfo()
   const { deleteQuote } = useDeleteQuote({ draft })
   const shouldFetchShippingMethods =
     quoteId && draft && shipItems?.length && selectedShippingAddressId
+  const { updateQuoteFulfillmentInfo } = useUpdateQuoteFulfillmentInfo({
+    shouldFetchShippingMethods: !!shouldFetchShippingMethods as boolean,
+  })
   const { openProductQuickViewModal, handleAddToQuote } = useProductCardActions(
     !!shouldFetchShippingMethods
   )
@@ -236,6 +239,23 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
     savedShippingAddresses as CustomerContact[],
     defaultShippingAddress?.id as number
   )
+
+  const getQuoteShippingMethodName = (
+    shippingMethods: CrShippingRate[],
+    selectedShippingMethodCode: string
+  ) => {
+    const shippingMethod = {
+      ...shippingMethods?.find(
+        (method) => method?.shippingMethodCode === selectedShippingMethodCode
+      ),
+    }
+    const shippingMethodName =
+      shippingMethod?.shippingMethodName &&
+      `${shippingMethod?.shippingMethodName}` +
+        ' - ' +
+        t('currency', { val: shippingMethod?.price })
+    return shippingMethodName
+  }
 
   const handleAddProduct = (product: any) => {
     if (productGetters.isVariationProduct(product)) {
@@ -386,20 +406,14 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
           ...(selectedAddress?.phoneNumbers as any),
         },
       }
-      handleSaveAddressToQuote({ contact })
+      handleSaveAddressToQuote({
+        contact,
+      })
     }
   }
 
   const handleSaveShippingMethod = async (shippingMethodCode: string) => {
-    const shippingMethod = shippingMethods.find(
-      (method) => method.shippingMethodCode === shippingMethodCode
-    )
-
-    const shippingMethodName =
-      `${shippingMethod?.shippingMethodName}` +
-      ' - ' +
-      t('currency', { val: shippingMethod?.price })
-
+    const shippingMethodName = getQuoteShippingMethodName(shippingMethods, shippingMethodCode)
     try {
       await updateQuoteFulfillmentInfo.mutateAsync({
         quote,
@@ -407,8 +421,8 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
         updateMode,
         contact: undefined,
         email: undefined,
-        shippingMethodCode,
-        shippingMethodName,
+        shippingMethodCode: shippingMethodName ? shippingMethodCode : undefined,
+        shippingMethodName: shippingMethodName ? shippingMethodName : undefined,
       })
       shippingAddressRef.current &&
         (shippingAddressRef.current as Element).scrollIntoView({
@@ -575,25 +589,17 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
   }
   const handleSaveUpdatedFulfillmentToQuote = async () => {
     if (shouldFetchShippingMethods) {
-      const shippingMethodsFromAPI = [...shippingMethods]
-      const shippingMethod = {
-        ...shippingMethodsFromAPI?.find(
-          (method) => method?.shippingMethodCode === selectedShippingMethodCode
-        ),
-      }
-      const shippingMethodName =
-        `${shippingMethod?.shippingMethodName}` +
-        ' - ' +
-        t('currency', { val: shippingMethod?.price })
+      const shippingMethodName = getQuoteShippingMethodName(
+        shippingMethods,
+        selectedShippingMethodCode
+      )
 
       await updateQuoteFulfillmentInfo.mutateAsync({
         quote,
         quoteId,
         updateMode,
-        contact: undefined,
-        email: undefined,
-        shippingMethodCode: selectedShippingMethodCode,
-        shippingMethodName,
+        shippingMethodCode: shippingMethodName ? selectedShippingMethodCode : undefined,
+        shippingMethodName: shippingMethodName ? shippingMethodName : undefined,
       })
     }
   }
@@ -602,7 +608,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
     if (!!selectedShippingMethodCode) {
       handleSaveUpdatedFulfillmentToQuote()
     }
-  }, [JSON.stringify(shippingMethods)])
+  }, [JSON.stringify(shippingMethods), JSON.stringify(quote?.fulfillmentInfo?.fulfillmentContact)])
 
   useEffect(() => {
     setSavedShippingAddresses(
