@@ -168,7 +168,8 @@ const ProductDetailTemplate = (props: ProductDetailTemplateProps) => {
       fulfillmentMethod: selectedFulfillmentOption?.method,
       purchaseLocationCode: selectedFulfillmentOption?.location?.code as string,
     },
-    productPriceResponse?.price as ProductPrice
+    productPriceResponse?.price as ProductPrice,
+    productPriceResponse?.priceRange as any
   )
   const { data: locationInventory } = useGetProductInventory(
     (variationProductCode || productCode) as string,
