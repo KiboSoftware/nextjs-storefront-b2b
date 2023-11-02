@@ -7,6 +7,9 @@ const fetch = vercelFetch()
 
 const fetcher = async ({ query, variables }: any, options: any) => {
   const authToken = await apiAuthClient.getAccessToken()
+  if (!authToken) {
+    console.error('no auth token')
+  }
   const response = await fetch(getGraphqlUrl(), {
     method: 'POST',
     headers: {
@@ -20,6 +23,9 @@ const fetcher = async ({ query, variables }: any, options: any) => {
       variables,
     }),
   })
+  if (!response.ok) {
+    console.log(response.status)
+  }
   return await response.json()
 }
 export default fetcher
