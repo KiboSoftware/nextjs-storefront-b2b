@@ -257,7 +257,11 @@ const getIsPackagedStandAlone = (product: ProductCustom): boolean => {
 const isVariationProduct = (product: Product): boolean =>
   Boolean(product?.options?.filter((option) => option?.isRequired === true).length)
 
-const getProductDetails = (product: ProductCustom, pdpProductPrice?: ProductPrice, pdpProductPriceRange?: any) => {
+const getProductDetails = (
+  product: ProductCustom,
+  pdpProductPrice?: ProductPrice,
+  pdpProductPriceRange?: any
+) => {
   const productOptions = getSegregatedOptions(product)
   const productProperties = getProperties(product) as ProductProperties[]
 
@@ -267,7 +271,7 @@ const getProductDetails = (product: ProductCustom, pdpProductPrice?: ProductPric
     variationProductCode: getVariationProductCodeOrProductCode(product),
     fulfillmentMethod: getSelectedFulfillmentOption(product),
     productPrice: pdpProductPrice ? getPDPProductPrice(pdpProductPrice) : getPrice(product),
-    productPriceRange: pdpProductPriceRange ? getPriceRange(pdpProductPriceRange) : getPriceRange(product),
+    productPriceRange: pdpProductPriceRange ? pdpProductPriceRange : getPriceRange(product),
     productRating: getRating(product),
     description: getDescription(product),
     shortDescription: getShortDescription(product),
