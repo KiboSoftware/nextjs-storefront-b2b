@@ -3,8 +3,8 @@ import React, { useCallback, useEffect, useState, useRef } from 'react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { FiberManualRecord } from '@mui/icons-material'
 import ArrowBackIos from '@mui/icons-material/ArrowBackIos'
-import CheckBox from '@mui/icons-material/CheckBox'
-import DisabledByDefault from '@mui/icons-material/DisabledByDefault'
+import Close from '@mui/icons-material/Close'
+import Done from '@mui/icons-material/Done'
 import { LoadingButton } from '@mui/lab'
 import {
   Stack,
@@ -741,9 +741,9 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
 
             {isQuoteNameEditable && (
               <Grid item xs={2} md={5} display={'flex'} alignItems={'center'}>
-                <Box display={'flex'}>
-                  <IconButton
-                    color="primary"
+                <Box display={'flex'} gap={1} pt={1}>
+                  <Button
+                    variant="contained"
                     sx={{ p: 0.5 }}
                     aria-label="item-view"
                     name="item-view"
@@ -757,17 +757,19 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
                     }
                     onClick={handleSubmit(handleSaveQuoteName)}
                   >
-                    <CheckBox />
-                  </IconButton>
-                  <IconButton
+                    <Done />
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="secondary"
                     sx={{ p: 0.5 }}
                     aria-label="item-view"
                     name="item-view"
                     data-testid="cancel-quote-name"
                     onClick={() => setQuoteNameInputValue(quote?.name as string)}
                   >
-                    <DisabledByDefault />
-                  </IconButton>
+                    <Close />
+                  </Button>
                 </Box>
               </Grid>
             )}
