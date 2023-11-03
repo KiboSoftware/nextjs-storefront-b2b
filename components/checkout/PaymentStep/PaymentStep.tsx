@@ -184,6 +184,7 @@ const PaymentStep = (props: PaymentStepProps) => {
 
   const { publicRuntimeConfig } = getConfig()
   const reCaptchaKey = publicRuntimeConfig.recaptcha.reCaptchaKey
+  const allowInvalidAddresses = publicRuntimeConfig.allowInvalidAddresses
 
   // getting the selected Payment type from checkout.payments
   const checkoutPayment = orderGetters.getSelectedPaymentType(checkout)
@@ -487,11 +488,14 @@ const PaymentStep = (props: PaymentStepProps) => {
 
   const handleValidateBillingAddress = async (address: CuAddress) => {
     try {
-      await validateCustomerAddress.mutateAsync({
-        addressValidationRequestInput: {
-          address,
-        },
-      })
+      if (!allowInvalidAddresses) {
+        await validateCustomerAddress.mutateAsync({
+          addressValidationRequestInput: {
+            address,
+          },
+        })
+      }
+
       selectedPaymentTypeRadio === PaymentType.CREDITCARD &&
         handleTokenization({ ...cardFormDetails })
       selectedPaymentTypeRadio === PaymentType.PURCHASEORDER &&
