@@ -7,7 +7,7 @@ import { createQueryClientWrapper } from '@/__test__/utils/renderWithQueryClient
 describe('[hooks] useUpdateQuoteItemQuantity', () => {
   it('should update quote item quantity', async () => {
     const { result } = renderHook(
-      () => useUpdateQuoteItemQuantity({ shouldFetchShippingMethods: false }),
+      () => useUpdateQuoteItemQuantity({ shouldFetchShippingMethods: true }),
       {
         wrapper: createQueryClientWrapper(),
       }

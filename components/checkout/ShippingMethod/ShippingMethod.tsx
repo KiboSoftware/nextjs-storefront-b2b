@@ -56,7 +56,7 @@ const ShipItemList = (shipProps: ShipItemListProps) => {
           name="shippingMethodCode"
           onChange={handleShippingMethodChange}
           placeholder="Select Shipping Option"
-          value={selectedShippingMethodCode || ''}
+          value={selectedShippingMethodCode ?? ''}
         >
           {orderShipmentMethods?.map((item) => {
             return (

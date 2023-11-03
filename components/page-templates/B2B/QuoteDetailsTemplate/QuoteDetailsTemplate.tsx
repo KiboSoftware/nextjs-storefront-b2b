@@ -184,13 +184,13 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
   const shouldFetchShippingMethods =
     quoteId && draft && shipItems?.length && selectedShippingAddressId
   const { updateQuoteFulfillmentInfo } = useUpdateQuoteFulfillmentInfo({
-    shouldFetchShippingMethods: !!shouldFetchShippingMethods as boolean,
+    shouldFetchShippingMethods: !!shouldFetchShippingMethods,
   })
   const { openProductQuickViewModal, handleAddToQuote } = useProductCardActions(
     !!shouldFetchShippingMethods
   )
   const { deleteQuoteItem } = useDeleteQuoteItem({
-    shouldFetchShippingMethods: !!shouldFetchShippingMethods as boolean,
+    shouldFetchShippingMethods: !!shouldFetchShippingMethods,
   })
   const { data: shippingMethods } = useGetQuoteShippingMethods({
     quoteId,
@@ -204,7 +204,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
       updateMode,
       quoteItems,
       purchaseLocation,
-      shouldFetchShippingMethods: !!shouldFetchShippingMethods as boolean,
+      shouldFetchShippingMethods: !!shouldFetchShippingMethods,
     })
 
   const { updateOrderPersonalInfo } = useUpdateOrderPersonalInfo()
