@@ -31,6 +31,7 @@ import {
   useDeleteCartCoupon,
   useInitiateCheckout,
   useCartActions,
+  useProductCardActions,
 } from '@/hooks'
 import { orderGetters, cartGetters } from '@/lib/getters'
 
@@ -67,6 +68,7 @@ const CartTemplate = (props: CartTemplateProps) => {
   const { deleteCartCoupon } = useDeleteCartCoupon()
   const [promoError, setPromoError] = useState<string>('')
   const [showLoadingButton, setShowLoadingButton] = useState<boolean>(false)
+  const { handleDeleteCurrentCart } = useProductCardActions()
 
   const handleApplyPromoCode = async (couponCode: string) => {
     try {
@@ -155,13 +157,13 @@ const CartTemplate = (props: CartTemplateProps) => {
     })
   }
 
-  const handleDeleteCurrentCart = async () => {
-    try {
-      await deleteCurrentCart.mutateAsync()
-    } catch (err) {
-      console.error(err)
-    }
-  }
+  // const handleDeleteCurrentCart = async () => {
+  //   try {
+  //     await deleteCurrentCart.mutateAsync()
+  //   } catch (err) {
+  //     console.error(err)
+  //   }
+  // }
 
   return (
     <Grid container>

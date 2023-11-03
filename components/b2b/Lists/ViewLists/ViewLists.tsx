@@ -21,7 +21,13 @@ import { ListTable, EditList } from '@/components/b2b'
 import { styles } from '@/components/b2b/Lists/ViewLists/ViewLists.style'
 import { ConfirmationDialog } from '@/components/dialogs'
 import { useAuthContext, useModalContext, useSnackbarContext } from '@/context'
-import { PageProps, useCreateWishlist, useGetWishlist, useDeleteWishlist } from '@/hooks'
+import {
+  PageProps,
+  useCreateWishlist,
+  useGetWishlist,
+  useDeleteWishlist,
+  useProductCardActions,
+} from '@/hooks'
 import { useAddItemsToCurrentCart } from '@/hooks/mutations/cart/useAddItemsToCurrentCart/useAddItemsToCurrentCart'
 
 import { CrWishlist, CrWishlistItem, Maybe, WishlistCollection } from '@/lib/gql/types'
@@ -38,6 +44,7 @@ const ViewLists = (props: ViewListsProps) => {
   const { deleteWishlist } = useDeleteWishlist()
   const { showSnackbar } = useSnackbarContext()
   const { showModal } = useModalContext()
+  const { handleDeleteCurrentCart } = useProductCardActions()
 
   // declaring states
   const [paginationState, setPaginationState] = useState<PageProps>({
@@ -130,6 +137,10 @@ const ViewLists = (props: ViewListsProps) => {
 
     setIsLoading(false)
   }
+  const handleEmptyCartAndAddListToCart = (id: string) => {
+    handleDeleteCurrentCart()
+    handleAddListToCart(id)
+  }
 
   // handle filter for current user list
   const handleFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -207,6 +218,7 @@ const ViewLists = (props: ViewListsProps) => {
               onDeleteList={handleDeleteList}
               onEditList={handleEditList}
               onAddListToCart={handleAddListToCart}
+              onEmptyCartAndAddListToCart={handleEmptyCartAndAddListToCart}
             />
             <Pagination
               count={wishlistsResponse ? wishlistsResponse.pageCount : 1}

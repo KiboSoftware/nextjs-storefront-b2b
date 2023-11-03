@@ -54,11 +54,17 @@ const EditList = (props: EditListProps) => {
   const mdScreen = useMediaQuery<boolean>(theme.breakpoints.up('md'))
   const { t } = useTranslation('common')
   const { updateWishlist } = useUpdateWishlistItemMutation()
-  const { openProductQuickViewModal, handleAddToList } = useProductCardActions()
+  const { openProductQuickViewModal, handleAddToList, handleDeleteCurrentCart } =
+    useProductCardActions()
 
   const handleAddListToCart = async (id: string) => {
     await handleSaveWishlist()
     onHandleAddListToCart(id)
+  }
+
+  const handleEmptyCartAndAddListToCart = async (id: string) => {
+    handleDeleteCurrentCart()
+    handleAddListToCart(id)
   }
 
   const handleSaveWishlist = async () => {
@@ -215,12 +221,22 @@ const EditList = (props: EditListProps) => {
           <Typography variant="h3" fontWeight={'bold'}>
             {t('list-items')}
           </Typography>
-          <Button
-            onClick={() => handleAddListToCart(listData?.id as string)}
-            sx={{ ...styles.addAllItemsToCartButton }}
-          >
-            <Link sx={{ ...styles.addAllItemsToCartLink }}>{t('add-all-items-to-cart')}</Link>
-          </Button>
+          <Stack direction="row">
+            <Button
+              onClick={() => handleEmptyCartAndAddListToCart(listData?.id as string)}
+              sx={{ ...styles.addAllItemsToCartButton }}
+            >
+              <Link sx={{ ...styles.addAllItemsToCartLink }}>
+                {t('empty-cart-add-list-to-cart')}
+              </Link>
+            </Button>
+            <Button
+              onClick={() => handleAddListToCart(listData?.id as string)}
+              sx={{ ...styles.addAllItemsToCartButton }}
+            >
+              <Link sx={{ ...styles.addAllItemsToCartLink }}>{t('add-all-items-to-cart')}</Link>
+            </Button>
+          </Stack>
         </Stack>
       </Box>
 

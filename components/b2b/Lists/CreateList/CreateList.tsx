@@ -1,7 +1,16 @@
 import React, { FormEvent, useState } from 'react'
 
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
-import { Button, useMediaQuery, useTheme, IconButton, Box, Typography } from '@mui/material'
+import {
+  Button,
+  useMediaQuery,
+  useTheme,
+  IconButton,
+  Box,
+  Typography,
+  Stack,
+  Link,
+} from '@mui/material'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 
@@ -265,13 +274,25 @@ const CreateList = (props: CreateListProps) => {
               sx={{ maxWidth: '360px' }}
             />
           </Box>
-          <Box sx={{ maxWidth: '360px' }}>
-            <B2BProductSearch onAddProduct={handleAddProduct} />
-          </Box>
+          {listState.name && (
+            <Box sx={{ maxWidth: '360px' }}>
+              <B2BProductSearch onAddProduct={handleAddProduct} />
+            </Box>
+          )}
         </form>
-        <Typography variant="h3" sx={{ fontWeight: 'bold' }}>
-          {t('list-items')}
-        </Typography>
+        <Box>
+          <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'baseline' }}>
+            <Typography variant="h3" fontWeight={'bold'}>
+              {t('list-items')}
+            </Typography>
+            <Button
+              // onClick={() => handleAddListToCart(listData?.id as string)}
+              sx={{ ...styles.addAllItemsToCartButton }}
+            >
+              <Link sx={{ ...styles.addAllItemsToCartLink }}>{t('add-all-items-to-cart')}</Link>
+            </Button>
+          </Stack>
+        </Box>
         {productList.length === 0 ? (
           <Typography variant="body2" color="GrayText" marginTop="20px">
             {t('no-item-in-list-text')}

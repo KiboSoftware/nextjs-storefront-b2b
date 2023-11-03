@@ -4,6 +4,7 @@ import { useModalContext } from '@/context'
 import {
   useAddCartItem,
   useCreateQuoteItem,
+  useDeleteCurrentCart,
   useUpdateWishlistItemMutation,
   useWishlist,
 } from '@/hooks'
@@ -18,6 +19,7 @@ export const useProductCardActions = (shouldFetchShippingMethods?: boolean) => {
   const { addOrRemoveWishlistItem, checkProductInWishlist } = useWishlist()
   const { createQuoteItem } = useCreateQuoteItem({ shouldFetchShippingMethods })
   const { updateWishlist } = useUpdateWishlistItemMutation()
+  const { deleteCurrentCart } = useDeleteCurrentCart()
 
   const handleAddToCart = async (payload: any, showConfirmationModal = true) => {
     try {
@@ -127,10 +129,18 @@ export const useProductCardActions = (shouldFetchShippingMethods?: boolean) => {
   }
 
   const isATCLoading = addToCart.isPending
+  const handleDeleteCurrentCart = async () => {
+    try {
+      await deleteCurrentCart.mutateAsync()
+    } catch (err) {
+      console.error(err)
+    }
+  }
 
   return {
     handleAddToCart,
     handleAddToQuote,
+    handleDeleteCurrentCart,
     openProductQuickViewModal,
     handleWishList,
     checkProductInWishlist,

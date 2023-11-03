@@ -32,6 +32,7 @@ interface ListTableProps {
   onCopyList: (param: string) => void
   onEditList: (param: string) => void
   onAddListToCart: (param: string) => void
+  onEmptyCartAndAddListToCart: (param: string) => void
   isLoading: boolean
 }
 
@@ -40,15 +41,24 @@ interface ListTableMobileOptions {
   onCopyList: (param: string) => void
   onEditList: (param: string) => void
   onAddListToCart: (param: string) => void
+  onEmptyCartAndAddListToCart: (param: string) => void
   itemId: string
 }
 
 const ListTableMobileOptions = (props: ListTableMobileOptions) => {
-  const { onDeleteList, onCopyList, onEditList, onAddListToCart, itemId } = props
+  const {
+    onDeleteList,
+    onCopyList,
+    onEditList,
+    onAddListToCart,
+    onEmptyCartAndAddListToCart,
+    itemId,
+  } = props
   const [anchorEl, setAnchorEL] = useState<HTMLElement | null>(null)
   const { t } = useTranslation('common')
   const options = [
     { name: t('edit'), onClick: onEditList },
+    { name: t('empty-cart-add-list-to-cart'), onClick: onEmptyCartAndAddListToCart },
     { name: t('add-list-items-to-cart'), onClick: onAddListToCart },
     { name: t('duplicate'), onClick: onCopyList },
     { name: t('delete'), onClick: onDeleteList },
@@ -90,7 +100,15 @@ const ListTableMobileOptions = (props: ListTableMobileOptions) => {
 }
 
 const ListTable = (props: ListTableProps) => {
-  const { rows, onDeleteList, onCopyList, onEditList, onAddListToCart, isLoading } = props
+  const {
+    rows,
+    onDeleteList,
+    onCopyList,
+    onEditList,
+    onAddListToCart,
+    onEmptyCartAndAddListToCart,
+    isLoading,
+  } = props
 
   const { t } = useTranslation('common')
   const theme = useTheme()
@@ -148,6 +166,14 @@ const ListTable = (props: ListTableProps) => {
                         variant="text"
                         color="inherit"
                         data-testid="addToCartBtn"
+                        onClick={() => onEmptyCartAndAddListToCart(item?.id as string)}
+                      >
+                        {t('empty-cart-add-list-to-cart')}
+                      </Button>
+                      <Button
+                        variant="text"
+                        color="inherit"
+                        data-testid="addToCartBtn"
                         onClick={() => onAddListToCart(item?.id as string)}
                       >
                         {t('add-to-cart')}
@@ -181,6 +207,7 @@ const ListTable = (props: ListTableProps) => {
                         onCopyList={onCopyList}
                         onEditList={onEditList}
                         onAddListToCart={onAddListToCart}
+                        onEmptyCartAndAddListToCart={onEmptyCartAndAddListToCart}
                         itemId={item?.id as string}
                       />
                     </>
