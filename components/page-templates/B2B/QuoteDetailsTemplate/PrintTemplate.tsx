@@ -67,7 +67,7 @@ const PrintTemplate: React.FC<PrintTemplateProps> = (props) => {
       </Box>
       <Stack gap={2} border={'1px solid grey'} p={2}>
         <Box>
-          <Typography variant="h3">Quote Details</Typography>
+          <Typography variant="h3">{t('quote-details')}</Typography>
         </Box>
         <Box display={'flex'}>
           <Stack flex={1}>
@@ -78,7 +78,7 @@ const PrintTemplate: React.FC<PrintTemplateProps> = (props) => {
           <Stack flex={1} gap={1}>
             <Box flex={1}>
               <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
-                {'Shipping Address'}
+                {t('shipping-address')}
               </Typography>
               <AddressCard
                 firstName={quote?.fulfillmentInfo?.fulfillmentContact?.firstName as string}
@@ -104,7 +104,7 @@ const PrintTemplate: React.FC<PrintTemplateProps> = (props) => {
 
             <Box flex={1}>
               <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
-                {'Shipping method'}
+                {t('shipping-method')}
               </Typography>
               <Typography pt={1}>{quote?.fulfillmentInfo?.shippingMethodName}</Typography>
             </Box>
@@ -114,19 +114,19 @@ const PrintTemplate: React.FC<PrintTemplateProps> = (props) => {
       <Stack gap={2} border={'1px solid grey'}>
         <Box p={2}>
           <Typography width={'fit-content'} variant="h3">
-            Products Details
+            {t('product-details')}
           </Typography>
         </Box>
         <TableContainer sx={{ p: 0, m: 0 }}>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Product</TableCell>
-                <TableCell>Qty</TableCell>
-                <TableCell>Fulfillment Type</TableCell>
-                <TableCell>Unit Price</TableCell>
-                <TableCell>Discount</TableCell>
-                <TableCell>Total</TableCell>
+                <TableCell>{t('product-header')}</TableCell>
+                <TableCell>{t('qty')}</TableCell>
+                <TableCell>{t('fulfillment-method-header')}</TableCell>
+                <TableCell>{t('unit-price')}</TableCell>
+                <TableCell>{t('discount-header')}</TableCell>
+                <TableCell>{t('total')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -149,23 +149,23 @@ const PrintTemplate: React.FC<PrintTemplateProps> = (props) => {
         <Box p={2}>
           <Box ml={'auto'} display={'flex'} flexDirection={'column'} width={400}>
             <Box display={'flex'} justifyContent={'space-between'}>
-              <span>Item Total:</span>
+              <span>{t('item-total-header')}</span>
               <span>{t('currency', { val: quote?.itemTotal })}</span>
             </Box>
             <Box display={'flex'} justifyContent={'space-between'}>
-              <span>Shipping:</span>
+              <span>{t('shipping')}</span>
               <span>{t('currency', { val: quote?.shippingSubTotal })}</span>
             </Box>
             <Box display={'flex'} justifyContent={'space-between'}>
-              <span>Handling:</span>
+              <span>{t('handling')}</span>
               <span>{t('currency', { val: quote?.handlingSubTotal })}</span>
             </Box>
             <Box display={'flex'} justifyContent={'space-between'}>
-              <span>Tax and Duty:</span>
+              <span>{t('duty-total')}</span>
               <span>{t('currency', { val: quote?.dutyTotal })}</span>
             </Box>
             <Box display={'flex'} justifyContent={'space-between'}>
-              <span>Total:</span>
+              <span>{t('total')}</span>
               <span>{t('currency', { val: quote?.total })}</span>
             </Box>
           </Box>
