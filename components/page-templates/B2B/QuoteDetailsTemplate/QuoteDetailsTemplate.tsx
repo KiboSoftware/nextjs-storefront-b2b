@@ -550,7 +550,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
         updateMode,
       })
       if (response?.invalidCoupons?.length) {
-        setPromoError(response?.invalidCoupons[0]?.reason)
+        setPromoError(`<strong>${couponCode}</strong> ${response?.invalidCoupons[0]?.reason}`)
       }
     } catch (err) {
       console.error(err)
@@ -587,7 +587,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
       console.error(err)
     }
   }
-  const handleSaveUpdatedFulfillmentToQuote = async () => {
+  const handleUpdateQuoteFulfillmentInfo = async () => {
     if (shouldFetchShippingMethods) {
       const shippingMethodName = getQuoteShippingMethodName(
         shippingMethods,
@@ -606,7 +606,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
 
   useEffect(() => {
     if (!!selectedShippingMethodCode) {
-      handleSaveUpdatedFulfillmentToQuote()
+      handleUpdateQuoteFulfillmentInfo()
     }
   }, [JSON.stringify(shippingMethods), JSON.stringify(quote?.fulfillmentInfo?.fulfillmentContact)])
 

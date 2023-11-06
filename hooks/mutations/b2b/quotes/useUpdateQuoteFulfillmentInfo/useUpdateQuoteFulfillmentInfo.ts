@@ -10,7 +10,7 @@ import {
   UpdateQuoteFulfillmentInfoParams,
 } from '@/lib/helpers'
 import { quoteKeys, quoteShippingMethodKeys } from '@/lib/react-query/queryKeys'
-import { ShouldFetchShippingMethods } from '@/lib/types'
+import type { ShouldFetchShippingMethods } from '@/lib/types'
 
 import type { CrFulfillmentInfoInput, Quote } from '@/lib/gql/types'
 

@@ -7,7 +7,7 @@ import { makeGraphQLClient } from '@/lib/gql/client'
 import createQuoteItemMutation from '@/lib/gql/mutations/b2b/quotes/create-quote-item'
 import { buildCreateQuoteItemParams } from '@/lib/helpers'
 import { quoteKeys, quoteShippingMethodKeys } from '@/lib/react-query/queryKeys'
-import { ShouldFetchShippingMethods } from '@/lib/types'
+import type { ShouldFetchShippingMethods } from '@/lib/types'
 
 import { Quote } from '@/lib/gql/types'
 

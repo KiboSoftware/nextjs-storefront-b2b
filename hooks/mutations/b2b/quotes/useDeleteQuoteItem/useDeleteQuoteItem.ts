@@ -6,7 +6,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { makeGraphQLClient } from '@/lib/gql/client'
 import { deleteQuoteItemMutation } from '@/lib/gql/mutations'
 import { quoteKeys, quoteShippingMethodKeys } from '@/lib/react-query/queryKeys'
-import { ShouldFetchShippingMethods } from '@/lib/types'
+import type { ShouldFetchShippingMethods } from '@/lib/types'
 
 interface DeleteQuoteItemParams {
   quoteId: string
