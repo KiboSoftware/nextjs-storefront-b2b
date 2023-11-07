@@ -27,7 +27,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { useReactToPrint } from 'react-to-print'
 import * as yup from 'yup'
 
-import PrintTemplate from './PrintTemplate'
+import QuoteDetailsPrintTemplate from './QuoteDetailsPrintTemplate'
 import { quoteDetailsTemplateStyles } from './QuoteDetailsTemplate.style'
 import {
   B2BProductDetailsTable,
@@ -1380,7 +1380,7 @@ const QuoteDetailsTemplate = (props: QuoteDetailsTemplateProps) => {
 
       {/* Print Template */}
       <Box pt={3} id="printable-quote-details" display={'none'} ref={componentRef}>
-        <PrintTemplate quote={quote} accountName={accountName} createdBy={createdBy} />
+        <QuoteDetailsPrintTemplate quote={quote} accountName={accountName} createdBy={createdBy} />
       </Box>
     </>
   )

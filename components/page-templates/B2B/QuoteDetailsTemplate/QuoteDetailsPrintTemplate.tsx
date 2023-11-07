@@ -18,13 +18,13 @@ import { quoteGetters } from '@/lib/getters'
 
 import { CrOrderItem, Quote } from '@/lib/gql/types'
 
-interface PrintTemplateProps {
+interface QuoteDetailsPrintTemplateProps {
   quote: Quote
   accountName: string
   createdBy: string
 }
 
-const PrintTemplate: React.FC<PrintTemplateProps> = (props) => {
+const QuoteDetailsPrintTemplate: React.FC<QuoteDetailsPrintTemplateProps> = (props) => {
   const { quote, accountName, createdBy } = props
 
   const { t } = useTranslation('common')
@@ -175,4 +175,4 @@ const PrintTemplate: React.FC<PrintTemplateProps> = (props) => {
   )
 }
 
-export default PrintTemplate
+export default QuoteDetailsPrintTemplate
