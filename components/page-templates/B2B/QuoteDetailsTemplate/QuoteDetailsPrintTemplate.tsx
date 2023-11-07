@@ -63,7 +63,7 @@ const QuoteDetailsPrintTemplate: React.FC<QuoteDetailsPrintTemplateProps> = (pro
   return (
     <Stack gap={4}>
       <Box>
-        <Typography variant="h2">{quote.name}</Typography>
+        <Typography variant="h2">{quote?.name}</Typography>
       </Box>
       <Stack gap={2} border={'1px solid grey'} p={2}>
         <Box>
