@@ -18,7 +18,7 @@ interface ProductQuickViewDialogProps {
   quoteDetails?: any
   listData?: any
   shouldFetchShippingMethods?: boolean
-  onUpdateListData: (param: CrWishlist) => void
+  onUpdateListData: (param: CrWishlist, addToCartPayload: any) => void
 }
 
 const ProductQuickViewDialogFooter = (props: any) => {
@@ -44,13 +44,15 @@ const ProductQuickViewDialogFooter = (props: any) => {
   const mdScreen = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'))
 
   const handleAddProductToCart = () => {
+    console.log('addToCartPayload cart', addToCartPayload)
     handleAddToCart(addToCartPayload, false)
     onClose()
   }
 
   const handleAddProductToList = async () => {
+    console.log('handle product to list quick view dialog', addToCartPayload)
     listMode === 'create'
-      ? onUpdateListData(currentProduct)
+      ? onUpdateListData(currentProduct, addToCartPayload)
       : handleAddToList({
           listData,
           product: currentProduct as Product,
@@ -60,6 +62,7 @@ const ProductQuickViewDialogFooter = (props: any) => {
   }
 
   const handleAddProductToQuote = () => {
+    console.log('handladd product to quote', addToCartPayload)
     const { quoteId, updateMode } = quoteDetails
     handleAddToQuote(
       quoteId,

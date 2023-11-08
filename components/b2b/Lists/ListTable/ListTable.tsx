@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
+import React, { Fragment, useState } from 'react'
 
-import { ContentCopy, Delete, Edit, MoreVert } from '@mui/icons-material'
+import { ContentCopy, Delete, Edit, MoreVert, AddShoppingCart } from '@mui/icons-material'
 import {
   Box,
-  Button,
   IconButton,
   Menu,
   MenuItem,
@@ -13,6 +12,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
   useMediaQuery,
   useTheme,
@@ -21,6 +21,7 @@ import { grey } from '@mui/material/colors'
 import { useTranslation } from 'next-i18next'
 
 import { styles } from '@/components/b2b/Lists/ListTable/ListTable.style'
+import { ResetATC, AddToCart } from '@/components/icons'
 import { useGetB2BUsersEmailAndId } from '@/hooks'
 import formatDate from '@/lib/helpers/formatDate'
 
@@ -162,22 +163,35 @@ const ListTable = (props: ListTableProps) => {
                 <TableCell sx={{ ...styles.tableCellStyles, width: mdScreen ? '25%' : '10%' }}>
                   {mdScreen ? (
                     <Box sx={{ justifyContent: 'flex-end', display: 'flex' }}>
-                      <Button
-                        variant="text"
-                        color="inherit"
-                        data-testid="addToCartBtn"
-                        onClick={() => onEmptyCartAndAddListToCart(item?.id as string)}
+                      <Tooltip
+                        title={
+                          <Fragment>
+                            <Typography variant="body2">
+                              {t('empty-cart-add-list-to-cart')}
+                            </Typography>
+                          </Fragment>
+                        }
                       >
-                        {t('empty-cart-add-list-to-cart')}
-                      </Button>
-                      <Button
-                        variant="text"
-                        color="inherit"
-                        data-testid="addToCartBtn"
-                        onClick={() => onAddListToCart(item?.id as string)}
+                        <IconButton onClick={() => onEmptyCartAndAddListToCart(item?.id as string)}>
+                          <ResetATC />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip
+                        title={
+                          <Fragment>
+                            <Typography variant="body2">{t('add-to-cart')}</Typography>
+                          </Fragment>
+                        }
                       >
-                        {t('add-to-cart')}
-                      </Button>
+                        <IconButton
+                          color="inherit"
+                          onClick={() => onAddListToCart(item?.id as string)}
+                        >
+                          {/* <AddToCart /> */}
+                          <AddShoppingCart />
+                        </IconButton>
+                      </Tooltip>
+
                       <IconButton
                         color="inherit"
                         onClick={() => onEditList(item?.id as string)}

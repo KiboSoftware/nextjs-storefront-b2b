@@ -78,7 +78,7 @@ const EditList = (props: EditListProps) => {
       onUpdateListData(response.updateWishlist)
       onEditFormToggle()
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
   }
 
@@ -94,14 +94,21 @@ const EditList = (props: EditListProps) => {
       const response = await updateWishlist.mutateAsync(payload)
       onUpdateListData(response.updateWishlist)
     } catch (e) {
-      console.log('error', e)
+      console.error(e)
     }
   }
 
-  const handleChangeQuantity = (id: string, quantity: number) => {
+  const handleChangeQuantity = async (id: string, quantity: number) => {
     const items = listData?.items
     const currentItem = items?.find((item: Maybe<CrWishlistItem>) => item?.id === id)
     if (currentItem) currentItem.quantity = quantity
+    if (listData) listData.items = items
+    const payload = {
+      wishlistId: listData?.id as string,
+      wishlistInput: listData as CrWishlistInput,
+    }
+    const response = await updateWishlist.mutateAsync(payload)
+    onUpdateListData(response.updateWishlist)
   }
 
   const handleAddProduct = async (product?: Product) => {
@@ -126,6 +133,7 @@ const EditList = (props: EditListProps) => {
       })
     }
   }
+  console.log('edit list list data', listData)
 
   return (
     <>
@@ -245,10 +253,10 @@ const EditList = (props: EditListProps) => {
           {t('no-item-in-list-text')}
         </Typography>
       ) : (
-        listData?.items?.map((item: Maybe<CrWishlistItem>) => {
+        listData?.items?.map((item: Maybe<CrWishlistItem>, index) => {
           return (
             <ListItem
-              key={item?.product?.productCode}
+              key={(item?.product?.productCode as string) + index}
               item={item as CrWishlistItem}
               onDeleteItem={handleDeleteItem}
               onChangeQuantity={handleChangeQuantity}

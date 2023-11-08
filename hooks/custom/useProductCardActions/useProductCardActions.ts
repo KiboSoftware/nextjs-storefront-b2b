@@ -69,7 +69,7 @@ export const useProductCardActions = (shouldFetchShippingMethods?: boolean) => {
     quoteDetails?: any
     listData?: any
     shouldFetchShippingMethods?: boolean
-    onUpdateListData?: (param: CrWishlist) => void
+    onUpdateListData?: (param: CrWishlist, addToCartPayload: any) => void
   }) => {
     showModal({
       Component: ProductQuickViewDialog,

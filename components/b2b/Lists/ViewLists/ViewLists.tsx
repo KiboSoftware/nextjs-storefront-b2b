@@ -35,10 +35,11 @@ import { CrWishlist, CrWishlistItem, Maybe, WishlistCollection } from '@/lib/gql
 export interface ViewListsProps {
   onEditFormToggle: () => void
   isEditFormOpen: boolean
+  onAddListToCart: (items: any) => any
 }
 
 const ViewLists = (props: ViewListsProps) => {
-  const { onEditFormToggle, isEditFormOpen } = props
+  const { onEditFormToggle, isEditFormOpen, onAddListToCart } = props
   const { publicRuntimeConfig } = getConfig()
   const { createWishlist } = useCreateWishlist()
   const { deleteWishlist } = useDeleteWishlist()
@@ -87,13 +88,13 @@ const ViewLists = (props: ViewListsProps) => {
     const newListName = createListName(newWishlist?.name as string)
     setIsLoading(true)
     try {
-      createWishlist.mutate({
+      createWishlist.mutateAsync({
         customerAccountId: user?.id,
         name: newListName,
         items: newWishlist?.items,
       })
     } catch (e: any) {
-      alert(e?.message)
+      console.error(e)
     }
     setIsLoading(false)
   }
@@ -126,9 +127,7 @@ const ViewLists = (props: ViewListsProps) => {
     const list = wishlistsResponse?.items?.find((item) => item?.id === id)
     setIsLoading(true)
     try {
-      const response = await addItemsToCurrentCart.mutateAsync({
-        items: list?.items as CrWishlistItem[],
-      })
+      const response = await onAddListToCart(list?.items as Array<CrWishlistItem>)
       if (response) showSnackbar(t('list-added-to-cart'), 'success')
       setIsLoading(false)
     } catch (e) {
