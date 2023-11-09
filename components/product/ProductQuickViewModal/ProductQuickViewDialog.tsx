@@ -44,13 +44,11 @@ const ProductQuickViewDialogFooter = (props: any) => {
   const mdScreen = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'))
 
   const handleAddProductToCart = () => {
-    console.log('addToCartPayload cart', addToCartPayload)
     handleAddToCart(addToCartPayload, false)
     onClose()
   }
 
   const handleAddProductToList = async () => {
-    console.log('handle product to list quick view dialog', addToCartPayload)
     listMode === 'create'
       ? onUpdateListData(currentProduct, addToCartPayload)
       : handleAddToList({
@@ -62,7 +60,6 @@ const ProductQuickViewDialogFooter = (props: any) => {
   }
 
   const handleAddProductToQuote = () => {
-    console.log('handladd product to quote', addToCartPayload)
     const { quoteId, updateMode } = quoteDetails
     handleAddToQuote(
       quoteId,

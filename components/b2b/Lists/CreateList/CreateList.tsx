@@ -64,7 +64,9 @@ const CreateList = (props: CreateListProps) => {
   const { t } = useTranslation('common')
   const { user } = useAuthContext()
   const { createWishlist } = useCreateWishlist()
-  const { updateWishlist } = useUpdateWishlistItemMutation()
+  const { updateWishlist, updateWishlistItemQuantity } = useUpdateWishlistItemMutation({
+    isCreateList: true,
+  })
   const { addToWishlist } = useAddToWishlistItem()
   const { showSnackbar } = useSnackbarContext()
   const { deleteWishlistItemById } = useDeleteWishlistItemById({ isCreateList: true })
@@ -82,7 +84,6 @@ const CreateList = (props: CreateListProps) => {
   }
 
   const onUpdateListData = async (product: any, payload: any) => {
-    console.log('onupdatelist data', product, payload)
     await addToWishlist.mutateAsync({
       customerAccountId: user?.id as number,
       product,
@@ -124,43 +125,6 @@ const CreateList = (props: CreateListProps) => {
         onUpdateListData,
       })
     } else {
-      console.log('add product', product, newListState)
-      // const { items } = listState
-      // const item = {
-      //   product: {
-      //     productCode: product?.productCode as string,
-      //     variationProductCode: product?.variationProductCode as string,
-      //     options: product?.options as CrProductOption[],
-      //     isPackagedStandAlone: product?.isPackagedStandAlone,
-      //     price: product?.price as CrProductPrice,
-      //     imageUrl:
-      //       (product?.content?.productImages?.length as number) > 0
-      //         ? (product?.content?.productImages?.[0]?.imageUrl as string)
-      //         : '',
-      //     name: product?.content?.productName as string,
-      //     description: product?.content?.productFullDescription as string,
-      //   },
-      //   quantity: 1,
-      // }
-      // items.push(item)
-
-      // // converting product to CrWishlistItem
-      // const crWishlistProduct: CrWishlistItem = {
-      //   quantity: 1,
-      //   product: {
-      //     productCode: product?.productCode,
-      //     variationProductCode: product?.variationProductCode,
-      //     options: product?.options as CrProductOption[],
-      //     isPackagedStandAlone: product?.isPackagedStandAlone,
-      //     price: product?.price as CrProductPrice,
-      //     imageUrl:
-      //       (product?.content?.productImages?.length as number) > 0
-      //         ? (product?.content?.productImages?.[0]?.imageUrl as string)
-      //         : '',
-      //     name: product?.content?.productName as string,
-      //     description: product?.content?.productFullDescription as string,
-      //   },
-      // }
       await addToWishlist.mutateAsync({
         product,
         customerAccountId: user?.id as number,
@@ -169,7 +133,6 @@ const CreateList = (props: CreateListProps) => {
     }
   }
   useEffect(() => {
-    console.log('response', response?.data, 'new list state', newListState)
     setNewListState(response?.data)
   }, [JSON.stringify(response?.data)])
 
@@ -191,17 +154,18 @@ const CreateList = (props: CreateListProps) => {
   }
 
   const handleDeleteItem = async (id: string) => {
-    console.log('delete item id', id, newListState?.id)
-
     await deleteWishlistItemById.mutateAsync({
       wishlistId: newListState?.id,
       wishlistItemId: id,
     })
   }
 
-  const handleChangeQuantity = (id: string, quantity: number) => {
-    const item = listState.items.find((item) => item.product.productCode === id)
-    if (item?.quantity) item.quantity = quantity
+  const handleChangeQuantity = async (id: string, quantity: number) => {
+    await updateWishlistItemQuantity.mutateAsync({
+      quantity,
+      wishlistId: newListState?.id,
+      wishlistItemId: id,
+    })
   }
 
   return (

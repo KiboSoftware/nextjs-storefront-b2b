@@ -41,7 +41,8 @@ const ListItem = (props: ListItemProps) => {
   const theme = useTheme()
   const { t } = useTranslation('common')
   const mdScreen = useMediaQuery<boolean>(theme.breakpoints.up('md'))
-  const [itemQuantity, setItemQuantity] = useState(item.quantity || 1)
+  console.log('item list item', item)
+  const [itemQuantity, setItemQuantity] = useState(item?.quantity || 1)
 
   const { getProductLink } = uiHelpers()
 

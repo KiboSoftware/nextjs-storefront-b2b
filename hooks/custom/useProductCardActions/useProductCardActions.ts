@@ -34,7 +34,7 @@ export const useProductCardActions = (shouldFetchShippingMethods?: boolean) => {
         })
       }
     } catch (err) {
-      console.log(err)
+      console.error(err)
     }
   }
 
@@ -52,7 +52,7 @@ export const useProductCardActions = (shouldFetchShippingMethods?: boolean) => {
         quantity,
       })
     } catch (err) {
-      console.log(err)
+      console.error(err)
     }
   }
 

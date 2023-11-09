@@ -131,7 +131,7 @@ const ViewLists = (props: ViewListsProps) => {
       if (response) showSnackbar(t('list-added-to-cart'), 'success')
       setIsLoading(false)
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
 
     setIsLoading(false)

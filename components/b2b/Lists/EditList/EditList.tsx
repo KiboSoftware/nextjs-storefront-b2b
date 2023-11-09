@@ -133,7 +133,6 @@ const EditList = (props: EditListProps) => {
       })
     }
   }
-  console.log('edit list list data', listData)
 
   return (
     <>
