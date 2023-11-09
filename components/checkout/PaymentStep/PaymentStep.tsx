@@ -765,18 +765,12 @@ const PaymentStep = (props: PaymentStepProps) => {
           {newPaymentTypes.map((paymentType: PaymentsType) => {
             return (
               <Box key={paymentType.id}>
-                {(newPaymentTypes?.length > 1 ||
-                  !(
-                    shouldShowPreviouslySavedCards ||
-                    shouldShowPreviouslySavedPaymentsForPurchaseOrder
-                  )) && (
-                  <FormControlLabel
-                    sx={{ ...formControlLabelStyle }}
-                    value={paymentType.id}
-                    control={<Radio sx={{ ...radioStyle }} />}
-                    label={paymentType.name}
-                  />
-                )}
+                <FormControlLabel
+                  sx={{ ...formControlLabelStyle }}
+                  value={paymentType.id}
+                  control={<Radio sx={{ ...radioStyle }} />}
+                  label={paymentType.name}
+                />
                 {paymentType.id === selectedPaymentTypeRadio ? (
                   <Box sx={{ maxWidth: '100%', mb: 1 }}>
                     {shouldShowPreviouslySavedCards ? (
