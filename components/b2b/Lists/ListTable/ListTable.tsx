@@ -186,6 +186,7 @@ const ListTable = (props: ListTableProps) => {
                         <IconButton
                           color="inherit"
                           onClick={() => onAddListToCart(item?.id as string)}
+                          data-testid="addToCartBtn"
                         >
                           {/* <AddToCart /> */}
                           <AddShoppingCart />

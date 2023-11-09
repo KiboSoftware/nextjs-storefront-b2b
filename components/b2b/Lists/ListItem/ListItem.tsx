@@ -8,14 +8,14 @@ import Link from 'next/link'
 import { useTranslation } from 'next-i18next'
 
 import { ProductViewDialog } from '@/components/b2b'
-import { QuantitySelector, KeyValueDisplay, KiboImage } from '@/components/common'
+import { QuantitySelector, KeyValueDisplay, KiboImage, Price } from '@/components/common'
 import { ProductOptionList } from '@/components/product'
 import { useModalContext } from '@/context'
-import { productGetters } from '@/lib/getters'
+import { cartGetters, productGetters } from '@/lib/getters'
 import { uiHelpers } from '@/lib/helpers'
 import DefaultImage from '@/public/product_placeholder.svg'
 
-import { CrProductOption, CrWishlistItem } from '@/lib/gql/types'
+import { CrOrderItem, CrProductOption, CrWishlistItem } from '@/lib/gql/types'
 
 export interface ListItemProps {
   item: CrWishlistItem
@@ -123,7 +123,7 @@ const ListItem = (props: ListItemProps) => {
               name: t('qty'),
               value: (
                 <QuantitySelector
-                  quantity={itemQuantity}
+                  quantity={item?.quantity as number}
                   onIncrease={() => handleQuantityUpdate(itemQuantity + 1)}
                   onDecrease={() => handleQuantityUpdate(itemQuantity - 1)}
                   onQuantityUpdate={(q) => handleQuantityUpdate(q)}
@@ -154,7 +154,22 @@ const ListItem = (props: ListItemProps) => {
               <KeyValueDisplay
                 option={{
                   name: t('total'),
-                  value: `$${item.subtotal}`,
+                  value: (
+                    <Price
+                      variant="body2"
+                      fontWeight="bold"
+                      price={t('currency', {
+                        val: cartGetters.getLineItemPrice(item as CrOrderItem).regular?.toString(),
+                      })}
+                      salePrice={
+                        cartGetters.getLineItemPrice(item as CrOrderItem).special
+                          ? t('currency', {
+                              val: cartGetters.getLineItemPrice(item as CrOrderItem).special,
+                            })
+                          : undefined
+                      }
+                    />
+                  ),
                 }}
                 sx={{ fontSize: '14px', marginRight: '10px' }}
                 variant="body1"

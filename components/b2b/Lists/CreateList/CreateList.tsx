@@ -29,33 +29,18 @@ import { useGetCustomerWishlist } from '@/hooks'
 import { productGetters } from '@/lib/getters'
 import { ProductCustom } from '@/lib/types'
 
-import { CrProductOption, CrProductPrice, CrWishlistItem, Product } from '@/lib/gql/types'
+import { CrWishlistItem, Product } from '@/lib/gql/types'
 
 export interface CreateListProps {
   onCreateFormToggle: (param: boolean) => void
   onAddListToCart: (items: any) => any
 }
 
-type CreateListItems = {
-  product: {
-    productCode: string
-  }
-  quantity: number
-}
-interface CreateListState {
-  name: string
-  items: CreateListItems[]
-}
-
 const CreateList = (props: CreateListProps) => {
   const { onCreateFormToggle, onAddListToCart } = props
-  const [listState, setListState] = useState<CreateListState>({
-    name: '',
-    items: [],
-  })
+
   const [newListState, setNewListState] = useState<any>({})
   const [listName, setListName] = useState('')
-  const [productList, setProductList] = useState<CrWishlistItem[]>([])
   const { openProductQuickViewModal, handleDeleteCurrentCart } = useProductCardActions()
 
   const theme = useTheme()
@@ -96,17 +81,7 @@ const CreateList = (props: CreateListProps) => {
   }
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    try {
-      await createWishlist.mutateAsync({
-        customerAccountId: user?.id,
-        name: listState.name,
-        items: listState.items,
-      })
-      // setListState({ name: '', items: [] })
-      onCreateFormToggle(false)
-    } catch (e) {
-      console.error(e)
-    }
+    onCreateFormToggle(false)
   }
 
   const handleAddProduct = async (product?: any) => {
@@ -132,9 +107,6 @@ const CreateList = (props: CreateListProps) => {
       })
     }
   }
-  useEffect(() => {
-    setNewListState(response?.data)
-  }, [JSON.stringify(response?.data)])
 
   const handleCreateListAndUpdateWishlistName = async () => {
     setListName(listName || newListState?.name)
@@ -167,6 +139,10 @@ const CreateList = (props: CreateListProps) => {
       wishlistItemId: id,
     })
   }
+
+  useEffect(() => {
+    setNewListState(response?.data)
+  }, [JSON.stringify(response?.data)])
 
   return (
     <>
@@ -208,7 +184,7 @@ const CreateList = (props: CreateListProps) => {
                   variant="contained"
                   type="submit"
                   form="wishlist-form"
-                  disabled={listState.name.length === 0}
+                  disabled={!newListState?.name}
                 >
                   {t('save-and-close')}
                 </Button>
@@ -310,7 +286,7 @@ const CreateList = (props: CreateListProps) => {
               type="submit"
               form="wishlist-form"
               sx={{ width: '100%' }}
-              disabled={listState.name.length === 0}
+              disabled={!newListState?.name}
             >
               {t('save-and-close')}
             </Button>

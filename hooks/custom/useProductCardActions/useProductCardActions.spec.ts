@@ -33,6 +33,9 @@ jest.mock('@/hooks', () => ({
   useUpdateWishlistItemMutation: jest.fn(() => ({
     updateWishlist: jest.fn(),
   })),
+  useDeleteCurrentCart: jest.fn(() => ({
+    deleteCurrentCart: jest.fn(),
+  })),
 }))
 
 describe('useProductCardActions', () => {

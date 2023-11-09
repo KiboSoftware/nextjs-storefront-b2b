@@ -107,7 +107,7 @@ describe('[component] - ListTable', () => {
   it('should call callback function when user clicks on Add To Cart button', async () => {
     window.matchMedia = createMatchMedia(1024)
     const { user } = setup()
-    const addToCartBtns = screen.getAllByText(/add-to-cart/i)
+    const addToCartBtns = screen.getAllByTestId('addToCartBtn')
     addToCartBtns.forEach((btn) => {
       user.click(btn)
     })
