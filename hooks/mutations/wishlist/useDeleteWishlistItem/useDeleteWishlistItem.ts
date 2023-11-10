@@ -6,7 +6,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { makeGraphQLClient } from '@/lib/gql/client'
 import { deleteWishlistItemMutation } from '@/lib/gql/mutations'
 import { buildDeleteWishlistItemParams } from '@/lib/helpers'
-import { customerWishlistKeys, wishlistKeys } from '@/lib/react-query/queryKeys'
+import { wishlistKeys } from '@/lib/react-query/queryKeys'
 import type { DeleteWishlistItemInput, WishlistHookParams } from '@/lib/types'
 
 const deleteWishlistItem = async (props: DeleteWishlistItemInput) => {
@@ -51,10 +51,6 @@ export const useDeleteWishlistItem = (params?: WishlistHookParams) => {
           }, params?.delay)
         } else {
           queryClient.invalidateQueries({ queryKey: wishlistKeys.all })
-        }
-
-        if (params?.isCreateList) {
-          queryClient.invalidateQueries({ queryKey: customerWishlistKeys.all })
         }
       },
     }),

@@ -123,7 +123,7 @@ const ListItem = (props: ListItemProps) => {
               name: t('qty'),
               value: (
                 <QuantitySelector
-                  quantity={item?.quantity as number}
+                  quantity={item?.quantity}
                   onIncrease={() => handleQuantityUpdate(itemQuantity + 1)}
                   onDecrease={() => handleQuantityUpdate(itemQuantity - 1)}
                   onQuantityUpdate={(q) => handleQuantityUpdate(q)}

@@ -24,8 +24,8 @@ import {
   useDeleteWishlistItemById,
   useProductCardActions,
   useUpdateWishlistItemMutation,
+  useGetCustomerWishlist,
 } from '@/hooks'
-import { useGetCustomerWishlist } from '@/hooks'
 import { productGetters } from '@/lib/getters'
 import { ProductCustom } from '@/lib/types'
 
@@ -111,17 +111,29 @@ const CreateList = (props: CreateListProps) => {
   const handleCreateListAndUpdateWishlistName = async () => {
     setListName(listName || newListState?.name)
     if (!newListState?.name && listName) {
-      const listData = await createWishlist.mutateAsync({
-        customerAccountId: user?.id,
-        name: listName,
-      })
-      setNewListState(listData)
+      try {
+        const listData = await createWishlist.mutateAsync({
+          customerAccountId: user?.id,
+          name: listName,
+        })
+        if (listData) {
+          setNewListState(listData)
+        }
+      } catch (e) {
+        console.error(e)
+      }
     } else if (listName) {
-      const listData = await updateWishlist.mutateAsync({
-        wishlistId: newListState?.id,
-        wishlistInput: { name: listName },
-      })
-      setNewListState(listData?.updateWishlist)
+      try {
+        const listData = await updateWishlist.mutateAsync({
+          wishlistId: newListState?.id,
+          wishlistInput: { name: listName },
+        })
+        if (listData) {
+          setNewListState(listData?.updateWishlist)
+        }
+      } catch (e) {
+        console.error(e)
+      }
     }
   }
 

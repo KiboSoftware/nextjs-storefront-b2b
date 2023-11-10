@@ -1,4 +1,4 @@
-import Logo from './add-to-cart.svg'
+import Logo from './ATC.svg'
 import { KiboImage } from '../../common'
 
 const AddToCart = () => {

@@ -1,4 +1,4 @@
-import Logo from './Plugin icon - 2.svg'
+import Logo from './reset-and-atc.svg'
 import { KiboImage } from '../../common'
 
 const ResetATC = () => {

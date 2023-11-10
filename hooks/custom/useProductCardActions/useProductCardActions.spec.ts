@@ -4,7 +4,7 @@ import { useProductCardActions } from './useProductCardActions'
 import { AddToCartDialog } from '@/components/dialogs'
 import { ProductQuickViewDialog } from '@/components/product'
 import { useModalContext } from '@/context'
-import { useAddCartItem, useWishlist, useCreateQuoteItem } from '@/hooks'
+import { useAddCartItem, useWishlist, useCreateQuoteItem, useDeleteCurrentCart } from '@/hooks'
 import { ProductCustom } from '@/lib/types'
 
 const showModalMock = jest.fn()
@@ -131,4 +131,14 @@ describe('useProductCardActions', () => {
       updateMode,
     })
   })
+
+  // it('should handle delete current cart', async () => {
+  //   const { result } = renderHook(() => useProductCardActions())
+  //   const { deleteCurrentCart } = useDeleteCurrentCart()
+  //   await act(async () => {
+  //     await result.current.handleDeleteCurrentCart()
+  //   })
+
+  //   expect(deleteCurrentCart.mutateAsync).toHaveBeenCalledWith(undefined)
+  // })
 })

@@ -28,7 +28,6 @@ import {
   useDeleteWishlist,
   useProductCardActions,
 } from '@/hooks'
-import { useAddItemsToCurrentCart } from '@/hooks/mutations/cart/useAddItemsToCurrentCart/useAddItemsToCurrentCart'
 
 import { CrWishlist, CrWishlistItem, Maybe, WishlistCollection } from '@/lib/gql/types'
 
@@ -67,7 +66,6 @@ const ViewLists = (props: ViewListsProps) => {
   const response = useGetWishlist(paginationState)
   const wishlistsResponse = response.data as WishlistCollection
   const { isPending } = response
-  const { addItemsToCurrentCart } = useAddItemsToCurrentCart()
 
   // copy list function
   const createListName = (name: string) => {

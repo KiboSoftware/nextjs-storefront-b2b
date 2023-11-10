@@ -25,7 +25,6 @@ import {
   useGetStoreLocations,
   useGetPurchaseLocation,
   useUpdateCartItemQuantity,
-  useDeleteCurrentCart,
   useDeleteCartItem,
   useUpdateCartCoupon,
   useDeleteCartCoupon,
@@ -53,7 +52,6 @@ const CartTemplate = (props: CartTemplateProps) => {
   const { initiateOrder } = useInitiateOrder()
   const { initiateCheckout } = useInitiateCheckout()
   const { updateCartItemQuantity } = useUpdateCartItemQuantity()
-  const { deleteCurrentCart } = useDeleteCurrentCart()
   const { deleteCartItem } = useDeleteCartItem()
   const { showModal, closeModal } = useModalContext()
 
@@ -156,14 +154,6 @@ const CartTemplate = (props: CartTemplateProps) => {
       },
     })
   }
-
-  // const handleDeleteCurrentCart = async () => {
-  //   try {
-  //     await deleteCurrentCart.mutateAsync()
-  //   } catch (err) {
-  //     console.error(err)
-  //   }
-  // }
 
   return (
     <Grid container>

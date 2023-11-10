@@ -36,7 +36,7 @@ const ListsTemplate = () => {
   const handleAddListToCart = async (items: CrWishlistItem[]) => {
     try {
       const response = await addItemsToCurrentCart.mutateAsync({
-        items: items as CrWishlistItem[],
+        items,
       })
       return response
     } catch (e) {

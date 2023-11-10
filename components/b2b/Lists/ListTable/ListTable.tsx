@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react'
 
-import { ContentCopy, Delete, Edit, MoreVert, AddShoppingCart } from '@mui/icons-material'
+import { ContentCopy, Delete, Edit, MoreVert } from '@mui/icons-material'
 import {
   Box,
   IconButton,
@@ -165,31 +165,22 @@ const ListTable = (props: ListTableProps) => {
                     <Box sx={{ justifyContent: 'flex-end', display: 'flex' }}>
                       <Tooltip
                         title={
-                          <Fragment>
-                            <Typography variant="body2">
-                              {t('empty-cart-add-list-to-cart')}
-                            </Typography>
-                          </Fragment>
+                          <Typography variant="body2">
+                            {t('empty-cart-add-list-to-cart')}
+                          </Typography>
                         }
                       >
                         <IconButton onClick={() => onEmptyCartAndAddListToCart(item?.id as string)}>
                           <ResetATC />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip
-                        title={
-                          <Fragment>
-                            <Typography variant="body2">{t('add-to-cart')}</Typography>
-                          </Fragment>
-                        }
-                      >
+                      <Tooltip title={<Typography variant="body2">{t('add-to-cart')}</Typography>}>
                         <IconButton
                           color="inherit"
                           onClick={() => onAddListToCart(item?.id as string)}
                           data-testid="addToCartBtn"
                         >
-                          {/* <AddToCart /> */}
-                          <AddShoppingCart />
+                          <AddToCart />
                         </IconButton>
                       </Tooltip>
 

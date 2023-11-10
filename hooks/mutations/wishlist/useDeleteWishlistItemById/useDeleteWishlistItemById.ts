@@ -6,7 +6,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { makeGraphQLClient } from '@/lib/gql/client'
 import { deleteWishlistItemMutation } from '@/lib/gql/mutations'
 import { customerWishlistKeys, wishlistKeys } from '@/lib/react-query/queryKeys'
-import type { DeleteWishlistItemInput, WishlistHookParams } from '@/lib/types'
+import type { WishlistHookParams } from '@/lib/types'
 
 const deleteWishlistItemById = async (props: { wishlistId: string; wishlistItemId: string }) => {
   const client = makeGraphQLClient()
