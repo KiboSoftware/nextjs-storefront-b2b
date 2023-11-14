@@ -93,6 +93,9 @@ describe('[component] - ListItem', () => {
         lineItem.quantity.toString()
       )
     })
+    await waitFor(() => {
+      expect(onChangeQuantityMock).toBeCalled()
+    })
   })
 
   it('should decrease item quantity', async () => {
