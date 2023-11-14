@@ -263,7 +263,7 @@ const CreateList = (props: CreateListProps) => {
         </Box>
         {!newListState?.name && (
           <Typography variant="body2" color="GrayText" marginTop="20px">
-            Add list name to Search/View products
+            {t('add-list-name-to-search-products')}
           </Typography>
         )}
         {newListState?.items?.length === 0 ? (

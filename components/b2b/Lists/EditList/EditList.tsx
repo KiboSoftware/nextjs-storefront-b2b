@@ -228,22 +228,24 @@ const EditList = (props: EditListProps) => {
           <Typography variant="h3" fontWeight={'bold'}>
             {t('list-items')}
           </Typography>
-          <Stack direction="row">
-            <Button
-              onClick={() => handleEmptyCartAndAddListToCart(listData?.id as string)}
-              sx={{ ...styles.addAllItemsToCartButton }}
-            >
-              <Link sx={{ ...styles.addAllItemsToCartLink }}>
-                {t('empty-cart-add-list-to-cart')}
-              </Link>
-            </Button>
-            <Button
-              onClick={() => handleAddListToCart(listData?.id as string)}
-              sx={{ ...styles.addAllItemsToCartButton }}
-            >
-              <Link sx={{ ...styles.addAllItemsToCartLink }}>{t('add-all-items-to-cart')}</Link>
-            </Button>
-          </Stack>
+          {listData?.items && listData?.items?.length > 0 && (
+            <Stack direction="row">
+              <Button
+                onClick={() => handleEmptyCartAndAddListToCart(listData?.id as string)}
+                sx={{ ...styles.addAllItemsToCartButton }}
+              >
+                <Link sx={{ ...styles.addAllItemsToCartLink }}>
+                  {t('empty-cart-add-list-to-cart')}
+                </Link>
+              </Button>
+              <Button
+                onClick={() => handleAddListToCart(listData?.id as string)}
+                sx={{ ...styles.addAllItemsToCartButton }}
+              >
+                <Link sx={{ ...styles.addAllItemsToCartLink }}>{t('add-all-items-to-cart')}</Link>
+              </Button>
+            </Stack>
+          )}
         </Stack>
       </Box>
 
