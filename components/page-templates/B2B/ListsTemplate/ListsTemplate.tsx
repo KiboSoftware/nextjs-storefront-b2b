@@ -40,7 +40,7 @@ const ListsTemplate = () => {
       })
       return response
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
   }
 

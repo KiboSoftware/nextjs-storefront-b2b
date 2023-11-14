@@ -20,7 +20,6 @@ interface WishlistItemInputParams {
 const addToWishlist = async (props: WishlistItemInputParams) => {
   const client = makeGraphQLClient()
   const { product, currentWishlist } = props
-  console.log('add to wishlist', props)
   const variables = buildAddToWishlistItemParams(product, currentWishlist?.id as string)
   const response = await client.request({
     document: createWishlistItemMutation,

@@ -79,14 +79,14 @@ const ViewLists = (props: ViewListsProps) => {
     return listName
   }
 
-  const handleCopyList = (id: string) => {
+  const handleCopyList = async (id: string) => {
     const newWishlist =
       wishlistsResponse.items &&
       wishlistsResponse?.items.find((item: Maybe<CrWishlist>) => item?.id === id)
     const newListName = createListName(newWishlist?.name as string)
     setIsLoading(true)
     try {
-      createWishlist.mutateAsync({
+      await createWishlist.mutateAsync({
         customerAccountId: user?.id,
         name: newListName,
         items: newWishlist?.items,

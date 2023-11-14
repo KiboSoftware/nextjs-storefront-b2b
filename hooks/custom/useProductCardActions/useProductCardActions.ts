@@ -69,7 +69,7 @@ export const useProductCardActions = (shouldFetchShippingMethods?: boolean) => {
     quoteDetails?: any
     listData?: any
     shouldFetchShippingMethods?: boolean
-    onUpdateListData?: (param: CrWishlist, addToCartPayload: any) => void
+    onUpdateListData?: (param: CrWishlist, addToCartPayload: any) => any
   }) => {
     showModal({
       Component: ProductQuickViewDialog,
@@ -99,7 +99,7 @@ export const useProductCardActions = (shouldFetchShippingMethods?: boolean) => {
     onUpdateListData,
   }: {
     listData: CrWishlist | undefined
-    onUpdateListData: (param: CrWishlist) => void
+    onUpdateListData: (param: CrWishlist) => any
     product: Product
   }) => {
     const items = listData?.items

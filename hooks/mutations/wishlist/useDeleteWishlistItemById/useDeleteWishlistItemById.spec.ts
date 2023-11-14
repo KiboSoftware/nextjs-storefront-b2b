@@ -1,4 +1,4 @@
-import { renderHook, act, waitFor } from '@testing-library/react'
+import { renderHook, waitFor } from '@testing-library/react'
 
 import { useDeleteWishlistItemById } from './useDeleteWishlistItemById'
 import { createQueryClientWrapper } from '@/__test__/utils/renderWithQueryClient'
