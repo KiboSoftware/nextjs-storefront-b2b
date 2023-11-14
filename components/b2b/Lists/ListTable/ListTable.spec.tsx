@@ -24,6 +24,7 @@ const onEditMock = jest.fn()
 const onCopyMock = jest.fn()
 const onDeleteMock = jest.fn()
 const onAddListToCartMock = jest.fn()
+const onEmptyCartAndAddListToCartMock = jest.fn()
 
 function setup() {
   const user = userEvent.setup()
@@ -34,6 +35,7 @@ function setup() {
       onEditList={onEditMock}
       onDeleteList={onDeleteMock}
       onAddListToCart={onAddListToCartMock}
+      onEmptyCartAndAddListToCart={onEmptyCartAndAddListToCartMock}
     />
   )
   return { user }
@@ -113,6 +115,18 @@ describe('[component] - ListTable', () => {
     })
     await waitFor(() => {
       expect(onAddListToCartMock).toBeCalledTimes(addToCartBtns.length)
+    })
+  })
+
+  it('should call callback function when user clicks on Reset and Add To Cart button', async () => {
+    window.matchMedia = createMatchMedia(1024)
+    const { user } = setup()
+    const resetAndAddToCartBtns = screen.getAllByTestId('resetAndAddToCartBtn')
+    resetAndAddToCartBtns.forEach((btn) => {
+      user.click(btn)
+    })
+    await waitFor(() => {
+      expect(onEmptyCartAndAddListToCartMock).toBeCalledTimes(resetAndAddToCartBtns.length)
     })
   })
 

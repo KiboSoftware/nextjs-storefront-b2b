@@ -170,7 +170,10 @@ const ListTable = (props: ListTableProps) => {
                           </Typography>
                         }
                       >
-                        <IconButton onClick={() => onEmptyCartAndAddListToCart(item?.id as string)}>
+                        <IconButton
+                          data-testid="resetAndAddToCartBtn"
+                          onClick={() => onEmptyCartAndAddListToCart(item?.id as string)}
+                        >
                           <ResetATC />
                         </IconButton>
                       </Tooltip>
