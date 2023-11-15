@@ -17,12 +17,15 @@ const replaceUrlTenantSite = (url: string, tenant: string, site: string) => {
 const getSellerTenantInfo = (req: NextApiRequest | undefined) => {
   if (!req) return
 
-  const cookies = req.headers.cookie || ''
+  const cookies = (req.headers && req.headers.cookie) || ''
   const parsedCookies = cookie.parse(cookies)
 
   // Access the Auth cookie
   const { publicRuntimeConfig } = getConfig()
-  const cookieName = publicRuntimeConfig.userCookieKey.toLowerCase()
+  const cookieName =
+    publicRuntimeConfig &&
+    publicRuntimeConfig.userCookieKey &&
+    publicRuntimeConfig.userCookieKey.toLowerCase()
 
   const parsedCookie = parsedCookies[cookieName]
   const decodedCookie = decodeParseCookieValue(parsedCookie)
