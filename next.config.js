@@ -204,7 +204,7 @@ module.exports = {
     pageSize: 1000,
     cacheKey: 'categoryTree',
     cacheTimeOut: 10000,
-    isMultiShipEnabled: true,
+    isMultiShipEnabled: false,
     recaptcha: {
       reCaptchaKey: process.env.RECAPTCHA_KEY,
       reCaptchaSecret: process.env.RECAPTCHA_SECRET,
