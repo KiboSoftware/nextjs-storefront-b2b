@@ -21,7 +21,7 @@ const ProductOptionTextBox = ({ option, onBlur }: ProductOptionTextBoxProps) => 
       label={option?.attributeDetail?.name as string}
       name={option?.attributeFQN}
       value={value}
-      disabled={!option.values?.[0]?.isEnabled}
+      // disabled={!option.values?.[0]?.isEnabled}
       onChange={handleChange}
       onBlur={(name) =>
         option?.values?.[0]?.shopperEnteredValue?.trim() !== value?.trim() &&
